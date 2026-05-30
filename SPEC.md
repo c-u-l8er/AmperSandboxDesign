@@ -418,6 +418,10 @@ Example conflict:
 
 This is not a valid idempotent collapse; it is a binding conflict.
 
+### 10.6 Arithmetic foundation (CC2)
+
+The set-like algebra above is the structural layer. The **box-and-box governance kernel** re-expresses the `[&]` operators as an eight-rung modal *arithmetic* — the bridge that turns a composed capability set into a governed verdict (`feasible ▸ permitted ▸ best`). See **`docs/CC2-capability-composition.md`** (the CC2 RFC) for the mapping between these operators and the arithmetic ladder, and `opensentience.org/box-and-box/` for the conformance-tested engine (97 property-tested laws).
+
 ---
 
 ## 11. Governance

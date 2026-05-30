@@ -1,894 +1,793 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>[&] Protocol Specification — Composing Agent Intelligence</title>
-    <meta name="description" content="The [&] Protocol is a language-agnostic specification for composing agent cognitive capabilities. Defines a formal grammar, capability registry, provenance tracking, and governance constraints. Reference implementation in Elixir."/>
-    <link rel="preconnect" href="https://fonts.googleapis.com"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-    <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,ital,wght@6..72,0,300;6..72,0,400;6..72,0,600;6..72,1,300;6..72,1,400&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet"/>
-    <style>
-        :root {
-            --bg:#08090c;--surface:#0e1017;--surface-2:#14161e;
-            --border:rgba(255,255,255,0.06);--text:#e2e0db;--dim:#7e7b94;--muted:#4a4860;
-            --cyan:#4af5c6;--blue:#7b8cff;--rose:#ff6b8a;--amber:#ffc46b;--green:#6bff8a;--purple:#b48cff;
-            --code-bg:#0b0c12;
-        }
-        *{margin:0;padding:0;box-sizing:border-box;}
-        html{scroll-behavior:smooth;}
-        body{font-family:'JetBrains Mono',monospace;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.7;font-size:15px;}
-        body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;}
-        .page{max-width:820px;margin:0 auto;padding:0 2rem;}
-        header{padding:2rem 0;border-bottom:1px solid var(--border);margin-bottom:2rem;display:flex;justify-content:space-between;align-items:center;}
-        .hd-left{display:flex;align-items:center;gap:1rem;}
-        .hd-left a{color:var(--cyan);text-decoration:none;font-size:0.85rem;font-weight:700;}
-        .hd-left span{color:var(--muted);font-size:0.8rem;}
-        .hd-right{display:flex;gap:1.5rem;}
-        .hd-right a{color:var(--dim);text-decoration:none;font-size:0.78rem;transition:color 0.2s;}
-        .hd-right a:hover{color:var(--cyan);}
-        h1{font-family:'Newsreader',serif;font-size:clamp(2.2rem,4vw,3.2rem);font-weight:300;letter-spacing:-0.03em;line-height:1.15;margin-bottom:1rem;}
-        h1 em{font-style:italic;color:var(--cyan);}
-        h2{font-family:'Newsreader',serif;font-size:1.6rem;font-weight:300;letter-spacing:-0.02em;margin:4rem 0 1.5rem;padding-top:2rem;border-top:1px solid var(--border);}
-        h2 em{font-style:italic;color:var(--cyan);}
-        h2.part{font-size:0.78rem;font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin:5rem 0 0;padding-top:3rem;border-top:2px solid rgba(255,255,255,0.1);}
-        h2.part em{font-style:normal;color:var(--cyan);}
-        h3{font-size:0.92rem;font-weight:700;letter-spacing:0.02em;margin:2.5rem 0 1rem;color:var(--text);}
-        h4{font-size:0.78rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--cyan);margin:2rem 0 0.75rem;}
-        p{color:var(--dim);margin-bottom:1.25rem;font-size:0.88rem;line-height:1.85;}
-        p strong{color:var(--text);font-weight:500;}
-        p code{background:var(--code-bg);padding:0.15rem 0.4rem;border:1px solid var(--border);font-size:0.82rem;color:var(--cyan);}
-        .lead{font-family:'Newsreader',serif;font-size:1.15rem;font-style:italic;color:var(--dim);line-height:1.7;margin-bottom:2rem;max-width:640px;}
-        .lead strong{color:var(--text);font-style:normal;font-weight:400;}
-        pre{background:var(--code-bg);border:1px solid var(--border);padding:1.5rem 1.75rem;margin:1.25rem 0 1.75rem;overflow-x:auto;font-size:0.82rem;line-height:1.85;border-left:3px solid var(--muted);}
-        pre.hl-cyan{border-left-color:var(--cyan);}
-        pre.hl-blue{border-left-color:var(--blue);}
-        pre.hl-rose{border-left-color:var(--rose);}
-        pre.hl-amber{border-left-color:var(--amber);}
-        pre.hl-green{border-left-color:var(--green);}
-        pre.hl-purple{border-left-color:var(--purple);}
-        .kw{color:var(--cyan);}
-        .fn{color:var(--blue);}
-        .str{color:var(--amber);}
-        .at{color:var(--rose);}
-        .cm{color:var(--muted);font-style:italic;}
-        .op{color:var(--cyan);font-weight:700;}
-        .mod{color:var(--purple);}
-        .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin:1.5rem 0 2rem;}
-        .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin:1.5rem 0 2rem;}
-        .grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin:1.5rem 0 2rem;}
-        .gc{background:var(--bg);padding:1.5rem;}
-        .gc h5{font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:0.6rem;}
-        .gc p{font-size:0.82rem;margin-bottom:0;}
-        .gc code{font-size:1.1rem;font-weight:700;display:block;margin-bottom:0.5rem;}
-        .layer{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);margin:1.5rem 0 2rem;}
-        .layer-row{background:var(--bg);display:grid;grid-template-columns:140px 1fr 180px;gap:1.5rem;align-items:center;padding:1rem 1.5rem;}
-        .layer-label{font-size:0.72rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;}
-        .layer-desc{font-size:0.82rem;color:var(--dim);}
-        .layer-proto{font-size:0.78rem;color:var(--muted);text-align:right;}
-        .layer-row.hl{background:var(--surface-2);border-left:2px solid var(--cyan);}
-        .layer-row.hl .layer-label{color:var(--cyan);}
-        .layer-row.hl .layer-desc{color:var(--text);}
-        .callout{background:rgba(74,245,198,0.04);border:1px solid rgba(74,245,198,0.15);border-left:3px solid var(--cyan);padding:1.5rem 1.75rem;margin:1.5rem 0 2rem;}
-        .callout p{margin-bottom:0;color:var(--dim);}
-        .callout strong{color:var(--text);}
-        table{width:100%;border-collapse:collapse;margin:1.5rem 0 2rem;font-size:0.82rem;}
-        th{text-align:left;font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);padding:0.75rem 1rem;border-bottom:1px solid var(--border);}
-        td{padding:0.75rem 1rem;border-bottom:1px solid var(--border);color:var(--dim);}
-        td:first-child{color:var(--text);font-weight:500;}
-        td code{background:var(--code-bg);padding:0.1rem 0.35rem;font-size:0.78rem;}
-        footer{padding:3rem 0 2rem;margin-top:4rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:0.72rem;color:var(--muted);}
-        footer a{color:var(--dim);text-decoration:none;transition:color 0.2s;}
-        footer a:hover{color:var(--cyan);}
-        .toc{margin:2rem 0 3rem;padding:1.5rem;border:1px solid var(--border);background:var(--surface);}
-        .toc h4{margin-top:0;}
-        .toc ol{padding-left:1.5rem;margin:0;}
-        .toc li{margin-bottom:0.4rem;}
-        .toc li.part-label{list-style:none;margin-left:-1.5rem;margin-top:1rem;margin-bottom:0.5rem;font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);}
-        .toc li.part-label:first-child{margin-top:0;}
-        .toc a{color:var(--dim);text-decoration:none;font-size:0.82rem;transition:color 0.2s;}
-        .toc a:hover{color:var(--cyan);}
-        /* RFC metadata block */
-        .rfc-meta{border:1px solid var(--border);background:var(--surface);padding:1.5rem 1.75rem;margin-bottom:3rem;font-size:0.82rem;line-height:2;}
-        .rfc-meta dt{color:var(--muted);float:left;clear:left;width:120px;font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;}
-        .rfc-meta dd{color:var(--text);margin-left:130px;}
-        .rfc-meta dd a{color:var(--cyan);text-decoration:none;}
-        .rfc-meta dd a:hover{text-decoration:underline;}
-        @media(max-width:768px){
-            .grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}
-            .layer-row{grid-template-columns:1fr;gap:0.3rem;}
-            .layer-proto{text-align:left;}
-            .rfc-meta dt{float:none;width:auto;}
-            .rfc-meta dd{margin-left:0;}
-        }
-    </style>
-    <script type="module" src="/amp-nav.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"/>
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
+<title>[&amp;] Protocol Specification — Composing Governed Agent Intelligence</title>
+<meta name="description" content="The [&] Protocol is a language-agnostic specification for composing agent capabilities — six cognitive primitives, two operators, and the box-and-box governance kernel (8 rungs, 1 bridge, 97 property-tested laws). Compiles to MCP and A2A. Reference implementation in Elixir." />
+<meta name="keywords" content="[&] protocol, ampersand protocol, capability composition, box-and-box, governance kernel, CC2, coalitional composition, MCP, A2A, agent operating system, PULSE, PRISM" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d0c0a; --bg2:#090907; --surface:#15130e; --surface2:#1b1813;
+    --ink:#f3ecdf; --ink-dim:#cabf9d; --muted:#988e7c; --faint:#615a4d;
+    --line:#2a261d; --line2:#383022;
+    --amber:#e69138; --amber-2:#f0b15f; --amber-deep:#b9701f;
+    --teal:#5cc196; --teal-deep:#2f7d5b;
+    --red:#e0604f; --purple:#c79bd4;
+    --serif:"Fraunces",Georgia,serif;
+    --sans:"Hanken Grotesk",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+    --maxw:1080px;
+    --code-bg:#0b0a08;
+  }
+  *{box-sizing:border-box; margin:0; padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:var(--sans); font-size:16px; line-height:1.68; font-weight:400;
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; z-index:-2; pointer-events:none;
+    background:
+      radial-gradient(820px 520px at 82% -8%, rgba(230,145,56,.12), transparent 60%),
+      radial-gradient(700px 600px at 4% 6%, rgba(92,193,150,.05), transparent 55%),
+      radial-gradient(900px 700px at 50% 120%, rgba(230,145,56,.06), transparent 60%);
+  }
+  body::after{
+    content:""; position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.03;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  a{color:inherit; text-decoration:none}
+  ::selection{background:rgba(230,145,56,.28); color:#fff}
+
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px}
+  .mono{font-family:var(--mono)}
+  .amber{color:var(--amber)} .teal{color:var(--teal)} .red{color:var(--red)} .purple{color:var(--purple)}
+  .zero{font-family:var(--mono); color:var(--red); font-weight:600}
+  em.tk{font-style:normal; font-family:var(--mono); font-size:.86em; color:var(--amber-2); background:rgba(230,145,56,.09); padding:.06em .4em; border-radius:5px}
+  code{font-family:var(--mono); font-size:.9em; color:var(--amber-2); background:rgba(230,145,56,.08); padding:.08em .4em; border-radius:4px}
+
+  /* HERO / HEADER */
+  header.doc{padding:88px 0 40px; border-bottom:1px solid var(--line); position:relative; overflow:hidden}
+  header.doc .glyph{position:absolute; right:-2%; top:-30%; font-family:var(--serif); font-weight:600;
+    font-size:min(40vw,520px); line-height:1; color:var(--amber); opacity:.045; pointer-events:none; z-index:0}
+  header.doc .wrap{position:relative; z-index:1}
+  .kicker{font-family:var(--mono); font-size:12px; font-weight:500; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--amber); margin:0 0 20px; display:inline-flex; align-items:center; gap:10px}
+  .kicker::before{content:""; width:22px; height:1px; background:var(--amber); opacity:.7}
+  h1.title{font-family:var(--serif); font-weight:600; letter-spacing:-.02em; line-height:1.05;
+    font-size:clamp(36px,6vw,64px); max-width:18ch; margin:0 0 18px}
+  h1.title .br{display:block; color:var(--muted); font-weight:400; font-size:clamp(18px,2.6vw,28px); margin-top:12px}
+  .lead{color:var(--muted); font-size:clamp(16px,1.9vw,19px); line-height:1.6; max-width:66ch; margin:0 0 36px}
+  .lead strong{color:var(--ink-dim); font-weight:500}
+
+  /* RFC metadata block */
+  .rfc-meta{border:1px solid var(--line2); border-radius:14px; background:var(--surface); overflow:hidden; margin-top:8px}
+  .rfc-meta dl{display:grid; grid-template-columns:max-content 1fr; margin:0}
+  .rfc-meta dt{font-family:var(--mono); font-size:11.5px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--faint); padding:11px 22px; border-bottom:1px solid var(--line); white-space:nowrap}
+  .rfc-meta dd{font-family:var(--mono); font-size:13px; color:var(--ink-dim); padding:11px 22px;
+    border-bottom:1px solid var(--line); border-left:1px solid var(--line)}
+  .rfc-meta dl > dt:last-of-type, .rfc-meta dl > dd:last-of-type{border-bottom:none}
+  .rfc-meta dd a{color:var(--amber-2); border-bottom:1px solid var(--line2)}
+  .rfc-meta .badge{color:var(--teal)}
+  @media(max-width:680px){ .rfc-meta dl{grid-template-columns:1fr} .rfc-meta dt{border-left:none; padding-bottom:2px; border-bottom:none} .rfc-meta dd{border-left:none; padding-top:2px} }
+
+  /* TOC */
+  .toc{margin:44px 0 0; border:1px solid var(--line); border-radius:14px; background:var(--bg2); padding:26px 30px}
+  .toc h4{font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--faint); margin:0 0 18px; font-weight:500}
+  .toc .cols{display:grid; grid-template-columns:repeat(3,1fr); gap:26px}
+  @media(max-width:760px){ .toc .cols{grid-template-columns:1fr; gap:20px} }
+  .toc .part{font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--amber); margin:0 0 10px}
+  .toc ol{list-style:none; counter-reset:none; margin:0; padding:0}
+  .toc li{margin:0 0 7px}
+  .toc a{font-size:13.5px; color:var(--muted); transition:color .18s; display:flex; gap:9px}
+  .toc a:hover{color:var(--ink)}
+  .toc a .n{font-family:var(--mono); color:var(--faint); font-size:12px; min-width:26px}
+
+  /* SECTIONS */
+  main{padding:20px 0 40px}
+  section.s{padding:62px 0 0; scroll-margin-top:84px}
+  .seclabel{font-family:var(--mono); font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--amber); margin:0 0 10px}
+  h2.h{font-family:var(--serif); font-weight:600; letter-spacing:-.015em; line-height:1.08;
+    font-size:clamp(26px,3.6vw,38px); max-width:22ch; margin:0 0 22px}
+  h3.h{font-family:var(--serif); font-weight:600; font-size:21px; margin:34px 0 12px; color:var(--ink); letter-spacing:-.01em}
+  p.body{color:var(--ink-dim); max-width:72ch; margin:0 0 16px}
+  p.body + p.body{margin-top:0}
+  .partbar{margin:78px 0 0; padding:30px 0 0; border-top:2px solid var(--line2)}
+  .partbar .pt{font-family:var(--mono); font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--amber)}
+  .partbar h2{font-family:var(--serif); font-size:clamp(24px,3.4vw,34px); font-weight:600; margin:8px 0 0; letter-spacing:-.015em}
+  .partbar p{color:var(--muted); font-size:15px; margin:10px 0 0; max-width:64ch}
+
+  ul.list{margin:0 0 16px; padding-left:0; list-style:none; max-width:72ch}
+  ul.list li{color:var(--ink-dim); margin:0 0 10px; padding-left:24px; position:relative}
+  ul.list li::before{content:"▸"; position:absolute; left:0; color:var(--amber); font-size:13px; top:1px}
+  ul.list li b{color:var(--ink); font-weight:600}
+
+  /* CODE */
+  .codewrap{margin:24px 0; border:1px solid var(--line2); border-radius:13px; overflow:hidden; background:var(--code-bg)}
+  .codewrap .chead{display:flex; align-items:center; gap:9px; padding:12px 17px; border-bottom:1px solid var(--line); font-family:var(--mono); font-size:12px; color:var(--muted)}
+  .codewrap .chead .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+  .codewrap .chead .fn{color:var(--ink); margin-left:4px}
+  .codewrap .chead .lang{margin-left:auto; color:var(--amber)}
+  pre{margin:0; overflow-x:auto; padding:20px 20px 24px; font-family:var(--mono); font-size:12.5px; line-height:1.66; color:var(--ink-dim)}
+  pre code{font-family:inherit; background:none; color:inherit; padding:0; font-size:inherit}
+  .c{color:#6f6a5a; font-style:italic} .s{color:var(--teal)} .at{color:var(--amber-2)}
+  .kw{color:var(--amber)} .mod{color:var(--ink)} .attr{color:var(--purple)} .num{color:var(--teal)}
+
+  /* tables */
+  .tbl{width:100%; border-collapse:collapse; margin:24px 0; font-size:14px}
+  .tbl th{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--faint);
+    text-align:left; font-weight:500; padding:0 16px 12px; border-bottom:1px solid var(--line2)}
+  .tbl td{padding:14px 16px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--muted)}
+  .tbl td.k{font-family:var(--mono); font-size:12.5px; color:var(--amber-2); white-space:nowrap}
+  .tbl td b{color:var(--ink)}
+  .tbl tr:last-child td{border-bottom:none}
+  @media(max-width:720px){ .tbl, .tbl thead, .tbl tbody, .tbl tr, .tbl th, .tbl td{display:block}
+    .tbl thead{display:none} .tbl td{border-bottom:none; padding:2px 0} .tbl tr{border-bottom:1px solid var(--line); padding:13px 0} .tbl td.k{margin-bottom:5px} }
+
+  /* primitive grid */
+  .prims{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:28px 0}
+  @media(max-width:820px){ .prims{grid-template-columns:1fr 1fr} }
+  @media(max-width:540px){ .prims{grid-template-columns:1fr} }
+  .pcard{border:1px solid var(--line); border-radius:13px; padding:20px; background:var(--surface); transition:.2s}
+  .pcard:hover{border-color:var(--line2)}
+  .pcard .sym{font-family:var(--mono); font-size:15px; color:var(--amber); font-weight:600}
+  .pcard .os{font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--faint); margin-top:2px}
+  .pcard h4{font-family:var(--serif); font-size:18px; margin:10px 0 7px; color:var(--ink); font-weight:600}
+  .pcard p{margin:0; font-size:13.5px; color:var(--muted); line-height:1.5}
+  .pcard .prov{font-family:var(--mono); font-size:11.5px; color:var(--teal-deep); margin-top:11px; display:block}
+
+  /* rung ladder */
+  .subs{margin:28px 0; border:1px solid var(--line); border-radius:16px; overflow:hidden; background:var(--surface)}
+  .srow{display:grid; grid-template-columns:54px 170px 1fr 1.2fr; gap:18px; align-items:center; padding:16px 22px; border-bottom:1px solid var(--line); transition:background .2s}
+  .srow:hover{background:rgba(230,145,56,.045)}
+  .srow .rn{font-family:var(--mono); font-size:13px; color:var(--amber-deep); font-weight:600}
+  .srow .os{font-family:var(--mono); font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--amber)}
+  .srow .nm{font-family:var(--serif); font-size:18px; color:var(--ink)}
+  .srow .nm small{display:block; font-family:var(--mono); font-size:11px; color:var(--faint); margin-top:2px}
+  .srow .ds{color:var(--muted); font-size:13.5px}
+  .srow.amp{background:rgba(230,145,56,.06)} .srow.amp .nm{color:var(--amber-2)}
+  .subs-foot{font-family:var(--mono); font-size:13px; color:var(--muted); text-align:center; padding:17px; border-top:1px dashed var(--line2)}
+  .subs-foot b{color:var(--ink)} .subs-foot a{color:var(--amber-2); border-bottom:1px solid var(--line2)}
+  @media(max-width:820px){ .srow{grid-template-columns:1fr; gap:5px; padding:16px} .srow .rn{display:none} }
+
+  /* bridge eq */
+  .bridge-eq{font-family:var(--mono); font-size:clamp(16px,2.6vw,26px); margin:22px 0; letter-spacing:.01em; text-align:center}
+  .bridge-eq .g1{color:var(--ink)} .bridge-eq .g2{color:var(--amber)} .bridge-eq .g3{color:var(--teal)}
+  .bridge-eq .sep{color:var(--faint); margin:0 .5em}
+
+  /* callout / note */
+  .note{margin:24px 0; border:1px solid var(--line2); border-left:3px solid var(--amber); border-radius:11px;
+    padding:18px 22px; background:var(--surface); font-size:14.5px; color:var(--ink-dim); line-height:1.6}
+  .note b{color:var(--ink)} .note.teal{border-left-color:var(--teal)}
+  .note .lbl{font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--amber); display:block; margin-bottom:7px}
+  .note.teal .lbl{color:var(--teal)}
+
+  /* stack triad */
+  .triad{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:28px 0}
+  @media(max-width:760px){ .triad{grid-template-columns:1fr} }
+  .tcard{border:1px solid var(--line); border-radius:13px; padding:22px; background:var(--surface)}
+  .tcard .sym{font-family:var(--mono); font-size:22px; color:var(--amber); font-weight:600}
+  .tcard h4{font-family:var(--serif); font-size:19px; margin:8px 0 6px; color:var(--ink)}
+  .tcard .axis{font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--teal-deep); margin-bottom:9px}
+  .tcard p{margin:0; font-size:13.5px; color:var(--muted)}
+  .tcard .file{font-family:var(--mono); font-size:11.5px; color:var(--faint); margin-top:10px; display:block}
+
+  /* eco cards */
+  .eco{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:26px 0}
+  @media(max-width:820px){ .eco{grid-template-columns:1fr 1fr} }
+  @media(max-width:540px){ .eco{grid-template-columns:1fr} }
+  .ecocard{border:1px solid var(--line); border-radius:12px; padding:18px; background:var(--surface); transition:.2s}
+  .ecocard:hover{border-color:var(--line2); transform:translateY(-2px)}
+  .ecocard .amp{font-family:var(--mono); font-size:12px; color:var(--amber); letter-spacing:.04em}
+  .ecocard h4{font-family:var(--serif); font-size:18px; margin:5px 0 6px; color:var(--ink)}
+  .ecocard p{margin:0; font-size:13px; color:var(--muted)}
+
+  footer{border-top:1px solid var(--line); padding:60px 0 50px; margin-top:80px}
+  footer .grid{display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:28px}
+  @media(max-width:820px){ footer .grid{grid-template-columns:1fr 1fr} }
+  footer .brand{font-family:var(--mono); font-weight:600; letter-spacing:.04em; font-size:16px; color:var(--ink)}
+  footer .brand b{color:var(--amber)}
+  footer .blurb{color:var(--muted); font-size:13.5px; max-width:34ch; margin:14px 0 0}
+  footer h5{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--faint); margin:0 0 14px}
+  footer a{display:block; color:var(--muted); font-size:13.5px; margin-bottom:9px; transition:color .2s}
+  footer a:hover{color:var(--amber-2)}
+  footer .ops{font-family:var(--mono); font-size:12px; color:var(--teal); margin-top:24px}
+  .copy{font-family:var(--mono); font-size:12px; color:var(--faint); margin-top:38px; padding-top:24px; border-top:1px solid var(--line); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px}
+</style>
 </head>
 <body>
-    <amp-nav property="ampersand"></amp-nav>
-    <div class="page">
-        <header>
-            <div class="hd-left">
-                <a href="/">[&]</a>
-                <span>/</span>
-                <span style="color:var(--text)">Protocol Specification</span>
-            </div>
-            <div class="hd-right">
-                <a href="https://github.com/c-u-l8er/AmpersandBoxDesign">Spec on GitHub</a>
-                <a href="https://ampersandboxdesign.com">Home</a>
-            </div>
-        </header>
-
-        <!-- IMPROVEMENT 1: RFC-like metadata header -->
-        <h1>The [&] Protocol:<br/>Composing <em>Agent Intelligence</em></h1>
-
-        <dl class="rfc-meta">
-            <dt>Status</dt>
-            <dd>Draft Specification</dd>
-            <dt>Version</dt>
-            <dd>0.1.0</dd>
-            <dt>Date</dt>
-            <dd>2026-03-14</dd>
-            <dt>Authors</dt>
-            <dd>Ampersand Box Design — <a href="https://ampersandboxdesign.com">ampersandboxdesign.com</a></dd>
-            <dt>License</dt>
-            <dd>Apache 2.0</dd>
-            <dt>Schema</dt>
-            <dd><code>ampersand.schema.json</code> (v0.1.0)</dd>
-            <dt>Reference</dt>
-            <dd>Elixir — <code>ampersand</code> on hex.pm (planned)</dd>
-            <dt>Bindings</dt>
-            <dd>TypeScript (<code>@ampersand/sdk</code>), Rust (<code>ampersand-rs</code>) — planned</dd>
-            <dt>Requires</dt>
-            <dd>MCP v1 (Anthropic / AAIF), A2A v1 (Google / AAIF)</dd>
-        </dl>
-
-        <p class="lead">
-            The ampersand is not a logo. It's a <strong>composition operator</strong>.
-            A language-agnostic protocol specification where <code>&memory</code>,
-            <code>&time</code>, <code>&space</code>, <code>&body</code>, and <code>&reason</code>
-            compose into verified, deployable agent systems — defined by a formal
-            grammar, validated against a JSON schema, and implemented in any language.
-        </p>
-
-        <!-- IMPROVEMENT 2: TOC organized as Part A / Part B / Part C -->
-        <div class="toc">
-            <h4>Contents</h4>
-            <ol>
-                <li class="part-label">Part A — Protocol Specification</li>
-                <li><a href="#position">Protocol stack position</a></li>
-                <li><a href="#grammar">Formal capability grammar</a></li>
-                <li><a href="#primitives">Cognitive primitives and namespaces</a></li>
-                <li><a href="#schema">Canonical schema</a></li>
-                <li><a href="#registry">Capability registry</a></li>
-                <li><a href="#algebra">Composition algebra</a></li>
-                <li><a href="#provenance">Context provenance</a></li>
-                <li><a href="#governance">Governance constraints</a></li>
-                <li><a href="#contracts">Capability contracts</a></li>
-                <li><a href="#autonomous">Autonomous composition</a></li>
-                <li class="part-label">Part B — Reference Implementation</li>
-                <li><a href="#minimal">Minimal implementation (Elixir)</a></li>
-                <li><a href="#syntax">Extended syntax (Elixir DSL)</a></li>
-                <li><a href="#deploy">From spec to running agent</a></li>
-                <li class="part-label">Part C — [&] Ecosystem</li>
-                <li><a href="#ecosystem">Default capability providers</a></li>
-            </ol>
-        </div>
-
-
-        <!-- ═══════════════════════════════════════════════════════════ -->
-        <!--  PART A — PROTOCOL SPECIFICATION                          -->
-        <!-- ═══════════════════════════════════════════════════════════ -->
-
-        <h2 class="part">Part A — <em>Protocol Specification</em></h2>
-
-        <p>
-            Part A defines the [&] protocol independent of any programming language
-            or specific capability provider. Any conforming implementation
-            must satisfy the grammar, schema, algebra, and constraint rules
-            described in this section.
-        </p>
-
-
-        <!-- §1 Protocol Stack Position -->
-        <h2 id="position">1. Protocol stack <em>position</em></h2>
-
-        <p>
-            The current agent protocol landscape has three established layers:
-            <strong>MCP</strong> (agent-to-tool, vertical), <strong>A2A</strong>
-            (agent-to-agent, horizontal), and emerging UI protocols (AG-UI, A2UI).
-            There is a missing layer: <strong>capability composition</strong> —
-            how an agent declares, validates, and binds the cognitive capabilities
-            it needs before it ever touches MCP or A2A.
-        </p>
-
-        <p>
-            The [&] protocol occupies that layer. It does not replace
-            MCP or A2A — it generates configurations for them.
-        </p>
-
-        <div class="layer">
-            <div class="layer-row">
-                <div class="layer-label" style="color:var(--purple)">UI</div>
-                <div class="layer-desc">Agent-to-user rendering</div>
-                <div class="layer-proto">A2UI / AG-UI / Open-JSON-UI</div>
-            </div>
-            <div class="layer-row hl">
-                <div class="layer-label">Composition</div>
-                <div class="layer-desc">Capability declaration, validation, binding, provenance</div>
-                <div class="layer-proto"><strong>[&] Protocol</strong></div>
-            </div>
-            <div class="layer-row">
-                <div class="layer-label" style="color:var(--blue)">Coordination</div>
-                <div class="layer-desc">Agent-to-agent task delegation and discovery</div>
-                <div class="layer-proto">A2A (Google / AAIF)</div>
-            </div>
-            <div class="layer-row">
-                <div class="layer-label" style="color:var(--amber)">Context</div>
-                <div class="layer-desc">Agent-to-tool connectivity and resources</div>
-                <div class="layer-proto">MCP (Anthropic / AAIF)</div>
-            </div>
-            <div class="layer-row">
-                <div class="layer-label" style="color:var(--muted)">Runtime</div>
-                <div class="layer-desc">Execution, metering, deployment, secrets</div>
-                <div class="layer-proto">Any conforming host</div>
-            </div>
-        </div>
-
-        <div class="callout">
-            <p>
-                <strong>The key insight:</strong> MCP defines how agents call tools.
-                A2A defines how agents call agents. Neither defines
-                <strong>how capabilities compose into a coherent cognitive system</strong>
-                — what memory, reasoning, temporal, and spatial capabilities an agent
-                needs, whether they're compatible, and how context flows between them
-                with provenance. [&] fills that gap.
-            </p>
-        </div>
-
-
-        <!-- IMPROVEMENT 3: §2 Formal Capability Grammar -->
-        <h2 id="grammar">2. Formal capability <em>grammar</em></h2>
-
-        <p>
-            The [&] protocol defines a formal grammar for capability composition.
-            Any conforming implementation MUST be able to parse and validate
-            expressions that satisfy this grammar. The grammar is intentionally
-            small — six primitive types, two operators, and namespaced subtypes.
-        </p>
-
-<pre class="hl-cyan"><span class="cm"># [&] Capability Grammar — BNF</span>
-
-AgentSpec       := <span class="str">"agent"</span> Identifier <span class="str">"{"</span> CapabilityBlock GovernanceBlock? <span class="str">"}"</span>
-
-CapabilityBlock := <span class="str">"capabilities"</span> <span class="str">"["</span> CapabilityList <span class="str">"]"</span>
-CapabilityList  := Capability (<span class="str">","</span> Capability)*
-
-Capability      := <span class="op">"&"</span> PrimitiveType ( <span class="str">"."</span> Subtype )? <span class="str">"("</span> ProviderExpr? (<span class="str">","</span> Config)? <span class="str">")"</span>
-
-PrimitiveType   := <span class="at">"memory"</span> | <span class="at">"reason"</span> | <span class="at">"time"</span> | <span class="at">"space"</span> | <span class="at">"body"</span> | <span class="at">"govern"</span>
-
-<span class="cm"># IMPROVEMENT 4: Capability namespaces</span>
-Subtype         := Identifier
-                <span class="cm"># e.g. &memory.graph, &memory.vector, &memory.episodic</span>
-                <span class="cm">#      &time.forecast, &time.anomaly, &time.pattern</span>
-                <span class="cm">#      &space.fleet, &space.geofence, &space.route</span>
-                <span class="cm">#      &body.browser, &body.os, &body.vision, &body.voice, &body.motor</span>
-                <span class="cm">#      &reason.argument, &reason.vote, &reason.plan, &reason.deliberate, &reason.attend</span>
-
-ProviderExpr    := <span class="str">":"</span> Identifier              <span class="cm"># explicit provider</span>
-                 | <span class="str">":"</span> <span class="at">"auto"</span>                  <span class="cm"># registry-resolved</span>
-
-Config          := KeyValue (<span class="str">","</span> KeyValue)*
-KeyValue        := Identifier <span class="str">":"</span> Value
-Value           := String | Number | Boolean | List | Map
-
-<span class="cm"># Composition operators</span>
-CapabilitySet   := Capability ( <span class="op">"&"</span> Capability )*
-Pipeline        := Expression ( <span class="op">"|>"</span> CapabilityOp )*
-CapabilityOp    := <span class="op">"&"</span> PrimitiveType (<span class="str">"."</span> Subtype)? <span class="str">"."</span> Operation <span class="str">"("</span> Args? <span class="str">")"</span>
-
-<span class="cm"># Governance (protocol-level, not language-specific)</span>
-GovernanceBlock := <span class="str">"governance"</span> <span class="str">"{"</span> Constraint* <span class="str">"}"</span>
-Constraint      := HardConstraint | SoftConstraint | EscalationRule
-HardConstraint  := <span class="str">"hard"</span> String
-SoftConstraint  := <span class="str">"soft"</span> String
-EscalationRule  := <span class="str">"escalate_when"</span> Condition</pre>
-
-        <p>
-            The grammar produces two operators:
-            <code>&</code> (composition — combines capabilities into a set)
-            and <code>|></code> (pipeline — flows data through capability
-            operations). These are the only two primitives needed to express
-            any agent cognitive architecture.
-        </p>
-
-
-        <!-- IMPROVEMENT 4: §3 Cognitive and Sensorimotor Primitives and Namespaces -->
-        <h2 id="primitives">3. Cognitive and sensorimotor primitives and <em>namespaces</em></h2>
-
-        <p>
-            The [&] protocol defines four fundamental capability primitives.
-            Each primitive has a namespace of subtypes that specialize its
-            behavior. Primitives map to cognitive science models of intelligence plus one sensorimotor primitive:
-            <strong>what</strong> (memory), <strong>how</strong> (reasoning),
-            <strong>when</strong> (time), <strong>where</strong> (space),
-            <strong>how embodied</strong> (body), and the cross-cutting <strong>who/under what rules</strong> (govern).
-        </p>
-
-        <div class="grid-4">
-            <div class="gc">
-                <code style="color:var(--cyan)">&memory</code>
-                <h5 style="color:var(--cyan)">Persistence</h5>
-                <p>What the agent knows.</p>
-            </div>
-            <div class="gc">
-                <code style="color:var(--blue)">&reason</code>
-                <h5 style="color:var(--blue)">Deliberation</h5>
-                <p>How the agent decides.</p>
-            </div>
-            <div class="gc">
-                <code style="color:var(--rose)">&time</code>
-                <h5 style="color:var(--rose)">Temporal</h5>
-                <p>When things happen.</p>
-            </div>
-            <div class="gc">
-                <code style="color:var(--amber)">&space</code>
-                <h5 style="color:var(--amber)">Spatial</h5>
-                <p>Where things are.</p>
-            </div>
-        </div>
-
-        <h3>Namespaced subtypes</h3>
-        <p>
-            Each primitive expands into a namespace of specialized capabilities.
-            The flat form (<code>&memory</code>) is shorthand for the default
-            subtype. Explicit subtypes enable fine-grained provider selection:
-        </p>
-
-        <table>
-            <tr><th>Primitive</th><th>Subtypes</th><th>Description</th></tr>
-            <tr><td><code>&memory</code></td><td><code>.graph</code> · <code>.vector</code> · <code>.episodic</code> · <code>.semantic</code></td><td>Knowledge graphs, vector stores, episode recall, semantic search</td></tr>
-            <tr><td><code>&reason</code></td><td><code>.argument</code> · <code>.vote</code> · <code>.plan</code> · <code>.chain</code></td><td>Structured argumentation, consensus, planning, chain-of-thought</td></tr>
-            <tr><td><code>&time</code></td><td><code>.anomaly</code> · <code>.forecast</code> · <code>.pattern</code> · <code>.baseline</code></td><td>Anomaly detection, forecasting, pattern learning, baseline drift</td></tr>
-            <tr><td><code>&space</code></td><td><code>.fleet</code> · <code>.geofence</code> · <code>.route</code> · <code>.region</code></td><td>Fleet tracking, geofencing, route optimization, regional state</td></tr>
-        </table>
-
-        <p>
-            Custom subtypes are permitted. A provider MAY register any
-            subtype under a primitive as long as it satisfies the primitive's
-            capability contract (§9). The registry (§5) tracks all known
-            subtypes and their providers.
-        </p>
-
-
-        <!-- §4 Canonical Schema -->
-        <h2 id="schema">4. Canonical <em>schema</em></h2>
-
-        <p>
-            The [&] protocol defines a three-layer architecture.
-            Layer 1 (Canonical Schema) is the normative specification.
-            Layers 2 and 3 are implementation concerns.
-        </p>
-
-        <div class="layer">
-            <div class="layer-row hl">
-                <div class="layer-label">Layer 1</div>
-                <div class="layer-desc"><strong>Canonical Schema</strong> — JSON/YAML capability composition format. Language-agnostic. Normative.</div>
-                <div class="layer-proto"><code>ampersand.schema.json</code></div>
-            </div>
-            <div class="layer-row">
-                <div class="layer-label" style="color:var(--blue)">Layer 2</div>
-                <div class="layer-desc"><strong>Abstract Operations</strong> — compose, validate, bind, invoke, trace. What any implementation must support.</div>
-                <div class="layer-proto">This specification</div>
-            </div>
-            <div class="layer-row">
-                <div class="layer-label" style="color:var(--amber)">Layer 3</div>
-                <div class="layer-desc"><strong>Language Bindings</strong> — Concrete SDKs. Elixir macros (reference), TypeScript, Rust.</div>
-                <div class="layer-proto"><code>hex</code> / <code>npm</code> / <code>crates.io</code></div>
-            </div>
-        </div>
-
-        <h3>Agent declaration (Layer 1)</h3>
-        <p>
-            Any agent can declare its capabilities in <code>ampersand.json</code>,
-            regardless of implementation language. This is the canonical form:
-        </p>
-
-<pre class="hl-cyan">{
-  <span class="str">"$schema"</span>: <span class="str">"https://protocol.ampersandboxdesign.com/schema/v0.1.0/ampersand.schema.json"</span>,
-  <span class="str">"agent"</span>: <span class="str">"InfraOperator"</span>,
-  <span class="str">"version"</span>: <span class="str">"1.0.0"</span>,
-  <span class="str">"capabilities"</span>: {
-    <span class="str">"&memory.graph"</span>:       { <span class="str">"provider"</span>: <span class="str">"graphonomous"</span>, <span class="str">"config"</span>: { <span class="str">"instance"</span>: <span class="str">"infra-ops"</span> } },
-    <span class="str">"&time.anomaly"</span>:      { <span class="str">"provider"</span>: <span class="str">"ticktickclock"</span>, <span class="str">"config"</span>: { <span class="str">"streams"</span>: [<span class="str">"cpu"</span>, <span class="str">"mem"</span>] } },
-    <span class="str">"&space.fleet"</span>:       { <span class="str">"provider"</span>: <span class="str">"geofleetic"</span>, <span class="str">"config"</span>: { <span class="str">"regions"</span>: [<span class="str">"us-east"</span>] } },
-    <span class="str">"&reason.argument"</span>:  { <span class="str">"provider"</span>: <span class="str">"deliberatic"</span>, <span class="str">"config"</span>: { <span class="str">"governance"</span>: <span class="str">"constitutional"</span> } },
-    <span class="str">"&reason.deliberate"</span>: { <span class="str">"provider"</span>: <span class="str">"graphonomous"</span>, <span class="str">"config"</span>: { <span class="str">"budget"</span>: <span class="str">"kappa"</span> } },
-    <span class="str">"&reason.attend"</span>: { <span class="str">"provider"</span>: <span class="str">"graphonomous"</span>, <span class="str">"config"</span>: {} }
-  },
-  <span class="str">"governance"</span>: {
-    <span class="str">"hard"</span>: [<span class="str">"Never scale beyond 3x in a single action"</span>],
-    <span class="str">"soft"</span>: [<span class="str">"Prefer gradual scaling over spikes"</span>],
-    <span class="str">"escalate_when"</span>: { <span class="str">"confidence_below"</span>: 0.7, <span class="str">"cost_exceeds_usd"</span>: 1000 },
-    <span class="str">"autonomy"</span>: {
-      <span class="str">"level"</span>: <span class="str">"advise"</span>,
-      <span class="str">"model_tier"</span>: <span class="str">"local_small"</span>,
-      <span class="str">"heartbeat_seconds"</span>: 300,
-      <span class="str">"budget"</span>: {
-        <span class="str">"max_actions_per_hour"</span>: 5,
-        <span class="str">"max_deliberation_calls_per_query"</span>: 1,
-        <span class="str">"require_approval_for"</span>: [<span class="str">"act"</span>, <span class="str">"propose"</span>]
-      }
-    }
-  },
-  <span class="str">"provenance"</span>: <span class="kw">true</span>
-}</pre>
-
-        <h3>Provider-agnostic capabilities</h3>
-        <p>
-            Capabilities are <strong>interfaces, not products</strong>. Any
-            MCP-compatible service that satisfies a capability contract (§9)
-            can be used as a provider:
-        </p>
-
-        <div class="grid-2">
-            <div class="gc">
-                <h5 style="color:var(--cyan)">Example: &memory providers</h5>
-                <p><code>&memory.graph</code> → Graphonomous, Neo4j<br/>
-                <code>&memory.vector</code> → pgvector, Weaviate, Pinecone<br/>
-                <code>&memory.episodic</code> → Graphonomous, custom</p>
-            </div>
-            <div class="gc">
-                <h5 style="color:var(--blue)">Example: &time providers</h5>
-                <p><code>&time.anomaly</code> → TickTickClock, InfluxDB<br/>
-                <code>&time.forecast</code> → TickTickClock, Prophet<br/>
-                <code>&time.pattern</code> → TickTickClock, custom</p>
-            </div>
-        </div>
-
-
-        <!-- §5 Capability Registry -->
-        <h2 id="registry">5. Capability <em>registry</em></h2>
-
-        <p>
-            Providers register themselves in a discoverable catalog.
-            The registry is the equivalent of A2A Agent Cards but for
-            cognitive capabilities rather than agents.
-        </p>
-
-<pre class="hl-amber"><span class="cm">// GET registry.ampersandboxdesign.com/v1/capabilities</span>
-{
-  <span class="str">"&memory"</span>: {
-    <span class="str">"subtypes"</span>: {
-      <span class="str">"graph"</span>:    { <span class="str">"ops"</span>: [<span class="str">"recall"</span>,<span class="str">"learn"</span>,<span class="str">"consolidate"</span>,<span class="str">"enrich"</span>] },
-      <span class="str">"vector"</span>:   { <span class="str">"ops"</span>: [<span class="str">"search"</span>,<span class="str">"upsert"</span>,<span class="str">"enrich"</span>] },
-      <span class="str">"episodic"</span>: { <span class="str">"ops"</span>: [<span class="str">"recall"</span>,<span class="str">"store"</span>,<span class="str">"replay"</span>,<span class="str">"enrich"</span>] }
-    },
-    <span class="str">"providers"</span>: [
-      { <span class="str">"id"</span>: <span class="str">"graphonomous"</span>,   <span class="str">"subtypes"</span>: [<span class="str">"graph"</span>,<span class="str">"episodic"</span>], <span class="str">"protocol"</span>: <span class="str">"mcp_v1"</span> },
-      { <span class="str">"id"</span>: <span class="str">"neo4j-memory"</span>,   <span class="str">"subtypes"</span>: [<span class="str">"graph"</span>],           <span class="str">"protocol"</span>: <span class="str">"mcp_v1"</span> },
-      { <span class="str">"id"</span>: <span class="str">"pgvector"</span>,       <span class="str">"subtypes"</span>: [<span class="str">"vector"</span>],          <span class="str">"protocol"</span>: <span class="str">"mcp_v1"</span> },
-      { <span class="str">"id"</span>: <span class="str">"weaviate"</span>,       <span class="str">"subtypes"</span>: [<span class="str">"vector"</span>],          <span class="str">"protocol"</span>: <span class="str">"mcp_v1"</span> }
-    ]
-  },
-  <span class="str">"&time"</span>:   { <span class="cm">/* ... anomaly, forecast, pattern providers ... */</span> },
-  <span class="str">"&space"</span>:  { <span class="cm">/* ... fleet, geofence, route providers ... */</span> },
-  <span class="str">"&reason"</span>: { <span class="cm">/* ... argument, vote, plan, deliberate, attend providers ... */</span> }
-}</pre>
-
-
-        <!-- §6 Composition Algebra -->
-        <h2 id="algebra">6. Composition <em>algebra</em></h2>
-
-        <p>
-            Capability composition MUST satisfy the following algebraic
-            properties. Conforming implementations MUST produce equivalent
-            results regardless of declaration order, grouping, or duplication:
-        </p>
-
-        <table>
-            <tr><th>Property</th><th>Rule</th><th>Implication</th></tr>
-            <tr><td>Commutative</td><td><code>&memory & &time ≡ &time & &memory</code></td><td>Order of declaration has no effect</td></tr>
-            <tr><td>Associative</td><td><code>(&memory & &time) & &space ≡ &memory & (&time & &space)</code></td><td>Grouping has no effect</td></tr>
-            <tr><td>Idempotent</td><td><code>&memory & &memory ≡ &memory</code></td><td>Duplicate declarations collapse</td></tr>
-            <tr><td>Identity</td><td><code>&none & &memory ≡ &memory</code></td><td>Empty set composes cleanly</td></tr>
-            <tr><td>Compatibility</td><td><code>&memory & &reason ≡ :ok</code></td><td>Checked at validation time</td></tr>
-        </table>
-
-        <div class="callout">
-            <p>
-                <strong>Why ACI properties:</strong> These are the same algebraic
-                properties that CRDTs use for conflict-free convergence. Capability
-                sets converge to the same result regardless of order, duplication,
-                or grouping — just as delta-CRDTs converge distributed state.
-                This means multiple agents or processes can independently compose
-                capabilities and arrive at the same validated set.
-            </p>
-        </div>
-
-
-        <!-- §7 Context Provenance -->
-        <h2 id="provenance">7. Context <em>provenance</em></h2>
-
-        <p>
-            MCP does not track where context came from. A2A does not track it.
-            The [&] protocol requires that every capability operation append
-            a provenance record to the pipeline context:
-        </p>
-
-<pre class="hl-rose"><span class="cm">// Provenance record (protocol-level, language-agnostic)</span>
-{
-  <span class="str">"source"</span>:       <span class="str">"&time.anomaly"</span>,
-  <span class="str">"provider"</span>:     <span class="str">"ticktickclock"</span>,
-  <span class="str">"operation"</span>:    <span class="str">"detect"</span>,
-  <span class="str">"timestamp"</span>:    <span class="str">"2026-03-14T14:23:07Z"</span>,
-  <span class="str">"input_hash"</span>:   <span class="str">"sha256:a3f8..."</span>,
-  <span class="str">"output_hash"</span>:  <span class="str">"sha256:7b2c..."</span>,
-  <span class="str">"parent_hash"</span>:  <span class="str">"sha256:0000..."</span>,
-  <span class="str">"mcp_trace_id"</span>: <span class="str">"ttc-inv-9f3a..."</span>
-}</pre>
-
-        <p>
-            Provenance records form a <strong>hash-linked chain</strong>. Each
-            record's <code>parent_hash</code> points to the previous record in
-            the pipeline. The full chain is available for audit after any
-            decision:
-        </p>
-
-<pre class="hl-cyan"><span class="cm">// "Why did the agent scale us-east?"</span>
-<span class="cm">// Provenance trace returns:</span>
-[
-  { <span class="str">"source"</span>: <span class="str">"&time.anomaly"</span>,     <span class="str">"summary"</span>: <span class="str">"3 anomalies in cpu_load"</span> },
-  { <span class="str">"source"</span>: <span class="str">"&memory.graph"</span>,     <span class="str">"summary"</span>: <span class="str">"2 similar incidents in 48h"</span> },
-  { <span class="str">"source"</span>: <span class="str">"&space.fleet"</span>,      <span class="str">"summary"</span>: <span class="str">"us-east at 87% capacity"</span> },
-  { <span class="str">"source"</span>: <span class="str">"&reason.argument"</span>,  <span class="str">"summary"</span>: <span class="str">"scale_up, confidence 0.91"</span>,
-    <span class="str">"evidence"</span>: [<span class="str">"sha256:a3f8..."</span>, <span class="str">"sha256:7b2c..."</span>, <span class="str">"sha256:e1d0..."</span>] }
-]</pre>
-
-
-        <!-- §8 Governance Constraints -->
-        <h2 id="governance">8. Governance <em>constraints</em></h2>
-
-        <p>
-            The [&] protocol defines governance as <strong>declarative
-            constraints</strong> in the canonical schema — not as
-            language-specific syntax. Any conforming implementation MUST
-            enforce these constraints at validation and/or runtime:
-        </p>
-
-<pre class="hl-amber"><span class="cm">// In ampersand.json — governance is protocol-level, not Elixir-specific</span>
-{
-  <span class="str">"governance"</span>: {
-    <span class="str">"hard"</span>: [
-      <span class="str">"Never scale beyond 3x current capacity in a single action"</span>,
-      <span class="str">"Never delete data without human approval"</span>,
-      <span class="str">"Always preserve audit trail for scaling decisions"</span>
-    ],
-    <span class="str">"soft"</span>: [
-      <span class="str">"Prefer gradual scaling over sudden spikes"</span>,
-      <span class="str">"Prefer cost-aware decisions during off-peak hours"</span>
-    ],
-    <span class="str">"escalate_when"</span>: {
-      <span class="str">"confidence_below"</span>: 0.7,
-      <span class="str">"cost_exceeds_usd"</span>: 1000,
-      <span class="str">"hard_boundary_approached"</span>: <span class="kw">true</span>
-    }
-  }
-}</pre>
-
-        <p>
-            <strong>Hard constraints</strong> are inviolable — conforming
-            implementations MUST prevent execution paths that violate them.
-            <strong>Soft constraints</strong> are preferences passed to
-            reasoning capabilities that MAY be overridden with evidence.
-            <strong>Escalation rules</strong> define when the agent MUST
-            defer to a human operator.
-        </p>
-
-
-        <!-- §9 Capability Contracts -->
-        <h2 id="contracts">9. Capability <em>contracts</em></h2>
-
-        <p>
-            Each capability provider declares a typed contract: the operations
-            it supports, the inputs it accepts, the outputs it produces, and
-            what it can follow or feed into in a pipeline. Contracts are
-            defined in the registry and validated at composition time:
-        </p>
-
-<pre class="hl-blue"><span class="cm">// Contract for &time.anomaly (protocol-level, language-agnostic)</span>
-{
-  <span class="str">"capability"</span>: <span class="str">"&time.anomaly"</span>,
-  <span class="str">"operations"</span>: {
-    <span class="str">"detect"</span>:  { <span class="str">"in"</span>: <span class="str">"stream_data"</span>,  <span class="str">"out"</span>: <span class="str">"anomaly_set"</span> },
-    <span class="str">"enrich"</span>:  { <span class="str">"in"</span>: <span class="str">"context"</span>,      <span class="str">"out"</span>: <span class="str">"enriched_context"</span> },
-    <span class="str">"learn"</span>:   { <span class="str">"in"</span>: <span class="str">"observation"</span>,  <span class="str">"out"</span>: <span class="str">"ack"</span> }
-  },
-  <span class="str">"accepts_from"</span>: [<span class="str">"&memory.*"</span>, <span class="str">"&space.*"</span>, <span class="str">"raw_data"</span>],
-  <span class="str">"feeds_into"</span>:   [<span class="str">"&memory.*"</span>, <span class="str">"&reason.*"</span>, <span class="str">"&space.*"</span>, <span class="str">"output"</span>],
-  <span class="str">"a2a_skills"</span>:   [<span class="str">"temporal-anomaly-detection"</span>]
-}</pre>
-
-        <p>
-            The <code>accepts_from</code> and <code>feeds_into</code>
-            declarations enable pipeline validation. A conforming
-            implementation MUST reject pipelines where a capability's
-            input type does not match the preceding capability's output type.
-            Wildcard <code>.*</code> matches any subtype of a primitive.
-        </p>
-
-
-        <!-- §10 Autonomous Composition -->
-        <h2 id="autonomous">10. Autonomous <em>composition</em></h2>
-
-        <p>
-            The [&] protocol is designed for both human developers and
-            <strong>autonomous agents</strong>. The JSON schema is strict
-            enough for machine validation but semantic enough for LLM
-            reasoning. An agent MAY generate, discover, validate, and
-            evolve its own compositions:
-        </p>
-
-        <h3>Goal-driven generation</h3>
-<pre class="hl-cyan"><span class="cm">// Natural language goal → valid ampersand.json</span>
-<span class="cm">// Input: "Monitor fleet, predict demand, remember routes, audit decisions"</span>
-{
-  <span class="str">"agent"</span>: <span class="str">"FleetManager"</span>,
-  <span class="str">"capabilities"</span>: {
-    <span class="str">"&memory.episodic"</span>: { <span class="str">"provider"</span>: <span class="str">"auto"</span>, <span class="str">"need"</span>: <span class="str">"route performance history"</span> },
-    <span class="str">"&time.forecast"</span>:   { <span class="str">"provider"</span>: <span class="str">"auto"</span>, <span class="str">"need"</span>: <span class="str">"demand spike prediction"</span> },
-    <span class="str">"&space.fleet"</span>:     { <span class="str">"provider"</span>: <span class="str">"auto"</span>, <span class="str">"need"</span>: <span class="str">"US regional fleet tracking"</span> },
-    <span class="str">"&reason.argument"</span>: { <span class="str">"provider"</span>: <span class="str">"auto"</span>, <span class="str">"need"</span>: <span class="str">"auditable scaling decisions"</span> }
-  },
-  <span class="str">"governance"</span>: { <span class="str">"infer_from_goal"</span>: <span class="kw">true</span> }
-}</pre>
-
-        <p>
-            <code>"provider": "auto"</code> delegates resolution to the
-            registry. <code>"infer_from_goal": true</code> directs the
-            runtime to generate governance constraints from the goal description
-            and agent context. The LLM does not need to know which providers
-            exist — it declares needs, the protocol resolves bindings.
-        </p>
-
-        <h3>Self-evolution</h3>
-        <p>
-            An agent MAY propose <strong>composition mutations</strong> based
-            on its provenance history. Mutations are subject to governance
-            constraints and MAY require human approval:
-        </p>
-
-<pre class="hl-rose"><span class="cm">// After 30 days, the agent's memory contains:</span>
-<span class="cm">// "84% of incidents correlate with latency spikes not in current streams"</span>
-{
-  <span class="str">"mutation"</span>: <span class="str">"add_capability"</span>,
-  <span class="str">"add"</span>: { <span class="str">"&time.baseline"</span>: { <span class="str">"provider"</span>: <span class="str">"auto"</span>, <span class="str">"need"</span>: <span class="str">"latency baseline drift"</span> } },
-  <span class="str">"evidence"</span>: <span class="str">"prov-chain:sha256:2a8f...→sha256:9c3d..."</span>,
-  <span class="str">"requires_approval"</span>: <span class="kw">true</span>
-}</pre>
-
-
-        <!-- ═══════════════════════════════════════════════════════════ -->
-        <!--  PART B — REFERENCE IMPLEMENTATION                        -->
-        <!-- ═══════════════════════════════════════════════════════════ -->
-
-        <h2 class="part">Part B — <em>Reference Implementation</em></h2>
-
-        <p>
-            Part B describes the Elixir reference implementation of the [&]
-            protocol. Other language bindings (TypeScript, Rust) implement
-            the same canonical schema from Part A using language-appropriate
-            validation mechanisms.
-        </p>
-
-
-        <!-- IMPROVEMENT 5: §11 Minimal Implementation -->
-        <h2 id="minimal">11. Minimal <em>implementation</em></h2>
-
-        <p>
-            The [&] protocol can be implemented in approximately 30 lines
-            of Elixir. This minimal implementation supports capability
-            declaration, composition, and validation — enough to evaluate
-            the protocol and build on it:
-        </p>
-
-<pre class="hl-cyan"><span class="kw">defmodule</span> <span class="mod">Ampersand</span> <span class="kw">do</span>
-  <span class="kw">defstruct</span> [<span class="at">:type</span>, <span class="at">:subtype</span>, <span class="at">:provider</span>, <span class="at">:config</span>]
-
-  <span class="kw">def</span> <span class="fn">cap</span>(type, subtype \\ <span class="at">:default</span>, provider \\ <span class="at">:auto</span>, config \\ %{}) <span class="kw">do</span>
-    %<span class="mod">Ampersand</span>{<span class="str">type:</span> type, <span class="str">subtype:</span> subtype, <span class="str">provider:</span> provider, <span class="str">config:</span> config}
-  <span class="kw">end</span>
-
-  <span class="kw">def</span> <span class="fn">compose</span>(caps) <span class="kw">when</span> is_list(caps) <span class="kw">do</span>
-    caps
-    |> Enum.uniq_by(<span class="op">&</span> {<span class="op">&</span>1.type, <span class="op">&</span>1.subtype})  <span class="cm"># idempotent</span>
-    |> Enum.sort_by(<span class="op">&</span> <span class="op">&</span>1.type)                <span class="cm"># commutative</span>
-    |> validate_compatibility()
-  <span class="kw">end</span>
-
-  <span class="kw">def</span> <span class="fn">validate_compatibility</span>(caps) <span class="kw">do</span>
-    types = Enum.map(caps, <span class="op">&</span> <span class="op">&</span>1.type)
-    <span class="kw">if</span> length(types) == length(Enum.uniq(types)) <span class="kw">or</span>
-       Enum.all?(types, <span class="op">&</span>(<span class="op">&</span>1 <span class="kw">in</span> [<span class="at">:memory</span>, <span class="at">:reason</span>, <span class="at">:time</span>, <span class="at">:space</span>, <span class="at">:govern</span>])),
-      <span class="kw">do</span>: {<span class="at">:ok</span>, caps},
-      <span class="kw">else</span>: {<span class="at">:error</span>, <span class="str">"unknown primitive type"</span>}
-  <span class="kw">end</span>
-
-  <span class="kw">def</span> <span class="fn">to_json</span>({<span class="at">:ok</span>, caps}) <span class="kw">do</span>
-    map = <span class="kw">for</span> c <- caps, into: %{} <span class="kw">do</span>
-      key = <span class="str">"&#{c.type}"</span> <> <span class="kw">if</span>(c.subtype != <span class="at">:default</span>, <span class="kw">do</span>: <span class="str">".#{c.subtype}"</span>, <span class="kw">else</span>: <span class="str">""</span>)
-      {key, %{<span class="str">"provider"</span> => c.provider, <span class="str">"config"</span> => c.config}}
-    <span class="kw">end</span>
-    Jason.encode!(%{<span class="str">"capabilities"</span> => map}, <span class="str">pretty:</span> <span class="kw">true</span>)
-  <span class="kw">end</span>
-<span class="kw">end</span></pre>
-
-        <h3>Try it</h3>
-<pre class="hl-purple"><span class="cm"># In iex:</span>
-<span class="kw">alias</span> <span class="mod">Ampersand</span>, <span class="kw">as:</span> <span class="mod">A</span>
-
-[
-  A.cap(<span class="at">:memory</span>, <span class="at">:graph</span>, <span class="str">"graphonomous"</span>),
-  A.cap(<span class="at">:time</span>, <span class="at">:anomaly</span>, <span class="str">"ticktickclock"</span>, %{<span class="str">streams:</span> [<span class="str">"cpu"</span>]}),
-  A.cap(<span class="at">:space</span>, <span class="at">:fleet</span>),
-  A.cap(<span class="at">:reason</span>, <span class="at">:argument</span>, <span class="str">"deliberatic"</span>)
-]
-|> A.compose()
-|> A.to_json()
-
-<span class="cm"># Output: valid ampersand.json with all four capabilities</span></pre>
-
-        <div class="callout">
-            <p>
-                <strong>That's the entire core.</strong> 30 lines, no dependencies
-                beyond Jason. Capability declaration, ACI-compliant composition,
-                validation, and JSON serialization. Everything else — provenance,
-                governance, MCP binding, OTP supervision — layers on top of this
-                foundation. If you can run this in <code>iex</code>, you can
-                evaluate the [&] protocol.
-            </p>
-        </div>
-
-
-        <!-- §12 Extended Syntax (Elixir DSL) -->
-        <h2 id="syntax">12. Extended syntax <em>(Elixir DSL)</em></h2>
-
-        <p>
-            The full Elixir reference implementation extends the minimal core
-            with macros for compile-time validation, pipeline composition,
-            and OTP supervision tree generation:
-        </p>
-
-        <h3>Capability declaration via macros</h3>
-<pre class="hl-cyan"><span class="kw">defmodule</span> <span class="mod">InfraOperator</span> <span class="kw">do</span>
-  <span class="kw">use</span> <span class="mod">Ampersand.Agent</span>
-
-  <span class="fn">capabilities</span> [
-    <span class="op">&</span><span class="fn">memory</span>.<span class="fn">graph</span>(<span class="at">:graphonomous</span>, <span class="str">instance:</span> <span class="str">"infra-ops"</span>),
-    <span class="op">&</span><span class="fn">time</span>.<span class="fn">anomaly</span>(<span class="at">:ticktickclock</span>, <span class="str">streams:</span> [<span class="at">:cpu</span>, <span class="at">:mem</span>, <span class="at">:net</span>]),
-    <span class="op">&</span><span class="fn">space</span>.<span class="fn">fleet</span>(<span class="at">:geofleetic</span>, <span class="str">regions:</span> [<span class="at">:us_east</span>, <span class="at">:eu_west</span>]),
-    <span class="op">&</span><span class="fn">reason</span>.<span class="fn">argument</span>(<span class="at">:deliberatic</span>, <span class="str">governance:</span> <span class="at">:constitutional</span>)
-  ]
-<span class="kw">end</span></pre>
-
-        <h3>Pipeline composition</h3>
-<pre class="hl-blue"><span class="fn">handle</span> <span class="at">:health_check</span>, %{<span class="str">servers:</span> servers} <span class="kw">do</span>
-  servers
-  |> <span class="op">&</span><span class="fn">time</span>.<span class="fn">anomaly</span>.<span class="fn">detect</span>(<span class="str">window:</span> <span class="fn">minutes</span>(<span class="str">5</span>))
-  |> <span class="op">&</span><span class="fn">memory</span>.<span class="fn">graph</span>.<span class="fn">enrich</span>(<span class="str">recall:</span> <span class="str">"similar-incidents"</span>)
-  |> <span class="op">&</span><span class="fn">space</span>.<span class="fn">fleet</span>.<span class="fn">enrich</span>(<span class="str">query:</span> <span class="at">:affected_regions</span>)
-  |> <span class="op">&</span><span class="fn">reason</span>.<span class="fn">argument</span>.<span class="fn">deliberate</span>(<span class="str">governance:</span> <span class="at">:constitutional</span>)
-  |> <span class="op">&</span><span class="fn">memory</span>.<span class="fn">graph</span>.<span class="fn">learn</span>(<span class="str">tag:</span> <span class="str">"incident-response"</span>)
-<span class="kw">end</span></pre>
-
-
-        <!-- §13 From Spec to Running Agent -->
-        <h2 id="deploy">13. From spec to <em>running agent</em></h2>
-
-<pre class="hl-cyan">ampersand.json (canonical schema)
-        ↓
-  [Schema Validation]         <span class="cm">← grammar + contract check</span>
-        ↓
-  [Provider Resolution]       <span class="cm">← registry lookup for "auto" providers</span>
-        ↓
-  [Governance Compilation]    <span class="cm">← constraint rules generated</span>
-        ↓
-  [Provenance Injection]      <span class="cm">← hash-linked context tracking</span>
-        ↓
-  [MCP Binding Generation]    <span class="cm">← tool endpoints resolved</span>
-        ↓
-  [A2A Agent Card]            <span class="cm">← capability discovery published</span>
-        ↓
-  [Language Binding]          <span class="cm">← Elixir OTP / TS runtime / Rust binary</span>
-        ↓
-  [Deployment]                <span class="cm">← any conforming host</span>
-        ↓
-  [Signed Telemetry]          <span class="cm">← metrics with provenance</span></pre>
-
-        <h3>CLI (Elixir reference)</h3>
-<pre class="hl-purple"><span class="cm"># Validate an ampersand.json against the schema</span>
-$ mix ampersand.check
-
-<span class="cm"># Resolve "auto" providers from the registry</span>
-$ mix ampersand.resolve
-
-<span class="cm"># Generate A2A Agent Card</span>
-$ mix ampersand.card
-
-<span class="cm"># Deploy to a conforming host</span>
-$ mix ampersand.deploy --target webhost.systems --runtime cloudflare</pre>
-
-
-        <!-- ═══════════════════════════════════════════════════════════ -->
-        <!--  PART C — [&] ECOSYSTEM                                   -->
-        <!-- ═══════════════════════════════════════════════════════════ -->
-
-        <h2 class="part">Part C — <em>[&] Default Ecosystem</em></h2>
-
-        <p>
-            Part C describes the default capability providers maintained by
-            Ampersand Box Design. These are <strong>not required by the
-            protocol</strong> — any MCP-compatible service that satisfies a
-            capability contract from Part A can be used as a provider. The
-            [&] ecosystem is one implementation of the protocol, not the
-            only one.
-        </p>
-
-
-        <!-- §14 Default Capability Providers -->
-        <h2 id="ecosystem">14. Default capability <em>providers</em></h2>
-
-        <table>
-            <tr><th>Capability</th><th>Default Provider</th><th>Subtypes</th><th>Hex Package</th></tr>
-            <tr><td><code>&memory</code></td><td>Graphonomous</td><td><code>.graph</code> · <code>.episodic</code></td><td><code>ampersand_memory</code></td></tr>
-            <tr><td><code>&reason</code></td><td>Deliberatic</td><td><code>.argument</code> · <code>.vote</code></td><td><code>ampersand_reason</code></td></tr>
-            <tr><td><code>&time</code></td><td>TickTickClock</td><td><code>.anomaly</code> · <code>.forecast</code> · <code>.pattern</code></td><td><code>ampersand_time</code></td></tr>
-            <tr><td><code>&space</code></td><td>GeoFleetic</td><td><code>.fleet</code> · <code>.geofence</code> · <code>.route</code></td><td><code>ampersand_space</code></td></tr>
-        </table>
-
-        <h3>Supporting ecosystem</h3>
-        <table>
-            <tr><th>Product</th><th>Role</th><th>Protocol Interaction</th></tr>
-            <tr><td>Delegatic</td><td>Orchestration</td><td>Uses <code>&delegate</code> extension primitive for multi-agent coordination</td></tr>
-            <tr><td>AgenTroMatic</td><td>Workflow engine</td><td>Executes pipelines composed via [&] protocol</td></tr>
-            <tr><td>FleetPrompt</td><td>Skill marketplace</td><td>Publishes packaged <code>ampersand.json</code> as installable skills</td></tr>
-            <tr><td>SpecPrompt</td><td>Spec generator</td><td>Generates <code>ampersand.json</code> from natural language goals</td></tr>
-            <tr><td>Agentelic</td><td>Visual editor</td><td>Drag-and-drop UI that outputs valid <code>ampersand.json</code></td></tr>
-            <tr><td>WebHost.Systems</td><td>Deployment host</td><td>Conforming host for deployed agents — metering, secrets, telemetry</td></tr>
-            <tr><td>OpenSentience</td><td>Research</td><td>Explores cognitive architecture foundations of the primitive model</td></tr>
-        </table>
-
-        <div class="callout">
-            <p>
-                <strong>The protocol is the product.</strong>
-                <code>&memory & &time & &space & &reason</code> is a capability
-                declaration that any conforming runtime can validate, bind, deploy,
-                and meter. The [&] ecosystem provides default providers. The protocol
-                enables anyone to provide alternatives. Capabilities are interfaces,
-                not products. The ampersand is a composition operator, not a brand.
-            </p>
-        </div>
-
-        <footer>
-            <div>
-                <a href="/" style="color:var(--cyan);font-weight:700;">[&]</a>
-                <span style="margin:0 0.5rem">·</span>
-                <span>&copy; <span id="yr"></span> Ampersand Box Design</span>
-                <span style="margin:0 0.5rem">·</span>
-                <span>Apache 2.0</span>
-            </div>
-            <div>
-                <a href="https://github.com/c-u-l8er/AmpersandBoxDesign">GitHub</a>
-                <span style="margin:0 0.5rem">·</span>
-                <a href="https://ampersandboxdesign.com">Home</a>
-            </div>
-        </footer>
+<script type="module" src="/amp-nav.js"></script>
+<amp-nav property="ampersand" style="--amp-nav-bg:rgba(13,12,10,.82);--amp-nav-fg:#f3ecdf;--amp-nav-muted:#988e7c;--amp-nav-accent:#e69138;--amp-nav-border:rgba(243,236,223,.1);--amp-nav-hover:rgba(243,236,223,.05);--amp-nav-cta-bg:#e69138;--amp-nav-cta-fg:#0d0c0a;"></amp-nav>
+
+<!-- HEADER -->
+<header class="doc" id="top">
+  <div class="glyph">&amp;</div>
+  <div class="wrap">
+    <p class="kicker">[&amp;] Protocol · specification</p>
+    <h1 class="title">Composing governed agent intelligence.<span class="br">Six primitives, two operators, one kernel — compiled to MCP and A2A.</span></h1>
+    <p class="lead">
+      The <strong>[&amp;] Protocol</strong> is an open, language-agnostic specification for declaring and composing
+      what an agent can <em>do</em>. Six cognitive primitives — <span class="amber">&amp;memory</span>, <span class="amber">&amp;reason</span>,
+      <span class="amber">&amp;time</span>, <span class="amber">&amp;space</span>, <span class="amber">&amp;body</span>, <span class="amber">&amp;govern</span> —
+      combine through two operators (<code>&amp;</code> and <code>|&gt;</code>) whose meaning is fixed by the
+      <strong>box-and-box governance kernel</strong>: eight modal rungs, one bridge, 97 property-tested laws.
+      [&amp;] does not replace MCP or A2A — it <strong>compiles into them</strong>, with a certificate for every verdict.
+    </p>
+
+    <div class="rfc-meta">
+      <dl>
+        <dt>Status</dt><dd><span class="badge">Draft</span> — open for implementation</dd>
+        <dt>Version</dt><dd>0.1.0 · composition CC2 (coalitional)</dd>
+        <dt>Date</dt><dd>2026-05-30</dd>
+        <dt>Authors</dt><dd>Ampersand Box Design</dd>
+        <dt>License</dt><dd>Apache 2.0</dd>
+        <dt>Schema</dt><dd><a href="/protocol/schema/v0.1.0/">protocol/schema/v0.1.0/</a> · JSON Schema 2020-12</dd>
+        <dt>Kernel</dt><dd>box-and-box ≥ 0.8 — <a href="/laws.html">the 97 laws →</a></dd>
+        <dt>Reference</dt><dd>JavaScript + Elixir host · <a href="https://opensentience.org/box-and-box/">read the source →</a></dd>
+        <dt>Bindings</dt><dd>MCP (tool surface) · A2A (agent cards)</dd>
+        <dt>Stack</dt><dd>[&amp;] structural · PULSE temporal · PRISM diagnostic</dd>
+      </dl>
     </div>
 
-    <script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+    <!-- TOC -->
+    <nav class="toc" aria-label="Table of contents">
+      <h4>Contents</h4>
+      <div class="cols">
+        <div>
+          <p class="part">Part A · Specification</p>
+          <ol>
+            <li><a href="#s1"><span class="n">§1</span> Stack position</a></li>
+            <li><a href="#s2"><span class="n">§2</span> The six primitives</a></li>
+            <li><a href="#s3"><span class="n">§3</span> Formal grammar</a></li>
+            <li><a href="#s4"><span class="n">§4</span> Canonical schema</a></li>
+            <li><a href="#s5"><span class="n">§5</span> Composition (CC2)</a></li>
+            <li><a href="#s6"><span class="n">§6</span> The governance kernel</a></li>
+            <li><a href="#s7"><span class="n">§7</span> The bridge</a></li>
+            <li><a href="#s8"><span class="n">§8</span> Certificates &amp; provenance</a></li>
+            <li><a href="#s9"><span class="n">§9</span> Capability contracts</a></li>
+            <li><a href="#s10"><span class="n">§10</span> Registry &amp; autonomy</a></li>
+          </ol>
+        </div>
+        <div>
+          <p class="part">Part B · Reference</p>
+          <ol>
+            <li><a href="#s11"><span class="n">§11</span> Minimal kernel</a></li>
+            <li><a href="#s12"><span class="n">§12</span> DSL → arithmetic</a></li>
+            <li><a href="#s13"><span class="n">§13</span> spec → agent &amp; CLI</a></li>
+          </ol>
+          <p class="part" style="margin-top:22px">Part C · Ecosystem</p>
+          <ol>
+            <li><a href="#s14"><span class="n">§14</span> The three-protocol stack</a></li>
+            <li><a href="#s15"><span class="n">§15</span> Default providers</a></li>
+          </ol>
+        </div>
+        <div>
+          <p class="part">Conformance</p>
+          <ol>
+            <li><a href="#conform"><span class="n">§16</span> What MUST hold</a></li>
+          </ol>
+          <p class="part" style="margin-top:22px">Normative refs</p>
+          <ol>
+            <li><a href="/laws.html"><span class="n">→</span> box-and-box laws</a></li>
+            <li><a href="https://opensentience.org"><span class="n">→</span> the modality ladder</a></li>
+            <li><a href="https://modelcontextprotocol.io"><span class="n">→</span> MCP</a></li>
+          </ol>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+<!-- PART A -->
+<div class="partbar">
+  <p class="pt">Part A</p>
+  <h2>Protocol specification</h2>
+  <p>The normative core: where [&amp;] sits, what it composes, how the grammar reads, and the algebra that gives composition its meaning. Keywords <code>MUST</code>, <code>SHOULD</code>, <code>MAY</code> per RFC 2119.</p>
+</div>
+
+<!-- §1 STACK POSITION -->
+<section class="s" id="s1">
+  <p class="seclabel">§1 · Stack position</p>
+  <h2 class="h">[&amp;] is the structural layer of a three-protocol stack.</h2>
+  <p class="body">An agent runtime has three orthogonal concerns: <b>what it can do</b> (structure), <b>when and how often it loops</b> (time), and <b>whether the loop is getting better</b> (measurement). The [&amp;] ecosystem answers each with a dedicated protocol, and [&amp;] itself owns the first.</p>
+
+  <table class="tbl">
+    <thead><tr><th>Layer</th><th>Protocol</th><th>Declares</th><th>Artifact</th></tr></thead>
+    <tbody>
+      <tr><td class="k amber">Structural</td><td><b>[&amp;]</b> — capability composition</td><td>which primitives an agent holds &amp; how they combine</td><td class="k">*.ampersand.json</td></tr>
+      <tr><td class="k teal">Temporal</td><td><b>PULSE</b> (OS-010)</td><td>loop phases, cadence, nesting, cross-loop signals</td><td class="k">*.pulse.json</td></tr>
+      <tr><td class="k purple">Diagnostic</td><td><b>PRISM</b> (OS-009)</td><td>continual-learning measurement of a loop over time</td><td class="k">BYOR adapter</td></tr>
+    </tbody>
+  </table>
+
+  <p class="body">Below all three sits <b>box-and-box</b> — the governance kernel (§6). It is ring 0: every composition and every pipeline step passes through its bridge before it is allowed to run. Above [&amp;] sit the wire protocols it targets — <b>MCP</b> for the tool surface and <b>A2A</b> for agent-to-agent cards. [&amp;] is the layer that says <em class="tk">these capabilities, composed this way, governed by this floor</em>, and emits the MCP/A2A configuration that realizes it.</p>
+
+  <div class="note">
+    <span class="lbl">Position</span>
+    [&amp;] does not compete with MCP or A2A. Those are transports; [&amp;] is the <b>composition and governance semantics</b> that compiles down onto them. A valid <code>*.ampersand.json</code> deterministically generates an MCP server manifest and an A2A agent card.
+  </div>
+</section>
+
+<!-- §2 SIX PRIMITIVES -->
+<section class="s" id="s2">
+  <p class="seclabel">§2 · The six cognitive primitives</p>
+  <h2 class="h">Six capabilities an agent can hold. Each is an interface; providers implement it.</h2>
+  <p class="body">A capability is a typed interface — a contract over an agent faculty. A provider is a concrete implementation of that interface (a memory engine, a deliberation service, a clock). Declaring <code>&amp;memory</code> says nothing about <em>how</em> memory works; it says the agent has a memory faculty that obeys the capability contract (§9). This separation is what makes agents portable across providers and models.</p>
+
+  <div class="prims">
+    <div class="pcard">
+      <div class="sym">&amp;memory</div><div class="os">daemon · knowledge graph</div>
+      <h4>Memory</h4>
+      <p>Retrieve, route, store, learn, consolidate. Continual learning without retraining or catastrophic forgetting.</p>
+      <span class="prov">provider · Graphonomous</span>
+    </div>
+    <div class="pcard">
+      <div class="sym">&amp;reason</div><div class="os">daemon · deliberation</div>
+      <h4>Reason</h4>
+      <p>Argue, vote, credit, seal. The faculty the kernel routes to on a known-unknown (κ &gt; 0 / low confidence).</p>
+      <span class="prov">provider · Deliberatic</span>
+    </div>
+    <div class="pcard">
+      <div class="sym">&amp;time</div><div class="os">service · watchdog</div>
+      <h4>Time</h4>
+      <p>Temporal intelligence — anomaly detection, forecasting, horizon obligations. Feeds the temporal rung's invariants.</p>
+      <span class="prov">provider · TickTickClock</span>
+    </div>
+    <div class="pcard">
+      <div class="sym">&amp;space</div><div class="os">service · OS-012 SCOPE</div>
+      <h4>Space</h4>
+      <p>Spatial intelligence — location, geo-routing, delta-CRDT state sync across edge. The agent's sense of <em>where</em>.</p>
+      <span class="prov">provider · GeoFleetic</span>
+    </div>
+    <div class="pcard">
+      <div class="sym">&amp;body</div><div class="os">service · OS-011 Embodiment</div>
+      <h4>Body</h4>
+      <p>The sensorimotor primitive: perception, typed action, affordance enumeration, state encoding for replay. Emits a <em class="tk">SurpriseSignal</em> on forward-model error.</p>
+      <span class="prov">spec · Embodiment Protocol</span>
+    </div>
+    <div class="pcard">
+      <div class="sym">&amp;govern</div><div class="os">ring 0 · box-and-box</div>
+      <h4>Govern</h4>
+      <p>The kernel itself, as a primitive. Eight modal rungs and the bridge that composes them. No syscall runs without its verdict.</p>
+      <span class="prov">provider · box-and-box</span>
+    </div>
+  </div>
+
+  <div class="note">
+    <span class="lbl">Why six, not four</span>
+    Earlier drafts named four primitives (<code>&amp;memory · &amp;reason · &amp;time · &amp;space</code>). Draft 0.1.0 adds <b>&amp;body</b> (OS-011, the sensorimotor loop) and elevates <b>&amp;govern</b> to a first-class primitive — because governance is not a wrapper bolted on after the fact, it is a faculty the agent <em>holds</em>. All six are normative.
+  </div>
+</section>
+
+<!-- §3 GRAMMAR -->
+<section class="s" id="s3">
+  <p class="seclabel">§3 · Formal grammar</p>
+  <h2 class="h">An agent declaration is a composition expression over typed primitives.</h2>
+  <p class="body">The surface syntax is a small algebra. <code>&amp;</code> combines capabilities into a coalition (associative, commutative, idempotent); <code>|&gt;</code> pipelines them into a governed sequence. The grammar is the same whether written by hand, generated by a planner (§10), or emitted by the DSL (§12).</p>
+
+  <div class="codewrap">
+    <div class="chead"><span class="dot" style="background:#e0604f"></span><span class="dot" style="background:#e69138"></span><span class="dot" style="background:#5cc196"></span><span class="fn">grammar.bnf</span><span class="lang">EBNF</span></div>
+<pre><code id="bnf"><span class="c">; an agent is a composition of capabilities under a governance floor</span>
+Agent          ::= "agent" Identifier "{" CapabilityExpr Governance? "}"
+
+CapabilityExpr ::= Capability
+                 | CapabilityExpr "&amp;"  CapabilityExpr   <span class="c">; combine   (coalition join)</span>
+                 | CapabilityExpr "|&gt;" CapabilityExpr   <span class="c">; pipeline  (governed sequence)</span>
+                 | "(" CapabilityExpr ")"
+
+Capability     ::= PrimitiveType Provider? Constraints?
+PrimitiveType  ::= "&amp;memory" | "&amp;reason" | "&amp;time"
+                 | "&amp;space"  | "&amp;body"   | "&amp;govern"
+
+Provider       ::= "@" Identifier                     <span class="c">; e.g. @graphonomous</span>
+Constraints    ::= "{" (Key ":" Value)* "}"
+
+Governance     ::= "govern" "{" Rule* "}"
+Rule           ::= "hard"   Predicate                 <span class="c">; deontic veto  → 0̲</span>
+                 | "soft"   Predicate Weight          <span class="c">; axiological preference</span>
+                 | "floor"  Predicate                 <span class="c">; reflexive · un-weakenable</span>
+                 | "escalate_when" Predicate Target   <span class="c">; route to human / deliberate</span>
+</code></pre>
+  </div>
+
+  <p class="body">Operator semantics are <em>not</em> free-form — they are fixed by the kernel's arithmetic (§5–§7). <code>&amp;</code> is the join of a semilattice; <code>|&gt;</code> is a monoid whose composition is gated by feasibility. This is what distinguishes [&amp;] from an ad-hoc DSL: the operators have <b>laws</b>, and the laws are property-tested.</p>
+</section>
+
+<!-- §4 SCHEMA -->
+<section class="s" id="s4">
+  <p class="seclabel">§4 · Canonical schema</p>
+  <h2 class="h">The wire format is JSON: three layers — identity, capabilities, governance.</h2>
+  <p class="body">The grammar of §3 serializes to <code>*.ampersand.json</code>, validated against JSON Schema 2020-12. The reference CLI <code>validate</code>s, <code>compose</code>s, and <code>generate</code>s MCP / A2A output from this single file.</p>
+
+  <div class="codewrap">
+    <div class="chead"><span class="dot" style="background:#e0604f"></span><span class="dot" style="background:#e69138"></span><span class="dot" style="background:#5cc196"></span><span class="fn">infra-operator.ampersand.json</span><span class="lang">JSON</span></div>
+<pre><code id="json"><span class="attr">{</span>
+  <span class="s">"ampersand"</span>: <span class="s">"0.1.0"</span>,
+  <span class="s">"agent"</span>: <span class="s">"infra-operator"</span>,
+
+  <span class="c">// layer 1 — identity &amp; the primitives this agent holds</span>
+  <span class="s">"capabilities"</span>: <span class="attr">{</span>
+    <span class="s">"&amp;memory"</span>: <span class="attr">{</span> <span class="s">"provider"</span>: <span class="s">"graphonomous"</span>, <span class="s">"scope"</span>: <span class="s">"infra-ops"</span> <span class="attr">}</span>,
+    <span class="s">"&amp;reason"</span>: <span class="attr">{</span> <span class="s">"provider"</span>: <span class="s">"deliberatic"</span> <span class="attr">}</span>,
+    <span class="s">"&amp;time"</span>:   <span class="attr">{</span> <span class="s">"provider"</span>: <span class="s">"ticktickclock"</span> <span class="attr">}</span>,
+    <span class="s">"&amp;govern"</span>: <span class="attr">{</span> <span class="s">"provider"</span>: <span class="s">"box-and-box"</span> <span class="attr">}</span>
+  <span class="attr">}</span>,
+
+  <span class="c">// layer 2 — composition: how the primitives flow</span>
+  <span class="s">"compose"</span>: <span class="s">"&amp;memory |&gt; &amp;reason |&gt; &amp;govern"</span>,
+
+  <span class="c">// layer 3 — governance: the rules the kernel enforces</span>
+  <span class="s">"govern"</span>: <span class="attr">{</span>
+    <span class="s">"hard"</span>:  [<span class="s">"action.kind != 'delete_prod_db'"</span>],
+    <span class="s">"floor"</span>: [<span class="s">"never exfiltrate secrets"</span>],          <span class="c">// entrenched (R4)</span>
+    <span class="s">"soft"</span>:  [<span class="attr">{</span> <span class="s">"prefer"</span>: <span class="s">"reversible_actions"</span>, <span class="s">"weight"</span>: <span class="num">3</span> <span class="attr">}</span>],
+    <span class="s">"escalate_when"</span>: [<span class="attr">{</span> <span class="s">"if"</span>: <span class="s">"confidence &lt; 0.8"</span>, <span class="s">"to"</span>: <span class="s">"deliberate"</span> <span class="attr">}</span>]
+  <span class="attr">}</span>
+<span class="attr">}</span>
+</code></pre>
+  </div>
+
+  <ul class="list">
+    <li><b>Identity &amp; capabilities</b> — which primitives the agent holds and which provider backs each. Omitted providers fall back to ecosystem defaults (§15).</li>
+    <li><b>Composition</b> — the <code>&amp;</code>/<code>|&gt;</code> expression of §3, as a string, parsed against the grammar.</li>
+    <li><b>Governance</b> — <code>hard</code> / <code>soft</code> / <code>floor</code> / <code>escalate_when</code>, each compiling to a rung of the kernel (§12 expansion table).</li>
+  </ul>
+</section>
+
+<!-- §5 COMPOSITION CC2 -->
+<section class="s" id="s5">
+  <p class="seclabel">§5 · Composition algebra — CC2 (coalitional)</p>
+  <h2 class="h">The operators are algebra, not syntax. Their laws are tested, not asserted.</h2>
+  <p class="body">CC2 replaces the lawless CC1 composition with two algebraic structures, both re-expressed over the box-and-box arithmetics. The full normative text lives in <a href="/docs/CC2-capability-composition.md" style="color:var(--amber-2);border-bottom:1px solid var(--line2)">CC2 — Capability Composition v2</a>; this section is the summary.</p>
+
+  <h3 class="h">§5.1 &nbsp;<code>&amp;</code> — the combine operator (join-semilattice)</h3>
+  <p class="body">Combining two capabilities forms a <b>coalition</b>. The merge is a join over a semilattice: <b>associative</b>, <b>commutative</b>, and <b>idempotent</b> (ACI), with identity <code>&amp;none</code>. Each contribution carries a <b>holder tag</b> (which agent owns the capability), so merges obey CRDT convergence laws — two runtimes that combine the same set in any order reach the same coalition.</p>
+
+  <h3 class="h">§5.2 &nbsp;<code>|&gt;</code> — the pipeline operator (governed monoid)</h3>
+  <p class="body">In CC1 the pipe was unlawed. In CC2 it is a <b>governed sequential monoid</b>: each stage is composed via the alethic <code>chain</code> with a feasibility gate. If any stage is infeasible or forbidden, the composition annihilates to <span class="zero">0̲</span> (§7). Quantities compose through a semiring: <b>confidence as product</b>, <b>cost as sum</b>, <b>latency as max</b>.</p>
+
+  <table class="tbl">
+    <thead><tr><th>Quantity</th><th>Composes via</th><th>Identity</th></tr></thead>
+    <tbody>
+      <tr><td class="k">confidence</td><td><b>product</b> — each stage can only erode trust</td><td class="k">1.0</td></tr>
+      <tr><td class="k">cost</td><td><b>sum</b> — a pipeline costs the sum of its stages</td><td class="k">0</td></tr>
+      <tr><td class="k">latency</td><td><b>max</b> — bounded by the slowest stage on the critical path</td><td class="k">0</td></tr>
+      <tr><td class="k">feasibility</td><td><b>gate</b> — one infeasible stage ⇒ <span class="zero">0̲</span></td><td class="k">⊤</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="h">§5.3 &nbsp;The coalition object</h3>
+  <p class="body">A coalition is admitted only when five modal checks pass — each maps to a kernel rung. This is how a multi-agent obligation is governed: <em class="tk">ought implies can</em>, enforced.</p>
+
+  <table class="tbl">
+    <thead><tr><th>Field</th><th>Admissibility check</th><th>Rung</th></tr></thead>
+    <tbody>
+      <tr><td class="k">ensure</td><td>the coalition can <b>jointly bring about</b> the goal</td><td class="k">strategic</td></tr>
+      <tr><td class="k">common_knowledge</td><td>members <b>know that they know</b> — shared epistemic state</td><td class="k">epistemic</td></tr>
+      <tr><td class="k">owns</td><td>some member holds <b>total ownership</b> of every required permission</td><td class="k">deontic</td></tr>
+      <tr><td class="k">shield</td><td>a safety invariant <b>holds across the whole trajectory</b></td><td class="k">temporal</td></tr>
+      <tr><td class="k">floor</td><td>no clause weakens the <b>entrenched core</b> (R4)</td><td class="k">reflexive</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <span class="lbl">CC1 ⊂ CC2</span>
+    A single agent is the <b>singleton-coalition special case</b>: a coalition of one whose holder tag is itself. Every CC1 spec is a valid CC2 spec; the inverse does not hold.
+  </div>
+</section>
+
+<!-- §6 KERNEL -->
+<section class="s" id="s6">
+  <p class="seclabel">§6 · The governance kernel — box-and-box</p>
+  <h2 class="h">&amp;govern decomposes into eight modal rungs and one composing bridge.</h2>
+  <p class="body">The <code>&amp;govern</code> primitive is not a black box — it is <b>box-and-box</b>, a kernel that decomposes governance the way an OS decomposes the machine. Each rung is a small algebra (monoid, lattice, or semiring) owning exactly one question; the bridge (§7) composes them in a precedence that can never be reordered at runtime. Pure arithmetic means a vetoed option <em>annihilates</em> — no downstream score resurrects it.</p>
+
+  <div class="subs">
+    <div class="srow"><div class="rn">1</div><div class="os">MMU · feasibility</div><div class="nm">alethic <small>can it happen?</small></div><div class="ds">Gates on capability &amp; confidence. Below the floor, the action is <span class="zero">0̲</span> — like a write to protected memory.</div></div>
+    <div class="srow"><div class="rn">2</div><div class="os">permissions</div><div class="nm">deontic <small>is it allowed?</small></div><div class="ds">Obligations, prohibitions, contrary-to-duty repair. A forbidden action is vetoed; an obligation in force overrides higher utility.</div></div>
+    <div class="srow"><div class="rn">3</div><div class="os">scheduler · priority</div><div class="nm">axiological <small>which is best?</small></div><div class="ds">Ranks only what survived the floor. A semiring, so preferences compose without resurrecting a vetoed option.</div></div>
+    <div class="srow"><div class="rn">4</div><div class="os">watchdog</div><div class="nm">temporal <small>safe over time?</small></div><div class="ds">Safety invariants as a runtime shield over the trajectory; liveness as a horizon obligation, with escalation when missed.</div></div>
+    <div class="srow"><div class="rn">5</div><div class="os">scheduler · quota</div><div class="nm">resource <small>can we afford it?</small></div><div class="ds">A closed, double-entry economy of tokens &amp; compute — it even prices the kernel's own deliberation. Laws C1–C8, CB1–CB3.</div></div>
+    <div class="srow"><div class="rn">6</div><div class="os">knowledge base</div><div class="nm">epistemic <small>do we know enough?</small></div><div class="ds">Possible-worlds knowledge vs. belief. A known-unknown routes to <em class="tk">deliberate</em> instead of a confident guess.</div></div>
+    <div class="srow"><div class="rn">7</div><div class="os">IPC · coordination</div><div class="nm">strategic <small>who can ensure it?</small></div><div class="ds">Coalition ability. An obligation no agent can discharge alone escalates — <em class="tk">ought implies can</em>, enforced.</div></div>
+    <div class="srow"><div class="rn">8</div><div class="os">ring 0 · protected</div><div class="nm">reflexive <small>may the rules change?</small></div><div class="ds">The policy can amend itself — tighten, add duties — but the entrenched core is un-writable. Self-modification can never relax the floor.</div></div>
+    <div class="subs-foot">eight rungs &nbsp;·&nbsp; one bridge &nbsp;·&nbsp; <a href="/laws.html"><b>97 property-tested laws</b></a> &nbsp;·&nbsp; 2000 trials each</div>
+  </div>
+
+  <div class="note">
+    <span class="lbl">Orthogonal to PULSE phases</span>
+    The eight rungs are <b>not</b> the five PULSE phase kinds (<code>retrieve · route · act · learn · consolidate</code>). The rungs govern <em>what is allowed to happen at</em> a single decision point — one verdict; PULSE describes <em>when</em> the loop runs. The kernel governs a phase; it is not itself a set of phases.
+  </div>
+</section>
+
+<!-- §7 BRIDGE -->
+<section class="s" id="s7">
+  <p class="seclabel">§7 · The bridge</p>
+  <h2 class="h">Can, then ought, then best — composed in a fixed precedence.</h2>
+  <p class="body">Almost every agent stack computes desirability first and treats safety as a filter afterward. That asks <em class="tk">best?</em> before <em class="tk">permitted?</em> — so a useful-but-forbidden action can win. The bridge runs the order a kernel must:</p>
+
+  <p class="bridge-eq"><span class="g1">feasible</span><span class="sep">▸</span><span class="g2">permitted</span><span class="sep">▸</span><span class="g3">best</span></p>
+
+  <p class="body">The floor does not <em>penalize</em> an unsafe option — it <b>annihilates</b> it. A vetoed action becomes <span class="zero">0̲</span>, and <span class="zero">0̲</span> times anything is <span class="zero">0̲</span>:</p>
+
+  <p class="bridge-eq mono">u&nbsp;⊗&nbsp;<span class="zero">0̲</span>&nbsp;=&nbsp;<span class="zero">0̲</span></p>
+
+  <p class="body">No utility, however large, outranks a forbidden action. This single law — annihilation under the semiring's ⊗ — is what makes governance composable and un-relaxable. It holds across the strategic, epistemic, deontic, temporal, and reflexive rungs alike, and it is the property the conformance suite checks most heavily.</p>
+</section>
+
+<!-- §8 CERTIFICATES -->
+<section class="s" id="s8">
+  <p class="seclabel">§8 · Certificates &amp; provenance</p>
+  <h2 class="h">Every verdict ships a certificate, not a boolean.</h2>
+  <p class="body">A confidence score is not a reason. When the kernel decides, it returns an auditable <b>certificate</b>: the surviving decision, its status, the obligations in force, what was vetoed and why, any escalation target, and what the economy charged. Certificates are hash-linkable into a provenance chain so an agent's trajectory can be replayed and audited after the fact.</p>
+
+  <table class="tbl">
+    <thead><tr><th>Field</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td class="k">decision</td><td>the surviving action (or <code>null</code> if none)</td></tr>
+      <tr><td class="k">status</td><td><code>:allow</code> · <code>:forbidden</code> · <code>:infeasible</code> · <code>:escalate</code></td></tr>
+      <tr><td class="k">score</td><td>axiological rank — <span class="zero">0̲</span> if annihilated</td></tr>
+      <tr><td class="k">obligated</td><td>whether a duty forced this choice over a higher-utility one</td></tr>
+      <tr><td class="k">vetoed</td><td>the actions removed by the floor, with their reasons</td></tr>
+      <tr><td class="k">escalation</td><td>route target — <code>:human</code> · <code>:deliberate</code> · <code>:budget</code></td></tr>
+      <tr><td class="k">charged</td><td>tokens/compute debited from the resource economy</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- §9 CONTRACTS -->
+<section class="s" id="s9">
+  <p class="seclabel">§9 · Capability contracts</p>
+  <h2 class="h">A capability is a contract; a provider satisfies it.</h2>
+  <p class="body">Each primitive has a <b>capability contract</b> — a schema in <code>contracts/v0.1.0/</code> defining the operations a provider <code>MUST</code> implement, their input/output types, and the invariants they preserve. A provider declaring it satisfies <code>&amp;memory</code> commits to the memory contract's operations (retrieve, store, consolidate, …) and their laws. This is what lets an agent swap Graphonomous for another memory engine without rewriting its composition.</p>
+  <ul class="list">
+    <li><b>Interface, not implementation</b> — the contract names operations and types; the provider chooses the engine (SQLite, ETS, in-memory, cloud).</li>
+    <li><b>Invariant-bearing</b> — contracts state laws (e.g. <code>retrieve</code> after <code>store</code> returns at least what was stored), checkable in CI.</li>
+    <li><b>Versioned</b> — <code>contracts/v0.1.0/</code>; a provider declares the contract version it satisfies.</li>
+  </ul>
+</section>
+
+<!-- §10 REGISTRY -->
+<section class="s" id="s10">
+  <p class="seclabel">§10 · Registry &amp; autonomous composition</p>
+  <h2 class="h">Providers are discoverable; compositions can be generated.</h2>
+  <p class="body">A <b>registry</b> (<code>registry.schema.json</code>) lists known providers, the capability contracts each satisfies, and their metadata. Given a goal and a registry, a planner can <b>autonomously compose</b> a valid <code>*.ampersand.json</code> — select providers, wire the <code>&amp;</code>/<code>|&gt;</code> expression, attach governance — and the kernel guarantees the result is feasible, permitted, and ensurable before it ever runs. Autonomous composition is safe precisely <em>because</em> the operators have laws: a generated pipeline that annihilates is caught at compose time, not in production.</p>
+</section>
+
+<!-- PART B -->
+<div class="partbar">
+  <p class="pt">Part B</p>
+  <h2>Reference implementation</h2>
+  <p>A minimal governed kernel, the DSL that expands to the arithmetic, and the spec → agent pipeline. Elixir / OTP is the reference; any language that passes the 97 laws is conformant.</p>
+</div>
+
+<!-- §11 MINIMAL -->
+<section class="s" id="s11">
+  <p class="seclabel">§11 · Minimal kernel</p>
+  <h2 class="h">The bridge is one pure function returning a certificate.</h2>
+  <p class="body">The whole governing core is a <code>judge/3</code> that walks the bridge — alethic ▸ deontic ▸ resource ▸ epistemic ▸ axiological — and returns a certificate. A vetoed or infeasible action is annihilated to <span class="zero">0̲</span>; no utility resurrects it.</p>
+
+  <div class="codewrap">
+    <div class="chead"><span class="dot" style="background:#e0604f"></span><span class="dot" style="background:#e69138"></span><span class="dot" style="background:#5cc196"></span><span class="fn">box_and_box_kernel.ex</span><span class="lang">Elixir / OTP</span></div>
+<pre><code id="ex1"><span class="kw">defmodule</span> <span class="mod">BoxAndBox.Cert</span> <span class="kw">do</span>
+  <span class="attr">@moduledoc</span> <span class="s">"An auditable verdict. Every syscall returns one — never a bare yes/no."</span>
+  <span class="kw">defstruct</span> decision: <span class="kw">nil</span>, status: <span class="at">:deny</span>, score: <span class="num">0</span>, obligated: <span class="kw">false</span>,
+            why: <span class="s">""</span>, vetoed: [], escalation: <span class="kw">nil</span>, charged: <span class="num">0</span>
+<span class="kw">end</span>
+
+<span class="kw">defmodule</span> <span class="mod">BoxAndBox.Kernel</span> <span class="kw">do</span>
+  <span class="c"># Ring 0. Governs every syscall through the bridge and returns a certificate.</span>
+  <span class="kw">alias</span> <span class="mod">BoxAndBox.Cert</span>
+  <span class="attr">@beta_min</span> <span class="num">0.80</span>         <span class="c"># alethic floor: confidence below which nothing is feasible</span>
+  <span class="attr">@deliberation_cost</span> <span class="num">2</span>   <span class="c"># what it costs the kernel to stop and think</span>
+
+  <span class="c"># the bridge, as a pure function: alethic ▸ deontic ▸ resource ▸ epistemic ▸ axiological</span>
+  <span class="kw">def</span> judge(a, forbidden, budget) <span class="kw">do</span>
+    <span class="kw">cond</span> <span class="kw">do</span>
+      <span class="kw">not</span> a.feasible -&gt;
+        <span class="attr">%Cert{</span>decision: a.name, status: <span class="at">:infeasible</span>, why: <span class="s">"alethic floor — not feasible (0̲)"</span><span class="attr">}</span>
+      a.forbidden <span class="kw">or</span> <span class="mod">MapSet</span>.member?(forbidden, a.name) -&gt;
+        <span class="attr">%Cert{</span>decision: a.name, status: <span class="at">:forbidden</span>, why: <span class="s">"deontic veto — forbidden (0̲)"</span><span class="attr">}</span>
+      a.cost &gt; budget -&gt;
+        <span class="attr">%Cert{</span>decision: a.name, status: <span class="at">:escalate</span>, why: <span class="s">"over budget"</span>, escalation: <span class="at">:budget</span><span class="attr">}</span>
+      <span class="kw">not</span> a.confident -&gt;
+        <span class="attr">%Cert{</span>decision: a.name, status: <span class="at">:escalate</span>, why: <span class="s">"known-unknown — deliberate first"</span>,
+              escalation: <span class="at">:deliberate</span>, charged: <span class="attr">@deliberation_cost</span><span class="attr">}</span>
+      <span class="kw">true</span> -&gt;
+        <span class="attr">%Cert{</span>decision: a.name, status: <span class="at">:allow</span>, score: a.utility,
+              obligated: a.obligated, why: <span class="s">"feasible ▸ permitted ▸ scored"</span>, charged: a.cost<span class="attr">}</span>
+    <span class="kw">end</span>
+  <span class="kw">end</span>
+<span class="kw">end</span>
+</code></pre>
+  </div>
+
+  <p class="body">The full reference adds the <code>GenServer</code> syscall surface (<code>choose</code> / <code>amend</code> / <code>oblige</code>), the reflexive guard that refuses to weaken an entrenched <code>floor</code>, and the strategic <code>oblige</code> that escalates a goal no coalition can ensure. See the homepage AIOS for the runnable 190-line host.</p>
+
+  <div class="note teal">
+    <span class="lbl">Honest note</span>
+    This is the reference <b>host</b>. The conformance-tested verdict engine is <b>box-and-box</b> (the npm / edge package, 97 property-tested laws). This Elixir kernel speaks the same arithmetic, so a verdict here and a verdict there are identical — but the laws, not the host, are the specification.
+  </div>
+</section>
+
+<!-- §12 DSL -->
+<section class="s" id="s12">
+  <p class="seclabel">§12 · DSL → arithmetic</p>
+  <h2 class="h">The friendly DSL is a macro layer that expands to rung operations.</h2>
+  <p class="body">Authors write <code>requires</code> / <code>cost</code> / <code>hard</code> / <code>prefer</code> / <code>ensure</code> / <code>&amp;</code> / <code>|&gt;</code>; the macro layer expands each to an arithmetic operation on a specific rung. No new semantics are introduced at the DSL level — every keyword has a normative expansion.</p>
+
+  <table class="tbl">
+    <thead><tr><th>DSL keyword</th><th>Expands to</th><th>Rung</th></tr></thead>
+    <tbody>
+      <tr><td class="k">requires</td><td>alethic feasibility predicate — gate or <span class="zero">0̲</span></td><td class="k">alethic</td></tr>
+      <tr><td class="k">cost</td><td>debit on the resource economy</td><td class="k">resource</td></tr>
+      <tr><td class="k">hard</td><td>deontic prohibition — veto to <span class="zero">0̲</span></td><td class="k">deontic</td></tr>
+      <tr><td class="k">prefer</td><td>weighted term in the axiological semiring</td><td class="k">axiological</td></tr>
+      <tr><td class="k">escalate</td><td>route to <code>:human</code> / <code>:deliberate</code></td><td class="k">epistemic</td></tr>
+      <tr><td class="k">belief</td><td>possible-worlds belief vs. knowledge</td><td class="k">epistemic</td></tr>
+      <tr><td class="k">ensure</td><td>coalition joint-ability check</td><td class="k">strategic</td></tr>
+      <tr><td class="k">common_knowledge</td><td>shared epistemic-state requirement</td><td class="k">epistemic</td></tr>
+      <tr><td class="k">owns</td><td>total-ownership permission check</td><td class="k">deontic</td></tr>
+      <tr><td class="k">shield</td><td>trajectory-wide safety invariant</td><td class="k">temporal</td></tr>
+      <tr><td class="k">floor</td><td>entrenched, un-weakenable clause (R4)</td><td class="k">reflexive</td></tr>
+      <tr><td class="k">&amp;</td><td>join-semilattice merge (ACI + holder tags)</td><td class="k">composition</td></tr>
+      <tr><td class="k">|&gt;</td><td>governed monoid pipeline (feasibility-gated)</td><td class="k">composition</td></tr>
+    </tbody>
+  </table>
+
+  <div class="codewrap">
+    <div class="chead"><span class="dot" style="background:#e0604f"></span><span class="dot" style="background:#e69138"></span><span class="dot" style="background:#5cc196"></span><span class="fn">coalition.ex</span><span class="lang">Elixir / DSL</span></div>
+<pre><code id="ex2"><span class="kw">defmodule</span> <span class="mod">ShipIt</span> <span class="kw">do</span>
+  <span class="kw">use</span> <span class="mod">BoxAndBox.Agent</span>
+
+  <span class="c"># a single agent is the singleton-coalition special case (CC1 ⊂ CC2)</span>
+  <span class="kw">defaction</span> <span class="at">:answer_cited</span>, obligated: <span class="kw">true</span>, utility: <span class="num">7</span>, cost: <span class="num">1</span>
+  <span class="kw">defaction</span> <span class="at">:answer_raw</span>, utility: <span class="num">9</span>, cost: <span class="num">1</span>          <span class="c"># higher utility, no cite duty</span>
+  <span class="kw">defaction</span> <span class="at">:exfiltrate_pii</span>, forbidden: <span class="kw">true</span>, utility: <span class="num">15</span>  <span class="c"># most "useful", forbidden → 0̲</span>
+
+  <span class="c"># a coalition: ensure a goal no single agent can discharge alone</span>
+  coalition <span class="at">:ship_it</span> <span class="kw">do</span>
+    ensure [<span class="at">:draft</span>, <span class="at">:approve</span>]                  <span class="c"># strategic: jointly bring about</span>
+    common_knowledge [<span class="mod">Researcher</span>, <span class="mod">Reviewer</span>]  <span class="c"># epistemic: know that they know</span>
+    floor <span class="s">"never exfiltrate secrets"</span>            <span class="c"># reflexive: entrenched, un-weakenable</span>
+  <span class="kw">end</span>
+<span class="kw">end</span>
+</code></pre>
+  </div>
+</section>
+
+<!-- §13 PIPELINE -->
+<section class="s" id="s13">
+  <p class="seclabel">§13 · spec → agent &amp; CLI</p>
+  <h2 class="h">One file in, a governed MCP/A2A agent out.</h2>
+  <p class="body">The reference CLI takes a <code>*.ampersand.json</code> and runs the full pipeline: validate against the schema, compose the capability expression (checking the laws), and generate the MCP server manifest and A2A agent card.</p>
+
+  <div class="codewrap">
+    <div class="chead"><span class="dot" style="background:#e0604f"></span><span class="dot" style="background:#e69138"></span><span class="dot" style="background:#5cc196"></span><span class="fn">~/.box-and-box</span><span class="lang">shell</span></div>
+<pre><code id="sh"><span class="c"># install the kernel — the [&amp;] capability-composition + governance MCP server</span>
+npm i -g box-and-box
+
+<span class="c"># validate a declaration against the schema</span>
+ampersand validate infra-operator.ampersand.json
+
+<span class="c"># compose — parse the &amp;/|&gt; expression, check the laws, report the coalition</span>
+ampersand compose infra-operator.ampersand.json
+
+<span class="c"># generate the wire artifacts</span>
+ampersand generate mcp infra-operator.ampersand.json   <span class="c"># → MCP server manifest</span>
+ampersand generate a2a infra-operator.ampersand.json   <span class="c"># → A2A agent card</span>
+</code></pre>
+  </div>
+</section>
+
+<!-- PART C -->
+<div class="partbar">
+  <p class="pt">Part C</p>
+  <h2>Ecosystem</h2>
+  <p>Where [&amp;] sits in the three-protocol stack, and the default providers that back each primitive.</p>
+</div>
+
+<!-- §14 STACK -->
+<section class="s" id="s14">
+  <p class="seclabel">§14 · The three-protocol stack</p>
+  <h2 class="h">Structure, time, and measurement — composed.</h2>
+  <p class="body">[&amp;] composes capabilities; PULSE declares how their loops circulate over time; PRISM measures whether the loops improve. Each portfolio product declares all three: an <code>*.ampersand.json</code>, a PULSE Loop Manifest in its spec, and a PRISM BYOR adapter when benchmarked.</p>
+
+  <div class="triad">
+    <div class="tcard"><div class="sym">[&amp;]</div><h4>Ampersand</h4><div class="axis">structural</div><p>Six primitives, two operators, the governance kernel. Compiles to MCP &amp; A2A.</p><span class="file">*.ampersand.json</span></div>
+    <div class="tcard"><div class="sym">∿</div><h4>PULSE · OS-010</h4><div class="axis">temporal</div><p>Phases, cadence, nesting, and cross-loop signals through CloudEvents envelopes.</p><span class="file">*.pulse.json</span></div>
+    <div class="tcard"><div class="sym">△</div><h4>PRISM · OS-009</h4><div class="axis">diagnostic</div><p>Continual-learning measurement. Reads any system's PULSE manifest to discover its phases.</p><span class="file">BYOR adapter</span></div>
+  </div>
+
+  <p class="body">The five canonical PULSE phase kinds — <code>retrieve · route · act · learn · consolidate</code> — match the memory loop exactly. Six cross-loop tokens flow between loops, including <code>SurpriseSignal</code>, added for OS-011 (Embodiment) forward-model-prediction-error — the <code>&amp;body</code> primitive's signal into the stack.</p>
+</section>
+
+<!-- §15 PROVIDERS -->
+<section class="s" id="s15">
+  <p class="seclabel">§15 · Default providers</p>
+  <h2 class="h">Each primitive has a reference provider in the [&amp;] portfolio.</h2>
+
+  <div class="eco">
+    <a class="ecocard" href="https://graphonomous.com"><div class="amp">&amp;memory · daemon</div><h4>Graphonomous</h4><p>Continual-learning knowledge graphs — retrieve, route, act, learn, consolidate.</p></a>
+    <a class="ecocard" href="https://deliberatic.com"><div class="amp">&amp;reason · daemon</div><h4>Deliberatic</h4><p>The deliberation loop routed to on a known-unknown. Merkle-chained proofs.</p></a>
+    <a class="ecocard" href="https://ticktickclock.com"><div class="amp">&amp;time · service</div><h4>TickTickClock</h4><p>Temporal intelligence — anomaly detection &amp; prediction. Feeds the watchdog.</p></a>
+    <a class="ecocard" href="https://geofleetic.com"><div class="amp">&amp;space · OS-012</div><h4>GeoFleetic</h4><p>Spatial intelligence — geo-routing &amp; delta-CRDT state sync across edge.</p></a>
+    <a class="ecocard" href="https://opensentience.org"><div class="amp">&amp;body · OS-011</div><h4>Embodiment</h4><p>The sensorimotor loop — perception, typed action, affordance enumeration.</p></a>
+    <a class="ecocard" href="https://ampersandboxdesign.com"><div class="amp">&amp;govern · ring 0</div><h4>box-and-box</h4><p>The kernel itself — 8 rungs, 1 bridge, 97 laws. The other five run on it.</p></a>
+  </div>
+</section>
+
+<!-- CONFORMANCE -->
+<section class="s" id="conform">
+  <p class="seclabel">§16 · Conformance</p>
+  <h2 class="h">What a conformant implementation MUST hold.</h2>
+  <p class="body">A host is conformant in <em>any</em> language if it satisfies these. Two conformant hosts must agree on whether a composition is feasible, permitted, and ensurable — the way two calculators agree on 2 + 2.</p>
+  <ul class="list">
+    <li><b>Pass the 97 laws</b> — the box-and-box property suite (2000 trials each) <code>MUST</code> pass. See <a href="/laws.html" style="color:var(--amber-2)">/laws.html</a>.</li>
+    <li><b>Hard rejection</b> — a failed <code>hard</code>, <code>floor</code>, or <code>ensure</code> <code>MUST</code> annihilate the option to <span class="zero">0̲</span>; no utility may resurrect it.</li>
+    <li><b>Interpositional govern</b> — <code>&amp;govern</code> <code>MUST</code> sit between proposal and action; no syscall bypasses the bridge.</li>
+    <li><b>Preserve entrenchment (R4)</b> — a reflexive amendment <code>MUST NOT</code> weaken an entrenched <code>floor</code> clause.</li>
+    <li><b>Verdict agreement</b> — given the same inputs, a conformant host <code>MUST</code> produce the same certificate as any other, cross-language.</li>
+  </ul>
+
+  <div class="note">
+    <span class="lbl">Run it</span>
+    <code>node test/laws.mjs</code> — watch all 97 pass. A protocol change is not complete until <code>SPEC.md</code>, the JSON Schemas, the examples, the reference impl, the CLI, and the docs all move together. See <code>CONTRIBUTING.md</code>.
+  </div>
+</section>
+
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <a class="brand" href="#top">[<b>&amp;</b>] PROTOCOL</a>
+        <p class="blurb">An open specification for composing governed agent intelligence — six primitives, two operators, one kernel, compiled to MCP and A2A.</p>
+        <p class="ops">Draft v0.1.0 · CC2 · all systems operational ✓</p>
+      </div>
+      <div>
+        <h5>Specification</h5>
+        <a href="#s2">The six primitives</a>
+        <a href="#s5">Composition (CC2)</a>
+        <a href="#s6">The kernel</a>
+        <a href="#s7">The bridge</a>
+        <a href="#conform">Conformance</a>
+      </div>
+      <div>
+        <h5>Implementation</h5>
+        <a href="/laws.html">The 97 laws</a>
+        <a href="https://opensentience.org/box-and-box/">Reference impl (JS + Elixir)</a>
+        <a href="/docs/CC2-capability-composition.md">CC2 RFC</a>
+        <a href="https://ampersandboxdesign.com">box-and-box kernel</a>
+      </div>
+      <div>
+        <h5>Stack</h5>
+        <a href="https://opensentience.org">The modality ladder</a>
+        <a href="https://graphonomous.com">Graphonomous (&amp;memory)</a>
+        <a href="https://modelcontextprotocol.io">MCP</a>
+        <a href="#s14">PULSE · PRISM</a>
+      </div>
+    </div>
+    <div class="copy">
+      <span>© Ampersand Box Design · Apache 2.0 · the [&amp;] Protocol</span>
+      <span>Models generate answers. Kernels govern them.</span>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>

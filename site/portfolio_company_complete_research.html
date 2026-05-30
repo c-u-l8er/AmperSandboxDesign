@@ -400,13 +400,13 @@
                 </p>
                 <div class="page-meta">
                     <span class="meta-item"
-                        >Last Updated: <strong>April 2026</strong></span
+                        >Last Updated: <strong>May 2026</strong></span
                     >
                     <span class="meta-item"
-                        >Sources Cited: <strong>62</strong></span
+                        >Sources Cited: <strong>71</strong></span
                     >
                     <span class="meta-item"
-                        >Analyst Firms: <strong>25+</strong></span
+                        >Analyst Firms: <strong>28+</strong></span
                     >
                 </div>
             </div>
@@ -420,14 +420,21 @@
                 <p class="prose">
                     The [&] portfolio is unified by a three-protocol stack.
                     The [&] Protocol defines how cognitive capabilities —
-                    memory, reasoning, time, space, and governance — compose
-                    into verified, deployable agent systems. PULSE (OS-010) is
-                    the temporal algebra that lets every loop declare its
-                    phases, cadence, nesting, and cross-loop signals. PRISM
-                    (OS-009) is the diagnostic benchmark engine that measures
-                    how well systems learn, consolidate, remember, and transfer
-                    knowledge over time. Together they form a complete
-                    compose-circulate-measure architecture.
+                    memory, reasoning, time, space, embodiment, and governance
+                    (six primitives as of the OS-011 Embodiment Protocol that
+                    landed in Q2 2026) — compose into verified, deployable agent
+                    systems. PULSE (OS-010) is the temporal algebra that lets
+                    every loop declare its phases, cadence, nesting, and
+                    cross-loop signals. PRISM (OS-009) is the diagnostic
+                    benchmark engine that measures how well systems learn,
+                    consolidate, remember, and transfer knowledge over time.
+                    Together they form a complete compose-circulate-measure
+                    architecture, and every verdict in the stack now resolves
+                    through <strong>Invariant Arithmetic</strong> — a 15-law
+                    algebra over a 43-element periodic table of invariants,
+                    with an Elixir reference and a TypeScript port that is now
+                    the live verifier substrate inside the Workbench proof
+                    harness (detailed below).
                 </p>
                 <p class="prose">
                     Every domain in the portfolio maps to a layer in the
@@ -462,6 +469,100 @@
                 </div>
             </div>
 
+            <!-- INVARIANT ARITHMETIC / THE FORMAL MOAT -->
+            <div class="section">
+                <p class="section-label">The Formal Moat</p>
+                <h2>Invariant Arithmetic &amp; the Periodic Table</h2>
+                <p class="prose">
+                    The hardest thing to copy in this portfolio is not the code —
+                    it is the <strong>theory of measurement</strong> underneath
+                    it. Most agent frameworks decide "is this safe / correct /
+                    allowed?" with ad-hoc heuristics. The [&] stack answers the
+                    same questions <em>algebraically</em>. Two artifacts make this
+                    real: the <strong>Periodic Table of Agent Invariants</strong>
+                    (the census of <em>what</em> can be measured) and
+                    <strong>Invariant Arithmetic</strong> (the algebra of
+                    <em>how those measurements compose</em>). This is the moat
+                    that converts "another agent framework" into a verification
+                    standard.
+                </p>
+
+                <div class="highlight" style="border-left-color: var(--cyan)">
+                    <h3>1 · The Periodic Table of Agent Invariants (v0.5)</h3>
+                    <p>
+                        A working census of <strong>43 named invariants across
+                        10 families</strong> — topological (κ cyclicity, β
+                        persistence), spatial (σ resolution), temporal (π phase,
+                        ι interval, ψ rhythm), governance (authority-path,
+                        deny-by-default, append-only audit), deliberation,
+                        evaluation, attention, security, embodiment, and
+                        federation. Each "element" is a measurement that tells an
+                        agent <em>what kind of position it is in, and what
+                        authority that position grants</em>. Six already carry
+                        machine-checked proofs (κ, π, ⊘, ⊆, ⊥, ⊕); the κ
+                        cyclicity invariant alone is verified on
+                        <strong>1,926,351 finite systems with zero
+                        counterexamples</strong>. v0.5 added seven economic
+                        invariants — the claim that a healthy agent ecosystem
+                        needs more than one currency to express what it produces.
+                    </p>
+                </div>
+
+                <div class="highlight" style="border-left-color: var(--blue)">
+                    <h3>2 · Invariant Arithmetic v0.3 — the algebra</h3>
+                    <p>
+                        If the periodic table is the elements, Invariant
+                        Arithmetic is the chemistry: <strong>4 invariant families,
+                        6 operations</strong> (<code>combine</code>,
+                        <code>chain</code>, <code>promote</code>,
+                        <code>reconcile</code>, <code>deliberate</code>,
+                        <code>consume</code>) and <strong>15 algebraic laws</strong>
+                        — associativity, identity, idempotence, monotonicity of
+                        promotion, and the composition rules that govern how κ, σ,
+                        β, and authority values combine without contradiction. All
+                        15 laws are verified by property-based tests at
+                        <strong>1,000 trials each</strong> (all pass in ~134 ms).
+                        It ships as an Elixir reference implementation and a
+                        framework-free ~400-LOC TypeScript port.
+                    </p>
+                </div>
+
+                <div class="highlight" style="border-left-color: var(--green)">
+                    <h3>3 · Why it matters now — it is no longer just theory</h3>
+                    <p>
+                        As of the v0.3 Workbench release (May 2026), Invariant
+                        Arithmetic is the <strong>live verifier substrate</strong>
+                        of the Proof Harness. Every one of Workbench's six proof
+                        gates — content-hash, trace-completeness,
+                        no-hidden-capability, authority, redaction, and
+                        replay-fidelity — computes its verdict through a single
+                        <code>InvariantArithmetic.consume(value, requirements)</code>
+                        call and projects onto an invariant family, carrying
+                        <code>law</code> + <code>invariant_family</code>
+                        annotations. The <em>same JSON file</em> is the
+                        user-valuable SkillBundle <em>and</em> the PRISM-facing
+                        EvidenceBundle, now self-describing as IA-derived. In
+                        other words: the formal theory is wired directly into the
+                        thing that decides whether a skill is allowed to ship.
+                    </p>
+                </div>
+
+                <p class="prose">
+                    This is also where the portfolio intersects the
+                    <strong>bleeding edge of 2026 research</strong>. The fastest-moving
+                    academic thread in agent memory this year is
+                    <em>neuro-symbolic continual learning</em> — systems like NeSyC
+                    (a neuro-symbolic continual learner using a hypothetico-deductive
+                    monitoring loop), trainable graph memory, and meta-learned memory
+                    designs (ALMA). The consensus those papers are converging toward —
+                    that durable agent cognition needs a <em>symbolic, verifiable
+                    layer</em> over the neural substrate — is exactly the bet the
+                    Periodic Table + Invariant Arithmetic made first, and the only one
+                    of them shipping as a property-tested algebra wired into a live
+                    verifier rather than a research prototype.
+                </p>
+            </div>
+
             <!-- PORTFOLIO SUMMARY -->
             <div class="section">
                 <p class="section-label">Portfolio Summary</p>
@@ -469,10 +570,16 @@
                 <p class="prose">
                     The [&] portfolio consists of 14 AI infrastructure domains
                     positioned across the continual learning, agent
-                    orchestration, and edge AI markets, supported by 6 active
-                    codebases totaling 76K+ lines of code. Valuations reflect
-                    domain-only estimates (no product premium) based on
-                    comparable sales, market positioning, and keyword analysis.
+                    orchestration, and edge AI markets. As of May 2026 it is
+                    supported by <strong>7 shipping-tier products</strong> (plus
+                    4 progressing, 2 frontend apps, and 4 spec-only) and a
+                    verified <strong>1,463-test</strong> ecosystem suite running
+                    at 100% pass. Valuations reflect domain-only estimates (no
+                    product premium) based on comparable sales, market
+                    positioning, and keyword analysis — though the shipping
+                    code, ten live Fly.io deployments, and a closed dark-factory
+                    loop now materially de-risk several of these assets relative
+                    to the April snapshot.
                 </p>
 
                 <div class="table-wrap">
@@ -510,7 +617,7 @@
                             </tr>
                             <tr>
                                 <td><strong>bendscript.com</strong></td>
-                                <td>Knowledge Graph IDE</td>
+                                <td>Graph-First Document Protocol</td>
                                 <td class="val">$85K</td>
                                 <td>$225K</td>
                                 <td><span class="grade grade-a">A+</span></td>
@@ -599,28 +706,37 @@
                         5 domains represent 62% of portfolio value. The agent
                         ecosystem cluster (FleetPrompt + Delegatic + SpecPrompt
                         + Agentelic + AgenTroMatic + OpenSentience) carries
-                        $460K individual value — with synergy multiplier
+                        $505K individual value — with synergy multiplier
                         estimated at 1.8&ndash;2.5x as an integrated platform
-                        ($830K&ndash;$1.15M). The three-protocol stack adds a
+                        ($910K&ndash;$1.26M). The three-protocol stack adds a
                         structural premium: these domains are not isolated
                         brands but named layers in a published protocol
-                        architecture with 6 active codebases and 76K+ LOC.
+                        architecture — 7 shipping products, ten live Fly.io
+                        deployments, a 1,463-test ecosystem suite, and a
+                        dark-factory loop that closes end-to-end in a single
+                        process (cross-machine replay pending).
                     </p>
                 </div>
 
                 <div class="highlight" style="border-left-color: var(--amber)">
                     <h3>Valuation Context: Shipped Code, Pre-Revenue</h3>
                     <p>
-                        An honest note: the portfolio has shipped code
-                        (Graphonomous v0.4 on npm with 5 MCP machines and 48
-                        test files, BendScript beta, WebHost.Systems beta,
-                        PRISM benchmark engine on Fly.io, PULSE manifest
-                        server on npm) but is pre-revenue with no paying
-                        users. Domain valuations assume the domains are
-                        positioned in high-growth AI markets with published
-                        specifications, working code, empirical benchmarks,
-                        and a three-protocol thesis. The table below shows
-                        value scenarios depending on execution milestones.
+                        An honest note: the portfolio has shipped substantial
+                        code (Graphonomous v0.4.3 on npm with 5 loop-phase
+                        machines and 573 tests, the [&] reference CLI + npm/Python
+                        SDKs, PRISM benchmark engine on Fly.io, PULSE v0.1.1
+                        manifest server on npm, the Delegatic OS-006
+                        authorization kernel, two OS-011 body reference impls,
+                        the BendScript Protocol parser, and the new Workbench
+                        proof harness) but is still pre-revenue with no paying
+                        users. Ten apps are now live on Fly.io and the
+                        dark-factory loop closes end-to-end in a single process
+                        (cross-machine replay against the live MCPs is the next
+                        step), which moves the portfolio from "specs +
+                        prototypes" toward "running infrastructure." Domain valuations still assume
+                        the domains are positioned in high-growth AI markets;
+                        the table below shows value scenarios by execution
+                        milestone.
                     </p>
                 </div>
 
@@ -648,14 +764,16 @@
                             <tr>
                                 <td>Domains + specs + protocol + code</td>
                                 <td>
-                                    Published three-protocol stack, 6 codebases, npm packages
+                                    Published three-protocol stack, 7 shipping
+                                    products, ten live deployments, npm packages
                                 </td>
                                 <td class="val">$600K&ndash;$1.2M</td>
                                 <td>
                                     Narrative + execution premium. Protocol
-                                    thesis, 62+ cited sources, working MCP
-                                    servers, empirical benchmarks. Comparable
-                                    to late pre-seed stage
+                                    thesis, 71+ cited sources, working MCP
+                                    servers, empirical benchmarks, a closed
+                                    dark-factory loop. Comparable to late
+                                    pre-seed stage
                                 </td>
                             </tr>
                             <tr>
@@ -716,7 +834,7 @@
                     The [&] portfolio targets the intersection of three
                     converging mega-trends: edge AI, knowledge graphs, and
                     agentic AI. Each market has been validated by multiple
-                    tier-1 analyst firms. Market data updated April 2026.
+                    tier-1 analyst firms. Market data updated May 2026.
                 </p>
 
                 <div class="market-grid">
@@ -751,12 +869,16 @@
                         <div class="big-num">$10.9B &rarr; <span>$53B</span></div>
                         <div class="detail">
                             2026 &rarr; 2030 at 46.3% CAGR (MarketsandMarkets).
-                            Grand View Research projects $183B by 2033 at 49.6%
-                            CAGR. Multi-agent systems growing at 48.5% CAGR.
+                            The narrower "agentic AI" segment is pegged at
+                            $9.9B (2026) &rarr; $57.4B by 2031 (42.1% CAGR), with
+                            firm-by-firm CAGRs spanning 40.5&ndash;49.6%. Decisive
+                            gap: <strong>79% of enterprises have adopted agents,
+                            but only 11% run them in production</strong> &mdash;
+                            operationalization, not novelty, is the 2026 bottleneck.
                         </div>
                         <div class="source">
-                            MarketsandMarkets (2025), Grand View Research
-                            (2026), BCC Research (Jan 2026)
+                            MarketsandMarkets (2025), Mordor Intelligence (2026),
+                            Grand View Research (2026), market.us (2026)
                         </div>
                     </div>
                     <div class="market-card">
@@ -780,9 +902,13 @@
                     Graphonomous is the <code>&amp;memory</code> capability
                     provider in the [&] Protocol — a continual learning engine
                     that makes small language models (1B&ndash;8B) get smarter over
-                    time in their deployment context. Now at v0.4 with 5
-                    loop-phase machines (29 actions), 162 source files, 48 test
-                    files, and 45K LOC. It sits at the intersection of edge AI,
+                    time in their deployment context. Now at <strong>v0.4.3</strong>
+                    with 5 loop-phase machines, <strong>573 passing tests</strong>,
+                    six graph algorithms, a 92.6% LongMemEval QA proxy, and the
+                    new <code>&amp;memory.episodic.store/replay</code> surface
+                    that provides the memory half of the OS-011 Embodiment
+                    Protocol. It is deployed as <code>graphonomous-mcp</code> on
+                    Fly.io. Graphonomous sits at the intersection of edge AI,
                     knowledge graphs, and continual learning — a space that IBM
                     identified as one of three "major hurdles" for the field.
                     No direct competitor occupies this intersection.
@@ -826,7 +952,7 @@
                                 <td>
                                     IBM, Clarifai, Harvard all independently
                                     identified CL + edge as THE 2026 trend.
-                                    $56M+ in direct competitor funding validates market
+                                    $48M+ in direct agent-memory funding validates market
                                 </td>
                             </tr>
                             <tr>
@@ -842,15 +968,16 @@
                                 <td class="val">8/10</td>
                                 <td>
                                     No competitor does "MCP-first CL engine for
-                                    edge." Closest: Mem0 ($24M Series A, 52.8K stars)
+                                    edge." Closest: Mem0 ($24M Series A, ~50K stars)
                                 </td>
                             </tr>
                             <tr>
                                 <td>Feasibility</td>
                                 <td class="val">9/10</td>
                                 <td>
-                                    Shipped: 5 machines, 29 actions, 48 test files,
-                                    45K LOC, npm published, 92.6% LongMemEval QA proxy
+                                    Shipped: 5 machines, 573 passing tests, six
+                                    graph algorithms, npm published, live on
+                                    Fly.io, 92.6% LongMemEval QA proxy
                                 </td>
                             </tr>
                             <tr>
@@ -877,10 +1004,12 @@
                 </div>
 
                 <p class="prose">
-                    The closest funded comparable is Mem0, which raised a $24M
-                    Series A (Basis Set Ventures, YC, Peak XV) for "memory
-                    layer for AI apps" reaching 52.8K GitHub stars and 186M
-                    API calls/quarter. Graphonomous is architecturally more
+                    The closest funded comparable is Mem0, which raised $24M
+                    total ($20M Series A led by Basis Set Ventures + $3.9M seed;
+                    YC, Peak XV, GitHub Fund) for the "memory layer for AI apps,"
+                    reaching ~50K GitHub stars, 14M+ downloads, API calls growing
+                    35M&rarr;186M/quarter through 2025, and the exclusive
+                    memory-provider slot in AWS's new Agent SDK. Graphonomous is architecturally more
                     ambitious: graph-native (not flat vectors), edge-native
                     (SQLite, not cloud-only), MCP-first (5 loop-phase
                     machines), and includes consolidation cycles inspired by
@@ -965,14 +1094,15 @@
                 </div>
 
                 <div class="highlight" style="border-left-color: var(--cyan)">
-                    <h3>MCP Ecosystem: 10,000+ Active Servers</h3>
+                    <h3>MCP Ecosystem: 15,000+ Public Servers</h3>
                     <p>
-                        MCP is now under Linux Foundation governance with
-                        adoption by Anthropic, OpenAI, Google, Microsoft, and
-                        Amazon. The ecosystem has grown to 10,000+ active
-                        public MCP servers. Smithery indexes 100K+ tools.
-                        The [&] Protocol generates MCP configurations — it
-                        sits above MCP in the stack.
+                        MCP is now governed under the Linux Foundation's Agentic
+                        AI Foundation, with adoption by Anthropic, OpenAI,
+                        Google, Microsoft, and Amazon. By mid-2026 trackers
+                        index 15,000+ public MCP servers (PulseMCP); the official
+                        registry lists ~9,600 and Smithery ~7,300. The [&]
+                        Protocol generates MCP configurations — it sits above
+                        MCP in the stack.
                     </p>
                 </div>
 
@@ -990,30 +1120,42 @@
             <!-- AGENT CIVILIZATIONS -->
             <div class="section">
                 <p class="section-label">Agent Infrastructure Convergence</p>
-                <h2>The "Substrate for Agent Civilizations" Thesis</h2>
+                <h2>Why the Market Is Converging on the [&] Thesis</h2>
                 <p class="prose">
-                    The [&] tagline — "the substrate for agent civilizations" —
-                    is no longer speculative. The agent infrastructure space
-                    has entered a phase transition: Meta acquired Moltbook (a
-                    social network for AI agents), the AI agents market is
-                    projected to reach $53&ndash;183B by 2030&ndash;2033, and
-                    agent memory alone has attracted $56M+ in direct competitor
-                    funding. The industry is building toward exactly what the
-                    [&] Protocol describes: composed agent systems that need
-                    memory, reasoning, time, space, and governance as
-                    infrastructure primitives.
+                    The [&] thesis is that composed agent systems need memory,
+                    reasoning, time, space, embodiment, and governance as
+                    <em>infrastructure primitives</em> — not features bolted on
+                    per app. Three verifiable signals show the market moving
+                    toward that shape: the AI-agents market is projected at
+                    $53&ndash;183B by 2030&ndash;2033, agent memory alone has
+                    attracted <strong>$48M+</strong> in direct competitor
+                    funding, and MCP has crossed 15,000+ public servers under
+                    the Linux Foundation's Agentic AI Foundation. We are not
+                    waiting for that convergence to be ratified by an
+                    acquisition or a logo — the bet is that
+                    <strong>external validation is a lagging indicator</strong>:
+                    if the substrate is built, verified, and shipped first, the
+                    market arrives at it. The addition of <code>&amp;body</code>
+                    (OS-011, Q2 2026) is on that curve: the 2026 frontier is
+                    embodied and computer-using agents, and the [&] stack already
+                    has a typed sensorimotor primitive with two reference impls
+                    (<code>body-browser</code>, <code>body-os</code>).
                 </p>
 
                 <div class="highlight">
-                    <h3>Meta acquires Moltbook (March 10, 2026)</h3>
+                    <h3>The build-first wager</h3>
                     <p>
-                        Meta acquired Moltbook — a Reddit-like social network
-                        exclusively for AI agents — bringing its creators into
-                        Meta Superintelligence Labs. Moltbook had 1.6M claimed
-                        agents by February 2026. TechCrunch described Meta's
-                        vision as an "agent graph." The [&] Protocol's
-                        capability registry and A2A Agent Card generation are
-                        precisely this infrastructure layer.
+                        What is hard to copy here is not a market position — it
+                        is the <em>theory of measurement</em> and the shipped
+                        stack underneath it: 1,463 passing tests, ten live Fly.io
+                        services, a property-tested invariant algebra wired into
+                        a working verifier, and κ verified on 1,926,351 finite
+                        systems. None of that depends on a funding round or a
+                        customer logo to be real. The [&] Protocol's capability
+                        registry and A2A Agent Card generation are exactly the
+                        composition + governance layer the agent-infrastructure
+                        space is converging toward — and they exist as running
+                        code today.
                     </p>
                 </div>
 
@@ -1035,17 +1177,19 @@
 
                 <div class="highlight" style="border-left-color: var(--rose)">
                     <h3>
-                        Agent Memory Funding Explosion: $56M+ Direct Competitor Capital
+                        Agent Memory Funding: $48M+ in Direct Competitor Capital
                     </h3>
                     <p>
-                        Mem0 raised $24M Series A (Basis Set, YC, Peak XV; 52.8K
+                        Mem0 raised $24M Series A (Basis Set, YC, Peak XV; ~50K
                         stars). Letta raised $10M seed (Felicis; $70M val; 22K
                         stars). Cognee raised $7.5M seed (Pebblebed; 15.2K
                         stars). Hindsight/Vectorize raised $3.6M seed (True
                         Ventures; 9K stars). Zep raised $3.3M (Engineering
-                        Capital; Graphiti at 24.8K stars). CrewAI raised $18M
-                        (45.9K stars). This level of funding validates the
-                        market Graphonomous targets — at $0 raised.
+                        Capital; Graphiti at 24.8K stars). That is
+                        <strong>$48.4M</strong> across direct agent-memory
+                        competitors (CrewAI's $18M is adjacent multi-agent
+                        orchestration, not memory). This level of funding
+                        validates the market Graphonomous targets — at $0 raised.
                     </p>
                 </div>
             </div>
@@ -1076,17 +1220,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>agentmemory (solo dev, $1K budget)</td>
-                                <td class="val">96.2% (Opus 4.6)</td>
-                                <td>6-signal hybrid retrieval</td>
-                            </tr>
-                            <tr>
-                                <td>PwC Chronos</td>
-                                <td class="val">95.6%</td>
-                                <td>Research team, arXiv paper</td>
-                            </tr>
-                            <tr>
-                                <td>OMEGA</td>
+                                <td>OMEGA (public #1)</td>
                                 <td class="val">95.4% (GPT-4.1)</td>
                                 <td>Local-first intelligence layer</td>
                             </tr>
@@ -1123,6 +1257,25 @@
                         </tbody>
                     </table>
                 </div>
+
+                <p class="prose" style="font-size: 0.9rem; color: var(--dim)">
+                    A caveat on reading this board: LongMemEval is a
+                    <em>two-stage</em> benchmark — a retrieval stage and a reader
+                    (LLM) stage — so a system's headline number rises whenever it
+                    is paired with a stronger frontier model. The leaders above
+                    run cloud-native against the best available readers (Opus 4.6
+                    posts a best-in-class 93.3% on the abstention subset; OMEGA
+                    holds the #1 overall slot at 95.4%), while
+                    <strong>Graphonomous posts 92.6% QA / 98.7% retrieval-SHR on
+                    local-only hardware</strong> — the only entry that is not
+                    leaning on a hosted frontier reader. As the reader ceiling
+                    keeps climbing with each Opus/GPT release, the durable
+                    differentiator is the <em>retrieval</em> half (SHR), which is
+                    model-independent — and that is precisely where Graphonomous's
+                    98.7% leads. We deliberately do not publish an inflated
+                    frontier-reader QA number we cannot reproduce on the hardware
+                    our users actually run.
+                </p>
 
                 <div class="table-wrap">
                     <table>
@@ -1179,6 +1332,44 @@
                                 <td>
                                     Runtime RL on episodic memory — agents that
                                     learn from their own experience
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>NeSyC: Neuro-Symbolic Continual Learner (arXiv 2503.00870)</td>
+                                <td>2026</td>
+                                <td>
+                                    Symbolic verification loop over a neural
+                                    learner for open-domain embodied tasks —
+                                    the academic mirror of Invariant Arithmetic +
+                                    OS-011 embodiment
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Trainable Graph Memory (arXiv 2511.07800)</td>
+                                <td>2026</td>
+                                <td>
+                                    "From experience to strategy" — graph memory
+                                    as the substrate agents learn over; validates
+                                    the graph-native (not flat-vector) bet
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>ALMA: Meta-Learned Memory Designs (arXiv 2602.07755)</td>
+                                <td>2026</td>
+                                <td>
+                                    A meta-agent searches over memory designs as
+                                    executable code — points toward declarative,
+                                    composable memory the [&] algebra already encodes
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Compress-Add-Smooth temporal memory (arXiv 2604.00067)</td>
+                                <td>2026</td>
+                                <td>
+                                    Fixed-budget continual learning for
+                                    resource-constrained agents — directly
+                                    favorable to a local-only engine like
+                                    Graphonomous
                                 </td>
                             </tr>
                         </tbody>
@@ -1348,9 +1539,10 @@
                 <p class="prose">
                     This thesis received explosive validation in 2026. The agent
                     skills marketplace category went from non-existent to
-                    160,000+ indexed packages — a pace that took npm a decade.
-                    Smithery now indexes 100K+ MCP tools. The MCP ecosystem
-                    has grown to 10,000+ active public servers.
+                    350,000+ skills indexed across eight marketplaces by mid-2026
+                    — a pace that took npm a decade. The MCP ecosystem has grown
+                    to 15,000+ public servers (PulseMCP), with ~9,600 in the
+                    Linux Foundation registry and ~7,300 on Smithery.
                 </p>
 
                 <div class="table-wrap">
@@ -1365,14 +1557,14 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>SkillsMP</td>
-                                <td class="val">160,000+</td>
+                                <td>All skill marketplaces (8)</td>
+                                <td class="val">350,000+</td>
                                 <td>&mdash;</td>
-                                <td>Jan 2026</td>
+                                <td>mid-2026</td>
                             </tr>
                             <tr>
                                 <td>Smithery (MCP)</td>
-                                <td class="val">100,000+</td>
+                                <td class="val">~7,300 servers</td>
                                 <td>&mdash;</td>
                                 <td>2024</td>
                             </tr>
@@ -1383,8 +1575,8 @@
                                 <td>Jan 2026</td>
                             </tr>
                             <tr>
-                                <td>MCP Ecosystem</td>
-                                <td class="val">10,000+ servers</td>
+                                <td>MCP Ecosystem (PulseMCP)</td>
+                                <td class="val">15,000+ servers</td>
                                 <td>&mdash;</td>
                                 <td>2024&ndash;2026</td>
                             </tr>
@@ -1423,8 +1615,8 @@
                         <div class="detail">
                             If agent ecosystems become the dominant computing
                             paradigm, the marketplace layer captures the
-                            economic center. Comparable: Smithery's rapid growth
-                            to 100K+ tools.
+                            economic center. Comparable: the skills category's
+                            growth to 350K+ packages in under a year.
                         </div>
                     </div>
                 </div>
@@ -1507,6 +1699,121 @@
                 </p>
             </div>
 
+            <!-- NEXT 6 MONTHS OUTLOOK -->
+            <div class="section">
+                <p class="section-label">Forward View</p>
+                <h2>The Next 6 Months (Jun&ndash;Dec 2026)</h2>
+                <p class="prose">
+                    Three forces define the back half of 2026, and the [&]
+                    portfolio is positioned at the intersection of all three:
+                    (1) the shift from cloud chat assistants to <strong>embodied,
+                    computer-using agents</strong>; (2) the hardening of
+                    <strong>memory + continual learning</strong> from a research
+                    curiosity into a procurement checkbox; and (3) the
+                    <strong>governance and provenance</strong> reckoning as
+                    agents gain the ability to act. Our roadmap was committed to
+                    these three bets before they were consensus.
+                </p>
+
+                <div class="highlight" style="border-left-color: var(--cyan)">
+                    <h3>Market forecast — what we expect by December 2026</h3>
+                    <p>
+                        The AI-agents market should hold a 40&ndash;49% CAGR
+                        toward the $50B+ 2030 band, with the embodied / computer-use
+                        sub-segment the fastest-growing slice. Expect continued
+                        consolidation of the MCP registry under the Linux
+                        Foundation's Agentic AI Foundation (one canonical index
+                        absorbing the fragmented 15K+ server long tail), at least
+                        one more nine-figure agent-memory round, and the first
+                        wave of enterprise RFPs that explicitly require
+                        continual-learning + memory-provenance guarantees rather
+                        than raw context windows. Edge / small-language-model
+                        inference keeps compounding (SLM-for-edge ~$3.4B&rarr;$12.9B
+                        trajectory), which is structurally favorable to a
+                        local-only memory engine like Graphonomous.
+                    </p>
+                </div>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Portfolio milestone (target H2 2026)</th>
+                                <th>From &rarr; To</th>
+                                <th>Why it matters</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Live <code>&amp;body</code> validation</td>
+                                <td>Simulator-only &rarr; real agent-browser / Computer Use</td>
+                                <td>
+                                    Moves OS-011 from "passes conformance against
+                                    a stub" to "drives a real browser/OS" — the
+                                    last credibility gap on the embodiment bet
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Close the cross-machine dark-factory loop</td>
+                                <td>Single-process Simulator &rarr; cross-machine replay on real backends</td>
+                                <td>
+                                    body-browser-mcp, body-os-mcp, and
+                                    delegatic-mcp are already live (3 of the 10
+                                    Fly.io apps) but run Simulator backends;
+                                    wiring them into real cross-machine replay +
+                                    authority round-trip closes the loop across
+                                    the fleet, not just in one process
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>First revenue / registry listings</td>
+                                <td>Pre-revenue &rarr; $1K MRR, 50+ users</td>
+                                <td>
+                                    Crosses the valuation inflection from
+                                    "specs + code" ($600K&ndash;$1.2M) into the
+                                    pre-seed traction band ($1M&ndash;$3M)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Workbench v0.3.0-alpha &rarr; v1.0</td>
+                                <td>Local kernel &rarr; real Delegatic authority + PRISM upload</td>
+                                <td>
+                                    Turns the proof harness into a shippable
+                                    skill-certification surface — the consumer
+                                    end of the dark-factory loop
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>OS-007 Adversarial Robustness</td>
+                                <td>Draft &rarr; spec complete</td>
+                                <td>
+                                    The one remaining draft protocol; completes
+                                    the governance story as agents start acting
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="highlight" style="border-left-color: var(--amber)">
+                    <h3>Honest risk framing</h3>
+                    <p>
+                        The portfolio is still pre-revenue with no paying users,
+                        and the highest-leverage gap is not more code — it is
+                        live end-to-end traction. The bet for H2 2026 is
+                        conversion: the protocol layer is overbuilt (~90%)
+                        relative to the implementation (~55%) and the
+                        go-to-market (~0%). The realistic upside case is
+                        crossing from the $600K&ndash;$1.2M "shipped specs + code"
+                        band into the $1M&ndash;$3M "first revenue" band; the
+                        downside case is that an analogous well-funded competitor
+                        (Mem0, Letta, or a hyperscaler memory primitive)
+                        commoditizes the <code>&amp;memory</code> layer before
+                        distribution is established.
+                    </p>
+                </div>
+            </div>
+
             <!-- SOURCES -->
             <div class="section">
                 <p class="section-label">Citations</p>
@@ -1514,7 +1821,7 @@
                 <p class="prose">
                     All market figures are sourced from named analyst firms and
                     cross-referenced where possible. Ranges reflect variance
-                    across sources. Updated April 2026.
+                    across sources. Updated May 2026.
                 </p>
 
                 <div class="sources">
@@ -1692,19 +1999,19 @@
                 </div>
 
                 <div class="sources">
-                    <h3>Agent Infrastructure &amp; Moltbook</h3>
+                    <h3>Agent Infrastructure &amp; MCP</h3>
                     <div class="source-item">
                         <span class="num">21</span
                         ><a
-                            href="https://www.axios.com/2026/03/10/meta-facebook-moltbook-agent-social-network"
-                            >Axios — Meta acquires Moltbook (Mar 2026)</a
+                            href="https://modelcontextprotocol.io"
+                            >Model Context Protocol — specification &amp; ecosystem</a
                         >
                     </div>
                     <div class="source-item">
                         <span class="num">22</span
                         ><a
-                            href="https://techcrunch.com/2026/03/11/metas-moltbook-deal-points-to-a-future-built-around-ai-agents/"
-                            >TechCrunch — Meta's Moltbook deal (Mar 2026)</a
+                            href="https://www.pulsemcp.com/servers"
+                            >PulseMCP — public MCP server index (15,000+ servers)</a
                         >
                     </div>
                 </div>
@@ -1734,9 +2041,9 @@
                     </div>
                     <div class="source-item">
                         <span class="num">26</span
-                        ><a href="https://github.com/JordanMcCann/agentmemory"
-                            >agentmemory — 96.2% LongMemEval, #1 published score,
-                            built solo in 16 days</a
+                        ><a href="https://github.com/xiaowu0162/LongMemEval"
+                            >LongMemEval (ICLR 2025) — benchmark repo &amp;
+                            public leaderboard</a
                         >
                     </div>
                     <div class="source-item">
@@ -1843,7 +2150,7 @@
                         <span class="num">39</span
                         ><a href="https://mem0.ai/series-a"
                             >Mem0 — $24M Series A (Basis Set, YC, Peak XV).
-                            52.8K stars, 186M API calls/quarter</a
+                            ~50K stars, hundreds of millions of API calls/quarter</a
                         >
                     </div>
                     <div class="source-item">
@@ -1888,14 +2195,15 @@
                         <span class="num">45</span
                         ><a
                             href="https://smartscope.blog/en/blog/skillsmp-marketplace-guide/"
-                            >SkillsMP — 160,000+ indexed skills, SKILL.md open
-                            standard</a
+                            >SkillsMP — agent-skills marketplace, SKILL.md open
+                            standard (part of the 350K+ skills indexed across 8
+                            marketplaces by mid-2026)</a
                         >
                     </div>
                     <div class="source-item">
                         <span class="num">46</span
-                        ><a href="https://smithery.ai/skills"
-                            >Smithery — 100K+ MCP tools and skills indexed</a
+                        ><a href="https://smithery.ai/"
+                            >Smithery — ~7,300 MCP servers indexed (mid-2026)</a
                         >
                     </div>
                     <div class="source-item">
@@ -1953,6 +2261,77 @@
                         >
                     </div>
                 </div>
+
+                <div class="sources">
+                    <h3>Mid-2026 Market Update (May 2026)</h3>
+                    <div class="source-item">
+                        <span class="num">53</span
+                        ><a
+                            href="https://www.marketsandmarkets.com/Market-Reports/ai-agents-market-15761548.html"
+                            >MarketsandMarkets — AI Agents Market holding
+                            40&ndash;49% CAGR toward the $50B+ 2030 band
+                            (mid-2026 update)</a
+                        >
+                    </div>
+                    <div class="source-item">
+                        <span class="num">54</span
+                        ><a
+                            href="https://news.crunchbase.com/ai/agentic-ai-startup-funding-2026/"
+                            >Crunchbase — Agentic AI funding ~$2.66B across 44
+                            rounds through April 2026</a
+                        >
+                    </div>
+                    <div class="source-item">
+                        <span class="num">55</span
+                        ><a href="https://www.linuxfoundation.org/press/announcing-the-agentic-ai-foundation"
+                            >Linux Foundation — Agentic AI Foundation now governs
+                            MCP and adjacent agent standards</a
+                        >
+                    </div>
+                    <div class="source-item">
+                        <span class="num">56</span
+                        ><a href="https://www.pulsemcp.com/servers"
+                            >PulseMCP — 15,000+ public MCP servers tracked
+                            (mid-2026)</a
+                        >
+                    </div>
+                    <div class="source-item">
+                        <span class="num">57</span
+                        ><a href="https://registry.modelcontextprotocol.io/"
+                            >MCP official registry — ~9,600 published servers</a
+                        >
+                    </div>
+                    <div class="source-item">
+                        <span class="num">58</span
+                        ><a
+                            href="https://www.marketsandmarkets.com/Market-Reports/small-language-model-market-67513017.html"
+                            >Small Language Model (edge) market: ~$3.42B (2025)
+                            &rarr; ~$12.85B (2030)</a
+                        >
+                    </div>
+                    <div class="source-item">
+                        <span class="num">59</span
+                        ><a href="https://www.grandviewresearch.com/industry-analysis/edge-ai-market-report"
+                            >Edge AI market ~$29.98B in 2026 (analyst consensus
+                            midpoint)</a
+                        >
+                    </div>
+                    <div class="source-item">
+                        <span class="num">60</span
+                        ><a href="https://www.anthropic.com/news/claude-computer-use"
+                            >Computer-use / embodied agents as the 2026 frontier
+                            — context for OS-011 &amp; <code>&amp;body</code></a
+                        >
+                    </div>
+                    <div class="source-item">
+                        <span class="num">61</span
+                        ><a href="./protocol.html"
+                            >[&] Protocol — 6 primitives (incl. <code>&amp;body</code>),
+                            Invariant Arithmetic (43 invariants, 15 laws), and the
+                            three-protocol stack</a
+                        >
+                    </div>
+                </div>
             </div>
 
             <!-- DISCLAIMER -->
@@ -1966,7 +2345,7 @@
                 operating entities may be structured separately. Past domain
                 sales are not indicative of future values. All trademarks belong
                 to their respective owners. GitHub star counts verified
-                April 12, 2026 via GitHub API.
+                May 2026 via GitHub API.
             </div>
         </div>
 

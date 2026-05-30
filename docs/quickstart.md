@@ -4,13 +4,12 @@ This quickstart gets you from clone to a working `ampersand` executable and runs
 
 All JSON output below was captured from real command execution in this repository.
 
-> **Prefer the MCP server?** `box-and-box` ships on npm as one of four
-> MCP servers in the [&] stack (`box-and-box`, `graphonomous`, `os-prism`,
-> `os-pulse`). Install with `npx -y box-and-box --db ~/.box-and-box/specs.db`
-> and let your agent call the validator, composer, and registry tools over
-> MCP. This quickstart covers the local Elixir CLI used to develop the
-> reference implementation and generate the box-and-box server's validation
-> rules.
+> **Note — the `box-and-box` name.** It now belongs to the [&] **governance
+> kernel** (the eight-rung arithmetic ladder · 97 property-tested laws — see
+> `opensentience.org/box-and-box/`). The previous `box-and-box` — the [&]
+> Protocol validator/composer MCP server — was removed in the clean-break stack
+> upgrade. Validate and compose `*.ampersand.json` specs with the local Elixir
+> reference CLI this quickstart covers, or the language SDKs.
 
 ---
 

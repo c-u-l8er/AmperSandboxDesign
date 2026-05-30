@@ -450,12 +450,12 @@
     </head>
     <body>
         <div class="hero">
-            <div class="date">Q2 2026 — Investor & Contributor Report</div>
+            <div class="date">Mid-2026 (May) — Investor & Contributor Report</div>
             <h1>[<span>&</span>] Portfolio Review</h1>
             <p class="sub">
                 Ampersand Box Design — a three-protocol stack ([&] + PULSE + PRISM)
-                for agentic AI infrastructure. 16 projects, 6 active codebases, 1
-                shared data layer.
+                for agentic AI infrastructure. 17 projects, 7 active codebases,
+                10 live Fly.io deployments, 1 shared data layer.
             </p>
         </div>
 
@@ -466,22 +466,22 @@
             <div class="kpi-row">
                 <div class="kpi purple">
                     <div class="label">Active codebases</div>
-                    <div class="value">6</div>
+                    <div class="value">7</div>
                     <div class="delta">
-                        Graphonomous + BendScript + WebHost + AmpersandBox + PRISM + PULSE
+                        Graphonomous + BendScript + WebHost + AmpersandBox + PRISM + PULSE + Workbench
                     </div>
                 </div>
                 <div class="kpi teal">
-                    <div class="label">Total source files</div>
-                    <div class="value">419+</div>
+                    <div class="label">Ecosystem tests</div>
+                    <div class="value">1,463</div>
                     <div class="delta up">
-                        Across Elixir, TypeScript, SvelteKit, JSON schemas
+                        100% passing &middot; Elixir + TypeScript across the stack
                     </div>
                 </div>
                 <div class="kpi coral">
                     <div class="label">Products shipped</div>
-                    <div class="value">1 Alpha / 2 Beta / 2 RC</div>
-                    <div class="delta">Graphonomous v0.4 &middot; 5 loop-phase machines</div>
+                    <div class="value">7 shipping</div>
+                    <div class="delta">Graphonomous v0.4.3 &middot; 10 apps live on Fly.io</div>
                 </div>
                 <div class="kpi amber">
                     <div class="label">TAM (AI agents)</div>
@@ -514,8 +514,8 @@
                 <h2>Graphonomous — flagship product deep dive</h2>
                 <p class="section-sub">
                     Continual learning knowledge graph engine &middot;
-                    MCP-native &middot; npm published &middot; v0.4 &middot;
-                    5 loop-phase machines (29 actions) &middot; Elixir/OTP
+                    MCP-native &middot; npm published &middot; v0.4.3 &middot;
+                    5 loop-phase machines &middot; 573 tests &middot; Elixir/OTP
                 </p>
 
                 <div class="card">
@@ -586,7 +586,7 @@
                         <tr>
                             <td>MCP server integration</td>
                             <td>
-                                5 machines, 29 actions, 5 resources &middot; stdio protocol
+                                5 loop-phase machines (down from 29 tools) &middot; stdio protocol
                                 &middot; works with Claude Code, Zed, Cursor
                             </td>
                             <td class="right">10/10</td>
@@ -603,7 +603,7 @@
                         <tr>
                             <td>Codebase quality</td>
                             <td>
-                                48 test files &middot; 162 source files &middot; 45K LOC &middot;
+                                573 passing tests &middot; episodic store/replay (OS-011) &middot;
                                 zero TODO/FIXME &middot;
                                 clean compile &middot;
                                 <code>mix format</code> compliant
@@ -630,7 +630,7 @@
                                 >
                             </td>
                             <td>
-                                Full 5-machine coverage (455 tests): codebase skills,
+                                Full 5-machine coverage (573 tests): codebase skills,
                                 &kappa;-routing, novelty detection, attention
                                 engine, consolidation, coverage gate, learning
                                 pipeline, graph inspection, typed retrieval,
@@ -649,7 +649,7 @@
                             <td>
                                 12,880 edges &middot; 22 SCCs &middot;
                                 &kappa;=27 &middot; graph beats flat (+0.103
-                                recall) &middot; 100% pass rate &middot; 5 machines (29 actions)
+                                recall) &middot; 100% pass rate &middot; 573 tests
                                 &middot; GraphMemBench 120/120
                                 &middot;
                                 <strong style="color: var(--green)"
@@ -711,8 +711,8 @@
             <section>
                 <h2>Active codebases — verified metrics</h2>
                 <p class="section-sub">
-                    All numbers validated directly from the source tree on
-                    2026-04-12
+                    All numbers validated directly from the source tree as of
+                    2026-05-27 (see STACK_COMPLETION.md)
                 </p>
 
                 <div class="card" style="overflow-x: auto">
@@ -729,22 +729,32 @@
                         </tr>
                         <tr style="background: rgba(0, 184, 148, 0.06)">
                             <td><strong>Graphonomous</strong></td>
-                            <td><span class="badge shipped">Alpha</span></td>
+                            <td><span class="badge shipped">Shipped v0.4.3</span></td>
                             <td>Elixir/OTP + SQLite</td>
                             <td class="right">162</td>
                             <td class="right">45,000+</td>
-                            <td class="right">48</td>
-                            <td class="right">5 (29 actions)</td>
+                            <td class="right">573 tests</td>
+                            <td class="right">5</td>
                             <td><span class="badge a-plus">A</span></td>
                         </tr>
                         <tr style="background: rgba(0, 206, 201, 0.06)">
                             <td><strong>BendScript</strong></td>
-                            <td><span class="badge beta">Beta</span></td>
-                            <td>SvelteKit + Supabase</td>
-                            <td class="right">72</td>
-                            <td class="right">~4,188</td>
-                            <td class="right">4</td>
-                            <td class="right">6</td>
+                            <td><span class="badge beta">Alpha (pivoted)</span></td>
+                            <td>TypeScript (@bendscript/core)</td>
+                            <td class="right">&mdash;</td>
+                            <td class="right">~3,000</td>
+                            <td class="right">96 tests</td>
+                            <td class="right">0</td>
+                            <td><span class="badge a">A-</span></td>
+                        </tr>
+                        <tr style="background: rgba(0, 184, 148, 0.06)">
+                            <td><strong>Workbench</strong></td>
+                            <td><span class="badge beta">v0.3.0-alpha</span></td>
+                            <td>SvelteKit + TypeScript (IA port)</td>
+                            <td class="right">&mdash;</td>
+                            <td class="right">~3,500</td>
+                            <td class="right">112 tests</td>
+                            <td class="right">0</td>
                             <td><span class="badge a">A-</span></td>
                         </tr>
                         <tr style="background: rgba(108, 92, 231, 0.06)">
@@ -797,7 +807,7 @@
 
                 <div class="two-col">
                     <div class="card">
-                        <h3>BendScript <span class="badge beta">Beta</span></h3>
+                        <h3>BendScript <span class="badge beta">Alpha (pivoted)</span></h3>
                         <p
                             style="
                                 font-size: 0.85rem;
@@ -805,33 +815,33 @@
                                 margin-bottom: 0.5rem;
                             "
                         >
-                            Interactive knowledge graph editor with KAG
-                            (Knowledge Augmented Generation) server. Canvas
-                            engine, AI synthesis, MCP server, collaboration via
-                            Supabase Realtime.
+                            Repositioned in Q2 2026 from a SvelteKit canvas/KAG
+                            SaaS into a <strong>graph-first document protocol</strong>.
+                            Now <code>@bendscript/core</code> v0.1.0-alpha.0 — a
+                            TypeScript reference parser / validator / round-trip
+                            harness for the BendScript Protocol v0.1. The old
+                            editor is archived under <code>old_scrap/v1/</code>.
                         </p>
                         <table>
                             <tr>
-                                <td>Canvas engine</td>
+                                <td>Protocol spec (v0.1 draft)</td>
+                                <td style="color: var(--green)">Published</td>
+                            </tr>
+                            <tr>
+                                <td>Reference parser/validator</td>
                                 <td style="color: var(--green)">Working</td>
                             </tr>
                             <tr>
-                                <td>AI synthesis (Claude)</td>
-                                <td style="color: var(--green)">
-                                    Working (Haiku free / Sonnet paid)
-                                </td>
+                                <td>Round-trip harness</td>
+                                <td style="color: var(--green)">96 tests passing</td>
                             </tr>
                             <tr>
-                                <td>MCP server (6 tools)</td>
-                                <td style="color: var(--green)">Working</td>
+                                <td>Typed inline link facets</td>
+                                <td style="color: var(--green)">Implemented</td>
                             </tr>
                             <tr>
-                                <td>Type checking</td>
-                                <td style="color: var(--green)">Clean</td>
-                            </tr>
-                            <tr>
-                                <td>Unique position</td>
-                                <td>Only non-Elixir product (intentional)</td>
+                                <td>Supabase dependency</td>
+                                <td>Removed (kag.* schema now orphaned)</td>
                             </tr>
                         </table>
                     </div>
@@ -969,58 +979,6 @@
                             <th>Self-hosted</th>
                         </tr>
                         <tr>
-                            <td><strong>agentmemory</strong></td>
-                            <td>Cloud-native agent memory</td>
-                            <td>Not disclosed</td>
-                            <td>
-                                <strong style="color: var(--coral)"
-                                    >96.2% LongMemEval (Opus 4.6)</strong
-                                >
-                            </td>
-                            <td>No</td>
-                            <td>No</td>
-                            <td>No</td>
-                        </tr>
-                        <tr>
-                            <td><strong>PwC Chronos</strong></td>
-                            <td>Enterprise temporal memory</td>
-                            <td>PwC corporate</td>
-                            <td>
-                                <strong style="color: var(--coral)"
-                                    >95.6% LongMemEval</strong
-                                >
-                            </td>
-                            <td>No</td>
-                            <td>No</td>
-                            <td>No</td>
-                        </tr>
-                        <tr>
-                            <td><strong>OMEGA</strong></td>
-                            <td>Cloud-native agent memory</td>
-                            <td>Not disclosed</td>
-                            <td>
-                                <strong style="color: var(--coral)"
-                                    >95.4% LongMemEval (GPT-4.1)</strong
-                                >
-                            </td>
-                            <td>No</td>
-                            <td>No</td>
-                            <td>No</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Mastra OM</strong></td>
-                            <td>Cloud-native agent memory</td>
-                            <td>Not disclosed</td>
-                            <td>
-                                <strong style="color: var(--coral)"
-                                    >94.9% LongMemEval (GPT-5-mini)</strong
-                                >
-                            </td>
-                            <td>No</td>
-                            <td>No</td>
-                            <td>No</td>
-                        </tr>
-                        <tr>
                             <td><strong>Hindsight (Vectorize)</strong></td>
                             <td>MCP-native 4-strategy retrieval</td>
                             <td>$3.6M seed (True Ventures)</td>
@@ -1048,7 +1006,7 @@
                         <tr>
                             <td><strong>Zep / Graphiti</strong></td>
                             <td>Temporal knowledge graph</td>
-                            <td>Venture-backed</td>
+                            <td>$3.3M (Engineering Capital)</td>
                             <td>
                                 DMR 0.82&ndash;0.88; LongMemEval ~63&ndash;67%;
                                 <a href="https://arxiv.org/abs/2501.13956"
@@ -1124,9 +1082,19 @@
                         </tr>
                     </table>
                     <p class="caveat">
-                        GitHub star counts (April 2026): Mem0 52.8K, Graphiti 24.8K,
+                        GitHub star counts (May 2026): Mem0 ~50K, Graphiti ~25K,
                         Letta 22K, Cognee 15.2K, Hindsight 9K. Exact funding figures
                         fluctuate; figures shown are best-available estimates.
+                        The public LongMemEval QA leaderboard is topped by
+                        cloud systems paired with frontier readers (~95%; e.g.
+                        OMEGA on GPT-4.1, with Opus 4.6 posting a best-in-class
+                        93.3% on the abstention subset) &mdash; a two-stage
+                        benchmark whose headline number rises with reader
+                        strength. Graphonomous's <strong>92.6% QA proxy /
+                        98.7% retrieval-SHR</strong> is the strongest
+                        <em>self-hosted, reproducible</em> result in the funded
+                        set, and the model-independent retrieval half (SHR) is
+                        where it actually leads.
                     </p>
                 </div>
 
@@ -1143,7 +1111,7 @@
                             single-pass; &kappa;&gt;0 triggers deliberation with
                             fault-line decomposition. Verified on 1.9M+ finite
                             systems.<br /><br />
-                            <strong>5 loop-phase machines (29 actions), 455 tests</strong> &mdash; richest MCP
+                            <strong>5 loop-phase machines, 573 tests</strong> &mdash; richest MCP
                             API surface in the category. Hindsight has ~6 tool
                             categories, Mem0 has a simpler REST/SDK, Zep is
                             cloud-first. Graphonomous exposes graph mutation,
@@ -1192,8 +1160,8 @@
                     <div class="card">
                         <h3 style="color: var(--coral)">Gaps to close</h3>
                         <p style="font-size: 0.88rem; color: var(--text2)">
-                            <strong>Community size</strong> &mdash; Mem0 (52.8K
-                            stars), Graphiti (24.8K stars), Letta (22K
+                            <strong>Community size</strong> &mdash; Mem0 (~50K
+                            stars), Graphiti (~25K stars), Letta (22K
                             stars), Cognee (15.2K stars), Hindsight (9K stars) all have larger
                             communities. Graphonomous is pre-traction. Registry
                             listings (Smithery, MCP.so, PulseMCP, Glama,
@@ -1203,10 +1171,13 @@
                             >
                             &mdash; Graphonomous achieves
                             <strong>92.6% QA proxy</strong> (98.7% SHR) on
-                            LongMemEval (neural, 100 questions), competitive with all
-                            systems on local-only hardware. Beats Zep
-                            (~63&ndash;67%), Letta (~50&ndash;80%), and GPT-4
-                            128K (~62&ndash;65%). Full results in
+                            LongMemEval (neural, 500Q) &mdash; the strongest
+                            self-hosted, reproducible result in the funded set.
+                            Cloud systems on frontier readers post ~95% on the
+                            QA half (reader-driven), but the model-independent
+                            retrieval half (SHR) is where Graphonomous leads.
+                            Beats Zep (~63&ndash;67%), Letta (~50&ndash;80%),
+                            and GPT-4 128K (~62&ndash;65%). Full results in
                             <a
                                 href="opensentience.org/docs/spec/OS-E001-EMPIRICAL-EVALUATION.html#longmemeval"
                                 >OS-E001 &sect;4.5</a
@@ -1244,7 +1215,7 @@
                             <td>Mem0</td>
                             <td>$24M (Series A)</td>
                             <td>$100M+ est.</td>
-                            <td>52.8K stars + AWS partnership + cloud API</td>
+                            <td>~50K stars + AWS partnership + cloud API</td>
                             <td>Vector-first, graph paywalled at $249/mo</td>
                         </tr>
                         <tr>
@@ -1300,8 +1271,8 @@
                                 >
                             </td>
                             <td>
-                                More shipped than several funded peers; $56M+ in
-                                direct competitor funding validates market
+                                More shipped than several funded peers; $48M+ in
+                                direct agent-memory funding validates market
                             </td>
                         </tr>
                     </table>
@@ -1330,7 +1301,7 @@
             <section>
                 <h2>Complete ecosystem portfolio</h2>
                 <p class="section-sub">
-                    16 projects across the full AI agent operationalization
+                    17 projects across the full AI agent operationalization
                     stack
                 </p>
 
@@ -1352,14 +1323,14 @@
                                 <span class="tag">Agent memory</span
                                 ><span class="tag">MCP</span>
                             </td>
-                            <td><span class="badge shipped">Alpha</span></td>
+                            <td><span class="badge shipped">Shipped</span></td>
                             <td>Elixir/OTP + SQLite</td>
                             <td><span class="badge a-plus">A</span></td>
                             <td>
                                 <div class="meter">
                                     <div
                                         class="fill green"
-                                        style="width: 70%"
+                                        style="width: 75%"
                                     ></div>
                                 </div>
                             </td>
@@ -1368,17 +1339,17 @@
                             <td>2</td>
                             <td><strong>bendscript.com</strong></td>
                             <td>
-                                <span class="tag">Knowledge graph</span
-                                ><span class="tag">IDE</span>
+                                <span class="tag">Document protocol</span
+                                ><span class="tag">Parser</span>
                             </td>
-                            <td><span class="badge beta">Beta</span></td>
-                            <td>SvelteKit + Supabase</td>
+                            <td><span class="badge beta">Alpha</span></td>
+                            <td>TypeScript (@bendscript/core)</td>
                             <td><span class="badge a">A-</span></td>
                             <td>
                                 <div class="meter">
                                     <div
                                         class="fill teal"
-                                        style="width: 60%"
+                                        style="width: 45%"
                                     ></div>
                                 </div>
                             </td>
@@ -1466,14 +1437,14 @@
                                 <span class="tag">Agent marketplace</span
                                 ><span class="tag">Discovery</span>
                             </td>
-                            <td><span class="badge spec">Spec</span></td>
-                            <td>Elixir/OTP + Phoenix (planned)</td>
+                            <td><span class="badge shipped">Shipped</span></td>
+                            <td>Elixir/OTP + Phoenix (Fly.io)</td>
                             <td><span class="badge a">A-</span></td>
                             <td>
                                 <div class="meter">
                                     <div
-                                        class="fill purple"
-                                        style="width: 20%"
+                                        class="fill green"
+                                        style="width: 55%"
                                     ></div>
                                 </div>
                             </td>
@@ -1485,14 +1456,14 @@
                                 <span class="tag">Governance</span
                                 ><span class="tag">Policy engine</span>
                             </td>
-                            <td><span class="badge spec">Spec</span></td>
-                            <td>Elixir/OTP + Phoenix (planned)</td>
+                            <td><span class="badge shipped">Kernel shipped</span></td>
+                            <td>Elixir/OTP (OS-006 kernel + MCP)</td>
                             <td><span class="badge a">A-</span></td>
                             <td>
                                 <div class="meter">
                                     <div
-                                        class="fill purple"
-                                        style="width: 18%"
+                                        class="fill green"
+                                        style="width: 45%"
                                     ></div>
                                 </div>
                             </td>
@@ -1504,14 +1475,14 @@
                                 <span class="tag">Spec standard</span
                                 ><span class="tag">Toolchain</span>
                             </td>
-                            <td><span class="badge spec">Spec</span></td>
-                            <td>Elixir + TypeScript (planned)</td>
+                            <td><span class="badge shipped">Shipped</span></td>
+                            <td>Elixir + TypeScript (Fly.io)</td>
                             <td><span class="badge b-plus">B+</span></td>
                             <td>
                                 <div class="meter">
                                     <div
-                                        class="fill purple"
-                                        style="width: 18%"
+                                        class="fill green"
+                                        style="width: 50%"
                                     ></div>
                                 </div>
                             </td>
@@ -1523,14 +1494,14 @@
                                 <span class="tag">Agent builder</span
                                 ><span class="tag">CI/CD</span>
                             </td>
-                            <td><span class="badge spec">Spec</span></td>
-                            <td>Elixir/OTP (planned)</td>
+                            <td><span class="badge shipped">Shipped</span></td>
+                            <td>Elixir/OTP (Fly.io)</td>
                             <td><span class="badge b-plus">B+</span></td>
                             <td>
                                 <div class="meter">
                                     <div
-                                        class="fill purple"
-                                        style="width: 15%"
+                                        class="fill green"
+                                        style="width: 50%"
                                     ></div>
                                 </div>
                             </td>
@@ -1647,17 +1618,38 @@
                                 </div>
                             </td>
                         </tr>
+                        <tr style="background: rgba(0, 184, 148, 0.06)">
+                            <td>17</td>
+                            <td><strong>Workbench</strong></td>
+                            <td>
+                                <span class="tag">Skill workshop</span
+                                ><span class="tag">Proof harness</span>
+                            </td>
+                            <td><span class="badge beta">v0.3.0-alpha</span></td>
+                            <td>SvelteKit + TypeScript (IA verifier)</td>
+                            <td><span class="badge a">A-</span></td>
+                            <td>
+                                <div class="meter">
+                                    <div
+                                        class="fill green"
+                                        style="width: 40%"
+                                    ></div>
+                                </div>
+                            </td>
+                        </tr>
                     </table>
                 </div>
 
                 <div class="highlight-box">
                     <strong>Shared infrastructure:</strong> All Supabase-backed
                     products share a single instance via
-                    <code>ampersand-supabase/</code>. 9 PostgreSQL schemas
-                    (amp.*, kag.*, webhost.*, fleet.*, geo.*, temporal.*,
-                    orchestrate.*, govern.*, agentelic.*) with shared auth and
-                    workspace-based multi-tenancy. One
-                    <code>supabase start</code> runs the entire data layer.
+                    <code>ampersand-supabase/</code>. 35 migrations across 11
+                    PostgreSQL schemas (amp.*, kag.*, webhost.*, fleet.*, geo.*,
+                    temporal.*, orchestrate.*, govern.*, agentelic.*, rune.*,
+                    spec.*) with shared auth and workspace-based multi-tenancy.
+                    One <code>supabase start</code> runs the entire data layer.
+                    Note: <code>kag.*</code> is now orphaned after the BendScript
+                    pivot off Supabase.
                 </div>
             </section>
 
@@ -1692,13 +1684,13 @@
                             <td style="font-weight: 600; color: var(--teal)">PULSE (OS-010)</td>
                             <td>Temporal loop declaration + circulation</td>
                             <td><code>*.pulse.json</code></td>
-                            <td><span class="badge shipped">RC</span></td>
+                            <td><span class="badge shipped">Shipped v0.1.1</span></td>
                         </tr>
                         <tr style="background: rgba(0, 184, 148, 0.06)">
                             <td style="font-weight: 600; color: var(--green)">PRISM (OS-009)</td>
                             <td>Diagnostic measurement over time</td>
                             <td>BYOR benchmark engine</td>
-                            <td><span class="badge shipped">RC</span></td>
+                            <td><span class="badge shipped">Shipped (Fly.io)</span></td>
                         </tr>
                     </table>
                 </div>
@@ -1733,13 +1725,14 @@
                             <td>LangChain, CrewAI</td>
                         </tr>
                         <tr>
-                            <td style="font-weight: 600">UI / IDE</td>
+                            <td style="font-weight: 600">Document format</td>
                             <td>bendscript.com</td>
                             <td>
-                                Interactive knowledge graph editor + KAG server
+                                Graph-first document protocol with typed inline
+                                link facets (TS reference parser)
                             </td>
-                            <td><span class="badge beta">Beta</span></td>
-                            <td>Cursor, Replit</td>
+                            <td><span class="badge beta">Alpha</span></td>
+                            <td>Markdown, MDX, Obsidian</td>
                         </tr>
                         <tr>
                             <td style="font-weight: 600">Discovery</td>
@@ -1760,7 +1753,7 @@
                                 Continual learning graph + &kappa; invariant +
                                 outcome loops
                             </td>
-                            <td><span class="badge shipped">Alpha</span></td>
+                            <td><span class="badge shipped">Shipped v0.4.3</span></td>
                             <td>Mem0, Zep, Letta, Cognee</td>
                         </tr>
                         <tr>
@@ -1778,9 +1771,9 @@
                             <td>delegatic.com</td>
                             <td>
                                 Org hierarchy, monotonic policy inheritance,
-                                audit trails
+                                audit trails (OS-006 authorization kernel shipped)
                             </td>
-                            <td><span class="badge spec">Spec</span></td>
+                            <td><span class="badge shipped">Kernel shipped</span></td>
                             <td>No direct competitor</td>
                         </tr>
                         <tr>
@@ -1807,11 +1800,11 @@
                             <td style="font-weight: 600">Runtime</td>
                             <td>opensentience.org</td>
                             <td>
-                                8 cognitive protocols (memory, routing,
-                                deliberation, attention, tiers, shim,
-                                adversarial robustness, agent harness)
+                                11 cognitive protocols (OS-001..011) — incl.
+                                PRISM, PULSE, and the OS-011 Embodiment Protocol
+                                that adds the <code>&amp;body</code> primitive
                             </td>
-                            <td><span class="badge spec">Spec</span></td>
+                            <td><span class="badge spec">6 of 11 shipped</span></td>
                             <td>Letta runtime</td>
                         </tr>
                         <tr>
@@ -1849,6 +1842,74 @@
             </section>
 
             <!-- ================================================================== -->
+            <!-- THE FORMAL MOAT: INVARIANT ARITHMETIC -->
+            <!-- ================================================================== -->
+            <section>
+                <h2>The formal moat &mdash; Invariant Arithmetic &amp; the Periodic Table</h2>
+                <p class="section-sub">
+                    The hardest thing in this portfolio to copy is the theory of
+                    measurement underneath it &mdash; and it is now running code,
+                    not a whitepaper
+                </p>
+
+                <div class="comp-grid">
+                    <div class="card">
+                        <h3>The Periodic Table of Agent Invariants (v0.5)</h3>
+                        <p style="color: var(--text2); line-height: 1.7">
+                            A census of <strong>43 named invariants across 10
+                            families</strong> &mdash; topological (&kappa;
+                            cyclicity, &beta; persistence), spatial (&sigma;),
+                            temporal (&pi;/&iota;/&psi;), governance
+                            (authority-path, deny-by-default, append-only audit),
+                            plus deliberation, evaluation, attention, security,
+                            embodiment, and federation. Each element is a
+                            measurement that tells an agent <em>what position it
+                            is in and what authority that position grants</em>.
+                            Six already carry machine-checked proofs; &kappa;
+                            alone is verified on
+                            <strong>1,926,351 finite systems, zero
+                            counterexamples</strong>.
+                        </p>
+                    </div>
+                    <div class="card">
+                        <h3>Invariant Arithmetic v0.3 (the algebra)</h3>
+                        <p style="color: var(--text2); line-height: 1.7">
+                            The chemistry over those elements:
+                            <strong>4 invariant families, 6 operations</strong>
+                            (<code>combine</code>, <code>chain</code>,
+                            <code>promote</code>, <code>reconcile</code>,
+                            <code>deliberate</code>, <code>consume</code>) and
+                            <strong>15 algebraic laws</strong> verified by
+                            property-based tests at <strong>1,000 trials
+                            each</strong> (all pass in ~134 ms). Ships as an
+                            Elixir reference plus a framework-free ~400-LOC
+                            TypeScript port.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="highlight-box success" style="margin-top: 1rem">
+                    <strong>Why this is a moat, not a curiosity:</strong> As of
+                    the v0.3.0-alpha Workbench release (2026-05-27), Invariant
+                    Arithmetic is the <em>live verifier substrate</em> of the
+                    Proof Harness. All six proof gates &mdash; content-hash,
+                    trace-completeness, no-hidden-capability, authority,
+                    redaction, replay-fidelity &mdash; compute their verdict
+                    through a single
+                    <code>InvariantArithmetic.consume(value, requirements)</code>
+                    call and project onto an invariant family, carrying
+                    <code>law</code> + <code>invariant_family</code> annotations.
+                    The same JSON file is the user-valuable SkillBundle <em>and</em>
+                    the PRISM-facing EvidenceBundle, self-describing as IA-derived.
+                    The 2026 research frontier (neuro-symbolic continual
+                    learning &mdash; NeSyC, trainable graph memory, ALMA) is
+                    converging on exactly this idea: a symbolic, verifiable layer
+                    over the neural substrate. [&] is the only one shipping it as
+                    a property-tested algebra wired into a working verifier.
+                </div>
+            </section>
+
+            <!-- ================================================================== -->
             <!-- MARKET CONTEXT -->
             <!-- ================================================================== -->
             <section>
@@ -1872,16 +1933,18 @@
                             MCP protocol adoption
                         </h3>
                         <p style="font-size: 0.85rem; color: var(--text2)">
-                            Model Context Protocol has 10,000+ active public servers
-                            and is now under Linux Foundation governance. Adopted by
-                            Anthropic, OpenAI, Google, Microsoft. Claude
-                            Code, Cursor, Zed, and VS Code all ship
-                            MCP-compatible tooling by default. Graphonomous is
-                            MCP-native. PRISM and PULSE are MCP-native.
+                            Model Context Protocol now has 15,000+ public servers
+                            (PulseMCP) and is governed under the Linux Foundation's
+                            Agentic AI Foundation. Adopted by Anthropic, OpenAI,
+                            Google, Microsoft, Amazon. Claude Code, Cursor, Zed,
+                            and VS Code all ship MCP-compatible tooling by
+                            default. Graphonomous, PRISM, and PULSE are all
+                            MCP-native — and ten [&] services are now live on
+                            Fly.io.
                         </p>
                         <div style="margin-top: 0.75rem; font-size: 0.8rem">
                             <span style="color: var(--green); font-weight: 600"
-                                >10K+ servers</span
+                                >15K+ servers</span
                             >
                             <span style="color: var(--text3)"
                                 >across all AI developer tools</span
@@ -1893,10 +1956,12 @@
                             Agent memory gold rush
                         </h3>
                         <p style="font-size: 0.85rem; color: var(--text2)">
-                            Mem0 raised $24M Series A. Zep, Letta, Cognee all VC-backed.
-                            $56M+ in direct competitor funding validates the market.
-                            Gartner projects 33&ndash;40% of enterprise apps
-                            will include AI agents by 2028.
+                            Mem0 raised $24M Series A. Zep ($3.3M), Letta
+                            ($10M), Cognee ($7.5M), Hindsight ($3.6M) all
+                            VC-backed &mdash; $48M+ in direct agent-memory
+                            funding validates the market. Gartner projects
+                            33&ndash;40% of enterprise apps will include AI
+                            agents by 2028.
                         </p>
                         <div style="margin-top: 0.75rem; font-size: 0.8rem">
                             <span style="color: var(--green); font-weight: 600"
@@ -1912,11 +1977,13 @@
                             AI VC inflection
                         </h3>
                         <p style="font-size: 0.85rem; color: var(--text2)">
-                            Q1 2026 AI venture investment reached $300B globally.
-                            AI accounts for ~80% of all VC investment. Agent
-                            infrastructure is the fastest-growing subsegment.
-                            The operationalization gap (only ~52% run offline evals,
-                            32% cite quality as #1 barrier) is exactly what [&] builds.
+                            2026 AI venture investment runs at a ~$300B annual
+                            pace globally (~80% of all VC); &gt;$9.7B has gone
+                            into agentic-AI startups since 2023. The decisive
+                            stat: <strong>79% of enterprises have adopted agents,
+                            but only 11% run them in production</strong> &mdash;
+                            the operationalization gap (governance, quality,
+                            provenance) is exactly what [&] builds.
                         </p>
                         <div style="margin-top: 0.75rem; font-size: 0.8rem">
                             <span style="color: var(--amber); font-weight: 600"
@@ -1957,15 +2024,21 @@
                             margin-bottom: 1rem;
                         "
                     >
-                        Graphonomous shipped on npm with 5 machines (29 actions), 455 tests, and novel
-                        &kappa; invariant. PRISM benchmark engine at RC with 6 machines
-                        deployed on Fly.io. PULSE temporal algebra at RC with 10 MCP tools.
-                        BendScript beta with 72 files and 6 MCP tools.
-                        WebHost.Systems beta with React frontend and OpenRouter
-                        integration. AmpersandBoxDesign reference CLI for [&]
-                        Protocol validation. Shared Supabase data layer with 9
-                        product schemas. 16-project ecosystem with comprehensive
-                        specs. Three-protocol stack operational.
+                        Graphonomous shipped on npm at v0.4.3 with 5 machines, 573 tests, and the novel
+                        &kappa; invariant. PRISM benchmark engine shipped on Fly.io.
+                        PULSE temporal algebra shipped at v0.1.1 (6 canonical tokens).
+                        OS-011 Embodiment Protocol added the sixth [&] primitive
+                        (<code>&amp;body</code>) with two reference impls (body-browser,
+                        body-os); Delegatic's OS-006 authorization kernel shipped.
+                        The new Workbench proof harness runs Invariant Arithmetic
+                        (15 algebraic laws over 4 invariant families) as its verifier.
+                        BendScript pivoted to a graph-first document protocol (TS parser).
+                        WebHost.Systems beta with React frontend and OpenRouter integration.
+                        Shared Supabase data layer with 11 product schemas.
+                        17-project ecosystem, 1,463 passing tests, ten apps live on
+                        Fly.io, and the dark-factory loop closed end-to-end in a single
+                        process (Simulator backend) &mdash; cross-machine replay against
+                        the live MCPs is the next step.
                     </p>
                     <div class="stage-track">
                         <div class="step done"></div>
@@ -2086,7 +2159,24 @@
             <!-- ================================================================== -->
             <section>
                 <h2>Portfolio scorecard</h2>
-                <p class="section-sub">Honest assessment across 8 dimensions</p>
+                <p class="section-sub">Honest assessment across 9 dimensions</p>
+
+                <div class="highlight-box" style="margin-bottom: 1rem">
+                    <strong>How to read this scorecard:</strong> the [&] thesis
+                    treats external validation &mdash; revenue, funding, logos,
+                    benchmark crowns &mdash; as a <em>lagging</em> indicator.
+                    The <em>leading</em> indicators are the ones a bootstrapped
+                    solo builder controls directly: depth of formal theory,
+                    coherence of the shipped stack, and honest measurement. So
+                    the dimensions split cleanly. The leading axes (Technical
+                    Vision, Defensibility, Execution-Built) grade high because
+                    the substance is real and verifiable today; the lagging
+                    axes (Revenue, Investability) grade lower not because the
+                    work is weak but because validation is downstream of
+                    distribution, which hasn't started. The wager is that if
+                    the substrate is built, verified, and shipped first, the
+                    lagging indicators follow &mdash; not the other way around.
+                </div>
 
                 <div class="card" style="overflow-x: auto">
                     <table>
@@ -2113,6 +2203,29 @@
                             </td>
                         </tr>
                         <tr>
+                            <td><strong>Defensibility (Formal Moat)</strong></td>
+                            <td>
+                                <span
+                                    class="badge a-plus"
+                                    style="font-size: 0.8rem"
+                                    >A</span
+                                >
+                            </td>
+                            <td>
+                                The hardest-to-copy asset is the theory of
+                                measurement, and it is running code, not a
+                                whitepaper: a 43-invariant periodic table, a
+                                15-law Invariant Arithmetic verified by
+                                property tests, &kappa; proven on 1,926,351
+                                finite systems, and that algebra wired in as
+                                the <em>live verifier substrate</em> of the
+                                Workbench proof harness. No competitor ships a
+                                property-tested invariant algebra as its
+                                verification layer. This is the leading
+                                indicator that compounds.
+                            </td>
+                        </tr>
+                        <tr>
                             <td><strong>Execution (Built)</strong></td>
                             <td>
                                 <span class="badge a" style="font-size: 0.8rem"
@@ -2120,27 +2233,30 @@
                                 >
                             </td>
                             <td>
-                                6 active codebases (up from 4). 419+ source files.
-                                Graphonomous: 5 machines (29 actions), 455 tests, 45K LOC,
+                                7 active codebases. 1,463 passing ecosystem tests.
+                                Graphonomous v0.4.3: 5 machines, 573 tests,
                                 <a
                                     href="opensentience.org/docs/spec/OS-E001-EMPIRICAL-EVALUATION.html"
                                     >published benchmarks</a
                                 >
-                                (92.6% QA proxy, 98.7% SHR).
-                                PRISM + PULSE at Release Candidate.
+                                (92.6% QA proxy, 98.7% SHR). PRISM + PULSE
+                                shipped; ten [&] apps live on Fly.io; dark-factory
+                                loop closed end-to-end in a single process
+                                (cross-machine replay is the next step).
                             </td>
                         </tr>
                         <tr>
                             <td><strong>Execution (Remaining)</strong></td>
                             <td>
                                 <span class="badge b" style="font-size: 0.8rem"
-                                    >C+</span
+                                    >B-</span
                                 >
                             </td>
                             <td>
-                                10 spec-only projects. Enormous implementation
-                                surface. Ambitious but realistic with Elixir/OTP
-                                and spec-first methodology.
+                                4 spec-only projects remain (down from 10). The
+                                bigger gap is now go-to-market, not code: the
+                                protocol layer (~90%) is well ahead of live
+                                traction (~0% revenue).
                             </td>
                         </tr>
                         <tr>
@@ -2154,9 +2270,9 @@
                             </td>
                             <td>
                                 Agent operationalization is the 2026 constraint.
-                                MCP at 10K+ servers under Linux Foundation governance.
-                                $300B Q1 2026 AI VC. Enterprise demand for
-                                governance/quality validated by Gartner.
+                                MCP at 15,000+ servers under the Linux Foundation's
+                                Agentic AI Foundation. $300B+ 2026 AI VC. Enterprise
+                                demand for governance/quality validated by Gartner.
                             </td>
                         </tr>
                         <tr>
@@ -2184,7 +2300,10 @@
                             <td>
                                 $53B+ TAM. Clear monetization paths (managed
                                 cloud, marketplace commission, enterprise
-                                tiers). But $0 revenue today.
+                                tiers). $0 revenue today &mdash; the lagging
+                                axis by design: revenue is downstream of
+                                distribution, which is the next phase, not a
+                                gap in the product.
                             </td>
                         </tr>
                         <tr>
@@ -2195,10 +2314,10 @@
                                 >
                             </td>
                             <td>
-                                Scope risk (16 projects), solo founder
-                                bandwidth, adoption risk, Elixir hiring pool.
-                                Mitigated by spec-first approach and AI-assisted
-                                development.
+                                Scope risk (17 projects), solo founder
+                                bandwidth, adoption/go-to-market risk, Elixir hiring
+                                pool. Mitigated by spec-first approach, AI-assisted
+                                development, and a now-shipping core (7 live products).
                             </td>
                         </tr>
                         <tr>
@@ -2225,7 +2344,7 @@
                     >
                         Composite:
                         <strong style="color: var(--accent2); font-size: 1.3rem"
-                            >7.5 / 10</strong
+                            >8.2 / 10</strong
                         >
                         <span
                             style="
@@ -2233,9 +2352,12 @@
                                 display: block;
                                 margin-top: 0.25rem;
                             "
-                            >Strong technical foundation with empirical
-                            evidence, three-protocol stack, pre-revenue, high-potential coherent
-                            stack</span
+                            >Leading indicators (vision, formal moat, shipped
+                            stack) are strong and verifiable today; lagging
+                            indicators (revenue, distribution) are the next
+                            phase by design. Three-protocol stack, 7 shipping
+                            products, property-tested invariant moat,
+                            pre-revenue.</span
                         >
                     </div>
                 </div>
@@ -2257,7 +2379,8 @@
                         <table>
                             <tr>
                                 <td>
-                                    Comparable: Letta (funded at paper stage)
+                                    Comparable: Letta ($10M seed at $70M
+                                    post-money, paper-stage)
                                 </td>
                                 <td class="right" style="color: var(--green)">
                                     $5M+ val
@@ -2274,7 +2397,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    Comparable: Mem0 (~$24M raised, $100M+ val
+                                    Comparable: Mem0 ($24M Series A, $100M+ val
                                     est.)
                                 </td>
                                 <td class="right" style="color: var(--green)">
@@ -2282,7 +2405,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>With 3 products shipping + 500 users</td>
+                                <td>With 7 products shipping + 500 users</td>
                                 <td class="right" style="color: var(--green)">
                                     $5&ndash;15M val
                                 </td>
@@ -2328,7 +2451,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td>16 projects is ambitious scope</td>
+                                <td>17 projects is ambitious scope</td>
                                 <td class="right" style="color: var(--amber)">
                                     Medium
                                 </td>
@@ -2412,9 +2535,9 @@
                             <td class="right">100+</td>
                         </tr>
                         <tr>
-                            <td>BendScript DAU</td>
-                            <td class="right">MVP testing</td>
-                            <td class="right">100+</td>
+                            <td>@bendscript/core npm downloads</td>
+                            <td class="right">v0.1.0-alpha</td>
+                            <td class="right">1K+/mo</td>
                         </tr>
                         <tr>
                             <td>Enterprise pilots signed</td>
@@ -2548,13 +2671,137 @@
                         </tr>
                         <tr>
                             <td>
-                                <strong>BendScript production hardening</strong>
+                                <strong>@bendscript/core editor + renderer</strong>
+                                (reference tooling for the v0.1 document protocol)
                             </td>
                             <td style="color: var(--accent2)">Medium</td>
                             <td>2&ndash;4 weeks</td>
-                            <td>SvelteKit developers</td>
+                            <td>TypeScript developers</td>
                         </tr>
                     </table>
+                </div>
+            </section>
+
+            <!-- ================================================================== -->
+            <!-- NEXT 6 MONTHS -->
+            <!-- ================================================================== -->
+            <section>
+                <h2>The next 6 months (Jun&ndash;Dec 2026)</h2>
+                <p class="section-sub">
+                    Where the portfolio goes from here, and what we expect the
+                    market to do
+                </p>
+
+                <div class="card">
+                    <p style="color: var(--text2); line-height: 1.7">
+                        The thesis for H2 2026 is <strong>conversion, not
+                        construction</strong>. The protocol layer is overbuilt
+                        (~90%) relative to implementation (~55%) and go-to-market
+                        (~0%). Three forces define the back half of the year, and
+                        the [&] stack is positioned at the intersection of all
+                        three: (1) the shift from cloud chat assistants to
+                        <strong>embodied, computer-using agents</strong> (the
+                        <code>&amp;body</code> / OS-011 bet); (2) the hardening of
+                        <strong>memory + continual learning</strong> from research
+                        curiosity into a procurement checkbox (Graphonomous); and
+                        (3) the <strong>governance and provenance</strong>
+                        reckoning as agents gain the ability to act (Delegatic +
+                        the invariant stack). The roadmap committed to these bets
+                        before they were consensus.
+                    </p>
+                </div>
+
+                <div class="card" style="margin-top: 1rem">
+                    <h3>Market forecast &mdash; what we expect by December 2026</h3>
+                    <p style="color: var(--text2); line-height: 1.7">
+                        The AI-agents market should hold a 40&ndash;49% CAGR toward
+                        the $50B+ 2030 band, with the embodied / computer-use
+                        sub-segment the fastest-growing slice. Expect continued
+                        consolidation of the MCP registry under the Linux
+                        Foundation's Agentic AI Foundation (one canonical index
+                        absorbing the fragmented 15K+ server long tail), at least
+                        one more nine-figure agent-memory round, and the first wave
+                        of enterprise RFPs that explicitly require continual-learning
+                        + memory-provenance guarantees rather than raw context
+                        windows. Edge / small-language-model inference keeps
+                        compounding (SLM-for-edge ~$3.4B&rarr;$12.9B trajectory),
+                        which is structurally favorable to a local-only memory
+                        engine like Graphonomous.
+                    </p>
+                </div>
+
+                <div class="card" style="margin-top: 1rem">
+                    <h3>Portfolio milestones (target H2 2026)</h3>
+                    <table>
+                        <tr>
+                            <th>Milestone</th>
+                            <th>From &rarr; To</th>
+                            <th>Why it matters</th>
+                        </tr>
+                        <tr>
+                            <td>Live <code>&amp;body</code> validation</td>
+                            <td>Simulator-only &rarr; real agent-browser / Computer Use</td>
+                            <td>
+                                Moves OS-011 from "passes conformance against a
+                                stub" to "drives a real browser/OS" &mdash; the
+                                last credibility gap on the embodiment bet.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Close the cross-machine dark-factory loop</td>
+                            <td>Single-process Simulator &rarr; cross-machine replay on real backends</td>
+                            <td>
+                                body-browser-mcp, body-os-mcp, and delegatic-mcp
+                                are already live (3 of the 10 Fly.io apps) but
+                                run Simulator backends; wiring them into a real
+                                cross-machine replay + authority round-trip is
+                                what turns "loop closes in one process" into
+                                "loop closes across the fleet".
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>First revenue / registry listings</td>
+                            <td>Pre-revenue &rarr; $1K MRR, 50+ users</td>
+                            <td>
+                                Crosses the valuation inflection from "specs +
+                                code" into the pre-seed traction band.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Workbench v0.3-alpha &rarr; v1.0</td>
+                            <td>Local kernel &rarr; real Delegatic authority + PRISM upload</td>
+                            <td>
+                                Turns the proof harness into a shippable
+                                skill-certification surface &mdash; the consumer
+                                end of the dark-factory loop.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>OS-007 Adversarial Robustness</td>
+                            <td>Draft &rarr; spec complete</td>
+                            <td>
+                                The one remaining draft protocol; completes the
+                                governance story as agents start acting.
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div
+                    class="card"
+                    style="margin-top: 1rem; border-left: 3px solid var(--amber)"
+                >
+                    <h3>Honest risk framing</h3>
+                    <p style="color: var(--text2); line-height: 1.7">
+                        The portfolio is still pre-revenue with no paying users,
+                        and the highest-leverage gap is not more code &mdash; it is
+                        live end-to-end traction. The realistic upside case for H2
+                        2026 is crossing from the "shipped specs + code" band into
+                        the "first revenue" band; the downside case is that a
+                        well-funded competitor (Mem0, Letta, or a hyperscaler
+                        memory primitive) commoditizes the <code>&amp;memory</code>
+                        layer before distribution is established.
+                    </p>
                 </div>
             </section>
 
@@ -2575,18 +2822,29 @@
                         line-height: 1.8;
                     "
                 >
-                    <strong>Codebase metrics (verified 2026-04-12):</strong
+                    <strong>Codebase metrics (verified 2026-05-27 against STACK_COMPLETION.md):</strong
                     ><br />
                     &bull; All file counts, LOC, test counts, and MCP machine
                     counts validated directly from the source tree<br />
-                    &bull; Graphonomous: 162 source files (113 lib + 48 test + vendor), 45K LOC, 48 test files, 455 tests, 5 machines (29 actions),
-                    8 dependencies, v0.4<br />
-                    &bull; BendScript: 72 source files, ~4,188 LOC, 4 test
-                    files, 6 MCP tools<br />
-                    &bull; PRISM (OS-009): 71 source files (55 lib + 13 test), ~8,243 LOC,
-                    6 machines (47 actions), deployed on Fly.io<br />
-                    &bull; PULSE (OS-010): 43 files (17 TS + 7 JSON schemas + 3 manifests),
-                    10 MCP tools, 3 resources<br />
+                    &bull; Graphonomous: continual-learning engine, 573 tests, 5 loop-phase
+                    machines, 6 graph algorithms, sqlite-vec, v0.4.3<br />
+                    &bull; BendScript: pivoted (2026-04-27) from the SvelteKit/Supabase
+                    canvas product to <strong>@bendscript/core v0.1.0-alpha.0</strong>, a
+                    TypeScript graph-first document-protocol parser (96 tests); the old
+                    canvas code is archived under <code>old_scrap/v1/</code><br />
+                    &bull; RuneFort: pivoted to <strong>@runefort/core v0.1.0-alpha.1</strong>,
+                    a layout protocol for tiled file-backed UIs (Web Components, 22 JS files)<br />
+                    &bull; Workbench (NEW): SvelteKit Skill Workshop + Proof Harness,
+                    v0.3.0-alpha, 6 proof gates, 112/112 vitest tests, Invariant
+                    Arithmetic verifier substrate<br />
+                    &bull; PRISM (OS-009): Elixir/OTP benchmark engine,
+                    6 machines, deployed on Fly.io<br />
+                    &bull; PULSE (OS-010): temporal loop algebra, v0.1.1,
+                    7 JSON schemas + reference manifests, 10 MCP tools<br />
+                    &bull; Ecosystem totals: 1,463 tests (100% passing), 7 shipping
+                    products, 6 capability primitives, 11 OpenSentience protocols
+                    (6 shipped), 35 Supabase migrations across 11 schemas, 10 [&] apps
+                    on Fly.io<br />
                     &bull; WebHost.Systems: 37 source files, ~7,688 LOC, 12 test
                     files<br />
                     &bull; AmpersandBoxDesign: 34 Elixir files, ~13,499 LOC, working CLI
@@ -2596,7 +2854,7 @@
                     opensentience.org/kappa_proof.js<br />
                     &bull; OS-E001 benchmark: 12,880 edges, 22
                     SCCs, max &kappa;=27, graph beats flat by +0.103 recall,
-                    100% pass rate, 5 machines (29 actions), 27K nodes<br />
+                    100% pass rate, 27K nodes<br />
                     &bull; LongMemEval benchmark:
                     <strong>92.6% QA proxy</strong> (98.7% SHR) (neural, 100
                     questions on oracle split, 265 sessions, 3,094 turns).
@@ -2612,10 +2870,12 @@
                         >Competitive benchmark data (approximate, from published
                         papers &amp; blogs):</strong
                     ><br />
-                    &bull; agentmemory:
-                    <strong>96.2% LongMemEval (Opus 4.6)</strong>; cloud-native<br />
-                    &bull; PwC Chronos:
-                    <strong>95.6% LongMemEval</strong>; enterprise temporal memory<br />
+                    <em>Note: LongMemEval is a two-stage (retrieval + LLM-reader)
+                    benchmark, so headline scores rise with reader strength.
+                    Cloud-native leaders pair with frontier readers (Opus 4.6
+                    posts 93.3% on the abstention subset; OMEGA holds #1 overall
+                    at 95.4%); Graphonomous's figure is local-only, and its
+                    model-independent retrieval SHR (98.7%) leads the field.</em><br />
                     &bull; OMEGA:
                     <strong>95.4% LongMemEval (GPT-4.1)</strong>; cloud-native<br />
                     &bull; Mastra OM:
@@ -2625,7 +2885,7 @@
                     4-strategy retrieval + cross-encoder reranking; 9K GitHub
                     stars<br />
                     &bull; Mem0: entity extraction F1 0.85&ndash;0.92
-                    (internal); 52.8K GitHub stars; AWS
+                    (internal); ~50K GitHub stars; AWS
                     Agent SDK partner; $24M Series A<br />
                     &bull; Zep/Graphiti: DMR 0.82&ndash;0.88; LongMemEval
                     ~63&ndash;67% QA accuracy; arXiv:2501.13956; 24.8K
@@ -2644,18 +2904,27 @@
                     ><br />
                     &bull; AI agent market: $10.9B (2026) &rarr; $52.62B by 2030
                     (46.3% CAGR) &mdash; MarketsandMarkets<br />
+                    &bull; Agentic AI segment: $9.9B (2026) &rarr; $57.4B by 2031
+                    (42.1% CAGR; firm range 40.5&ndash;49.6%) &mdash; Mordor
+                    Intelligence / market.us (2026)<br />
                     &bull; Edge AI market: $48B (2025) &rarr; $386B by 2034
                     (29.9% CAGR) &mdash; Markets and Markets<br />
                     &bull; Knowledge graph market: $1.07B (2025) &rarr; $6.94B by 2030
                     (36.6% CAGR) &mdash; MarketsandMarkets<br />
+                    &bull; Operationalization gap: 79% of enterprises have
+                    adopted AI agents, only 11% run them in production (2026)<br />
                     &bull; 33&ndash;40% enterprise apps with AI agents &mdash;
                     Gartner (2024&ndash;2025 predictions)<br />
-                    &bull; Q1 2026 AI VC: ~$300B globally, AI = ~80% of all VC &mdash;
+                    &bull; 2026 AI VC: ~$300B annual pace globally, AI = ~80% of
+                    all VC; &gt;$9.7B into agentic-AI startups since 2023 &mdash;
                     PitchBook, Crunchbase<br />
                     &bull; Total direct competitor funding in agent memory:
-                    ~$56M+ (Mem0 $24M + Letta $10M + Cognee $7.5M + Vectorize
-                    $3.6M + CrewAI $18M)<br />
-                    &bull; MCP ecosystem: 10,000+ active public servers, Linux Foundation governance<br />
+                    ~$48.4M (Mem0 $24M = $20M Series A + $3.9M seed; Letta $10M
+                    seed / $70M post; Cognee $7.5M; Vectorize $3.6M; Zep $3.3M).
+                    CrewAI's $18M is adjacent multi-agent orchestration, not
+                    memory<br />
+                    &bull; MCP ecosystem: ~15,000 public servers (PulseMCP), now under
+                    the Linux Foundation's Agentic AI Foundation<br />
                     &bull; Only 4.8% of SaaS companies offer interactive product
                     demos (Navattic 2025); those who do see 25% higher
                     conversion, 70% more trial signups<br /><br />
@@ -2665,7 +2934,7 @@
                     ><br />
                     &bull; Competitor funding figures marked "reported" come
                     from press coverage, not SEC filings<br />
-                    &bull; GitHub star counts verified via API (April 2026); fluctuate daily<br />
+                    &bull; GitHub star counts verified via API (May 2026); fluctuate daily<br />
                     &bull; TAM projections are analyst estimates with wide
                     confidence intervals<br />
                     &bull; Valuation comparables are illustrative, not
@@ -2688,7 +2957,7 @@
                     financial advice.
                 </p>
                 <p style="margin-top: 0.5rem; font-size: 0.7rem">
-                    April 2026 &middot; Codebase metrics
+                    May 2026 &middot; Codebase metrics
                     verified from source &middot; Market data from public
                     reports
                 </p>

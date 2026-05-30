@@ -1,126 +1,302 @@
 # box-and-box
 
-**Reference MCP server for the [&] Protocol.**
+**A faithful runtime of Invariant + Heuristic Arithmetic** — the algebra, not a paraphrase of it.
 
-One of four MCP servers in the [&] three-protocol stack:
+- A **Value** is a *product of monoids* across families (`n`, `κ` cyclicity, `β` confidence, `σ` conflicts, `π` phase, governance). Five operations move it: `combine`, `chain` (phase-graded, *partial* — refuses a backward step), `promote`, `reconcile`, `deliberate`; `consume` is the boolean gate.
+- A **Score** lives in a *semiring* `(K, ⊕, ⊗, 0̲, 1̲)`. `vote` aggregates alternatives (⊕), `rollout` chains evidence discounted (⊗), and `reinforce`, `dominate`, `anneal`, `select` do the rest.
+- The **bridge** ties them: `consume` gates each option; a vetoed option gets score `0̲`, which annihilates through any `⊗`. **No heuristic utility, however large, can resurrect a vetoed option.**
 
-| Package        | Role                                     | Install                                                          |
-|----------------|------------------------------------------|------------------------------------------------------------------|
-| `box-and-box`  | [&] Protocol validator / composer (**this**) | `npx -y box-and-box --db ~/.box-and-box/specs.db`            |
-| `graphonomous` | Memory loop (5 machines)                 | `npx -y graphonomous --db ~/.graphonomous/knowledge.db`          |
-| `os-prism`     | Diagnostic loop (6 machines)             | `npx -y os-prism --db ~/.os-prism/benchmarks.db`                 |
-| `os-pulse`     | PULSE manifest registry                  | `npx -y os-pulse --db ~/.os-pulse/manifests.db`                  |
+All **97 laws** across the eight rungs are property-tested — run `npm test`. (Invariant **L1–L14**, heuristic **H1–H13**, bridge **B1–B3**; deontic, temporal, reflexive, epistemic, strategic, and resource are documented per rung below.)
 
-## What box-and-box does
-
-- Validates `*.ampersand.json` agent declarations against
-  `ampersand.schema.json` (JSON Schema draft 2020-12).
-- Validates capability contracts against `capability-contract.schema.json`
-  and the bundled registry against `registry.schema.json`.
-- Composes N specs into one (ACI / idempotent capability merging with
-  conflict detection).
-- Checks pipelines declared with `|>` against a spec's capability set.
-- Generates MCP server configuration (`zed` or `generic` format) and A2A
-  agent cards from a spec.
-- Persists registered specs and validation history in an embedded SQLite
-  database.
-- Exposes 12 MCP tools and 3 resources over stdio.
-
-## MCP tools
-
-| Tool                 | Description                                                   |
-|----------------------|---------------------------------------------------------------|
-| `validate`           | Validate a spec; optionally persist it.                       |
-| `validate_contract`  | Validate a capability contract.                               |
-| `validate_registry`  | Validate a capability registry.                               |
-| `compose`            | Compose N specs into one; detect conflicts.                   |
-| `check`              | Check a pipeline against a spec's capabilities.               |
-| `generate_mcp`       | Emit MCP server configuration from a spec.                    |
-| `generate_a2a`       | Emit an A2A agent card from a spec.                           |
-| `inspect_spec`       | Return a structured capability graph.                         |
-| `diff`               | Diff two specs (added / removed / changed capabilities).     |
-| `registry_list`      | List primitive capabilities in the bundled registry.          |
-| `registry_providers` | List providers for a given capability id.                     |
-
-## MCP resources
-
-| URI                                 | Returns                                |
-|-------------------------------------|----------------------------------------|
-| `ampersand://runtime/health`        | Server health + counts.                |
-| `ampersand://specs/recent`          | Recently registered specs.             |
-| `ampersand://registry/capabilities` | Full bundled registry snapshot.        |
-
-## Install
-
-```bash
-npx -y box-and-box --db ~/.box-and-box/specs.db
+```
+npm install box-and-box
+npm test          # the law harness: 97 laws across random values (2000 trials each)
+npx box-and-box rag     # multi-family composition catching a self-citation contradiction
+npx box-and-box select  # the bridge: a high-utility but unsafe action is annihilated to 0-bar
+npx box-and-box assistant # APP: a governed research assistant (epistemic + resource + deontic)
+npx box-and-box harness   # a builder that builds governed harnesses, with a governor over them
 ```
 
-Or in `.mcp.json`:
+---
 
-```jsonc
-{
-  "mcpServers": {
-    "ampersand": {
-      "command": "npx",
-      "args": ["-y", "box-and-box", "--db", "~/.box-and-box/specs.db"]
-    }
-  }
-}
+## Invariant Arithmetic
+
+```js
+import { V, combine, chain, promote, reconcile, deliberate, consume } from 'box-and-box';
+
+const s1 = V({ pi: 'retrieve', beta: 0.90 });
+const s2 = V({ pi: 'retrieve', beta: 0.70, sigma: ['conflict:date'] }); // weaker, conflicting
+
+const ctx    = combine(s1, s2);                      // beta -> min (0.70), sigma -> union
+const answer = chain(ctx, V({ pi: 'act' }));         // ok: retrieve <= act
+const bad    = chain(answer, V({ pi: 'retrieve' })); // { error: "pi-violation: cannot chain 'retrieve' after 'act'" }
+
+consume(answer, { beta_min: 0.85, sigma_empty: true, acyclic: true });
+// { ok: false, failures: [ {family:'beta',...}, {family:'sigma',...} ] }  -- refuses, by family
 ```
 
-## One-shot CLI mode
+`combine` is a monoid (associative, identity `V0`) but **not** globally commutative — the temporal
+(`pi`,`iota`,`psi`, first-non-null) and governance (`authority`, concat) families encode order.
+The endomorphisms repair a value: `deliberate` forces `kappa -> false`, `reconcile` removes
+resolved conflicts, `promote` raises `beta` monotonically.
 
-The same binary runs as a plain CLI for scripts and CI — it bypasses the
-MCP server and prints JSON to stdout:
+## Heuristic Arithmetic
 
-```bash
-npx box-and-box validate ./examples/infra-operator.ampersand.json
-npx box-and-box compose ./examples/infra-operator.ampersand.json \
-                        ./examples/fleet-manager.ampersand.json
-npx box-and-box check ./examples/infra-operator.ampersand.json \
-                      --pipeline incident_triage
-npx box-and-box generate mcp ./examples/infra-operator.ampersand.json
-npx box-and-box generate a2a ./examples/infra-operator.ampersand.json
-npx box-and-box inspect ./examples/infra-operator.ampersand.json
+```js
+import { Score, vote, rollout, dominate, anneal } from 'box-and-box';
+
+rollout([Score({ u: 6 }), Score({ u: 4 })], 0.9, 'tropical'); // chain evidence, gamma-discounted
+vote(Score({ u: 6 }), Score({ u: 8 }), 'tropical');           // aggregate alternatives (+ = max)
 ```
 
-## Flags
+Three semiring **personalities**: `tropical` (max,+) — the only idempotent one, so it induces a
+ranking; `probability` (+,*); `log` (logsumexp,+). Idempotence (H6) holds only on the dioid —
+the harness shows it failing on the others, which is the point.
 
-| Flag                 | Default                       |
-|----------------------|-------------------------------|
-| `--db <path>`        | `~/.box-and-box/specs.db`     |
-| `--transport`        | `stdio` (only; HTTP planned)  |
-| `--port`             | `4711` (ignored for stdio)    |
-| `--schema-version`   | `v0.1.0`                      |
-| `--log-level`        | `info`                        |
+## The bridge — floor-then-gradient
 
-## Build from source
+```js
+import { V, Score, rollout, select } from 'box-and-box';
 
-```bash
-git clone https://github.com/c-u-l8er/AmpersandBoxDesign
-cd AmpersandBoxDesign/box-and-box
-npm install
-npm run build
-node bin/box-and-box.js --help
+const u = (a, b) => rollout([Score({ u: a }), Score({ u: b })], 1.0, 'tropical');
+const options = [
+  { id: 'read_doc',    value: V({ beta: 0.92, kappa: false, authority: ['cap:read'], denyDefault: false }), utility: u(6, 4) },
+  { id: 'delete_self', value: V({ beta: 0.97, kappa: true,  authority: [],            denyDefault: true  }), utility: u(9, 6) }
+];
+
+select(options, { beta_min: 0.90, acyclic: true, deny_default: 'must_allow' }, 'tropical');
+// decision: 'read_doc'
+// vetoed:   [{ id:'delete_self', rawWouldBe: 15, gatedScore: 0, failures:[{family:'kappa',...},{family:'governance',...}] }]
 ```
 
-## Parity with the Elixir reference
+`delete_self` scored **highest**. It loops on itself (`kappa`) and has no authority, so `consume`
+vetoes it, `0-bar` annihilates it, and the gradient selects the best *feasible* action. This is the
+case a scoring policy gets wrong and a content classifier never sees — OWASP **LLM06**, excessive agency.
 
-The Elixir `ampersand` escript in
-`AmpersandBoxDesign/reference/elixir/ampersand_core/` remains the
-authoritative reference during protocol development. `box-and-box` shares
-the exact same JSON Schema artifacts and test fixtures under
-`examples/*.ampersand.json`. Any divergence is a bug in `box-and-box`,
-not a protocol change.
+---
 
-## Spec
+## Deontic Arithmetic — the third rung
 
-- [`docs/NPM_PACKAGE.md`](../docs/NPM_PACKAGE.md) — full package specification
-- [`SPEC.md`](../SPEC.md) — [&] Protocol draft v0.1.0
-- [`protocol/schema/v0.1.0/`](../protocol/schema/v0.1.0/) — JSON Schemas
-- [`contracts/v0.1.0/`](../contracts/v0.1.0/) — capability contracts
+The invariant layer says what *cannot* be; the heuristic layer says what is *better*. The deontic
+layer says what *ought* to be: obligation, permission, prohibition. A norm assigns an action a
+status in a diamond lattice — `OPTIONAL` (bottom), `OBLIGATORY` / `FORBIDDEN` (incomparable
+middles), `CONFLICT` (top); `join` accrues norms, `resolve` clears a conflict by priority, and a
+**contrary-to-duty** repair escalates when an obligation is breached.
 
-## License
+```js
+import { V, Norm, govern } from 'box-and-box';
 
-Apache-2.0
+const norms = [
+  Norm({ id: 'forbid-PII',  modality: 'forbidden',  priority: 10, condition: (c) => c.transmitsPII && !c.hasConsent }),
+  Norm({ id: 'get-consent', modality: 'obligatory', priority: 8,  condition: (c) => c.containsPII && c.obtainsConsent,
+         ctd: Norm({ id: 'escalate-to-DPO', modality: 'obligatory' }) })
+];
+
+govern(options, { req: { beta_min: 0.9, acyclic: true }, norms });
+```
+
+`govern` stacks all three modalities with a principled precedence — **alethic ▸ deontic ▸
+axiological**:
+
+- a **FORBIDDEN** option is excluded, but recorded as *overridable* (a norm, not a wall);
+- an **OBLIGATORY** feasible option is *forced* — chosen over anything that merely scores higher;
+- an **OBLIGATORY** option that the alethic floor makes infeasible triggers a **contrary-to-duty
+  escalation** (e.g. escalate-to-DPO) — never a silent fall-back to a permitted action.
+
+This is the difference between "refuse / rank" and "refuse / rank / **oblige & escalate**". Laws
+D1–D9 (norm algebra) and DB1–DB3 (the three-modality interaction) are property-tested with the
+rest. `npx box-and-box govern` runs a regulated-PII workflow showing all three behaviours.
+
+---
+
+## Temporal Arithmetic — the fourth rung
+
+The first three rungs judge a single state. An agent produces a *trajectory*, and the properties
+that matter most range over the whole run. A `Spec` is an LTL formula over predicates on states;
+the core operation is `progress(φ, s)` — the LTL derivative, the residual obligation on the rest
+of the trajectory. Monitoring is a fold of `progress`; the residual collapses to `⊤`/`⊥` the moment
+the outcome is forced.
+
+```js
+import { temporal, TemporalSpec, supervise, residualOf, guard } from 'box-and-box';
+const { atom, always, eventually } = temporal;
+
+const specs = [
+  TemporalSpec({ id: 'confidence-floor', formula: always(atom('β≥0.8', s => s.beta >= 0.8)), kind: 'safety' }),
+  TemporalSpec({ id: 'reach-goal',       formula: eventually(atom('done', s => s.done)),    kind: 'liveness', ctd: 'escalate-replan' })
+];
+supervise(trajectory, specs);
+```
+
+Every linear property splits into **safety** and **liveness** (Alpern & Schneider), and that split
+is the seam with the rest of the ladder:
+
+- **safety** (`G ¬bad`) has a finite witness, so it extends the alethic floor across time — a
+  runtime **shield**: `guard` prunes any action whose successor would drive the residual to `⊥`;
+- **liveness** (`F goal`, `GF progress`) can only fail at the horizon, so it extends the deontic
+  *ought* across time — a temporal obligation that fires the same **contrary-to-duty** escalation
+  when unmet. (A one-step deontic obligation is the horizon-1 case.)
+
+Laws T1–T8 (the temporal algebra) and TB1–TB3 (the shield/obligation interaction) are
+property-tested. The keystone is **T4** — progression is checked against an *independent* recursive
+evaluator on random formulas. `npx box-and-box supervise` runs the worked example.
+
+---
+
+## Reflexive Arithmetic — the fifth rung
+
+The first four rungs are fixed once written. The reflexive rung lets a `Policy` — the deontic
+norms and temporal specs, plus a set of **entrenched** ids — revise itself. Revision follows AGM
+belief-revision discipline (success, consistency, minimal change) with the deontic norm-change
+principles (**lex superior** = priority wins, **lex posterior** = recency wins) for conflicts.
+
+```js
+import { Policy, enact, repeal, amend, entrench, revise } from 'box-and-box';
+
+let p = entrench(Policy({ norms: [forbidLeak], specs: [safetyFloor] }), 'forbid-leak');
+revise(p, enact(obligeCite));                 // accepted — a new duty
+revise(p, repeal('forbid-leak'));             // REJECTED — entrenched
+revise(p, amend('forbid-leak', weaker));      // REJECTED — would weaken the core
+revise(p, amend('forbid-leak', stronger));    // accepted — strengthening is allowed
+```
+
+The capstone is the **entrenchment** guard: an amendment is admissible only if it does not weaken
+an entrenched norm — you cannot repeal the core, amend it weaker, or enact a higher-priority norm
+that out-ranks it. The system can make itself **more** constrained, never less, so self-modification
+can never relax the safety floor. The revised policy feeds straight back into `govern` and
+`supervise`. Laws R1–R8 (the revision algebra) and RB1–RB3 (the wiring to the rest) are
+property-tested; the keystone **R4** is the safety guarantee. `npx box-and-box evolve` runs a constitution
+that amends itself five times.
+
+---
+
+## Epistemic Arithmetic — the sixth rung
+
+Every rung above governs what an agent should *do*; none say what it *knows*. This one is the
+missing modality: knowledge and graded belief over **possible worlds**. `K φ` holds iff φ is true
+in every world the agent still considers possible; learning is a truthful **public announcement**
+that deletes the ruled-out worlds (so knowledge only grows — the continual-learning link); and the
+gap between *not knowing* and *knowing that you don't know* (`K¬Kφ`) is exactly the κ signal that
+routes to deliberation.
+
+```js
+import { epistemic } from 'box-and-box';
+const { Model, knows, knowsItDoesntKnow, route, announce, distributed } = epistemic;
+
+knows(m, 'a', p);                 // true in all accessible worlds
+knowsItDoesntKnow(m, 'a', p);     // K¬Kp — a detected gap (the κ signal)
+route(m, 'a', p);                 // → "deliberate"
+knows(announce(m, p), 'a', p);    // learn p → the gap closes → true
+```
+
+Knowledge is **S5** (an equivalence relation → factive: `Kφ → φ`, and introspective); belief is
+**KD45** (serial but not reflexive → consistent and introspective, but *not* factive — you can
+believe falsehoods). The harness shows that split as a cross-check: factivity holds for knowledge
+and fails ~30% of the time for belief. Multi-agent gives everyone-knows, **common knowledge** (its
+fixpoint — the coordination prerequisite), and **distributed knowledge** (pooled — the group knows
+more than any member). Laws E1–E8 + EB1–EB3; `β` is the graded-belief strength, and EB2 is the κ
+link. `npx box-and-box know` runs the worked example.
+
+---
+
+## Strategic Arithmetic — the seventh rung
+
+The last rung is about *groups*. Over a **concurrent game structure** — states, agents, the moves
+each agent has at each state, and a transition that consumes one move from *every* agent at once —
+a coalition **can ensure** φ when it has a joint strategy that forces φ *no matter what the other
+agents do*. Everything is built from the **controllable predecessor** (`∃ moves for C, ∀ moves for
+the rest, the successor lands in the target`); the temporal abilities follow as fixpoints, the same
+machinery the temporal rung uses but now played against an adversary.
+
+```js
+import { strategic } from 'box-and-box';
+const { Game, canKeep, canEnsure, oblige } = strategic;
+
+canKeep(g, ['ctrl'], safe, init);          // ⟨⟨ctrl⟩⟩□ safe — can keep it safe forever?  true
+canEnsure(g, ['ctrl'], goal, init);        // ⟨⟨ctrl⟩⟩◊ goal — alone?  false (the env can hinder)
+canEnsure(g, ['ctrl', 'env'], goal, init); // ⟨⟨ctrl,env⟩⟩◊ goal — together?  true
+oblige(g, ['ctrl'], goal, init);           // → "escalate"  (ought-implies-can: it can't, alone)
+```
+
+`canKeep` is a greatest fixpoint (maintenance / safety), `canEnsure` a least fixpoint (reachability
+/ liveness). The bridges are where it joins the stack: a one-agent game collapses to the **temporal**
+rung's reachability (SB1); an obligation a coalition *can't* ensure escalates back to the **deontic**
+rung — *ought-implies-can* (SB2); and a joint strategy is only executable with the **epistemic**
+rung's common knowledge of the plan (SB3). Laws S1–S8 + SB1–SB3; superadditivity (S4) is the
+cooperation law that lets disjoint coalitions combine. `npx box-and-box strategy` runs the worked example.
+
+---
+
+## Resource Arithmetic — the economy beneath the ladder
+
+The seven modalities say what is possible, preferable, permitted, durable, revisable, known, and
+forceable; none of them say what any of it *costs*. Resource Arithmetic is the economy the ladder
+runs on. A **ledger** is a closed double-entry system — the only primitive is a transfer that can't
+move more than an account holds, spending is a transfer to a sink, refilling a transfer from a
+treasury — so **conservation** holds by construction (value is never created from nothing; that is
+the currency invariant). Depletable resources follow linear logic (used once, no duplication, no
+discard); resources marked **reusable** (the `!` "of-course" modality) may be copied freely.
+
+```js
+import { resource } from 'box-and-box';
+const { Ledger, feasible, repair, allocate, consolidate, forget } = resource;
+
+feasible(wallet, 'agent', { tokens: 8 });        // budget gate — false ⇒ carries 0̲, annihilates
+repair(L, 'agent', { value: 6, cost: 2 });        // → "invoke"  (Type II: worth more than it costs)
+repair(L, 'agent', { value: 1, cost: 4 });        // → "skip"    (act on the current best instead)
+```
+
+Two payoffs make this more than budgets. **Continual learning** is conserved capacity: `allocate`
+moves capacity from free to committed (plasticity spent on stability), `consolidate` mints reusable
+`!` knowledge that costs nothing to reuse, and `forget` reclaims capacity — but releases the
+knowledge with it. You cannot keep the knowledge and reclaim its capacity, and that impossibility
+*is* the stability–plasticity dilemma as a conservation law. And the rung **prices the ladder's own
+repairs**: a deliberation or escalation is invoked only when its value beats its cost (I. J. Good's
+"Type II" rationality) — the epistemic rung detects a known-unknown, this rung decides whether
+closing it is rational. Laws C1–C8 + CB1–CB3; the multi-agent market companion (bidding, prices,
+allocation) belongs next to the strategic rung. `npx box-and-box economy` runs the worked example.
+
+---
+
+## Browser
+
+This package ships runnable code only. The browser surfaces are published as research pages on
+[opensentience.org](https://opensentience.org): the interactive
+[playground](https://opensentience.org/playground.html) runs the cross-layer harness client-side
+(the RAG composition demo, the bridge selection, and 64 of the 97 laws — same code, no install),
+and each rung has its own living-paper page —
+[deontic](https://opensentience.org/deontic-arithmetic.html),
+[temporal](https://opensentience.org/temporal-arithmetic.html),
+[reflexive](https://opensentience.org/reflexive-arithmetic.html),
+[epistemic](https://opensentience.org/epistemic-arithmetic.html),
+[strategic](https://opensentience.org/strategic-arithmetic.html),
+[resource](https://opensentience.org/resource-arithmetic.html) — alongside the existing
+[invariant arithmetic](https://opensentience.org/invariant-arithmetic.html) (rungs 1–2) and the
+full [/laws](https://ampersandboxdesign.com/laws.html) conformance page.
+
+## What it is / isn't
+
+**Is:** the actual substrate as runnable, property-tested infrastructure — families, the
+operations of seven modalities plus the resource economy, the algebraic bridge, 97 laws.
+
+**Isn't:** new mathematics. The ranking side is **semiring-based soft constraints** (Bistarelli,
+Montanari & Rossi, *JACM* 1997); the bridge is the **shielding** pattern from safe RL (Alshiekh
+et al., AAAI 2017); `sigma` as a join-semilattice is the CRDT/lattice tradition; the deontic layer
+is **von Wright**'s triad with **contrary-to-duty** repair (Chisholm 1963); the temporal layer is
+**LTL** (Pnueli 1977) with the **safety/liveness** split (Alpern & Schneider 1985) and **formula
+progression** (Bacchus & Kabanza 2000); the reflexive layer is **AGM** revision (Alchourrón,
+Gärdenfors & Makinson 1985) with norm-change principles (Governatori & Rotolo) and the
+provably-safe-self-modification idea (Schmidhuber's Gödel machines; MIRI tiling agents); the
+epistemic layer is possible-worlds **knowledge/belief** (Hintikka 1962; Fagin/Halpern/Moses/Vardi
+1995) with **public-announcement** learning (Plaza 1989) and **common knowledge** (Aumann 1976);
+the strategic layer is **coalition logic** (Pauly 2002) and **ATL** (Alur, Henzinger & Kupferman
+2002) with controllable-predecessor fixpoints; the resource layer is **linear logic** (Girard 1987)
+with **Type-II** metareasoning (Good 1971; Russell & Wefald 1989) and **market-based control**
+(Clearwater 1996) as its multi-agent companion. The contribution is the executable synthesis and
+the agent-native packaging.
+
+The ladder is complete, and the economy beneath it is in place: **alethic · axiological · deontic ·
+temporal · reflexive · epistemic · strategic**, running on **resource** — seven modalities, one
+economy, one bridge, **97 property-tested laws**.
+
+MIT licensed.

@@ -1,0 +1,3007 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>The laws — box-and-box conformance spec</title>
+        <meta
+            name="description"
+            content="The 97 property-tested laws that define box-and-box. Two conformant runtimes in any language must agree on every one. Pass the laws, you're conformant."
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg: #0d0c0a;
+                --bg2: #090907;
+                --surface: #15130e;
+                --surface2: #1b1813;
+                --ink: #f3ecdf;
+                --ink-dim: #cabf9d;
+                --muted: #988e7c;
+                --faint: #615a4d;
+                --line: #2a261d;
+                --line2: #383022;
+                --amber: #e69138;
+                --amber-2: #f0b15f;
+                --teal: #5cc196;
+                --teal-deep: #2f7d5b;
+                --red: #e0604f;
+                --serif: "Fraunces", Georgia, serif;
+                --sans: "Hanken Grotesk", system-ui, sans-serif;
+                --mono: "JetBrains Mono", ui-monospace, monospace;
+                --maxw: 1080px;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            html {
+                scroll-behavior: smooth;
+            }
+            body {
+                margin: 0;
+                background: var(--bg);
+                color: var(--ink);
+                font-family: var(--sans);
+                font-size: 17px;
+                line-height: 1.6;
+                -webkit-font-smoothing: antialiased;
+                overflow-x: hidden;
+            }
+            body::before {
+                content: "";
+                position: fixed;
+                inset: 0;
+                z-index: -2;
+                pointer-events: none;
+                background:
+                    radial-gradient(
+                        820px 520px at 80% -8%,
+                        rgba(230, 145, 56, 0.12),
+                        transparent 60%
+                    ),
+                    radial-gradient(
+                        700px 600px at 4% 6%,
+                        rgba(92, 193, 150, 0.06),
+                        transparent 55%
+                    );
+            }
+            body::after {
+                content: "";
+                position: fixed;
+                inset: 0;
+                z-index: -1;
+                pointer-events: none;
+                opacity: 0.035;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            }
+            .wrap {
+                max-width: var(--maxw);
+                margin: 0 auto;
+                padding: 0 28px;
+            }
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+            ::selection {
+                background: rgba(230, 145, 56, 0.28);
+                color: #fff;
+            }
+            .mono {
+                font-family: var(--mono);
+            }
+
+            nav {
+                position: sticky;
+                top: 0;
+                z-index: 50;
+                backdrop-filter: blur(11px);
+                background: rgba(13, 12, 10, 0.66);
+                border-bottom: 1px solid var(--line);
+            }
+            nav .wrap {
+                display: flex;
+                align-items: center;
+                height: 64px;
+                gap: 30px;
+                max-width: var(--maxw);
+            }
+            .brand {
+                font-family: var(--mono);
+                font-weight: 600;
+                letter-spacing: 0.04em;
+                font-size: 15px;
+            }
+            .brand b {
+                color: var(--amber);
+            }
+            nav .links {
+                display: flex;
+                gap: 26px;
+                margin-left: auto;
+                align-items: center;
+            }
+            nav .links a {
+                font-size: 14px;
+                color: var(--muted);
+                transition: color 0.2s;
+            }
+            nav .links a:hover {
+                color: var(--ink);
+            }
+            nav .navcta {
+                font-family: var(--mono);
+                font-size: 13px;
+                color: var(--amber);
+                border: 1px solid var(--line2);
+                padding: 8px 14px;
+                border-radius: 8px;
+            }
+            @media (max-width: 780px) {
+                nav .links a:not(.navcta) {
+                    display: none;
+                }
+            }
+
+            .kicker {
+                font-family: var(--mono);
+                font-size: 12px;
+                font-weight: 500;
+                letter-spacing: 0.22em;
+                text-transform: uppercase;
+                color: var(--amber);
+                margin: 0 0 18px;
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .kicker::before {
+                content: "";
+                width: 22px;
+                height: 1px;
+                background: var(--amber);
+                opacity: 0.7;
+            }
+            h1 {
+                font-family: var(--serif);
+                font-weight: 600;
+                letter-spacing: -0.015em;
+                line-height: 1.05;
+                font-size: clamp(38px, 6vw, 72px);
+                margin: 0;
+            }
+            .lead {
+                color: var(--muted);
+                font-size: clamp(17px, 2vw, 20px);
+                line-height: 1.62;
+                max-width: 64ch;
+                margin: 26px 0 0;
+            }
+            .lead b {
+                color: var(--ink-dim);
+                font-weight: 500;
+            }
+
+            header {
+                padding: 84px 0 50px;
+            }
+            .stats {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 18px;
+                margin: 44px 0 0;
+                border-top: 1px solid var(--line);
+                border-bottom: 1px solid var(--line);
+                padding: 34px 0;
+            }
+            @media (max-width: 680px) {
+                .stats {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 26px;
+                }
+            }
+            .stat .num {
+                font-family: var(--serif);
+                font-size: clamp(34px, 4.4vw, 50px);
+                color: var(--amber-2);
+                line-height: 1;
+            }
+            .stat .cap {
+                font-family: var(--mono);
+                font-size: 11.5px;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: var(--muted);
+                margin-top: 9px;
+            }
+
+            .repro {
+                margin: 34px 0 0;
+                border: 1px solid var(--line2);
+                border-radius: 14px;
+                overflow: hidden;
+                background: #0b0a08;
+            }
+            .repro .rh {
+                display: flex;
+                gap: 9px;
+                align-items: center;
+                padding: 12px 16px;
+                border-bottom: 1px solid var(--line);
+                font-family: var(--mono);
+                font-size: 12.5px;
+                color: var(--muted);
+            }
+            .repro .rh .dot {
+                width: 11px;
+                height: 11px;
+                border-radius: 50%;
+                display: inline-block;
+            }
+            .repro .rh .lab {
+                margin-left: auto;
+                color: var(--teal);
+            }
+            .repro pre {
+                margin: 0;
+                padding: 18px 18px 22px;
+                overflow-x: auto;
+                font-family: var(--mono);
+                font-size: 12.5px;
+                line-height: 1.6;
+                color: var(--ink-dim);
+            }
+            .repro .cmd {
+                color: var(--amber);
+            }
+            .repro .ok {
+                color: var(--teal);
+            }
+            .repro .dim {
+                color: var(--faint);
+            }
+
+            section.rung {
+                padding: 46px 0 8px;
+                border-bottom: 1px solid var(--line);
+            }
+            [data-reveal] {
+                opacity: 0;
+                transform: translateY(14px);
+                transition:
+                    opacity 0.6s cubic-bezier(0.2, 0.7, 0.2, 1),
+                    transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+            }
+            [data-reveal].in {
+                opacity: 1;
+                transform: none;
+            }
+            .rhead {
+                display: grid;
+                grid-template-columns: 300px 1fr;
+                gap: 34px;
+                align-items: start;
+                margin-bottom: 22px;
+            }
+            @media (max-width: 760px) {
+                .rhead {
+                    grid-template-columns: 1fr;
+                    gap: 8px;
+                }
+            }
+            .rop {
+                font-family: var(--serif);
+                font-size: 30px;
+                color: var(--ink);
+                line-height: 1;
+            }
+            .rmodal {
+                font-family: var(--mono);
+                font-size: 12px;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: var(--amber);
+                margin-top: 9px;
+            }
+            .rgloss {
+                margin: 0;
+                color: var(--muted);
+                font-size: 15px;
+                max-width: 60ch;
+            }
+            .laws {
+                margin-bottom: 30px;
+            }
+            .law {
+                border-radius: 8px;
+                transition: background 0.15s;
+            }
+            .law summary {
+                display: grid;
+                grid-template-columns: 62px 1fr 26px;
+                gap: 16px;
+                align-items: baseline;
+                padding: 9px 14px;
+                cursor: pointer;
+                list-style: none;
+                border-radius: 8px;
+            }
+            .law summary::-webkit-details-marker {
+                display: none;
+            }
+            .law summary:hover {
+                background: rgba(230, 145, 56, 0.05);
+            }
+            .law[open] summary {
+                background: rgba(230, 145, 56, 0.06);
+            }
+            .law .lid {
+                font-family: var(--mono);
+                font-size: 13px;
+                color: var(--amber);
+                font-weight: 500;
+            }
+            .law .lst {
+                color: var(--ink-dim);
+                font-size: 15px;
+            }
+            .law .ca {
+                color: var(--faint);
+                font-size: 10px;
+                margin-right: 9px;
+                display: inline-block;
+                transition: transform 0.15s;
+            }
+            .law[open] .ca {
+                transform: rotate(90deg);
+            }
+            .law .lok {
+                color: var(--teal);
+                font-family: var(--mono);
+                font-size: 14px;
+                text-align: right;
+            }
+            .law.br summary {
+                opacity: 0.97;
+            }
+            .law.br .lid {
+                color: var(--teal-deep);
+            }
+            .ldetail {
+                padding: 2px 14px 16px 92px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            @media (max-width: 560px) {
+                .ldetail {
+                    padding-left: 14px;
+                }
+            }
+            .lprop {
+                font-family: var(--mono);
+                color: var(--ink-dim);
+                font-size: 13.5px;
+                line-height: 1.55;
+            }
+            .lprop code {
+                font-family: var(--mono);
+                color: var(--amber-2);
+                background: rgba(230, 145, 56, 0.08);
+                padding: 0.05em 0.35em;
+                border-radius: 4px;
+                font-size: 12.5px;
+            }
+            .lwhy {
+                color: var(--muted);
+                font-size: 13.5px;
+                line-height: 1.55;
+            }
+            .plabel {
+                font-family: var(--mono);
+                font-size: 10px;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: var(--faint);
+                display: inline-block;
+                margin-right: 8px;
+                vertical-align: 1px;
+            }
+            .brtag {
+                font-family: var(--mono);
+                font-size: 11px;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: var(--faint);
+                margin: 14px 0 4px 14px;
+            }
+
+            .bend {
+                padding: 60px 0 10px;
+            }
+            .bend h2 {
+                font-family: var(--serif);
+                font-weight: 600;
+                font-size: clamp(26px, 3.6vw, 38px);
+                margin: 0 0 8px;
+                letter-spacing: -0.01em;
+            }
+            .bend .sub {
+                color: var(--muted);
+                max-width: 62ch;
+                margin: 0 0 26px;
+            }
+            .bcard {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 0;
+                border: 1px solid var(--line);
+                border-radius: 14px;
+                overflow: hidden;
+                background: var(--surface);
+            }
+            .brow {
+                display: grid;
+                grid-template-columns: 230px 1fr;
+                gap: 24px;
+                padding: 18px 22px;
+                border-bottom: 1px solid var(--line);
+                align-items: baseline;
+            }
+            .brow:last-child {
+                border-bottom: none;
+            }
+            @media (max-width: 720px) {
+                .brow {
+                    grid-template-columns: 1fr;
+                    gap: 6px;
+                }
+            }
+            .brow .bt {
+                font-family: var(--mono);
+                font-size: 13px;
+                color: var(--ink);
+            }
+            .brow .bd {
+                color: var(--muted);
+                font-size: 14.5px;
+            }
+            .brow .bd .hold {
+                color: var(--teal);
+            }
+            .brow .bd .fail {
+                color: var(--amber-2);
+            }
+
+            footer {
+                border-top: 1px solid var(--line);
+                padding: 56px 0 50px;
+                margin-top: 30px;
+            }
+            footer .row {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                flex-wrap: wrap;
+                gap: 24px;
+            }
+            footer .blurb {
+                color: var(--muted);
+                font-size: 14px;
+                max-width: 40ch;
+                margin: 12px 0 0;
+            }
+            footer .links {
+                display: flex;
+                gap: 24px;
+                flex-wrap: wrap;
+            }
+            footer a {
+                color: var(--muted);
+                font-size: 14px;
+                transition: color 0.2s;
+            }
+            footer a:hover {
+                color: var(--amber-2);
+            }
+            .copy {
+                font-family: var(--mono);
+                font-size: 12px;
+                color: var(--faint);
+                margin-top: 34px;
+                padding-top: 22px;
+                border-top: 1px solid var(--line);
+            }
+        </style>
+    </head>
+    <body>
+        <script type="module" src="/amp-nav.js"></script>
+        <amp-nav
+            property="laws"
+            style="
+                --amp-nav-bg: rgba(13, 12, 10, 0.82);
+                --amp-nav-fg: #f3ecdf;
+                --amp-nav-muted: #988e7c;
+                --amp-nav-accent: #e69138;
+                --amp-nav-border: rgba(243, 236, 223, 0.1);
+                --amp-nav-hover: rgba(243, 236, 223, 0.05);
+                --amp-nav-cta-bg: #e69138;
+                --amp-nav-cta-fg: #0d0c0a;
+            "
+        ></amp-nav>
+        <nav>
+            <div class="wrap">
+                <a class="brand" href="index.html#top"
+                    >[<b>&amp;</b>] AMPERSAND BOX</a
+                >
+                <div class="links">
+                    <a href="index.html#kernel">Kernel</a>
+                    <a href="index.html#bridge">The bridge</a>
+                    <a href="index.html#aios">AIOS</a>
+                    <a href="laws.html" style="color: var(--ink)">Laws</a>
+                    <a href="index.html#ecosystem">Ecosystem</a>
+                    <a class="navcta" href="index.html#install"
+                        >npm i -g box-and-box</a
+                    >
+                </div>
+            </div>
+        </nav>
+
+        <header>
+            <div class="wrap">
+                <p
+                    class="kicker"
+                    data-reveal
+                    style="opacity: 1; transform: none"
+                >
+                    Conformance · the laws are the spec
+                </p>
+                <h1>97 laws.<br />Every one a property test.</h1>
+                <p class="lead">
+                    <b>The verdict is the contract.</b> box-and-box isn’t
+                    defined by an implementation — it’s defined by these laws:
+                    associativity, the annihilation of a veto, the precedence of
+                    the bridge, the un-weakenability of the entrenched core.
+                    Each is checked against 2000 random cases on every run. Two
+                    hosts, in <em>any</em> language, must agree on all 97. Pass
+                    them, and you’re conformant — the way an implementation is
+                    POSIX because it passes the suite, not because it says so.
+                    <b>Click any law</b> to see its formal property and what it
+                    guarantees.
+                </p>
+
+                <div class="stats">
+                    <div class="stat">
+                        <div class="num">8</div>
+                        <div class="cap">modal subsystems</div>
+                    </div>
+                    <div class="stat">
+                        <div class="num">97</div>
+                        <div class="cap">property-tested laws</div>
+                    </div>
+                    <div class="stat">
+                        <div class="num">2000</div>
+                        <div class="cap">trials per law</div>
+                    </div>
+                    <div class="stat">
+                        <div class="num">1</div>
+                        <div class="cap">verdict, certified</div>
+                    </div>
+                </div>
+
+                <div class="repro">
+                    <div class="rh">
+                        <span class="dot" style="background: #e0604f"></span
+                        ><span class="dot" style="background: #e69138"></span
+                        ><span class="dot" style="background: #5cc196"></span>
+                        &nbsp; reproduce it yourself
+                        <span class="lab">live output</span>
+                    </div>
+                    <pre><span class="cmd">$ npm i -g box-and-box &amp;&amp; node test/laws.mjs</span>
+
+box-and-box law harness · <span class="dim">2000 trials/law</span>
+──────────────────────────────
+Feasibility (L1–L14): <span class="ok">14/14 pass</span>
+Priority    (H1–H13): <span class="ok">13/13 pass</span>
+The bridge  (B1–B3):  <span class="ok">3/3 pass</span>
+Permissions (D1–D9):  <span class="ok">9/9 pass</span>   · composition (DB1–DB3): 3/3
+Time        (T1–T8):  <span class="ok">8/8 pass</span>   · composition (TB1–TB3): 3/3
+Economy     (C1–C8):  <span class="ok">8/8 pass</span>   · composition (CB1–CB3): 3/3
+Knowledge   (E1–E8):  <span class="ok">8/8 pass</span>   · composition (EB1–EB3): 3/3
+Coordination(S1–S8):  <span class="ok">8/8 pass</span>   · composition (SB1–SB3): 3/3
+Self-amend  (R1–R8):  <span class="ok">8/8 pass</span>   · composition (RB1–RB3): 3/3
+──────────────────────────────
+<span class="ok">✓ all 97 stated laws hold.</span></pre>
+                </div>
+            </div>
+        </header>
+
+        <main class="wrap">
+            <section class="rung" data-reveal>
+                <div class="rhead">
+                    <div>
+                        <div class="rop">The bridge</div>
+                        <div class="rmodal">composition · 3 laws</div>
+                    </div>
+                    <p class="rgloss">
+                        feasible ▸ permitted ▸ best — the rule that composes the
+                        rest, and the annihilation that makes a veto absolute.
+                    </p>
+                </div>
+                <div class="laws">
+                    <details class="law">
+                        <summary>
+                            <span class="lid">B1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>veto ⇒ score 0̲</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >infeasible(o) ⇒ gatedScore(o) = 0̲
+                                    (−∞)</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>An option
+                                that fails the feasibility floor scores the
+                                tropical annihilator — no amount of utility can
+                                lift it back into contention.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">B2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>select ranks within
+                                feasible</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >select = argmax utility over the feasible
+                                    set only</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The chosen
+                                option is always feasible, and no feasible
+                                option out-scores it. Ranking happens strictly
+                                <em>after</em> the floor — never across it.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">B3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>conservativity: one
+                                feasible ⇒ chosen</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >|feasible| = 1 ⇒ that option chosen (even
+                                    vs. utility 999)</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>A lone
+                                feasible action wins regardless of how
+                                attractive the infeasible alternatives look.
+                                Feasibility is not a tiebreaker — it is a gate.
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </section>
+            <section class="rung" data-reveal>
+                <div class="rhead">
+                    <div>
+                        <div class="rop">Feasibility</div>
+                        <div class="rmodal">alethic · 14 laws</div>
+                    </div>
+                    <p class="rgloss">
+                        what can happen, the monoid of values, and the 0̲ that
+                        infeasibility collapses to.
+                    </p>
+                </div>
+                <div class="laws">
+                    <details class="law">
+                        <summary>
+                            <span class="lid">L1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>combine
+                                associative</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >combine(combine(a,b),c) =
+                                    combine(a,combine(b,c))</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Merging
+                                values is grouping-independent — you can fold a
+                                stream of evidence in any order and reach the
+                                same state.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">L2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>combine identity
+                                V0</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>combine(a, V0) = a</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The empty
+                                value is a true unit — merging in
+                                &ldquo;nothing&rdquo; changes nothing.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">L3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>commutative families
+                                (n,κ,β,σ,deny)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>combine(a,b) = combine(b,a)</code> on
+                                each field
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Merge
+                                order doesn't matter — the basis for
+                                conflict-free (CRDT) convergence across
+                                replicas.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">L4</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>β idempotent under
+                                min</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>combine(a,a).β = a.β</code> (β merges by
+                                min)
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Confidence
+                                merges conservatively (lowest wins) and
+                                re-merging a value with itself is stable.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">L5</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>σ idempotent under
+                                ∪</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>combine(a,a).σ = a.σ</code> (σ merges by
+                                ∪)
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The
+                                capability set merges by union, so duplicates
+                                collapse and self-merge is a no-op.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">L6</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>κ idempotent under
+                                ∨</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>combine(a,a).κ = a.κ</code> (κ merges by
+                                ∨)
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The
+                                cyclicity flag merges by OR and never flips
+                                spuriously on re-merge.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">L7</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>promote
+                                β-monotone</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>promote(a, ev).β ≥ a.β</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Evidence
+                                can only raise confidence, never silently lower
+                                it.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">L8</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>reconcile antitone +
+                                idempotent</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>reconcile(a,T).σ ⊆ a.σ</code>, and
+                                reconcile is idempotent
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span
+                                >Reconciliation only narrows the capability set
+                                and reaches a stable result in a single pass.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">L9</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>deliberate κ→false +
+                                idempotent</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>deliberate(a).κ = false</code>, and
+                                deliberate is idempotent
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span
+                                >Deliberation clears a detected cycle and is a
+                                fixpoint — running it again changes nothing.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">L10</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>chain refuses a
+                                backward phase</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >phaseIdx(a) &gt; phaseIdx(b) ⇒ chain(a,b)
+                                    errors</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The
+                                pipeline cannot run a phase backward —
+                                composition respects phase order.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">L11</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>chain associative
+                                where defined</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >chain assoc. on forward-ordered
+                                    triples</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Where the
+                                pipeline is legal, its composition is
+                                associative — sub-pipelines compose predictably.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">L12</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>promote distributes
+                                over combine on β</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >promote(combine(a,b)).β = combine(promote
+                                    a, promote b).β</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Promoting
+                                then merging gives the same confidence as
+                                merging then promoting — order of evidence vs.
+                                merge is irrelevant.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">L13</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>consume gate
+                                (β_min)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>consume(a).ok ⟺ a.β ≥ β_min</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The
+                                feasibility gate fires exactly at the confidence
+                                threshold — no margin, no slack.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">L14</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>deny_default
+                                idempotent under ∧</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >combine(a,a).denyDefault =
+                                    a.denyDefault</code
+                                >
+                                (merges by ∧)
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span
+                                >Deny-by-default merges by AND — once any source
+                                denies, it stays denied, and self-merge is
+                                stable.
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </section>
+            <section class="rung" data-reveal>
+                <div class="rhead">
+                    <div>
+                        <div class="rop">Permissions</div>
+                        <div class="rmodal">deontic · 12 laws</div>
+                    </div>
+                    <p class="rgloss">
+                        obligation, prohibition, conflict, and contrary-to-duty
+                        repair — and how a permit composes into the verdict.
+                    </p>
+                </div>
+                <div class="laws">
+                    <details class="law">
+                        <summary>
+                            <span class="lid">D1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>join commutative +
+                                associative</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>join(a,b) = join(b,a)</code>,
+                                <code>join</code> associative
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Permission
+                                statuses combine order-free — the deontic
+                                lattice is a join-semilattice.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">D2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>join identity OPTIONAL
+                                + idempotent</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>join(a, OPTIONAL) = a</code>,
+                                <code>join(a,a) = a</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>OPTIONAL
+                                (no constraint) is the unit, and joining a
+                                status with itself is a no-op.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">D3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>O ⊔ F = CONFLICT</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >join(OBLIGATORY, FORBIDDEN) =
+                                    CONFLICT</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>An
+                                obligation and a prohibition on the same act
+                                surface as an explicit CONFLICT — never silently
+                                resolved.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">D4</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>join monotone (a ⊑
+                                a⊔b)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>rank(a ⊔ b) ≥ rank(a)</code> and
+                                <code>≥ rank(b)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Joining
+                                never lowers deontic strength — constraints only
+                                accumulate upward.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">D5</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>CONFLICT absorbs</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>join(CONFLICT, a) = CONFLICT</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Conflict
+                                propagates through further joins until it is
+                                explicitly resolved.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">D6</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>resolve idempotent +
+                                clears conflict (distinct prio)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>resolve</code> with distinct priorities
+                                clears CONFLICT; <code>resolve</code> idempotent
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span
+                                >Priority-based resolution terminates a conflict
+                                in one pass and re-running it is stable.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">D7</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>factual detachment (in
+                                force iff condition)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >detach(duty).inForce ⟺ condition
+                                    holds</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>A
+                                conditional duty is in force exactly when its
+                                triggering condition is true — no earlier, no
+                                later.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">D8</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>CTD partiality (repair
+                                iff violated)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >repair present ⟺ primary duty
+                                    violated</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>A
+                                contrary-to-duty (reparative) obligation fires
+                                only on an actual violation — not pre-emptively.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">D9</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>comply: O⇒¬F (ought is
+                                permitted)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>comply(O,done)=ok</code>;
+                                <code>comply(F,done)≠ok</code>;
+                                <code>comply(O,¬done)≠ok</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>What is
+                                obligatory is permitted; doing the forbidden, or
+                                omitting the obligatory, both fail compliance.
+                            </div>
+                        </div>
+                    </details>
+                    <div class="brtag">composition (DB1–DB3)</div>
+                    <details class="law br">
+                        <summary>
+                            <span class="lid">DB1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>forbidden excluded
+                                from decision</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >forbidden option (utility 99) is never
+                                    chosen; safe option wins</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span
+                                >Permissions sit above priority — utility 99
+                                cannot beat a prohibition.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law br">
+                        <summary>
+                            <span class="lid">DB2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>obligation forces over
+                                higher score</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >obligatory(utility 1) chosen over
+                                    non-obligatory(utility 99)</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>A duty
+                                overrides mere desirability — the kernel does
+                                the obligatory thing even when something
+                                flashier scores higher.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law br">
+                        <summary>
+                            <span class="lid">DB3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>alethic precedence ⇒
+                                CTD escalation</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >obligatory option infeasible ⇒ decision
+                                    null + CTD escalation</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>When you
+                                can't do your duty, the kernel escalates
+                                (contrary-to-duty) rather than faking compliance
+                                — feasibility still comes first.
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </section>
+            <section class="rung" data-reveal>
+                <div class="rhead">
+                    <div>
+                        <div class="rop">Priority</div>
+                        <div class="rmodal">axiological · 13 laws</div>
+                    </div>
+                    <p class="rgloss">
+                        how the feasible, permitted options are ranked — in a
+                        semiring, so preferences never resurrect a vetoed one.
+                    </p>
+                </div>
+                <div class="laws">
+                    <details class="law">
+                        <summary>
+                            <span class="lid">H1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>⊕ commutative
+                                monoid</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >⊕ commutative, associative, identity
+                                    0̲</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span
+                                >Alternatives combine order-free with a zero
+                                element — the &ldquo;choose between&rdquo;
+                                operator is well-behaved.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">H2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>⊗ monoid</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>⊗ associative, identity 1̲</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Sequencing
+                                scores is associative with a unit — the
+                                &ldquo;and then&rdquo; operator composes
+                                cleanly.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">H3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>left
+                                distributivity</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>a ⊗ (b ⊕ c) = (a ⊗ b) ⊕ (a ⊗ c)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Sequencing
+                                distributes over choice — a sound preference
+                                algebra, not ad-hoc arithmetic.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">H4</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>right
+                                distributivity</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>(a ⊕ b) ⊗ c = (a ⊗ c) ⊕ (b ⊗ c)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span
+                                >Distributivity holds on both sides — confirming
+                                a genuine semiring structure.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">H5</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>0̲ annihilates ⊗</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>0̲ ⊗ a = 0̲</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>THE
+                                annihilation law — a vetoed option (0̲) times any
+                                utility stays 0̲. This is what makes a veto
+                                absolute in the score algebra.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">H6</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>⊕ idempotence (dioid
+                                only)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>a ⊕ a = a</code> under the tropical dioid
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span
+                                >Best-of-self is self on the tropical dioid.
+                                Deliberately <em>fails</em> under
+                                probability/log semirings (see &ldquo;where the
+                                laws bend&rdquo;) — picking the wrong semiring
+                                is a category error the suite catches.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">H7</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>⊗ monotone in
+                                order</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>a ≤ b ⇒ a ⊗ c ≤ b ⊗ c</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Scaling by
+                                a common factor preserves ranking — sequencing
+                                never reorders preferences.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">H8</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>reinforce
+                                η-contraction</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >|reinforce(u,t,e) − t| = (1−e)·|u −
+                                    t|</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>A learning
+                                update is a contraction toward the target —
+                                values converge, they don't oscillate.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">H9</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>rollout
+                                γ-contraction</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>‖Bu − Bv‖ = γ·‖u − v‖</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The
+                                Bellman backup is a γ-contraction — value
+                                iteration provably converges to a unique
+                                fixpoint.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">H10</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>dominate idempotent +
+                                Pareto</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >dominate idempotent; no Pareto-dominated
+                                    survivor</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The Pareto
+                                frontier is stable and clean — re-filtering
+                                changes nothing and no dominated option slips
+                                through.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">H11</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>anneal ε→0
+                                idempotent</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>anneal drives ε → 0</code>, and is a
+                                fixpoint there
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span
+                                >Exploration decays to zero — the schedule
+                                eventually commits to exploitation.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">H12</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>softmax
+                                shift-invariant</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>softmax(u, T) = softmax(u + c, T)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Scores are
+                                relative — adding a constant to every utility
+                                leaves the distribution unchanged.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">H13</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>T→0 collapses to
+                                argmax</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>softmax(u, 0⁺) → argmax</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Zero
+                                temperature is exactly greedy selection — the
+                                continuous knob recovers the hard maximum at its
+                                limit.
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </section>
+            <section class="rung" data-reveal>
+                <div class="rhead">
+                    <div>
+                        <div class="rop">Time</div>
+                        <div class="rmodal">temporal · 11 laws</div>
+                    </div>
+                    <p class="rgloss">
+                        safety as an invariant over the whole trajectory;
+                        liveness as a horizon obligation.
+                    </p>
+                </div>
+                <div class="laws">
+                    <details class="law">
+                        <summary>
+                            <span class="lid">T1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>G,F idempotent
+                                (GGφ≡Gφ)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>GGφ ≡ Gφ</code>, <code>FFφ ≡ Fφ</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The LTL
+                                always/eventually operators are idempotent —
+                                &ldquo;always always&rdquo; is just
+                                &ldquo;always.&rdquo;
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">T2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>duality (¬Gφ≡F¬φ,
+                                ¬Fφ≡G¬φ)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>¬Gφ ≡ F¬φ</code>, <code>¬Fφ ≡ G¬φ</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Always and
+                                eventually are De Morgan duals — negation pushes
+                                cleanly through the temporal modalities.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">T3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>∧,∨ commutative +
+                                idempotent</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>∧, ∨ commutative and idempotent</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The
+                                propositional layer under the temporal operators
+                                is a well-formed lattice.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">T4</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>progression faithful
+                                (monitor ≡ direct)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >monitor verdict = direct trace
+                                    semantics</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The
+                                incremental runtime monitor is sound — stepping
+                                a formula forward agrees with evaluating it over
+                                the whole trace.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">T5</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>safety finite-witness
+                                / liveness never-early</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >safety emits a 'vio' witness at the breach
+                                    step; liveness never commits false
+                                    early</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Safety
+                                violations are caught at the exact step they
+                                occur; liveness is never failed prematurely (it
+                                may still be satisfiable later).
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">T6</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>G/∧ and F/∨
+                                distribute</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>G(a ∧ b) ≡ Ga ∧ Gb</code>,
+                                <code>F(a ∨ b) ≡ Fa ∨ Fb</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The
+                                standard LTL distribution identities hold —
+                                invariants and reachability decompose
+                                conjunctively/disjunctively.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">T7</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>until fixpoint
+                                (φUψ≡ψ∨(φ∧X(φUψ)))</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>φUψ ≡ ψ ∨ (φ ∧ X(φUψ))</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Until
+                                satisfies its defining fixpoint equation — the
+                                basis for unrolling it into a step-by-step
+                                monitor.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">T8</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>lasso GF/FG + G/F vs
+                                unrolling</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >GF = some loop state; FG = every loop
+                                    state; G/F = unrolled prefix</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>On
+                                lasso-shaped (ultimately periodic) traces,
+                                ω-regular monitoring matches the unrolled
+                                semantics — &ldquo;infinitely often&rdquo; and
+                                &ldquo;eventually always&rdquo; are decided on
+                                the loop.
+                            </div>
+                        </div>
+                    </details>
+                    <div class="brtag">composition (TB1–TB3)</div>
+                    <details class="law br">
+                        <summary>
+                            <span class="lid">TB1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>safety shield prunes a
+                                violating step</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >residual rejects a violating next step,
+                                    accepts a holding one</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The
+                                watchdog blocks the unsafe next action before it
+                                executes — safety is enforced at the step
+                                boundary.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law br">
+                        <summary>
+                            <span class="lid">TB2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>unmet liveness ⇒
+                                escalation at horizon</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >missed liveness at horizon ⇒ escalate
+                                    (repair/replan)</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>A deadline
+                                that comes and goes unmet triggers an
+                                escalate-and-replan, not a silent pass.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law br">
+                        <summary>
+                            <span class="lid">TB3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>safety violation ⇒
+                                unsafe verdict</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >supervise returns safe=false at the exact
+                                    violatedAt index</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>A
+                                trajectory breach is reported as unsafe and
+                                pinned to the step where it happened.
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </section>
+            <section class="rung" data-reveal>
+                <div class="rhead">
+                    <div>
+                        <div class="rop">Economy</div>
+                        <div class="rmodal">resource · 11 laws</div>
+                    </div>
+                    <p class="rgloss">
+                        a closed, double-entry budget; affine use; and pricing
+                        the kernel’s own deliberation.
+                    </p>
+                </div>
+                <div class="laws">
+                    <details class="law">
+                        <summary>
+                            <span class="lid">C1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>conservation under
+                                transfer (Σ invariant)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >total balance invariant under any
+                                    transfer</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The ledger
+                                is closed double-entry — a transfer moves value,
+                                it never creates or destroys it.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">C2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>no overdraft; balances
+                                stay ≥ 0</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >over-transfer ⇒ INFEASIBLE; all balances ≥
+                                    0</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>You cannot
+                                spend what you don't have — the budget never
+                                goes negative.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">C3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>independent
+                                transactions commute (CRDT)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>disjoint transfers commute</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span
+                                >Non-overlapping transactions can be applied in
+                                any order — the ledger converges like a CRDT.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">C4</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>linearity — spending
+                                depletes (not idempotent)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>spend twice removes two units</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Consumable
+                                resources are linear — each spend depletes, so
+                                re-running an action costs again (deliberately
+                                not idempotent).
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">C5</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>reusability — using
+                                `!` does not deplete (idempotent)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >using a reusable (`!`) skill twice leaves
+                                    the balance unchanged</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The
+                                &ldquo;of-course&rdquo; modality is copyable — a
+                                reusable capability can be invoked freely
+                                without drawing down a budget.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">C6</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>flow monotonicity —
+                                depletion only decreases</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >available tokens only decrease over a
+                                    run</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>No
+                                spontaneous refills — a consumable budget moves
+                                one direction until explicitly replenished.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">C7</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>capacity conservation
+                                (stability + plasticity)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >total capacity invariant under
+                                    allocate/forget</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Allocating
+                                and releasing capacity conserves the total — no
+                                capacity leaks between stability and plasticity.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">C8</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>no free reclaim —
+                                forgetting releases the knowledge</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >forget releases capacity AND the associated
+                                    knowledge</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Reclaiming
+                                capacity isn't free — you give up the knowledge
+                                that occupied it. No having-it-both-ways.
+                            </div>
+                        </div>
+                    </details>
+                    <div class="brtag">composition (CB1–CB3)</div>
+                    <details class="law br">
+                        <summary>
+                            <span class="lid">CB1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>exhaustion ⇒
+                                infeasible (the alethic 0̲ gate)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>feasible ⟺ balance ≥ cost</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Running
+                                out of resource makes an action infeasible — the
+                                economy feeds directly into the alethic floor.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law br">
+                        <summary>
+                            <span class="lid">CB2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>cost composes
+                                additively along a pipeline (semiring)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >three staged spends = one lump spend of the
+                                    sum</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>A
+                                pipeline's cost is the sum of its stages' costs
+                                — budgeting composes predictably along
+                                <code>|&gt;</code>.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law br">
+                        <summary>
+                            <span class="lid">CB3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>Type-II repair pricing
+                                (value ≥ cost ∧ affordable)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >repair invoked ⟺ value ≥ cost ∧ affordable;
+                                    charges cost</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The kernel
+                                only pays to repair when the repair is worth its
+                                price and the budget can cover it — and it
+                                actually deducts the cost.
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </section>
+            <section class="rung" data-reveal>
+                <div class="rhead">
+                    <div>
+                        <div class="rop">Knowledge</div>
+                        <div class="rmodal">epistemic · 11 laws</div>
+                    </div>
+                    <p class="rgloss">
+                        knowledge (S5) vs. belief (KD45); a known-unknown that
+                        must route to deliberation.
+                    </p>
+                </div>
+                <div class="laws">
+                    <details class="law">
+                        <summary>
+                            <span class="lid">E1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>factivity T (Kφ →
+                                φ)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>Kφ → φ</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Knowledge
+                                is factive (axiom T of S5) — if the kernel
+                                <em>knows</em> something, it is true. This is
+                                the line between knowing and merely believing.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">E2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>distribution K
+                                (K(φ→ψ)∧Kφ → Kψ)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>K(φ→ψ) ∧ Kφ → Kψ</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Knowledge
+                                is closed under known implication — you know the
+                                consequences of what you know.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">E3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>positive introspection
+                                (Kφ → KKφ)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>Kφ → KKφ</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>If you
+                                know something, you know that you know it (axiom
+                                4).
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">E4</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>negative introspection
+                                (¬Kφ → K¬Kφ)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>¬Kφ → K¬Kφ</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>If you
+                                don't know something, you know that you don't
+                                (axiom 5) — the formal basis for routing a
+                                known-unknown to deliberation.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">E5</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>belief consistency D
+                                (¬(Bφ ∧ B¬φ))</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>¬(Bφ ∧ B¬φ)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Belief is
+                                consistent — the kernel never simultaneously
+                                believes a thing and its negation.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">E6</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>knowledge ⇒ belief (Kφ
+                                → Bφ)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>Kφ → Bφ</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Anything
+                                known is also believed — knowledge is the
+                                stronger, factive layer above belief.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">E7</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>learning monotonicity
+                                (announce preserves K)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >public announcement of a truth preserves
+                                    prior K</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Learning a
+                                true fact never destroys existing knowledge —
+                                the epistemic state only grows.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">E8</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>common knowledge (Cφ →
+                                Eφ)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>Cφ → Eφ</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Common
+                                knowledge implies everyone-knows — the
+                                foundation for coordinated joint action.
+                            </div>
+                        </div>
+                    </details>
+                    <div class="brtag">composition (EB1–EB3)</div>
+                    <details class="law br">
+                        <summary>
+                            <span class="lid">EB1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>threshold gate
+                                monotone; K = belief@1</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >belief gate monotone in threshold;
+                                    knowledge = belief at threshold 1</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Raising
+                                the confidence bar can only restrict what counts
+                                as believed, and certain knowledge sits at the
+                                top of that scale.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law br">
+                        <summary>
+                            <span class="lid">EB2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>known-unknown ⇒
+                                deliberate (κ)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >knowsItDoesntKnow ⇒ route =
+                                    deliberate</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>A
+                                recognized knowledge gap routes the decision
+                                into deliberation rather than acting on a guess.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law br">
+                        <summary>
+                            <span class="lid">EB3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>pooled knowledge
+                                dominates individual</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >individual knowledge ⊆ distributed
+                                    knowledge</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Pooling
+                                agents' knowledge never loses information — the
+                                group knows at least what any member does.
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </section>
+            <section class="rung" data-reveal>
+                <div class="rhead">
+                    <div>
+                        <div class="rop">Coordination</div>
+                        <div class="rmodal">strategic · 11 laws</div>
+                    </div>
+                    <p class="rgloss">
+                        which coalitions can actually ensure an outcome —
+                        ought-implies-can, made checkable.
+                    </p>
+                </div>
+                <div class="laws">
+                    <details class="law">
+                        <summary>
+                            <span class="lid">S1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>unit: [C]⊤ and
+                                ¬[C]⊥</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>[C]⊤ holds; [C]⊥ never holds</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Any
+                                coalition can ensure the trivially-true outcome,
+                                and none can force the impossible — the floor
+                                and ceiling of strategic ability.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">S2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>coalition monotonicity
+                                (C ⊆ C′ ⇒ [C]φ → [C′]φ)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>C ⊆ C′ ⇒ [C]φ → [C′]φ</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>A larger
+                                coalition can ensure anything a sub-coalition
+                                can — adding members never removes power.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">S3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>outcome monotonicity
+                                (φ⊨ψ ⇒ [C]φ → [C]ψ)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>φ ⊨ ψ ⇒ [C]φ → [C]ψ</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>If a
+                                coalition can ensure a strong outcome, it can
+                                ensure any weaker one it entails.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">S4</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>superadditivity
+                                (disjoint C₁,C₂ cooperate)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>[C₁]φ₁ ∧ [C₂]φ₂ ⇒ [C₁∪C₂](φ₁ ∧ φ₂)</code>
+                                for disjoint C₁,C₂
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Disjoint
+                                coalitions can pool their guarantees —
+                                cooperation achieves the conjunction of what
+                                each could ensure alone.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">S5</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>regularity (¬([C]φ ∧
+                                [N∖C]¬φ))</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>¬([C]φ ∧ [N∖C]¬φ)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>A
+                                coalition and its complement can't both force
+                                contradictory outcomes — the strategic game is
+                                consistent.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">S6</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>maintenance is a
+                                greatest fixpoint (□)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >canMaintain = greatest fixpoint (□)</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The set of
+                                states from which a coalition can keep an
+                                invariant forever is exactly the greatest
+                                fixpoint — sound &ldquo;can hold the line&rdquo;
+                                reasoning.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">S7</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>reachability is a
+                                least fixpoint (◊)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>canReach = least fixpoint (◊)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The states
+                                from which a coalition can eventually force a
+                                goal are exactly the least fixpoint — sound
+                                &ldquo;can get there&rdquo; reasoning.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">S8</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>grand-coalition
+                                determinacy ([Σ]φ ↔ ∃ successor φ)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>[Σ]φ ⟺ ∃ successor satisfying φ</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The grand
+                                coalition (everyone) can ensure exactly the
+                                outcomes some successor state realizes — full
+                                control collapses to plain reachability.
+                            </div>
+                        </div>
+                    </details>
+                    <div class="brtag">composition (SB1–SB3)</div>
+                    <details class="law br">
+                        <summary>
+                            <span class="lid">SB1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>single-agent collapse
+                                → temporal reachability</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >1-agent canReach = BFS reachability</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>With a
+                                single agent, coalitional reachability reduces
+                                to ordinary graph reachability — the strategic
+                                layer generalizes the temporal one.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law br">
+                        <summary>
+                            <span class="lid">SB2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>ought-implies-can
+                                (¬ability ⇒ escalate)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >oblige ⇒ discharge if canEnsure, else
+                                    escalate</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span
+                                >Ought-implies-can is enforced — an obligation
+                                the coalition cannot ensure escalates instead of
+                                being falsely discharged.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law br">
+                        <summary>
+                            <span class="lid">SB3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>coordination needs
+                                ability ∧ common knowledge</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >executable ⟺ canEnsure ∧
+                                    commonKnowledge</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>A joint
+                                action is executable only when the coalition
+                                both has the power <em>and</em> shares the
+                                knowledge to coordinate it.
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </section>
+            <section class="rung" data-reveal>
+                <div class="rhead">
+                    <div>
+                        <div class="rop">Self-amendment</div>
+                        <div class="rmodal">reflexive · 11 laws</div>
+                    </div>
+                    <p class="rgloss">
+                        rules that change rules, with an entrenched core that no
+                        amendment can weaken.
+                    </p>
+                </div>
+                <div class="laws">
+                    <details class="law">
+                        <summary>
+                            <span class="lid">R1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>success (enact adds,
+                                repeal removes)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >enact adds a rule; repeal removes it</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Amendments
+                                actually take effect — enacting installs the
+                                rule, repealing retracts it.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">R2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>consistency (no
+                                surviving dominated conflict)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >arbitration leaves no dominated O/F
+                                    conflict standing</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>After
+                                arbitration the rule-set is conflict-free — a
+                                dominated obligation/prohibition pair can't
+                                survive.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">R3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>minimal change
+                                (enact∘repeal = id)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >enact then repeal returns the exact
+                                    original rule-set</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Amendment
+                                is surgical — adding then removing a rule leaves
+                                no residue.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">R4</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>entrenchment (no
+                                weakening the core)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >entrenched 'safe' rule cannot be repealed
+                                    or weakened, only strengthened</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>THE
+                                entrenchment law — the ring-0 floor is
+                                un-writable from within. Self-amendment can
+                                tighten the core but never loosen it.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">R5</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>lex superior (priority
+                                wins)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >higher-priority rule overrides lower</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Lex
+                                superior — when rules clash, the one with higher
+                                authority prevails.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">R6</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>lex posterior (recency
+                                breaks ties)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >equal priority ⇒ more recent rule
+                                    wins</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Lex
+                                posterior — among equally authoritative rules,
+                                the latest enactment governs.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">R7</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>arbitration
+                                idempotent</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>arbitration is idempotent</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Resolving
+                                the rule-set once is enough — re-arbitrating
+                                produces the same result.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">R8</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>reflective stability
+                                (fixpoint)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>stabilize reaches a fixpoint</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Iterated
+                                self-amendment converges — the system that
+                                reasons about its own rules settles, it doesn't
+                                spin.
+                            </div>
+                        </div>
+                    </details>
+                    <div class="brtag">composition (RB1–RB3)</div>
+                    <details class="law br">
+                        <summary>
+                            <span class="lid">RB1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>cannot self-permit the
+                                forbidden</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >an obligation out-prioritizing an
+                                    entrenched prohibition is rejected</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>You can't
+                                legislate around the floor — no amendment can
+                                grant permission to do the entrenched-forbidden.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law br">
+                        <summary>
+                            <span class="lid">RB2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>revision propagates to
+                                govern</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >enacting a prohibition flips the live
+                                    verdict (A chosen → A vetoed)</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Amendments
+                                take effect on the very next decision — the
+                                governance verdict reflects the revised rule-set
+                                immediately.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law br">
+                        <summary>
+                            <span class="lid">RB3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>entrenched safety
+                                survives in supervise</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >entrenched temporal floor can't be repealed
+                                    and still enforces</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>An
+                                entrenched safety invariant resists repeal and
+                                keeps catching trajectory violations downstream
+                                in supervision.
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </section>
+
+            <section class="bend" data-reveal>
+                <h2>Where the laws bend — by design</h2>
+                <p class="sub">
+                    A governance algebra has to know the difference between
+                    regimes. So the harness also checks, on every run, that
+                    certain properties <em>fail</em> exactly where they should.
+                    These aren’t bugs — they’re the distinctions that make the
+                    kernel honest.
+                </p>
+                <div class="bcard">
+                    <div class="brow">
+                        <div class="bt">H6 · idempotence</div>
+                        <div class="bd">
+                            <span class="hold">holds</span> under the tropical
+                            dioid; <span class="fail">fails</span> under
+                            probability and log semirings — expected, because
+                            those aren’t idempotent. Choosing the wrong semiring
+                            is a category error the laws catch.
+                        </div>
+                    </div>
+                    <div class="brow">
+                        <div class="bt">factivity · T</div>
+                        <div class="bd">
+                            knowledge (S5) is factive in
+                            <span class="hold">100%</span> of cases; belief
+                            (KD45)
+                            <span class="fail">believes a falsehood</span> in
+                            ~30% — the whole point of separating
+                            &ldquo;knows&rdquo; from &ldquo;believes.&rdquo;
+                        </div>
+                    </div>
+                    <div class="brow">
+                        <div class="bt">coalition power</div>
+                        <div class="bd">
+                            the grand coalition can reach what a soloist can in
+                            <span class="hold">100%</span> of games, and
+                            <em>strictly more</em> in 25% — ought-implies-can
+                            has teeth.
+                        </div>
+                    </div>
+                    <div class="brow">
+                        <div class="bt">affine use</div>
+                        <div class="bd">
+                            spend a depletable resource three times and tokens
+                            go <span class="fail">3 → 0</span>; a reusable skill
+                            stays <span class="hold">1 → 1</span> — the
+                            &ldquo;of course&rdquo; modality, copyable where
+                            consumables are not.
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="wrap">
+                <div class="row">
+                    <div>
+                        <a
+                            class="brand"
+                            href="index.html#top"
+                            style="font-size: 16px"
+                            >[<b style="color: var(--amber)">&amp;</b>]
+                            AMPERSAND BOX</a
+                        >
+                        <p class="blurb">
+                            The laws are the spec. Pass them in your language,
+                            and your verdicts are identical to everyone else’s.
+                        </p>
+                    </div>
+                    <div class="links">
+                        <a href="index.html#kernel">Kernel</a>
+                        <a href="index.html#bridge">The bridge</a>
+                        <a href="index.html#aios">AIOS</a>
+                        <a href="index.html#install">Install</a>
+                        <a href="https://opensentience.org/box-and-box/">Reference impl</a>
+                    </div>
+                </div>
+                <div class="copy">
+                    © Ampersand Box Design · Models generate answers. Kernels
+                    govern them.
+                </div>
+            </div>
+        </footer>
+
+        <script>
+            (function () {
+                var io = new IntersectionObserver(
+                    function (es) {
+                        es.forEach(function (e) {
+                            if (e.isIntersecting) {
+                                e.target.classList.add("in");
+                                io.unobserve(e.target);
+                            }
+                        });
+                    },
+                    { threshold: 0.08, rootMargin: "0px 0px -6% 0px" },
+                );
+                document
+                    .querySelectorAll("[data-reveal]")
+                    .forEach(function (el) {
+                        io.observe(el);
+                    });
+            })();
+        </script>
+    </body>
+</html>

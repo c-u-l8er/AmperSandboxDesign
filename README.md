@@ -234,27 +234,28 @@ Authoritative locations for capability details are:
 
 ## Quick start
 
-### Option A — The `box-and-box` MCP server (recommended for agents)
+> **Note — the `box-and-box` name.** It now belongs to the **governance kernel**
+> of the [&] stack (the eight-rung arithmetic ladder · 97 property-tested laws —
+> see `opensentience.org/box-and-box/` and `https://ampersandboxdesign.com`). The
+> previous `box-and-box` — the v0.1.0 [&] Protocol validator/composer MCP server —
+> was removed in the clean-break stack upgrade. Validate and compose `*.ampersand.json`
+> specs via the Elixir reference CLI (below) or the language SDKs instead.
 
-The [&] Protocol ships as one of four MCP servers in the [&] three-protocol
-stack. All four install identically with `npx` and carry their own embedded
-SQLite + sqlite-vec database:
+### Option A — MCP servers (three-protocol stack)
+
+The [&] ecosystem ships three MCP servers, each installing identically with
+`npx` and carrying its own embedded SQLite + sqlite-vec database:
 
 ```jsonc
 // .mcp.json
 {
   "mcpServers": {
-    "ampersand":    { "command": "npx", "args": ["-y", "box-and-box",  "--db", "~/.box-and-box/specs.db"] },
     "graphonomous": { "command": "npx", "args": ["-y", "graphonomous", "--db", "~/.graphonomous/knowledge.db"] },
     "prism":        { "command": "npx", "args": ["-y", "os-prism",     "--db", "~/.os-prism/benchmarks.db"] },
     "pulse":        { "command": "npx", "args": ["-y", "os-pulse",     "--db", "~/.os-pulse/manifests.db"] }
   }
 }
 ```
-
-`box-and-box` exposes `validate`, `compose`, `check`, `generate_mcp`,
-`generate_a2a`, `diff`, `inspect_spec`, and `registry_list` tools to any MCP
-client (Claude, ChatGPT, Cursor, Zed, Claude Code).
 
 ### Option B — Elixir reference CLI (for protocol development)
 
