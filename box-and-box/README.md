@@ -6,16 +6,32 @@
 - A **Score** lives in a *semiring* `(K, ⊕, ⊗, 0̲, 1̲)`. `vote` aggregates alternatives (⊕), `rollout` chains evidence discounted (⊗), and `reinforce`, `dominate`, `anneal`, `select` do the rest.
 - The **bridge** ties them: `consume` gates each option; a vetoed option gets score `0̲`, which annihilates through any `⊗`. **No heuristic utility, however large, can resurrect a vetoed option.**
 
-All **97 laws** across the eight rungs are property-tested — run `npm test`. (Invariant **L1–L14**, heuristic **H1–H13**, bridge **B1–B3**; deontic, temporal, reflexive, epistemic, strategic, and resource are documented per rung below.)
+All **116 laws** are property-tested — run `npm test`. (Invariant **L1–L14**, heuristic **H1–H13**, bridge **B1–B3**; deontic, temporal, reflexive, epistemic, strategic, and resource are documented per rung below; plus the **evolution bridge EV1–EV6** — measured, priced, certified self-revision on a provenance chain, a *join across rungs*, not a ninth — and the **compose runtime CA1–CA4 · CP1–CP4 · CX1–CX5** — capability bricks snapping together with `&` and `|>` over the shared floor, "a brick of bricks is a brick.")
 
 ```
 npm install box-and-box
-npm test          # the law harness: 97 laws across random values (2000 trials each)
-npx box-and-box rag     # multi-family composition catching a self-citation contradiction
-npx box-and-box select  # the bridge: a high-utility but unsafe action is annihilated to 0-bar
-npx box-and-box assistant # APP: a governed research assistant (epistemic + resource + deontic)
-npx box-and-box harness   # a builder that builds governed harnesses, with a governor over them
+
+# the CLI (four surfaces; also `npm test` runs the law harness)
+box-and-box govern decision.json          # real verdict: JSON in → certificate out (exit 0/1/2/3 for CI)
+box-and-box compile agent.ampersand.json  # the [&] govern bridge: an ampersand.json governance block → policy
+box-and-box laws                          # the 103-law core conformance harness (2000 trials each)
+box-and-box compose-laws                  # the 13-law compose-runtime harness (& |> floor)
+box-and-box demo <name>                   # a bundled teaching example (see below)
+
+# the bridge end-to-end — an [&] declaration, judged by the eight rungs:
+box-and-box compile agent.ampersand.json --options opts.json | box-and-box govern
+
+# demos: rag | select | govern | supervise | evolve | know | strategy | economy | assistant | harness
+box-and-box demo select   # the bridge: a high-utility but unsafe action is annihilated to 0-bar
+box-and-box demo assistant # APP: a governed research assistant (epistemic + resource + deontic)
 ```
+
+> **What this package is, in one line.** box-and-box is the **governance kernel** of the
+> [&] Protocol — the verdict engine that a composed capability set compiles *down to*. It is
+> **not** the `ampersand.json` schema validator (that is `@ampersand-protocol/validate`) and it
+> is **not** a capability-composition protocol. `[&]`/CC2 *declares and composes*; box-and-box
+> *decides* `feasible ▸ permitted ▸ best`. `box-and-box compile` is the bridge between the two.
+> See `AmpersandBoxDesign/docs/UMBRELLA.md` for the full layer map.
 
 ---
 
@@ -277,7 +293,7 @@ full [/laws](https://ampersandboxdesign.com/laws.html) conformance page.
 ## What it is / isn't
 
 **Is:** the actual substrate as runnable, property-tested infrastructure — families, the
-operations of seven modalities plus the resource economy, the algebraic bridge, 97 laws.
+operations of seven modalities plus the resource economy, the algebraic bridge, the evolution surface, the compose runtime (capability bricks under `&` and `|>` over the shared floor), 116 laws.
 
 **Isn't:** new mathematics. The ranking side is **semiring-based soft constraints** (Bistarelli,
 Montanari & Rossi, *JACM* 1997); the bridge is the **shielding** pattern from safe RL (Alshiekh
@@ -297,6 +313,6 @@ the agent-native packaging.
 
 The ladder is complete, and the economy beneath it is in place: **alethic · axiological · deontic ·
 temporal · reflexive · epistemic · strategic**, running on **resource** — seven modalities, one
-economy, one bridge, **97 property-tested laws**.
+economy, one bridge, an evolution surface that measures, prices, and certifies its own revisions, and a compose runtime that snaps capability bricks together over the shared floor — **116 property-tested laws**.
 
 MIT licensed.

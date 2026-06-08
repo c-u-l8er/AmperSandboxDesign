@@ -5,7 +5,7 @@ This quickstart gets you from clone to a working `ampersand` executable and runs
 All JSON output below was captured from real command execution in this repository.
 
 > **Note — the `box-and-box` name.** It now belongs to the [&] **governance
-> kernel** (the eight-rung arithmetic ladder · 97 property-tested laws — see
+> kernel** (the eight-rung arithmetic ladder · 103 property-tested laws — see
 > `opensentience.org/box-and-box/`). The previous `box-and-box` — the [&]
 > Protocol validator/composer MCP server — was removed in the clean-break stack
 > upgrade. Validate and compose `*.ampersand.json` specs with the local Elixir

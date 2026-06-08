@@ -235,7 +235,7 @@ Authoritative locations for capability details are:
 ## Quick start
 
 > **Note — the `box-and-box` name.** It now belongs to the **governance kernel**
-> of the [&] stack (the eight-rung arithmetic ladder · 97 property-tested laws —
+> of the [&] stack (the eight-rung arithmetic ladder · 103 property-tested laws —
 > see `opensentience.org/box-and-box/` and `https://ampersandboxdesign.com`). The
 > previous `box-and-box` — the v0.1.0 [&] Protocol validator/composer MCP server —
 > was removed in the clean-break stack upgrade. Validate and compose `*.ampersand.json`

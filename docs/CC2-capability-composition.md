@@ -179,7 +179,7 @@ A CC1 `ampersand.json` is a conformant CC2 coalition with `agents: [self]`, an e
 
 A conformant CC2 implementation MUST:
 
-1. compute the `&` and `|>` verdicts via an arithmetic that passes the 97 laws (the suite is the contract; pass it in your language);
+1. compute the `&` and `|>` verdicts via an arithmetic that passes the 103 laws (the suite is the contract; pass it in your language);
 2. treat `hard`, `floor`, and `ensure` failures as hard rejections, not advisories;
 3. run governance **interpositionally** — no consequential effect may execute without first clearing the `govern` verdict;
 4. preserve entrenchment across all self-revision (`R4`);

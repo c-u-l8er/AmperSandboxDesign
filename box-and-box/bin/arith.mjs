@@ -2,7 +2,10 @@
 // box-and-box — the kernel CLI.
 //
 //   box-and-box govern [file.json] [--quiet]   real verdict: JSON in → certificate out
-//   box-and-box laws                           run the 97-law conformance harness
+//   box-and-box compile <agent.json>           govern bridge: [&] governance block → box-and-box policy
+//   box-and-box lift <agent.json>              CC1 → CC2: a single-agent ampersand.json → a singleton coalition
+//   box-and-box laws                           run the 103-law core conformance harness
+//   box-and-box compose-laws                   run the 13-law compose-runtime harness (& |> floor)
 //   box-and-box demo <name>                    run a bundled example
 //   box-and-box --help
 //
@@ -23,7 +26,13 @@ function usage(code) {
 
   box-and-box govern [file.json] [--quiet]   verdict: feasible ▸ permitted ▸ best → certificate JSON
                                              (reads stdin if no file; exit 0 decision, 3 escalation, 1 none)
-  box-and-box laws                           run the 97-law conformance harness (2000 trials/law)
+  box-and-box compile <agent.json> [--options opts.json]
+                                             govern bridge: translate a CC1 [&] governance block into a
+                                             box-and-box policy; with --options, a govern-ready spec to pipe
+  box-and-box lift <agent.json>              CC1 → CC2: lift a single-agent ampersand.json into a
+                                             singleton coalition (agents:[self], hard ⇒ floor, pipeline ⇒ compose)
+  box-and-box laws                           run the 103-law core conformance harness (2000 trials/law)
+  box-and-box compose-laws                   run the 13-law compose-runtime harness (CA1–CA4, CP1–CP4, CX1–CX5)
   box-and-box demo <name>                    run a bundled example: ${DEMOS.join(' | ')}
   box-and-box --help
 
@@ -36,7 +45,10 @@ const [cmd, ...rest] = process.argv.slice(2);
 
 if (!cmd || cmd === '--help' || cmd === '-h') usage(cmd ? 0 : 2);
 else if (cmd === 'govern') process.exit(run('bin/govern.mjs', rest));     // real verdict
+else if (cmd === 'compile') process.exit(run('bin/compile.mjs', rest));   // [&] govern bridge
+else if (cmd === 'lift') process.exit(run('bin/lift.mjs', rest));         // CC1 → CC2 coalition
 else if (cmd === 'laws') process.exit(run('test/laws.mjs'));
+else if (cmd === 'compose-laws') process.exit(run('test/compose-laws.mjs'));
 else if (cmd === 'demo') {
   const name = rest[0];
   if (!DEMOS.includes(name)) { process.stderr.write(`unknown demo '${name ?? ''}'. choose: ${DEMOS.join(' | ')}\n`); process.exit(2); }

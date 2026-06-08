@@ -6,7 +6,7 @@
         <title>The laws — box-and-box conformance spec</title>
         <meta
             name="description"
-            content="The 97 property-tested laws that define box-and-box. Two conformant runtimes in any language must agree on every one. Pass the laws, you're conformant."
+            content="The 116 property-tested laws that define box-and-box. Two conformant runtimes in any language must agree on every one. Pass the laws, you're conformant."
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -561,14 +561,14 @@
                 >
                     Conformance · the laws are the spec
                 </p>
-                <h1>97 laws.<br />Every one a property test.</h1>
+                <h1>116 laws.<br />Every one a property test.</h1>
                 <p class="lead">
                     <b>The verdict is the contract.</b> box-and-box isn’t
                     defined by an implementation — it’s defined by these laws:
                     associativity, the annihilation of a veto, the precedence of
                     the bridge, the un-weakenability of the entrenched core.
                     Each is checked against 2000 random cases on every run. Two
-                    hosts, in <em>any</em> language, must agree on all 97. Pass
+                    hosts, in <em>any</em> language, must agree on all 116. Pass
                     them, and you’re conformant — the way an implementation is
                     POSIX because it passes the suite, not because it says so.
                     <b>Click any law</b> to see its formal property and what it
@@ -581,7 +581,7 @@
                         <div class="cap">modal subsystems</div>
                     </div>
                     <div class="stat">
-                        <div class="num">97</div>
+                        <div class="num">116</div>
                         <div class="cap">property-tested laws</div>
                     </div>
                     <div class="stat">
@@ -602,7 +602,7 @@
                         &nbsp; reproduce it yourself
                         <span class="lab">live output</span>
                     </div>
-                    <pre><span class="cmd">$ npm i -g box-and-box &amp;&amp; node test/laws.mjs</span>
+                    <pre><span class="cmd">$ npm i -g box-and-box &amp;&amp; node test/laws.mjs &amp;&amp; node test/compose-laws.mjs</span>
 
 box-and-box law harness · <span class="dim">2000 trials/law</span>
 ──────────────────────────────
@@ -615,8 +615,10 @@ Economy     (C1–C8):  <span class="ok">8/8 pass</span>   · composition (CB1�
 Knowledge   (E1–E8):  <span class="ok">8/8 pass</span>   · composition (EB1–EB3): 3/3
 Coordination(S1–S8):  <span class="ok">8/8 pass</span>   · composition (SB1–SB3): 3/3
 Self-amend  (R1–R8):  <span class="ok">8/8 pass</span>   · composition (RB1–RB3): 3/3
+Evolution   (EV1–EV6):<span class="ok">6/6 pass</span>   · join: reflexive × axiological × resource
+Compose/CC2 (CA·CP·CX):<span class="ok">13/13 pass</span> · &amp; combine · |&gt; pipeline · ⊗ cross
 ──────────────────────────────
-<span class="ok">✓ all 97 stated laws hold.</span></pre>
+<span class="ok">✓ all 116 stated laws hold.</span></pre>
                 </div>
             </div>
         </header>
@@ -2948,6 +2950,452 @@ Self-amend  (R1–R8):  <span class="ok">8/8 pass</span>   · composition (RB1�
                             consumables are not.
                         </div>
                     </div>
+                </div>
+            </section>
+
+            <section class="rung" data-reveal>
+                <div class="rhead">
+                    <div>
+                        <div class="rop">Evolution</div>
+                        <div class="rmodal">join · 6 laws</div>
+                    </div>
+                    <p class="rgloss">
+                        the measured, priced, certified self-revision bridge — a
+                        join across reflexive × axiological × resource: may this
+                        policy change, did it measurably improve, is it worth
+                        paying for.
+                    </p>
+                </div>
+                <div class="laws">
+                    <details class="law">
+                        <summary>
+                            <span class="lid">EV1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>digest is key-order
+                                independent</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >digest(canon(x)) is invariant under JSON
+                                    key reordering</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The content
+                                hash is canonical — reordering keys yields the
+                                same digest, so provenance is order-stable.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">EV2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>chain verifies &
+                                detects tamper</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >verify(chain) holds; mutating any record
+                                    breaks verify</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The
+                                hash-chain is tamper-evident — altering any past
+                                record invalidates the whole chain.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">EV3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>refuse to weaken the
+                                entrenched floor</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >a change weakening an entrenched floor is
+                                    rejected, even at large positive Δ</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>No
+                                improvement, however large, can buy a weakening
+                                of the safety floor.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">EV4</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>a regressing change is
+                                never accepted</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >regresses(before, after) ⇒ decision ≠
+                                    accept</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>A
+                                self-revision that measurably worsens the score
+                                vector cannot be accepted.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">EV5</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>priced accept ⇒
+                                affordable ∧ worthwhile ∧ charged</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >accept ⇒ affordable ∧ worthwhile ∧ ledger
+                                    charged</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>An accepted
+                                change was within budget, beat its predicted
+                                threshold, and paid the ledger.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">EV6</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>certificate
+                                soundness</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >predicted / observed / verified / priced
+                                    agree with the recorded decision</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The
+                                evolution certificate is sound — every field
+                                matches the decision actually taken.
+                            </div>
+                        </div>
+                    </details>
+                </div>
+            </section>
+
+            <section class="rung" data-reveal>
+                <div class="rhead">
+                    <div>
+                        <div class="rop">Composition (CC2)</div>
+                        <div class="rmodal">compose · 13 laws</div>
+                    </div>
+                    <p class="rgloss">
+                        the lego layer — two brick operators, <code>&amp;</code>
+                        (parallel coalition) and <code>|&gt;</code> (sequential
+                        pipeline), over one shared floor <span class="hold">0̲</span>.
+                        A brick of bricks is a brick.
+                    </p>
+                </div>
+                <div class="laws">
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CA1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>&amp; associative</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>(a &amp; b) &amp; c = a &amp; (b &amp; c)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Parallel
+                                composition regroups freely — carrier,
+                                quantities, and cost class all agree.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CA2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>&amp; commutative</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>a &amp; b = b &amp; a (capability lattice)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Running
+                                capabilities together is order-independent on
+                                the commutative sub-carrier.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CA3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>&amp; idempotent</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>a &amp; a = a (value carrier)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>A coalition
+                                admits each member once — composing a capability
+                                with itself adds nothing.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CA4</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>&amp;none identity</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>a &amp; none = none &amp; a = a</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The empty
+                                coalition is the identity for <code>&amp;</code>.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CP1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>|&gt; associative where
+                                feasible</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>(a |&gt; b) |&gt; c = a |&gt; (b |&gt; c)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Sub-pipelines
+                                compose predictably — regrouping a feasible chain
+                                never changes the result.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CP2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>id identity</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>a |&gt; id = id |&gt; a = a</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The
+                                pass-through brick is the identity for
+                                <code>|&gt;</code>.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CP3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>|&gt; non-commutative
+                                (backward ⇒ 0̲)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >forward a |&gt; b survives; backward b |&gt;
+                                    a ⇒ 0̲</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Order
+                                matters — a backward PULSE-phase hand-off is
+                                annihilated, so a pipeline can't run time
+                                backwards.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CP4</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>infeasible hand-off ⇒
+                                0̲</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >feeds_into(a) ∩ accepts_from(b) = ∅ ⇒ a |&gt;
+                                    b = 0̲</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>A
+                                type-mismatched hand-off floors the pipeline —
+                                outputs that don't fit the next input can't
+                                connect.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CX1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>0̲ absorbs both
+                                operators</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >a &amp; 0̲ = 0̲ &amp; a = a |&gt; 0̲ = 0̲ |&gt;
+                                    a = 0̲</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The floor is
+                                absorbing for both operators on either side — one
+                                floored part floors the whole.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CX2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>quantity semiring</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >confidence = ∏ · cost = Σ · latency =
+                                    max</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Composite
+                                quantities follow the CC2 semiring — confidence
+                                multiplies, cost adds, latency takes the worst
+                                leg.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CX3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>conservative cost
+                                (uncertified ⇒ 0̲)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >an uncertified child ⇒ composite = 0̲</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Any child
+                                lacking a cost certificate poisons the whole
+                                assembly to the floor — you can't compose what
+                                you can't price.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CX4</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>cost-class lattice
+                                (worst wins)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >certified composite costClass = join (worst)
+                                    of children</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>A certified
+                                composite is graded by its worst-case child —
+                                cost classes meet at the top of the lattice.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CX5</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>closure (a brick of
+                                bricks is a brick)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>compose(brick, brick) is itself a brick</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Composition
+                                is closed — a composite re-composes like any
+                                leaf, so assemblies nest without limit.
+                            </div>
+                        </div>
+                    </details>
                 </div>
             </section>
         </main>

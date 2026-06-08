@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://protocol.ampersandboxdesign.com/schema/v0.1.0/coalition.schema.json",
+  "title": "Ampersand Coalition Declaration (CC2)",
+  "description": "JSON Schema draft 2020-12 for CC2 coalition declarations in the [&] Protocol. A coalition lifts CC1 single-agent composition to a group: agents pool typed capabilities and coordinate to ENSURE a goal, with each task owned, shared facts common knowledge, the joint run supervised, and a safety floor none may weaken. Each clause maps to a rung of the box-and-box modality ladder (the verdict engine). CC1 is the special case of a singleton coalition with an empty adversary.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "coalition", "version", "agents", "ensure"],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "https://protocol.ampersandboxdesign.com/schema/v0.1.0/coalition.schema.json",
+      "description": "Canonical schema identifier for coalition declarations."
+    },
+    "coalition": {
+      "$ref": "#/$defs/identifier",
+      "description": "Human-readable coalition name or identifier."
+    },
+    "version": {
+      "$ref": "#/$defs/semver"
+    },
+    "agents": {
+      "type": "array",
+      "description": "The members of the coalition. A singleton ([self]) is the CC1 special case. (Rung: alethic — the joint capability set is the lattice join of the members' sets.)",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/identifier"
+      }
+    },
+    "ensure": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The goal the coalition must be ABLE to force against the worst case of any non-member (strategic.canEnsure, ⟨⟨agents⟩⟩◊). ought-implies-can: a coalition MUST NOT be bound to a goal it cannot force; if it cannot, it escalates (recruit agents, or weaken the goal)."
+    },
+    "adversary": {
+      "type": "array",
+      "description": "Non-member agents whose worst-case behavior the coalition must ensure the goal against. Empty (the default) is the CC1 special case. (Rung: strategic.)",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/identifier"
+      }
+    },
+    "common_knowledge": {
+      "type": "array",
+      "description": "Facts that MUST be common knowledge among the agents for the joint strategy to be executable (the coordinated-attack result). The runtime's broadcast mechanism establishes this before the pipeline runs. (Rung: epistemic.common.)",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "owns": {
+      "type": "object",
+      "title": "Task Ownership",
+      "description": "A total function from each owning agent to the task it is obligated for. No task may be unowned (responsibility diffusion is forbidden); conflicting obligations are resolved by deontic priority before enactment. Omitted for a singleton coalition (single owner = the sole agent). (Rung: deontic OBLIGATORY, owner-tagged.)",
+      "minProperties": 1,
+      "propertyNames": {
+        "$ref": "#/$defs/identifier"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1,
+        "description": "The task identifier the agent owns and is obligated for."
+      }
+    },
+    "shield": {
+      "type": "array",
+      "description": "Safety (and liveness) formulas over the JOINT trajectory the compose pipeline can produce. A reachable safety violation makes the coalition inadmissible; a liveness goal that fails at the horizon becomes a coalition obligation with contrary-to-duty escalation. (Rung: temporal.supervise.)",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "floor": {
+      "type": "array",
+      "description": "Entrenched constraints no agent or sub-coalition can weaken, even under learning. The coalition MAY revise everything else (and SHOULD, as it learns) but MUST NOT weaken the floor. (Rung: reflexive.entrench — monotone, un-weakenable.)",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "compose": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The cross-agent governed pipeline (the lifted |>): a sequential, associative, non-commutative composition whose hand-offs must be type-compatible or the composed value annihilates to 0̲. Quantities (cost as sum, confidence as product, latency as max) compose end-to-end. (Rung: alethic value.chain + axiological semiring.)"
+    },
+    "provenance": {
+      "type": "boolean",
+      "description": "When true, conforming implementations attach hash-linked provenance records to coalition verdicts and the pipeline's joint trajectory."
+    }
+  },
+  "$defs": {
+    "identifier": {
+      "type": "string",
+      "title": "Identifier",
+      "minLength": 1,
+      "pattern": "^[A-Za-z][A-Za-z0-9_-]*$",
+      "description": "Human-readable name or identifier (agent, coalition, or task)."
+    },
+    "semver": {
+      "type": "string",
+      "title": "Semantic Version",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$",
+      "description": "Semantic version string."
+    }
+  },
+  "examples": [
+    {
+      "$schema": "https://protocol.ampersandboxdesign.com/schema/v0.1.0/coalition.schema.json",
+      "coalition": "ship_it",
+      "version": "0.1.0",
+      "agents": ["dev", "qa", "ops"],
+      "ensure": "deployed AND tests_pass",
+      "common_knowledge": ["release_plan", "rollback_ready"],
+      "owns": {
+        "dev": "build",
+        "qa": "verify",
+        "ops": "release"
+      },
+      "shield": ["NEVER secrets_leaked"],
+      "floor": ["entrench: no_prod_without_qa"],
+      "compose": "build |> verify |> release",
+      "provenance": true
+    },
+    {
+      "$schema": "https://protocol.ampersandboxdesign.com/schema/v0.1.0/coalition.schema.json",
+      "coalition": "InfraOperator",
+      "version": "1.0.0",
+      "agents": ["InfraOperator"],
+      "ensure": "InfraOperator goal",
+      "adversary": [],
+      "provenance": true
+    }
+  ]
+}
