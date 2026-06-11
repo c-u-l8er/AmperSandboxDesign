@@ -1,5 +1,7 @@
 # [&] Protocol Documentation
 
+> **Part of the [&] Protocol stack** · [Ecosystem overview](../../ECOSYSTEM.md) · [Three-protocol stack](../../PULSE/docs/THREE_PROTOCOL_STACK.md) · [Stack status](../../STACK_COMPLETION.md)
+
 Welcome to the documentation hub for the **[&] Protocol**.
 
 The [&] Protocol is a language-agnostic specification for **capability composition in AI agents**. It defines how an agent declares what it can remember, how it reasons, how it understands time and space, how it is embodied (perception/action/affordance), how those capabilities compose, and how that declaration can compile into downstream runtime artifacts such as MCP and A2A configurations.
@@ -124,6 +126,66 @@ skills/08_PROVIDER_IMPLEMENTATION
 skills/09_GOVERNANCE_PROVENANCE
 skills/10_ANTI_PATTERNS
 ```
+
+## Documentation index
+
+Every page in this documentation set (the linked index below renders on GitHub and in the docs atlas; the toctrees above drive the Sphinx build):
+
+**Guides**
+
+- [Capability Composition, v2 — CC2 (Coalitional)](CC2-capability-composition.md)
+- [The Compose Runtime — CC2 compose, made authorable](COMPOSE_RUNTIME.md)
+- [Protocol comparison — MCP vs A2A vs DALIA vs ACP](comparison-table.md)
+- [Ecosystem Overview — How Everything Ties Together](ecosystem-overview.md)
+- [FAQ](faq.md)
+- [The Missing Layer: Capability Composition in the Agent Protocol Stack](positioning.md)
+- [Research Overview](research.md)
+- [Runtime Walkthrough](runtime-walkthrough.md)
+- [Agent Skills](skills/SKILLS.md)
+- [Topology Is the Authority](topology-is-the-authority.md)
+- [Industry Verticals: Where All Six Primitives Compose](use-cases-industry-verticals.md)
+
+**Capability deep dives**
+
+- [&govern: Cross-Cutting Governance for Agents](capabilities/govern.md)
+- [&memory: Capability Deep Dive](capabilities/memory.md)
+- [&reason: Deliberation, Evaluation, and Decision-Making](capabilities/reason.md)
+- [&space: Spatial Intelligence for Agents](capabilities/space.md)
+- [&time: Temporal Intelligence](capabilities/time.md)
+
+**Capability registry**
+
+- [Capability Registry Pages](registry/README.md)
+- [&body.browser](registry/body.browser.md)
+- [&body.os](registry/body.os.md)
+- [&govern.escalation — Human-in-the-Loop Escalation and Governance Handoff](registry/govern.escalation.md)
+- [&govern.identity — Agent Identity, Verification, and Trust](registry/govern.identity.md)
+- [&govern.telemetry — Observability, Cost Tracking, and Budget Enforcement](registry/govern.telemetry.md)
+- [&memory.episodic — Experience, Session History, and Replayable Context](registry/memory.episodic.md)
+- [&memory.graph — Graph-Structured Memory Capability](registry/memory.graph.md)
+- [&memory.vector — Semantic Vector Retrieval Capability](registry/memory.vector.md)
+- [&reason.argument — Evidence-Weighted Deliberation](registry/reason.argument.md)
+- [&reason.attend — Proactive Attention and Bounded Autonomy](registry/reason.attend.md)
+- [&reason.deliberate — κ-Aware Deliberation](registry/reason.deliberate.md)
+- [&reason.plan — Planning-Oriented Reasoning](registry/reason.plan.md)
+- [&reason.vote — Consensus-Oriented Reasoning](registry/reason.vote.md)
+- [&space.fleet — Fleet State, Regional Context, and Spatial Operations](registry/space.fleet.md)
+- [&space.geofence — Boundary Membership, Zone Logic, and Compliance Awareness](registry/space.geofence.md)
+- [&space.route — Route Intelligence, Path Optimization, and Explainable Navigation](registry/space.route.md)
+- [&time.anomaly — Anomaly Detection as a Capability](registry/time.anomaly.md)
+- [&time.forecast — Forecasting as a Capability](registry/time.forecast.md)
+- [&time.pattern — Pattern Detection as a Capability](registry/time.pattern.md)
+
+**Build prompts**
+
+- [Attention Engine — Build Prompt v1](../prompts/ATTENTION_ENGINE_PROMPT.md)
+- [Codex Prompt Guide](../prompts/CODEX_GUIDE.md)
+- [Dual- and Triple-Loop Machine Architecture](../prompts/DUAL_LOOP_MACHINES.md)
+- [Graphonomous Traversal Prompt](../prompts/GRAPHONOMOUS_PROMPT.md)
+- [κ-Aware Routing — Build Prompt v2](../prompts/KAPPA_BUILD_PROMPT.md)
+- [κ-Driven Deliberation Orchestrator — Build Prompt v1](../prompts/KAPPA_DELIBERATOR_PROMPT.md)
+- [Model Tier Adaptation — Build Prompt v1](../prompts/MODEL_TIER_PROMPT.md)
+- [Protocol Implementation Prompt](../prompts/PROTOCOL_PROMPT.md)
 
 ## Suggested reading order
 
