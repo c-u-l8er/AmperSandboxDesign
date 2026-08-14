@@ -14,6 +14,7 @@
 // policy is what it is. Laws EV1–EV6.
 import { admissible, revise, policyKey } from './reflexive.mjs';
 import { affords, worthwhile, spend, INFEASIBLE } from './resource.mjs';
+import { roundDelta } from './numerics.mjs';
 
 // ---- content-addressed provenance (the observability substrate) -------------
 // canonical JSON: object keys sorted, so the digest is independent of key order.
@@ -61,7 +62,7 @@ export function regresses(before = [], after = [], tol = 1e-9) {
 }
 export const delta = (before = [], after = []) => {
   const sb = before.reduce((s, x) => s + x, 0), sa = after.reduce((s, x) => s + x, 0);
-  return Math.round((sa - sb) * 1e6) / 1e6;
+  return roundDelta(sa - sb);
 };
 
 // ---- the evolution verdict --------------------------------------------------

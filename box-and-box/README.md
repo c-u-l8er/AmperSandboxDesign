@@ -6,7 +6,7 @@
 - A **Score** lives in a *semiring* `(K, ⊕, ⊗, 0̲, 1̲)`. `vote` aggregates alternatives (⊕), `rollout` chains evidence discounted (⊗), and `reinforce`, `dominate`, `anneal`, `select` do the rest.
 - The **bridge** ties them: `consume` gates each option; a vetoed option gets score `0̲`, which annihilates through any `⊗`. **No heuristic utility, however large, can resurrect a vetoed option.**
 
-All **116 laws** are property-tested — run `npm test`. (Invariant **L1–L14**, heuristic **H1–H13**, bridge **B1–B3**; deontic, temporal, reflexive, epistemic, strategic, and resource are documented per rung below; plus the **evolution bridge EV1–EV6** — measured, priced, certified self-revision on a provenance chain, a *join across rungs*, not a ninth — and the **compose runtime CA1–CA4 · CP1–CP4 · CX1–CX5** — capability bricks snapping together with `&` and `|>` over the shared floor, "a brick of bricks is a brick.")
+All **118 laws** are property-tested — run `npm test`. (Invariant **L1–L14**, heuristic **H1–H13**, bridge **B1–B3**; deontic, temporal, reflexive, epistemic, strategic, and resource are documented per rung below; plus the **evolution bridge EV1–EV6** — measured, priced, certified self-revision on a provenance chain, a *join across rungs*, not a ninth — and the **compose runtime CA1–CA4 · CP1–CP4 · CX1–CX6** — capability bricks snapping together with `&` and `|>` over the shared floor, "a brick of bricks is a brick", **CX6** asserting fail-closed: a malformed/partial brick yields `0̲` or a valid brick, never an exception.)
 
 ```
 npm install box-and-box
@@ -274,6 +274,35 @@ allocation) belongs next to the strategic rung. `npx box-and-box economy` runs t
 
 ---
 
+## Numerics (normative)
+
+For two conformant runtimes to "agree like calculators," the numeric domain is specified, not left
+to each language's defaults. The single source is [`numerics.mjs`](./numerics.mjs) (one exported
+`round` + tolerance; it replaces four previously-duplicated `round` helpers in `value`, `bridge`,
+`govern`, `evolution`).
+
+**Two classes of field:**
+
+| Class | Fields | Comparison |
+|---|---|---|
+| **EXACT** | integers / scaled-integers: norm counts, ledger token balances, phase indices, and the **tropical (min-plus / max-plus) hard-floor semiring** | `===` — never rounded; a floor decision must never hinge on a rounding tie |
+| **TOLERANCE** | reals: `β` confidence, axiological scores, the **probability** and **log-sum-exp** semirings, evolution `Δ` | display-rounded with `round`; compared with `approxEq` at `EPS = 1e-9` |
+
+The `logsumexp` / probability semirings are **tolerance-class by construction** (non-associative in
+floating point); the **tropical** semiring is **exact-class** and is what hard safety floors use, so
+the un-weakenable floor is decided by integer/`===` logic, not by a rounded real.
+
+**Canonical rounding rule** (a conformant runtime in another language MUST reproduce it):
+
+```
+round(x, dp) = Math.round(x * 10^dp) / 10^dp     // IEEE-754 binary64
+```
+
+where `Math.round` is **round-half-toward-+∞** (JS semantics — *not* C's half-away-from-zero), `dp`
+defaults to **3** for public carriers (`β`, scores) and **6** for the evolution non-regression delta.
+`±Infinity` and `NaN` pass through unchanged (an annihilated `0̲` branch carries `±∞`; rounding must
+not make it finite).
+
 ## Browser
 
 This package ships runnable code only. The browser surfaces are published as research pages on
@@ -293,7 +322,7 @@ full [/laws](https://ampersandboxdesign.com/laws.html) conformance page.
 ## What it is / isn't
 
 **Is:** the actual substrate as runnable, property-tested infrastructure — families, the
-operations of seven modalities plus the resource economy, the algebraic bridge, the evolution surface, the compose runtime (capability bricks under `&` and `|>` over the shared floor), 116 laws.
+operations of seven modalities plus the resource economy, the algebraic bridge, the evolution surface, the compose runtime (capability bricks under `&` and `|>` over the shared floor), 118 laws.
 
 **Isn't:** new mathematics. The ranking side is **semiring-based soft constraints** (Bistarelli,
 Montanari & Rossi, *JACM* 1997); the bridge is the **shielding** pattern from safe RL (Alshiekh
@@ -313,6 +342,6 @@ the agent-native packaging.
 
 The ladder is complete, and the economy beneath it is in place: **alethic · axiological · deontic ·
 temporal · reflexive · epistemic · strategic**, running on **resource** — seven modalities, one
-economy, one bridge, an evolution surface that measures, prices, and certifies its own revisions, and a compose runtime that snaps capability bricks together over the shared floor — **116 property-tested laws**.
+economy, one bridge, an evolution surface that measures, prices, and certifies its own revisions, and a compose runtime that snaps capability bricks together over the shared floor — **118 property-tested laws**.
 
 MIT licensed.

@@ -1,11 +1,12 @@
 {
   "name": "box-and-box",
   "version": "0.10.0",
-  "description": "box-and-box — faithful runtime of the seven-rung modality ladder plus the resource economy beneath it: alethic, axiological, deontic, temporal, reflexive, epistemic, strategic, and resource (linear/reusable accounting with conservation, capacity-as-continual-learning, and Type-II pricing of the ladder's repair operators). One bridge composes them; an evolution surface measures, prices, and certifies its own revisions on a provenance chain; a compose layer snaps capability bricks together with & and |> over the shared floor. 116 laws property-tested.",
+  "description": "box-and-box — faithful runtime of the seven-rung modality ladder plus the resource economy beneath it: alethic, axiological, deontic, temporal, reflexive, epistemic, strategic, and resource (linear/reusable accounting with conservation, capacity-as-continual-learning, and Type-II pricing of the ladder's repair operators). One bridge composes them; an evolution surface measures, prices, and certifies its own revisions on a provenance chain; a compose layer snaps capability bricks together with & and |> over the shared floor. 118 laws property-tested.",
   "type": "module",
   "main": "index.mjs",
   "exports": {
     ".": "./index.mjs",
+    "./numerics": "./numerics.mjs",
     "./value": "./value.mjs",
     "./score": "./score.mjs",
     "./bridge": "./bridge.mjs",
@@ -26,6 +27,7 @@
   },
   "files": [
     "index.mjs",
+    "numerics.mjs",
     "value.mjs",
     "score.mjs",
     "bridge.mjs",

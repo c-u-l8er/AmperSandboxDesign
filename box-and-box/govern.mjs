@@ -11,8 +11,8 @@
 import { consume } from './value.mjs';
 import { SEMIRINGS } from './score.mjs';
 import { adjudicateStatus, resolve, escalate, STATUS } from './norm.mjs';
+import { round } from './numerics.mjs';
 
-const round = (x) => Math.round(x * 1000) / 1000;
 const has = (e, id) => e.contributors.some((c) => c.id === id);
 
 // options: [{ id, value:<Value>, utility:<number>, ctx:<object for the norms> }]

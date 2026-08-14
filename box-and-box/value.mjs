@@ -3,6 +3,8 @@
 // along PULSE phases (partial — refuses a backward step); promote/reconcile/deliberate
 // are endomorphisms; consume is the boolean gate. These satisfy laws L1–L15 (see test/laws.mjs).
 
+import { round } from './numerics.mjs';
+
 export const PHASES = ['retrieve', 'route', 'act', 'learn', 'consolidate'];
 export const phaseIdx = (p) => PHASES.indexOf(p);
 
@@ -100,8 +102,6 @@ export function consume(v, req = {}) {
     failures.push({ family: 'governance', why: 'deny_default with empty authority_path' });
   return { ok: failures.length === 0, failures, value: v };
 }
-
-const round = (x) => Math.round(x * 1000) / 1000;
 
 // compact human digest for traces
 export function digest(v) {

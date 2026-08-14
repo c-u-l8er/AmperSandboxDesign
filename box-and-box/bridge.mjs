@@ -4,8 +4,8 @@
 // utility, however large, can resurrect a vetoed option.
 import { consume } from './value.mjs';
 import { SEMIRINGS } from './score.mjs';
+import { round } from './numerics.mjs';
 
-const round = (x) => Math.round(x * 1000) / 1000;
 const fin = (x) => (x === -Infinity ? 0 : round(x)); // display 0̲ as 0
 
 // An OPTION couples a full invariant Value with a heuristic utility:

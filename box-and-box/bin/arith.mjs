@@ -5,7 +5,7 @@
 //   box-and-box compile <agent.json>           govern bridge: [&] governance block → box-and-box policy
 //   box-and-box lift <agent.json>              CC1 → CC2: a single-agent ampersand.json → a singleton coalition
 //   box-and-box laws                           run the 103-law core conformance harness
-//   box-and-box compose-laws                   run the 13-law compose-runtime harness (& |> floor)
+//   box-and-box compose-laws                   run the 14-law compose-runtime harness (& |> floor)
 //   box-and-box demo <name>                    run a bundled example
 //   box-and-box --help
 //
@@ -32,7 +32,7 @@ function usage(code) {
   box-and-box lift <agent.json>              CC1 → CC2: lift a single-agent ampersand.json into a
                                              singleton coalition (agents:[self], hard ⇒ floor, pipeline ⇒ compose)
   box-and-box laws                           run the 103-law core conformance harness (2000 trials/law)
-  box-and-box compose-laws                   run the 13-law compose-runtime harness (CA1–CA4, CP1–CP4, CX1–CX5)
+  box-and-box compose-laws                   run the 14-law compose-runtime harness (CA1–CA4, CP1–CP4, CX1–CX6)
   box-and-box demo <name>                    run a bundled example: ${DEMOS.join(' | ')}
   box-and-box --help
 
