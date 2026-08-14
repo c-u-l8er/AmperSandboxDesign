@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>[&amp;] Ampersand Box — box-and-box, the kernel for AI operating systems</title>
-<meta name="description" content="box-and-box is the governance kernel of the [&] stack: every agent syscall passes feasible ▸ permitted ▸ best, over an un-weakenable safety floor, with a proof for every verdict — one modal core, any model, any language, 116 property-tested laws." />
+<meta name="description" content="box-and-box is the governance kernel of the [&] stack: every agent syscall passes feasible ▸ permitted ▸ best, over an un-weakenable safety floor, with a proof for every verdict — one modal core, any model, any language, 118 property-tested laws." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -452,7 +452,7 @@
         <div class="nm">[&amp;] composition <small>npm i -g box-and-box</small></div>
         <div class="ds">The capability-composition surface you already install: <em class="tk">validate → compose → compile</em> agent capabilities to MCP and A2A. The same package, the governance core switched on.</div>
       </div>
-      <div class="subs-foot">eight subsystems &nbsp;·&nbsp; one bridge &nbsp;·&nbsp; <a href="laws.html" style="color:var(--amber-2); border-bottom:1px solid var(--line2)"><b>116 property-tested laws</b></a> &nbsp;·&nbsp; 2000 trials each</div>
+      <div class="subs-foot">eight subsystems &nbsp;·&nbsp; one bridge &nbsp;·&nbsp; <a href="laws.html" style="color:var(--amber-2); border-bottom:1px solid var(--line2)"><b>118 property-tested laws</b></a> &nbsp;·&nbsp; 2000 trials each</div>
     </div>
   </div>
 </section>
@@ -546,7 +546,7 @@
       </div>
     </div>
 
-    <p class="reframe" data-reveal>Honest note · this is the reference <em>host</em>. The conformance-tested verdict engine is <span class="amber">box-and-box</span> (the npm / edge package, 116 property-tested laws); this Elixir kernel speaks the same arithmetic, so a verdict here and a verdict there are identical.</p>
+    <p class="reframe" data-reveal>Honest note · this is the reference <em>host</em>. The conformance-tested verdict engine is <span class="amber">box-and-box</span> (the npm / edge package, 118 property-tested laws); this Elixir kernel speaks the same arithmetic, so a verdict here and a verdict there are identical.</p>
   </div>
 </section>
 
@@ -580,14 +580,14 @@
     <div class="stats" data-reveal>
       <div class="stat"><div class="num">8</div><div class="cap">modal subsystems</div></div>
       <div class="stat"><div class="num">1</div><div class="cap">composing bridge</div></div>
-      <div class="stat"><div class="num">116</div><div class="cap">property-tested laws</div></div>
+      <div class="stat"><div class="num">118</div><div class="cap">property-tested laws</div></div>
       <div class="stat"><div class="num">2000</div><div class="cap">trials per law</div></div>
     </div>
     <p class="body" data-reveal style="--d:.1s; margin-top:28px; max-width:64ch">
       Every subsystem is a small algebra with stated laws — associativity, annihilation, the precedence of the bridge, the un-weakenability of the entrenched core — checked against thousands of random cases. Two conformant hosts, in <em>any</em> language, <strong>must</strong> agree on whether a composition is feasible, permitted, and ensurable. Pass the laws in your language; you're conformant.
     </p>
     <div class="cta-row" data-reveal style="--d:.16s; margin-top:30px">
-      <a class="btn primary" href="laws.html">Browse all 116 laws →</a>
+      <a class="btn primary" href="laws.html">Browse all 118 laws →</a>
       <span class="cta-note">run <span style="color:var(--amber-2)">node test/laws.mjs</span> and watch them pass</span>
     </div>
   </div>
@@ -649,7 +649,7 @@
         <h2 class="eyebrow-h">A CLI, a library, an Elixir host — same verdict.</h2>
       </div>
       <div data-reveal style="--d:.08s">
-        <p class="body">box-and-box ships as a zero-dependency CLI and an ES-module library: deterministic, no LLM, no network — safe to drop into CI, a pre-commit hook, or a pipeline. Pipe a decision in, get a certified verdict out. Conformance is the 116-law suite, so a port in any language agrees verdict-for-verdict.</p>
+        <p class="body">box-and-box ships as a zero-dependency CLI and an ES-module library: deterministic, no LLM, no network — safe to drop into CI, a pre-commit hook, or a pipeline. Pipe a decision in, get a certified verdict out. Conformance is the 118-law suite, so a port in any language agrees verdict-for-verdict.</p>
       </div>
     </div>
 
@@ -663,7 +663,7 @@
 <pre><span class="cm"># install the kernel — zero-dependency, Node ≥ 18</span>
 npm i -g box-and-box
 
-<span class="cm"># run the 116-law conformance harness (2000 trials/law)</span>
+<span class="cm"># run the 118-law conformance harness (2000 trials/law)</span>
 box-and-box laws
 
 <span class="cm"># a real verdict: feasible ▸ permitted ▸ best → certificate JSON</span>
@@ -676,7 +676,7 @@ import { govern } from 'box-and-box';</pre>
     <p class="reqs" data-reveal><b>Requirements</b> Node.js ≥ 18 · macOS, Linux, or Windows · no DB, no cloud, no network. &nbsp;·&nbsp; <b>Embed it</b> as a CLI in CI, an imported ES module, or via the Elixir reference host above (which delegates to the verified engine). &nbsp;·&nbsp; An MCP adapter for live agent calls is a planned optional surface — the kernel itself is library-first.</p>
     <div class="cta-row" data-reveal style="--d:.12s; margin-top:28px">
       <a class="btn primary" href="https://opensentience.org/box-and-box/">Read the reference implementation →</a>
-      <a class="btn ghost" href="laws.html">The 116 laws →</a>
+      <a class="btn ghost" href="laws.html">The 118 laws →</a>
     </div>
   </div>
 </section>

@@ -6,7 +6,7 @@
         <title>The laws — box-and-box conformance spec</title>
         <meta
             name="description"
-            content="The 116 property-tested laws that define box-and-box. Two conformant runtimes in any language must agree on every one. Pass the laws, you're conformant."
+            content="The 118 property-tested laws that define box-and-box. Two conformant runtimes in any language must agree on every one. Pass the laws, you're conformant."
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -561,14 +561,14 @@
                 >
                     Conformance · the laws are the spec
                 </p>
-                <h1>116 laws.<br />Every one a property test.</h1>
+                <h1>118 laws.<br />Every one a property test.</h1>
                 <p class="lead">
                     <b>The verdict is the contract.</b> box-and-box isn’t
                     defined by an implementation — it’s defined by these laws:
                     associativity, the annihilation of a veto, the precedence of
                     the bridge, the un-weakenability of the entrenched core.
                     Each is checked against 2000 random cases on every run. Two
-                    hosts, in <em>any</em> language, must agree on all 116. Pass
+                    hosts, in <em>any</em> language, must agree on all 118. Pass
                     them, and you’re conformant — the way an implementation is
                     POSIX because it passes the suite, not because it says so.
                     <b>Click any law</b> to see its formal property and what it
@@ -581,7 +581,7 @@
                         <div class="cap">modal subsystems</div>
                     </div>
                     <div class="stat">
-                        <div class="num">116</div>
+                        <div class="num">118</div>
                         <div class="cap">property-tested laws</div>
                     </div>
                     <div class="stat">
@@ -616,14 +616,46 @@ Knowledge   (E1–E8):  <span class="ok">8/8 pass</span>   · composition (EB1�
 Coordination(S1–S8):  <span class="ok">8/8 pass</span>   · composition (SB1–SB3): 3/3
 Self-amend  (R1–R8):  <span class="ok">8/8 pass</span>   · composition (RB1–RB3): 3/3
 Evolution   (EV1–EV6):<span class="ok">6/6 pass</span>   · join: reflexive × axiological × resource
-Compose/CC2 (CA·CP·CX):<span class="ok">13/13 pass</span> · &amp; combine · |&gt; pipeline · ⊗ cross
+Compose/CC2 (CA·CP·CX):<span class="ok">15/15 pass</span> · &amp; combine · |&gt; pipeline · ⊗ cross · fail-closed
+                      <span class="dim">(14 suite + 1 anchor: a brick of bricks is a brick)</span>
 ──────────────────────────────
-<span class="ok">✓ all 116 stated laws hold.</span></pre>
+<span class="ok">✓ all 118 enforced laws hold.</span>
+<span class="dim">· 3 declared-open gaps (CP5/CP6/CP7, the Value.pi carrier) print FALSIFIED by design.</span></pre>
                 </div>
             </div>
         </header>
 
         <main class="wrap">
+            <section class="rung" data-reveal>
+                <div class="rhead">
+                    <div>
+                        <div class="rop">Numerics</div>
+                        <div class="rmodal">normative · the floor under every law</div>
+                    </div>
+                    <p class="rgloss">
+                        Two conformant runtimes must agree on every verdict — so
+                        they must agree on the arithmetic the verdicts are built
+                        from. box-and-box pins a single numeric domain:
+                        IEEE-754 binary64 (double); one canonical rounding util
+                        <code>round(x, dp = 3)</code> (and
+                        <code>roundDelta = round(x, 6)</code> for evolution
+                        deltas), defined as
+                        <code>Math.round(x · 10^dp) / 10^dp</code> — half-toward
+                        +∞ at the .5 boundary; one comparison tolerance
+                        <code>EPS = 1e-9</code> via
+                        <code>approxEq</code>. Fields are <b>EXACT</b> (compared
+                        with <code>===</code>: <code>n</code>, <code>κ</code>,
+                        phase, ledger balances) or <b>TOLERANCE</b> (compared
+                        with <code>approxEq</code>: <code>β</code>, utility,
+                        scores). Non-finite inputs pass through
+                        <code>round</code> unchanged — fail-closed, never NaN
+                        laundering. The full normative statement lives in the
+                        kernel README §Numerics and the exported
+                        <code>box-and-box/numerics</code> module; the laws below
+                        are stated over this domain.
+                    </p>
+                </div>
+            </section>
             <section class="rung" data-reveal>
                 <div class="rhead">
                     <div>
@@ -3393,6 +3425,30 @@ Compose/CC2 (CA·CP·CX):<span class="ok">13/13 pass</span> · &amp; combine · 
                                 <span class="plabel">guarantees</span>Composition
                                 is closed — a composite re-composes like any
                                 leaf, so assemblies nest without limit.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CX6</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>fail-closed (a malformed
+                                child ⇒ 0̲ or a valid brick, never an
+                                exception)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>compose(partial|garbage, b) never throws; result isZero or isBrick</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Fail-closed
+                                is doctrine — a partial, malformed, or
+                                non-brick operand is normalized to the
+                                annihilating zero 0̲ or a valid brick, so the
+                                compose layer never propagates an exception or
+                                a default-allow.
                             </div>
                         </div>
                     </details>
