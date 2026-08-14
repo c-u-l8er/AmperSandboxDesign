@@ -505,6 +505,27 @@
 <body>
 <div id="progress"></div>
 
+<script type="module" src="/amp-nav.js"></script>
+<amp-nav
+  property="masterclass"
+  style="
+    /* Do NOT set position here. :host is position:fixed by design, and the component injects
+       body{padding-top} + offsets this page's own sticky nav.top to sit beneath it. Overriding
+       position to relative leaves that padding as a 56px dead band and a gap under the sticky
+       nav on scroll. z-index is already handled by --amp-nav-z (9999). */
+    /* Near-opaque on purpose: this page's hero is large and bright, and the component's default
+       .82 let it read straight through the open mega menu. The bar still blurs what's under it. */
+    --amp-nav-bg: rgba(7,9,13,.975);
+    --amp-nav-fg: #e8edf6;
+    --amp-nav-muted: #5f6b82;
+    --amp-nav-accent: #b388ff;
+    --amp-nav-border: #1e2533;
+    --amp-nav-hover: rgba(232,237,246,.045);
+    --amp-nav-cta-bg: #b388ff;
+    --amp-nav-cta-fg: #07090d;
+  "
+></amp-nav>
+
 <nav class="top">
   <div class="wrap">
     <div class="brand"><span class="amp">[&amp;]</span> Agentic Engineering</div>
