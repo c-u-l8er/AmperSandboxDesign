@@ -90,20 +90,37 @@ function typeMatch(out, inn) {
 }
 
 // ---------------------------------------------------------------------------
+// total constructors — a Brick may be handed a PARTIAL or GARBAGE value/array by an
+// external caller; the operators must never throw (fail-closed, directive 1). We normalize
+// every untrusted field through a total constructor: a non-object / error value floors to
+// the identity V0(), and array fields are coerced so combine/chain can never hit a
+// non-iterable. (See compose-law CX6.)
+// ---------------------------------------------------------------------------
+const asArr = (x) => (Array.isArray(x) ? x : x == null ? [] : [x]);
+function normValue(v) {
+  // null / non-object / a chain-error sentinel ⇒ the identity Value (empty, feasible).
+  if (v == null || typeof v !== 'object' || v.error) return V0();
+  // route through V() over V0() defaults, sanitizing the three free-monoid array fields first
+  // so a partial Value (e.g. {beta:0.9}) or a garbage one (e.g. {sigma:42}) becomes total.
+  return V({ ...v, sigma: asArr(v.sigma), authority: asArr(v.authority), audit: asArr(v.audit) });
+}
+
+// ---------------------------------------------------------------------------
 // Brick + the distinguished elements.
 // ---------------------------------------------------------------------------
 export function Brick(p = {}) {
+  const o = p && typeof p === 'object' ? p : {};
   return {
-    id: p.id ?? 'brick',
-    holder: p.holder ?? null,
-    contract: { accepts_from: p.contract?.accepts_from ?? '*', feeds_into: p.contract?.feeds_into ?? '*' },
-    value: p.value ?? V0(),
-    cost: p.cost ?? UNCERTIFIED_COST(),
-    q: { ...Q0(), ...(p.q || {}) },
-    utility: p.utility ?? 0,
-    laws: [...(p.laws || [])],
-    floor: [...(p.floor || [])],
-    annihilated: !!p.annihilated
+    id: typeof o.id === 'string' ? o.id : 'brick',
+    holder: o.holder ?? null,
+    contract: { accepts_from: o.contract?.accepts_from ?? '*', feeds_into: o.contract?.feeds_into ?? '*' },
+    value: normValue(o.value),
+    cost: o.cost ?? UNCERTIFIED_COST(),
+    q: { ...Q0(), ...(o.q && typeof o.q === 'object' ? o.q : {}) },
+    utility: typeof o.utility === 'number' ? o.utility : 0,
+    laws: asArr(o.laws),
+    floor: asArr(o.floor),
+    annihilated: !!o.annihilated
   };
 }
 
@@ -129,6 +146,13 @@ const holders = (a, b) => {
   return hs.length === 0 ? null : hs.length === 1 ? hs[0] : hs;
 };
 
+// ensure an operand is a well-formed brick before composing. A proper brick (incl. ZERO and the
+// identity bricks) passes through untouched — preserving object identity so isZero(ZERO) holds;
+// any partial/garbage operand is routed through the total Brick() constructor (fail-closed).
+const isBrickShaped = (x) =>
+  x && typeof x === 'object' && x.contract && x.value && Array.isArray(x.value.sigma) && x.cost && x.q && typeof x.id === 'string';
+const ensure = (x) => (isBrickShaped(x) ? x : Brick(x));
+
 // The floor every operator shares: a composed value that still carries an unresolved conflict, a
 // cycle, or an uncertified cost collapses to 0̲ — utility cannot resurrect it.
 function floored(value, cost, floorReqs) {
@@ -142,6 +166,7 @@ function floored(value, cost, floorReqs) {
 // ---------------------------------------------------------------------------
 export function composeAnd(a, b) {
   if (isZero(a) || isZero(b)) return ZERO;                       // 0̲ absorbs
+  a = ensure(a); b = ensure(b);                                 // total operands ⇒ never throw
   const value = combine(a.value, b.value);
   const cost = composeCost(a.cost, b.cost);
   if (floored(value, cost)) return ZERO;
@@ -165,6 +190,7 @@ export function composeAnd(a, b) {
 // ---------------------------------------------------------------------------
 export function composePipe(a, b) {
   if (isZero(a) || isZero(b)) return ZERO;                       // 0̲ absorbs
+  a = ensure(a); b = ensure(b);                                 // total operands ⇒ never throw
   if (!typeMatch(a.contract.feeds_into, b.contract.accepts_from)) return ZERO; // infeasible hand-off ⇒ 0̲
   const chained = chain(a.value, b.value);
   if (chained.error) return ZERO;                               // π-violation (backward phase) ⇒ 0̲

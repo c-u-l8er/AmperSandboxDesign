@@ -1,0 +1,2030 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The New SDLC, Made Formal — An Agentic-Engineering Masterclass on the [&amp;] Stack</title>
+<meta name="description" content="Google described the new SDLC with vibe coding. The [&] Protocol stack turns every informal concept — harness, specification, verification, context, evals — into a formal, composable, property-tested protocol." />
+<style>
+  :root {
+    --bg: #07090d;
+    --bg-2: #0b0e14;
+    --panel: #11151e;
+    --panel-2: #161b27;
+    --ink: #e8edf6;
+    --ink-dim: #9aa6bd;
+    --ink-faint: #5f6b82;
+    --line: #1e2533;
+    --line-bright: #2c3548;
+    /* spectrum */
+    --vibe: #ff5a4d;
+    --mid: #f2b53b;
+    --agentic: #4d8dff;
+    /* stack accents */
+    --amp: #b388ff;      /* [&] composition */
+    --graph: #2ee6a6;    /* graphonomous memory */
+    --pulse: #ff8a3d;    /* pulse temporal */
+    --prism: #4fc3ff;    /* prism diagnostic */
+    --box: #ffd24d;      /* box-and-box governance */
+    --harness: #ff6fae;  /* OS-008 harness */
+    --trvm: #38d9c4;     /* TRVM runtime */
+    --resi: #ff95b5;     /* the-residency */
+    --radius: 14px;
+    --maxw: 1080px;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: radial-gradient(1200px 800px at 75% -10%, #121a2b 0%, var(--bg) 55%) fixed;
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: var(--agentic); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  /* scroll progress */
+  #progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+    background: linear-gradient(90deg, var(--vibe), var(--mid), var(--agentic));
+    z-index: 100; transition: width .1s linear;
+    box-shadow: 0 0 14px rgba(77,141,255,.6);
+  }
+
+  /* top nav */
+  nav.top {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(14px);
+    background: rgba(7,9,13,.72);
+    border-bottom: 1px solid var(--line);
+  }
+  nav.top .wrap { display: flex; align-items: center; gap: 18px; height: 56px; }
+  .brand { font-weight: 800; letter-spacing: .02em; font-size: 15px; display: flex; align-items: center; gap: 9px; }
+  .brand .amp { color: var(--amp); font-family: var(--mono); }
+  nav.top .links { margin-left: auto; display: flex; gap: 20px; font-size: 13px; color: var(--ink-dim); }
+  nav.top .links a { color: var(--ink-dim); }
+  nav.top .links a:hover { color: var(--ink); text-decoration: none; }
+  @media (max-width: 760px) { nav.top .links { display: none; } }
+
+  /* hero */
+  header.hero { padding: 90px 0 70px; position: relative; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink-dim); border: 1px solid var(--line-bright); border-radius: 999px;
+    padding: 6px 14px; margin-bottom: 26px; background: var(--panel);
+  }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--graph); box-shadow: 0 0 10px var(--graph); animation: pulse 2.4s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+
+  h1.title {
+    font-size: clamp(34px, 6vw, 64px); line-height: 1.04; margin: 0 0 22px;
+    font-weight: 850; letter-spacing: -.02em;
+  }
+  h1.title .grad {
+    background: linear-gradient(100deg, var(--vibe), var(--mid) 45%, var(--agentic));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .lede { font-size: clamp(17px, 2.1vw, 21px); color: var(--ink-dim); max-width: 760px; }
+  .lede strong { color: var(--ink); font-weight: 650; }
+
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
+  .btn {
+    font-family: var(--mono); font-size: 13px; letter-spacing: .03em;
+    padding: 12px 20px; border-radius: 10px; border: 1px solid var(--line-bright);
+    background: var(--panel); color: var(--ink); cursor: pointer; transition: .2s;
+  }
+  .btn:hover { border-color: var(--agentic); transform: translateY(-2px); text-decoration: none; }
+  .btn.primary { background: linear-gradient(100deg, #1c3a72, #2a4f99); border-color: #3a5fb0; }
+
+  .hero-stats { display: flex; flex-wrap: wrap; gap: 36px; margin-top: 54px; padding-top: 30px; border-top: 1px solid var(--line); }
+  .stat .n { font-size: 30px; font-weight: 800; font-family: var(--mono); letter-spacing: -.01em; }
+  .stat .n.c1 { color: var(--box); } .stat .n.c2 { color: var(--graph); }
+  .stat .n.c3 { color: var(--prism); } .stat .n.c4 { color: var(--amp); }
+  .stat .l { font-size: 12.5px; color: var(--ink-faint); letter-spacing: .03em; }
+
+  /* sections */
+  section { padding: 76px 0; border-top: 1px solid var(--line); position: relative; }
+  .kicker {
+    font-family: var(--mono); font-size: 12px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--ink-faint); margin: 0 0 14px;
+  }
+  h2.sec { font-size: clamp(26px, 4vw, 40px); margin: 0 0 18px; letter-spacing: -.015em; font-weight: 800; line-height: 1.1; }
+  .sec-lede { font-size: 17.5px; color: var(--ink-dim); max-width: 740px; margin: 0 0 38px; }
+  .sec-lede strong { color: var(--ink); }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* spectrum */
+  .spectrum-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 30px 28px; }
+  .spectrum-track {
+    position: relative; height: 16px; border-radius: 999px; margin: 40px 0 8px;
+    background: linear-gradient(90deg, var(--vibe), var(--mid) 50%, var(--agentic));
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+  }
+  /* display:block matters: as an inline-block the input sat on a line box and was baseline-positioned,
+     which put the knob 18px BELOW the track no matter what the negative margin said. As a block its
+     offset is arithmetic: track margin-bottom (8) + margin-top (-29) + half its own height (13) puts
+     the thumb centre exactly on the track centre. Keep height == thumb diameter. */
+  input#slider { -webkit-appearance: none; appearance: none; display: block; width: 100%; background: transparent; margin: -29px 0 0; position: relative; z-index: 3; cursor: pointer; height: 26px; }
+  input#slider::-webkit-slider-thumb { -webkit-appearance: none; width: 26px; height: 26px; border-radius: 50%; background: #fff; border: 3px solid #0b0e14; box-shadow: 0 0 0 2px #fff, 0 4px 18px rgba(0,0,0,.5); cursor: grab; }
+  input#slider::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 3px solid #0b0e14; box-shadow: 0 0 0 2px #fff; cursor: grab; }
+  /* Equal thirds, not space-between: with unequal label widths space-between distributes the GAPS
+     evenly, which pushed "Structured AI-assisted"'s centre ~21px left of the track's 50% mark. Each
+     label now owns a third and aligns to its own end, so the centre label centres on the thumb. */
+  .spectrum-labels { display: flex; font-family: var(--mono); font-size: 12px; letter-spacing: .05em; color: var(--ink-faint); margin-top: 4px; }
+  .spectrum-labels span { flex: 1 1 0; min-width: 0; }
+  .spectrum-labels span:nth-child(1) { text-align: left; }
+  .spectrum-labels span:nth-child(2) { text-align: center; }
+  .spectrum-labels span:nth-child(3) { text-align: right; }
+  .spectrum-labels span.active { color: var(--ink); }
+  @media (max-width: 560px) { .spectrum-labels { font-size: 10.5px; letter-spacing: .02em; } }
+  .spectrum-readout { margin-top: 26px; padding: 22px; border-radius: 12px; background: var(--bg-2); border: 1px solid var(--line); transition: border-color .3s; }
+  .spectrum-readout .mode { font-size: 21px; font-weight: 800; margin-bottom: 6px; }
+  .spectrum-readout .desc { color: var(--ink-dim); font-size: 15px; }
+  .spectrum-readout .verify { margin-top: 16px; font-family: var(--mono); font-size: 13px; color: var(--ink-dim); display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .spectrum-readout .verify b { color: var(--ink); }
+  .chip { display: inline-block; font-family: var(--mono); font-size: 11.5px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line-bright); color: var(--ink-dim); }
+
+  /* anatomy rings */
+  .anatomy { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: center; }
+  @media (max-width: 820px) { .anatomy { grid-template-columns: 1fr; } }
+  .rings { position: relative; aspect-ratio: 1; max-width: 420px; margin: 0 auto; width: 100%; }
+  .ring { position: absolute; border-radius: 50%; display: flex; align-items: flex-start; justify-content: center; font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); padding-top: 10px; transition: .3s; }
+  .ring.r4 { inset: 0; background: radial-gradient(circle, transparent 62%, rgba(77,141,255,.05) 63%); border: 1px solid var(--line); }
+  .ring.r3 { inset: 13%; border: 1px solid var(--line-bright); background: rgba(20,26,38,.5); }
+  .ring.r2 { inset: 28%; border: 1px solid #2a3550; background: rgba(28,36,54,.65); }
+  .ring.r1 { inset: 44%; border: 1px solid var(--agentic); background: radial-gradient(circle, #16345f, #0e2138); box-shadow: 0 0 30px rgba(77,141,255,.35) inset; color: var(--ink); align-items: center; padding-top: 0; font-size: 13px; }
+  .ring:hover { filter: brightness(1.25); }
+  .ring .core { text-align: center; }
+  .ring .core b { display: block; font-size: 15px; color: #cfe0ff; }
+  .anatomy-legend .row { display: flex; gap: 14px; align-items: flex-start; padding: 13px 0; border-bottom: 1px solid var(--line); }
+  .anatomy-legend .row:last-child { border-bottom: 0; }
+  .anatomy-legend .pct { font-family: var(--mono); font-weight: 800; font-size: 18px; min-width: 56px; }
+  .anatomy-legend .pct.small { color: var(--ink-faint); }
+  .anatomy-legend .pct.big { color: var(--graph); }
+  .anatomy-legend h4 { margin: 0 0 2px; font-size: 15px; }
+  .anatomy-legend p { margin: 0; font-size: 13.5px; color: var(--ink-dim); }
+
+  /* mapping table */
+  .map { width: 100%; border-collapse: collapse; font-size: 14.5px; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .map thead th { text-align: left; padding: 16px 18px; background: var(--panel-2); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; border-bottom: 1px solid var(--line-bright); }
+  .map tbody td { padding: 16px 18px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .map tbody tr:last-child td { border-bottom: 0; }
+  .map tbody tr { transition: background .2s; }
+  .map tbody tr:hover { background: rgba(255,255,255,.018); }
+  .map .google { color: var(--ink-dim); width: 38%; }
+  .map .google b { color: var(--ink); }
+  .map .arrow { color: var(--ink-faint); text-align: center; width: 5%; font-family: var(--mono); }
+  .map .ours b { color: var(--ink); }
+  .map .ours .tag { font-family: var(--mono); font-size: 11px; padding: 2px 8px; border-radius: 6px; margin-right: 6px; display: inline-block; }
+  .t-amp { background: rgba(179,136,255,.14); color: var(--amp); }
+  .t-graph { background: rgba(46,230,166,.13); color: var(--graph); }
+  .t-pulse { background: rgba(255,138,61,.14); color: var(--pulse); }
+  .t-prism { background: rgba(79,195,255,.14); color: var(--prism); }
+  .t-box { background: rgba(255,210,77,.14); color: var(--box); }
+  .t-harness { background: rgba(255,111,174,.14); color: var(--harness); }
+  .map .ours small { color: var(--ink-faint); display: block; margin-top: 4px; font-size: 12.5px; }
+
+  /* layer cards */
+  .layers { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  @media (max-width: 760px) { .layers { grid-template-columns: 1fr; } }
+  .layer {
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 24px; position: relative; overflow: hidden; transition: .25s;
+  }
+  .layer:hover { transform: translateY(-3px); border-color: var(--line-bright); }
+  .layer::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--clr); opacity: .9; }
+  .layer .head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .layer .sigil { font-family: var(--mono); font-weight: 800; font-size: 18px; color: var(--clr); }
+  .layer h3 { margin: 0; font-size: 18px; }
+  .layer .role { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); }
+  .layer p { font-size: 14px; color: var(--ink-dim); margin: 10px 0 0; }
+  .layer .facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .layer .fact { font-family: var(--mono); font-size: 11.5px; padding: 4px 10px; border-radius: 6px; background: var(--bg-2); border: 1px solid var(--line); color: var(--ink-dim); }
+  .layer .maps { margin-top: 14px; font-size: 12.5px; color: var(--ink-faint); padding-top: 12px; border-top: 1px solid var(--line); }
+  .layer .maps b { color: var(--clr); }
+
+  /* PULSE loop ring */
+  .loop-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; align-items: center; }
+  @media (max-width: 820px) { .loop-wrap { grid-template-columns: 1fr; } }
+  .loop-svg { width: 100%; max-width: 400px; margin: 0 auto; display: block; }
+  .phase-list { list-style: none; padding: 0; margin: 0; counter-reset: p; }
+  .phase-list li { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line); cursor: default; transition: .2s; }
+  .phase-list li:last-child { border-bottom: 0; }
+  .phase-list li .idx { font-family: var(--mono); font-weight: 800; color: var(--pulse); min-width: 26px; }
+  .phase-list li.lit { background: linear-gradient(90deg, rgba(255,138,61,.08), transparent); }
+  .phase-list li h4 { margin: 0; font-size: 15px; font-family: var(--mono); }
+  .phase-list li p { margin: 2px 0 0; font-size: 13px; color: var(--ink-dim); }
+
+  /* certificate */
+  .cert { background: #0a0d13; border: 1px solid var(--line-bright); border-radius: var(--radius); padding: 0; overflow: hidden; font-family: var(--mono); font-size: 13px; }
+  .cert .bar { display: flex; align-items: center; gap: 8px; padding: 11px 16px; background: var(--panel-2); border-bottom: 1px solid var(--line); }
+  .cert .bar .d { width: 11px; height: 11px; border-radius: 50%; }
+  .cert .bar .t { margin-left: 8px; color: var(--ink-faint); font-size: 12px; }
+  .cert pre { margin: 0; padding: 20px; overflow-x: auto; line-height: 1.7; color: var(--ink-dim); }
+  .cert .k { color: var(--prism); } .cert .s { color: var(--graph); } .cert .n { color: var(--box); }
+  .cert .verdict { color: var(--graph); font-weight: 700; } .cert .floor { color: var(--vibe); }
+  .ladder { display: grid; gap: 8px; margin-top: 8px; }
+  .rung { display: flex; align-items: center; gap: 14px; padding: 11px 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; transition: .2s; }
+  .rung:hover { border-color: var(--box); transform: translateX(4px); }
+  .rung .num { font-family: var(--mono); font-weight: 800; color: var(--box); min-width: 22px; }
+  .rung .nm { font-weight: 650; font-size: 14.5px; min-width: 130px; }
+  .rung .q { color: var(--ink-dim); font-size: 13.5px; }
+  @media (max-width: 600px) { .rung .nm { min-width: 0; } .rung .q { flex-basis: 100%; } }
+
+  /* dark factory loop */
+  .factory { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0; margin-top: 10px; }
+  @media (max-width: 900px) { .factory { grid-template-columns: 1fr; } }
+  .fstep { position: relative; padding: 18px 16px; background: var(--panel); border: 1px solid var(--line); }
+  .factory .fstep:not(:last-child)::after { content: "→"; position: absolute; right: -9px; top: 50%; transform: translateY(-50%); color: var(--ink-faint); z-index: 2; background: var(--bg); padding: 2px; font-family: var(--mono); }
+  @media (max-width: 900px) { .factory .fstep:not(:last-child)::after { content: "↓"; right: 50%; top: auto; bottom: -10px; transform: translateX(50%); } }
+  .fstep .num { font-family: var(--mono); font-size: 11px; color: var(--graph); }
+  .fstep h4 { margin: 6px 0 4px; font-size: 13.5px; }
+  .fstep .by { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); }
+
+  /* factory vs residency + TRVM */
+  .vs td:first-child { color: var(--ink-dim); font-family: var(--mono); font-size: 12.5px; width: 22%; }
+  .vs td.fac { color: var(--ink); } .vs td.res { color: var(--ink); }
+  .vs thead th.fac { color: var(--graph); } .vs thead th.res { color: var(--resi); }
+  .gate0 { margin-top: 24px; padding: 20px 24px; border-left: 3px solid var(--mid); background: linear-gradient(90deg, rgba(242,181,59,.07), transparent); border-radius: 0 12px 12px 0; }
+  .gate0 b { color: var(--mid); }
+  .gate0 p { margin: 8px 0 0; color: var(--ink-dim); font-size: 14.5px; }
+  .trvm-card { margin-top: 24px; background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--trvm); border-radius: var(--radius); padding: 24px; }
+  .trvm-card .role { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); }
+  .trvm-card h3 { margin: 6px 0 0; font-size: 18px; }
+  .trvm-card h3 .sig { font-family: var(--mono); color: var(--trvm); margin-right: 8px; }
+  .trvm-card p { font-size: 14.5px; color: var(--ink-dim); margin: 12px 0 0; }
+  .trvm-card .facts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .trvm-card .fact { font-family: var(--mono); font-size: 11.5px; padding: 4px 10px; border-radius: 6px; background: var(--bg-2); border: 1px solid var(--line); color: var(--ink-dim); }
+
+  /* execution tier ladder */
+  .tiers { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 18px; }
+  @media (max-width: 760px){ .tiers { grid-template-columns: 1fr; } }
+  .tier { background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; position: relative; }
+  .tier .lvl { font-family: var(--mono); font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-faint); }
+  .tier h5 { margin: 6px 0 5px; font-size: 14px; color: var(--ink); }
+  .tier p { margin: 0; font-size: 12.5px; color: var(--ink-dim); line-height: 1.55; }
+  .tier.t1 { border-color: var(--line-bright); box-shadow: inset 0 0 0 1px rgba(255,111,174,.12); }
+  .tier.t1 .lvl { color: var(--harness); }
+  .tier .arrow { position: absolute; right: -9px; top: 50%; transform: translateY(-50%); color: var(--ink-faint); font-size: 14px; z-index: 1; }
+  @media (max-width: 760px){ .tier .arrow { display: none; } }
+
+  /* human-in-the-loop postures */
+  .hitl { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  @media (max-width: 860px){ .hitl { grid-template-columns: 1fr; } }
+  .hcard { background: var(--panel); border: 1px solid var(--line); border-top: 3px solid var(--line); border-radius: 12px; padding: 20px; }
+  .hcard.fac { border-top-color: var(--graph); }
+  .hcard.res { border-top-color: var(--resi); }
+  .hcard.trvm { border-top-color: var(--trvm); }
+  .hcard .role { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint); }
+  .hcard.fac .role { color: var(--graph); } .hcard.res .role { color: var(--resi); } .hcard.trvm .role { color: var(--trvm); }
+  .hcard h4 { margin: 8px 0 9px; font-size: 15px; line-height: 1.35; color: var(--ink); }
+  .hcard p { margin: 0; font-size: 13px; color: var(--ink-dim); line-height: 1.6; }
+  .hcard .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  .hcard .tag-row span { font-family: var(--mono); font-size: 10.5px; padding: 3px 8px; border-radius: 5px; background: var(--bg-2); border: 1px solid var(--line); color: var(--ink-faint); }
+  .hitl-note { margin-top: 18px; padding: 20px 24px; border-left: 3px solid var(--trvm); background: linear-gradient(90deg, rgba(56,217,196,.06), transparent); border-radius: 0 12px 12px 0; font-size: 14.5px; color: var(--ink-dim); line-height: 1.65; }
+  .hitl-note b { color: var(--ink); }
+  .kloop { display: flex; flex-wrap: wrap; gap: 7px 6px; align-items: center; font-family: var(--mono); font-size: 12px; margin-top: 6px; }
+  .kloop .k { padding: 5px 11px; border-radius: 6px; background: var(--bg-2); border: 1px solid var(--line); color: var(--ink); }
+  .kloop .k.art { border-color: var(--resi); color: var(--resi); }
+  .kloop .sep { color: var(--ink-faint); }
+
+  /* interactive compile demo */
+  .compile-demo { margin-top: 30px; background: var(--panel); border: 1px solid var(--line-bright); border-radius: var(--radius); padding: 24px; }
+  .compile-demo .cd-lede { font-size: 14px; color: var(--ink-dim); margin: 0 0 18px; }
+  .compile-demo .cd-lede b { color: var(--ink); }
+  .cap-toggles { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cap-btn { font-family: var(--mono); font-size: 12.5px; padding: 7px 13px; border-radius: 8px; cursor: pointer; background: var(--bg-2); border: 1px solid var(--line); color: var(--ink-faint); transition: .15s; user-select: none; }
+  .cap-btn:hover { border-color: var(--line-bright); color: var(--ink-dim); }
+  .cap-btn.on { background: rgba(179,136,255,.16); border-color: var(--amp); color: var(--amp); }
+  .cap-btn.on.gov { background: rgba(255,210,77,.16); border-color: var(--box); color: var(--box); }
+  .expr-line { margin: 16px 0 4px; font-family: var(--mono); font-size: 14px; color: var(--ink); padding: 12px 16px; background: #0a0d13; border: 1px solid var(--line); border-radius: 10px; overflow-x: auto; white-space: nowrap; }
+  .expr-line .op { color: var(--ink-faint); }
+  .expr-line .cap { color: var(--amp); }
+  .expr-line .cap.g { color: var(--box); }
+  .compile-out { display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 12px; margin-top: 16px; }
+  @media (max-width: 920px){ .compile-out { grid-template-columns: 1fr; } }
+  .co-panel { background: #0a0d13; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; }
+  .co-panel .co-h { font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint); padding: 9px 13px; border-bottom: 1px solid var(--line); background: var(--panel-2); }
+  .co-panel pre { margin: 0; padding: 12px 14px; font-family: var(--mono); font-size: 11px; line-height: 1.65; color: var(--ink-dim); overflow-x: auto; flex: 1; }
+  .co-panel pre .jk { color: var(--prism); } .co-panel pre .jv { color: var(--graph); } .co-panel pre .jc { color: var(--ink-faint); }
+  .pstage { display: flex; align-items: center; gap: 8px; padding: 7px 14px; font-family: var(--mono); font-size: 11.5px; border-bottom: 1px solid var(--line); color: var(--ink-dim); }
+  .pstage:last-child { border-bottom: 0; }
+  .pstage .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--graph); flex: none; }
+  .pstage.gated .dot { background: var(--box); }
+  .pstage .mut { color: var(--ink-faint); margin-left: auto; font-size: 10.5px; }
+  /* live compile-demo verdict panel. Deliberately NOT `.cert` — the static JSON certificate in §09
+     uses that name, and `display:flex` here was breaking its inline "verdict": "allow", onto 3 lines. */
+  .vcert { padding: 14px; }
+  .vcert.empty { color: var(--ink-faint); font-size: 12px; font-family: var(--mono); line-height: 1.6; white-space: pre-line; }
+  .vcert .verdict { font-family: var(--mono); font-size: 14px; color: var(--graph); display: flex; align-items: center; gap: 8px; }
+  .vcert .verdict .x { font-size: 16px; }
+  .vcert .crow { font-family: var(--mono); font-size: 11px; color: var(--ink-dim); margin-top: 9px; display: flex; justify-content: space-between; gap: 10px; }
+  .vcert .crow span:first-child { color: var(--ink-faint); }
+  .vcert .hash { color: var(--box); word-break: break-all; }
+  .compile-demo .cd-foot { margin-top: 14px; font-family: var(--mono); font-size: 11px; color: var(--ink-faint); line-height: 1.6; }
+  .compile-demo .cd-foot b { color: var(--ink-dim); }
+
+  /* algo chips on PULSE phases */
+  .phase-list li h4 .algo { font-family: var(--mono); font-size: 10.5px; font-weight: 500; letter-spacing: .01em; color: var(--ink-faint); background: var(--bg-2); border: 1px solid var(--line); padding: 2px 7px; border-radius: 5px; margin-left: 9px; vertical-align: middle; white-space: nowrap; }
+
+  /* theory: the loops underneath */
+  .theory-block { margin-top: 36px; }
+  .theory-block > h3 { font-size: 19px; margin: 0 0 8px; display: flex; align-items: center; gap: 11px; flex-wrap: wrap; }
+  .theory-block > h3 .tag { font-family: var(--mono); font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--pulse); border: 1px solid var(--line-bright); padding: 3px 9px; border-radius: 999px; }
+  .theory-block > p { color: var(--ink-dim); font-size: 15px; max-width: 770px; margin: 0 0 18px; }
+  .theory-block > p code, .kappa-loop code, .wnote code { font-family: var(--mono); font-size: 13px; color: var(--ink); }
+  .theory-block > p .plain, .theory-block > p .impl, .theory-block > p .why { display: block; padding-left: 13px; border-left: 2px solid var(--line); margin-bottom: 9px; }
+  .theory-block > p .plain { border-left-color: var(--graph); }
+  .theory-block > p .impl { border-left-color: var(--line-bright); }
+  .theory-block > p .why { border-left-color: var(--box); margin-bottom: 0; }
+  .theory-block > p .plain b, .theory-block > p .impl b, .theory-block > p .why b { color: var(--ink); font-size: 11px; letter-spacing: .04em; text-transform: uppercase; }
+
+  .kappa-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  @media (max-width: 700px){ .kappa-row { grid-template-columns: 1fr; } }
+  .kappa-state { border: 1px solid var(--line); border-radius: 12px; padding: 18px; background: var(--panel); border-top: 3px solid var(--ks); }
+  .kappa-state .kv { font-family: var(--mono); font-size: 23px; font-weight: 800; color: var(--ks); }
+  .kappa-state .topo { font-size: 13.5px; color: var(--ink); margin-top: 4px; }
+  .kappa-state .route { font-family: var(--mono); font-size: 12px; color: var(--ink-dim); margin-top: 12px; padding-top: 11px; border-top: 1px solid var(--line); }
+  .kappa-state .route b { color: var(--ink); }
+
+  .kappa-demo { margin-top: 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); overflow: hidden; }
+  .kd-head { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 14px 18px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  .kd-title { font-size: 13.5px; color: var(--ink-dim); }
+  .kd-title code { font-family: var(--mono); color: var(--ink); }
+  .kd-verdict { font-family: var(--mono); font-size: 13px; font-weight: 700; padding: 6px 13px; border-radius: 999px; border: 1px solid var(--line-bright); white-space: nowrap; transition: color .2s, border-color .2s, background .2s; }
+  .kd-body { display: grid; grid-template-columns: 240px 1fr; gap: 20px; padding: 20px 18px; align-items: center; }
+  @media (max-width: 640px){ .kd-body { grid-template-columns: 1fr; } }
+  .kd-graph { width: 240px; height: 200px; justify-self: center; }
+  .kd-graph .nd { fill: var(--bg); stroke: var(--line-bright); stroke-width: 1.5; }
+  .kd-graph .nl { fill: var(--ink); font: 700 15px var(--mono); text-anchor: middle; dominant-baseline: central; }
+  .kd-graph .ed { stroke: var(--line-bright); stroke-width: 2; opacity: .25; transition: opacity .15s, stroke .15s; }
+  .kd-graph .ed.on { opacity: 1; stroke: var(--harness); }
+  .kd-graph .ah { fill: var(--harness); opacity: 0; transition: opacity .15s; }
+  .kd-graph .ah.on { opacity: 1; }
+  .kd-cl { font-size: 12px; color: var(--ink-dim); margin-bottom: 9px; text-transform: uppercase; letter-spacing: .05em; }
+  .kd-edges { display: flex; flex-wrap: wrap; gap: 8px; }
+  .kd-edge { font-family: var(--mono); font-size: 13px; padding: 6px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg); color: var(--ink-dim); cursor: pointer; transition: all .15s; }
+  .kd-edge:hover { border-color: var(--line-bright); }
+  .kd-edge.on { border-color: var(--harness); color: var(--ink); background: rgba(255,111,174,.08); }
+  .kd-readout { margin-top: 14px; font-family: var(--mono); font-size: 12.5px; color: var(--ink-dim); line-height: 1.7; }
+  .kd-readout b { color: var(--ink); }
+  .kd-reset { margin-top: 12px; font-family: var(--mono); font-size: 12px; padding: 6px 13px; border-radius: 8px; border: 1px solid var(--line); background: transparent; color: var(--ink-dim); cursor: pointer; }
+  .kd-reset:hover { border-color: var(--line-bright); color: var(--ink); }
+  .kd-foot { font-size: 12.5px; color: var(--ink-dim); line-height: 1.6; padding: 0 18px 16px; }
+  .kd-foot code, .kd-foot b { font-family: var(--mono); color: var(--ink); }
+  .kappa-loop { margin-top: 16px; padding: 15px 20px; border-left: 3px solid var(--graph); background: linear-gradient(90deg, rgba(46,230,166,.07), transparent); border-radius: 0 10px 10px 0; font-size: 14px; color: var(--ink-dim); }
+  .kappa-loop b { color: var(--graph); }
+
+  .wilson { display: grid; gap: 11px; margin-top: 4px; }
+  .wrow { display: grid; grid-template-columns: 118px 1fr 58px; align-items: center; gap: 14px; font-family: var(--mono); font-size: 12.5px; color: var(--ink-dim); }
+  .wbar { position: relative; height: 14px; background: var(--bg-2); border: 1px solid var(--line); border-radius: 999px; }
+  .wbar i { position: absolute; top: 0; bottom: 0; background: linear-gradient(90deg, rgba(79,195,255,.3), rgba(79,195,255,.6)); border-radius: 999px; }
+  .wrow span:last-child { text-align: right; color: var(--prism); }
+  .wnote { margin-top: 16px; font-size: 14px; color: var(--ink-dim); }
+  .wnote b { color: var(--prism); }
+
+  .algebra { display: grid; gap: 9px; }
+  .alg { display: grid; grid-template-columns: 56px 1fr; gap: 14px; align-items: baseline; padding: 13px 17px; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
+  .alg .op { font-family: var(--mono); font-weight: 800; font-size: 17px; color: var(--box); }
+  .alg .law { font-size: 13.5px; color: var(--ink-dim); }
+  .alg .law b { color: var(--ink); }
+  .alg .law code { font-family: var(--mono); font-size: 12.5px; color: var(--box); }
+  .laws-badge { margin-top: 15px; font-family: var(--mono); font-size: 12.5px; color: var(--box); }
+  .laws-badge code { color: var(--ink-dim); }
+
+  /* builder: artifacts, decisions, maturity */
+  .build-block { margin-top: 38px; }
+  .build-block > h3 { font-size: 19px; margin: 0 0 14px; }
+  .build-block > h3 .tag { font-family: var(--mono); font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-faint); border: 1px solid var(--line-bright); padding: 3px 9px; border-radius: 999px; margin-right: 10px; }
+  .code-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  @media (max-width: 920px){ .code-grid { grid-template-columns: 1fr; } }
+  .code-panel { background: #0a0d13; border: 1px solid var(--line-bright); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+  .code-panel .cph { padding: 10px 14px; font-family: var(--mono); font-size: 11.5px; color: var(--ink); background: var(--panel-2); border-bottom: 1px solid var(--line); }
+  .code-panel pre { margin: 0; padding: 14px 16px; overflow-x: auto; font-family: var(--mono); font-size: 11.5px; line-height: 1.7; color: var(--ink-dim); flex: 1; }
+  .code-panel .cap { padding: 12px 14px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--ink-faint); }
+  .cj-k { color: var(--prism); } .cj-s { color: var(--graph); } .cj-p { color: var(--amp); } .cj-c { color: var(--ink-faint); } .cj-ok { color: var(--graph); }
+  /* the red the page must never hide: declared-open laws print FALSIFIED in the real run */
+  .cj-gap { color: var(--vibe); } .cj-note { color: var(--mid); }
+
+  .decisions { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+  @media (max-width: 820px){ .decisions { grid-template-columns: 1fr; } }
+  .decision { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 20px; transition: .2s; }
+  .decision:hover { border-color: var(--line-bright); transform: translateY(-2px); }
+  .decision h4 { margin: 0 0 9px; font-size: 14.5px; line-height: 1.4; }
+  .decision h4 .vs { color: var(--ink-faint); font-weight: 500; font-style: italic; }
+  .decision p { margin: 0; font-size: 13.5px; color: var(--ink-dim); }
+
+  .mat { width: 100%; border-collapse: collapse; font-size: 13.5px; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .mat th { text-align: left; padding: 13px 16px; background: var(--panel-2); font-size: 11px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-faint); border-bottom: 1px solid var(--line-bright); }
+  .mat td { padding: 13px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .mat tr:last-child td { border-bottom: 0; }
+  .mat tr:hover { background: rgba(255,255,255,.018); }
+  .mat .nm { font-weight: 650; color: var(--ink); white-space: nowrap; }
+  .mat .real { color: var(--ink-dim); } .mat .gap { color: var(--ink-faint); }
+  .st { font-family: var(--mono); font-size: 10.5px; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+  .st.spec { background: rgba(95,107,130,.2); color: var(--ink-dim); }
+  .st.in_tree { background: rgba(179,136,255,.15); color: var(--amp); }
+  .st.live_local { background: rgba(242,181,59,.15); color: var(--mid); }
+  .st.live_deployed { background: rgba(46,230,166,.14); color: var(--graph); }
+  .st.external { background: rgba(95,107,130,.14); color: var(--ink-faint); }
+  .adopt { margin-top: 18px; font-family: var(--mono); font-size: 12.5px; color: var(--ink-dim); padding: 14px 18px; background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; line-height: 1.9; }
+  .adopt b { color: var(--ink); }
+
+  /* TCO chart */
+  .chart-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+  #tco { width: 100%; height: 340px; display: block; }
+  .chart-legend { display: flex; gap: 24px; margin-top: 14px; font-size: 13px; flex-wrap: wrap; }
+  .chart-legend .li { display: flex; align-items: center; gap: 8px; color: var(--ink-dim); }
+  .chart-legend .sw { width: 22px; height: 3px; border-radius: 2px; }
+  .chart-note { margin: 14px 0 0; font-size: 12.5px; line-height: 1.6; color: var(--ink-dim); border-top: 1px dashed var(--line); padding-top: 12px; }
+  .chart-note strong { color: var(--vibe); }
+
+  /* principles */
+  .principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  @media (max-width: 820px) { .principles { grid-template-columns: 1fr; } }
+  .prin { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+  .prin .q { font-size: 12px; font-family: var(--mono); color: var(--ink-faint); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 12px; }
+  .prin h3 { margin: 0 0 8px; font-size: 17px; }
+  .prin p { margin: 0; font-size: 14px; color: var(--ink-dim); }
+  .prin .ours { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 13.5px; color: var(--ink); }
+  .prin .ours b { color: var(--graph); }
+
+  blockquote.callout {
+    margin: 36px 0 0; padding: 22px 26px; border-left: 3px solid var(--agentic);
+    background: linear-gradient(90deg, rgba(77,141,255,.07), transparent);
+    border-radius: 0 12px 12px 0; font-size: 18px; color: var(--ink);
+  }
+  blockquote.callout cite { display: block; margin-top: 10px; font-size: 13px; color: var(--ink-faint); font-style: normal; font-family: var(--mono); }
+
+  footer { padding: 60px 0 80px; border-top: 1px solid var(--line); color: var(--ink-faint); font-size: 13px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 18px 40px; align-items: baseline; }
+  footer a { color: var(--ink-dim); }
+  footer .note { flex-basis: 100%; margin-top: 18px; font-family: var(--mono); font-size: 12px; line-height: 1.7; color: var(--ink-faint); }
+
+  .honest { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); margin-top: 18px; padding: 12px 16px; border: 1px dashed var(--line-bright); border-radius: 10px; }
+  .honest b { color: var(--ink-dim); }
+
+  /* open problems (§03) — NOT `.op`, which is already the operator glyph in §05/§07 */
+  .oprob-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(275px, 1fr)); margin-top: 26px; }
+  .oprob { border: 1px solid var(--line); border-left: 3px solid var(--clr); border-radius: var(--radius); padding: 18px 20px; background: var(--panel); }
+  .oprob .q { font-family: var(--mono); font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-faint); }
+  .oprob h4 { margin: 9px 0 11px; font-size: 15px; line-height: 1.38; color: var(--ink); font-weight: 620; }
+  .oprob .ans { font-size: 13.5px; line-height: 1.68; color: var(--ink-dim); margin: 0; }
+  .oprob .ans b { color: var(--clr); }
+  .oprob .st-row { margin-top: 13px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+
+  /* falsification ladder (§15) */
+  .fals { width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin-top: 24px; }
+  .fals th { text-align: left; padding: 12px 15px; background: var(--panel-2); font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-faint); border-bottom: 1px solid var(--line-bright); }
+  .fals td { padding: 13px 15px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--ink-dim); }
+  .fals tr:last-child td { border-bottom: 0; }
+  .fals .claim { color: var(--ink); font-weight: 600; }
+  .fals code { font-size: 11.5px; white-space: nowrap; }
+  .fals .kill { color: var(--vibe); font-family: var(--mono); font-size: 11.5px; line-height: 1.6; }
+  @media (max-width: 760px) { .fals-scroll { overflow-x: auto; } .fals { min-width: 720px; } }
+
+  /* interop (§13 block E) */
+  .interop { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); margin-top: 18px; }
+  .iop { border: 1px solid var(--line); border-radius: 10px; padding: 15px 17px; background: var(--bg-2); }
+  .iop h5 { margin: 0 0 8px; font-size: 12.5px; font-family: var(--mono); color: var(--ink); letter-spacing: .02em; }
+  .iop p { margin: 0; font-size: 12.5px; line-height: 1.62; color: var(--ink-faint); }
+  .iop a { color: var(--prism); }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<nav class="top">
+  <div class="wrap">
+    <div class="brand"><span class="amp">[&amp;]</span> Agentic Engineering</div>
+    <div class="links">
+      <a href="#spectrum">Spectrum</a>
+      <a href="#anatomy">Anatomy</a>
+      <a href="#open">Open Problems</a>
+      <a href="#map">Mapping</a>
+      <a href="#govern">Governance</a>
+      <a href="#human">Human Loop</a>
+      <a href="#builder">Builders</a>
+      <a href="#falsify" style="color:var(--vibe)">Falsify It</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow"><span class="dot"></span> A response to “The New SDLC With Vibe Coding”</span>
+    <h1 class="title">The new SDLC, made <span class="grad">formal</span>.</h1>
+    <p class="lede">
+      Google’s whitepaper drew the new software lifecycle in prose and diagrams: <strong>Agent = Model + Harness</strong>,
+      specification as the bottleneck, verification as the differentiator, evals as the bar.
+      It told you <em>what</em> the discipline looks like.
+      The <strong>[&amp;] Protocol stack</strong> ships the <em>substrate</em> — every one of those informal ideas turned into a
+      composable, property-tested protocol with a verdict you can audit.
+    </p>
+    <div class="hero-cta">
+      <a class="btn primary" href="#thesis">Read the thesis ↓</a>
+      <a class="btn" href="#map">Jump to the mapping</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="n c1">118<span style="font-size:.42em;color:var(--vibe);vertical-align:super">+3</span></div><div class="l">governance laws enforced · 3 declared open</div></div>
+      <div class="stat"><div class="n c2">5</div><div class="l">canonical loop phases (PULSE)</div></div>
+      <div class="stat"><div class="n c3">11</div><div class="l">normative OS protocols</div></div>
+      <div class="stat"><div class="n c4">6 · 2</div><div class="l">[&amp;] primitives · operators</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- SPECTRUM -->
+<section id="spectrum">
+  <div class="wrap">
+    <p class="kicker">01 · The spectrum, restated</p>
+    <h2 class="sec reveal">It was never about whether you use AI.</h2>
+    <p class="sec-lede reveal">
+      The whitepaper’s central move is a continuum — <em>vibe coding</em> on one end, <em>agentic engineering</em> on the other —
+      where the only real axis is <strong>how outputs get verified</strong>. Drag the slider. Notice that the words change,
+      but the question never does.
+    </p>
+    <div class="spectrum-card reveal">
+      <div class="spectrum-track"></div>
+      <input id="slider" type="range" min="0" max="100" value="12" />
+      <div class="spectrum-labels">
+        <span data-z="0">Vibe coding</span>
+        <span data-z="1">Structured AI-assisted</span>
+        <span data-z="2">Agentic engineering</span>
+      </div>
+      <div class="spectrum-readout" id="readout">
+        <div class="mode" id="r-mode">Vibe coding</div>
+        <div class="desc" id="r-desc">Casual prompts, “does it seem to work?”, disposable code. Perfect for prototypes and throwaways.</div>
+        <div class="verify">
+          <span>Verification:</span> <b id="r-verify">a glance at the demo</b>
+          <span class="chip" id="r-chip">trust: vibes</span>
+        </div>
+      </div>
+    </div>
+    <blockquote class="callout reveal">
+      “Generation is mostly solved. The work that’s left is specification and verification — and the systems that hold them together.”
+      <cite>— The New SDLC With Vibe Coding (Osmani, Saboo, Kartakis), Google, 2026</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ANATOMY -->
+<section id="anatomy">
+  <div class="wrap">
+    <p class="kicker">02 · Agent = Model + Harness</p>
+    <h2 class="sec reveal">The model is ~10%. The harness is the product.</h2>
+    <p class="sec-lede reveal">
+      The whitepaper’s most quoted figure: swap the model, get marginal gains; swap the harness, move an agent
+      <em>from outside the Top 30 into the Top 5</em> — that result is on
+      <strong>Terminal Bench 2.0</strong>, with no model change, and it’s worth checking rather than taking from us
+      (<a href="https://addyosmani.com/blog/agent-harness-engineering/" target="_blank" rel="noopener" style="color:var(--agentic)">Osmani, <em>Agent Harness Engineering</em>, April 2026</a>).
+      The intelligence is rented. The <strong>scaffold</strong> —
+      instructions, tools, memory, orchestration, observability, governance — is what you actually build and own.
+    </p>
+    <div class="anatomy reveal">
+      <div class="rings" aria-hidden="true">
+        <div class="ring r4">cloud · runtimes · scaling</div>
+        <div class="ring r3">tools · MCP · orchestration</div>
+        <div class="ring r2">memory · context · guardrails</div>
+        <div class="ring r1"><div class="core"><b>LLM</b>~10%</div></div>
+      </div>
+      <div class="anatomy-legend">
+        <div class="row"><div class="pct small">~10%</div><div><h4>The model</h4><p>Rented intelligence. Interchangeable. The part you don’t control and shouldn’t over-invest in.</p></div></div>
+        <div class="row"><div class="pct big">~90%</div><div><h4>The harness / scaffold</h4><p>Instructions &amp; rule files, tools &amp; MCP servers, sandboxes, orchestration, hooks, observability — and the governance that decides what’s allowed to run.</p></div></div>
+        <div class="row"><div class="pct big">+&amp;</div><div><h4>What the stack adds</h4><p>Each harness layer becomes a <em>named protocol</em> with a schema and a conformance suite — not a folder of prompt files you hope still works next week.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPEN PROBLEMS -->
+<section id="open">
+  <div class="wrap">
+    <p class="kicker">03 · The open problems</p>
+    <h2 class="sec reveal">Harness engineering has three open problems. We took a run at each.</h2>
+    <p class="sec-lede reveal">
+      The whitepaper wasn’t the end of it. In April 2026 Osmani followed up with
+      <a href="https://addyosmani.com/blog/agent-harness-engineering/" target="_blank" rel="noopener" style="color:var(--agentic)">Agent Harness Engineering</a>,
+      which closes by naming three things nobody has solved yet. That list is a better organising principle for this page than
+      “here is our stack,” because it says what the stack is <em>for</em> — and it lets you grade us against someone else’s
+      scorecard instead of one we wrote. <strong>These are attempts, not solutions.</strong> Every status below is the same
+      label used in <a href="#builder" style="color:var(--box)">the maturity table</a>.
+    </p>
+    <div class="oprob-grid reveal">
+
+      <div class="oprob" style="--clr: var(--trvm)">
+        <div class="q">Open problem 1</div>
+        <h4>“Orchestrating many parallel agents on shared codebases.”</h4>
+        <p class="ans">Our answer is to remove the thing that needs orchestrating. <b>TRVM</b> is a distributed
+        interaction-calculus runtime: interaction-net reduction is confluent by construction, which licenses
+        schedule-independence, and a boundary-port discipline extends that across machines. Agents don’t take turns on a
+        shared tree — they reduce independently and their results <em>merge</em> as a content-addressed CRDT
+        (<code>NF(A ∪ B)</code>). Above it the chain is <b>WRL describes ▸ Forge lowers ▸ TRVM reduces</b>: WRL is the
+        world/topology language that says what is arranged where, and a world’s <em>meaning is its hash</em>. That last part
+        is the testable one — the same world lowered by WRL’s JavaScript spine and by Forge’s independent <b>Python</b>
+        implementation round-trips byte-exact, and on a shared tamper corpus both verifiers refuse all 15 and
+        <em>agree on the name of every refusal</em>. Two languages, two repos, same meaning.</p>
+        <div class="st-row"><span class="st live_local">TRVM live_local</span><span class="st live_local">WRL live_local</span><span class="st live_local">890 checks · 0 failed</span></div>
+        <div class="honest" style="margin-top:12px"><b>Not proven:</b> parallel <em>speedup</em>. Conformance is green across
+        four implementations and <code>swarm.js</code> runs coordination-free across real isolated workers — correctness, not
+        throughput. §6.4 snapshot and §6.5 REF semantics are still unspecified.</div>
+      </div>
+
+      <div class="oprob" style="--clr: var(--prism)">
+        <div class="q">Open problem 2</div>
+        <h4>“Agents analysing traces to self-identify harness failures.”</h4>
+        <p class="ans">This is the one the stack was built for. <b>PRISM</b> scores <em>trajectory</em> as well as output and
+        reads any system’s PULSE manifest to discover its phases; <b>Graphonomous</b>’s <code>learn</code> phase folds the
+        outcome back as a Wilson-interval confidence update rather than a vibe. And <b>Workbench <code>/record</code></b>
+        closes it on real data: drop in a Claude Code session transcript and it becomes a scored bundle — no model call, no
+        API key, nothing uploaded.</p>
+        <div class="st-row"><span class="st live_deployed">PRISM live_deployed</span><span class="st live_local">/record live_local</span></div>
+        <div class="honest" style="margin-top:12px"><b>Not proven:</b> that any of it generalises. PRISM has adapted no
+        external system it doesn’t own, and <code>/record</code>’s gates were shown to carry signal on one corpus.</div>
+      </div>
+
+      <div class="oprob" style="--clr: var(--graph)">
+        <div class="q">Open problem 3</div>
+        <h4>“Dynamic, just-in-time tool and context assembly — not static pre-configuration.”</h4>
+        <p class="ans">Static pre-configuration is exactly what a folder of rule files is. <b>[&amp;]</b> makes capability a
+        declaration that <em>composes</em> (<code>&amp;</code>, <code>|&gt;</code>) and compiles down to MCP/A2A at the moment
+        it’s needed, rather than a fixed server list. <b>Graphonomous</b> supplies the context side: retrieval scored by
+        spreading activation, and <b>κ-routing</b> — topology decides how hard to think, so a cyclic knowledge region gets
+        deliberation and a tree gets a straight answer.</p>
+        <div class="st-row"><span class="st live_deployed">Graphonomous live_deployed</span><span class="st in_tree">[&amp;] in_tree</span></div>
+        <div class="honest" style="margin-top:12px"><b>Not proven:</b> assembly is JIT per <em>call</em>, not yet per
+        <em>step</em> inside a long-horizon run. <code>&amp;body</code> still has no runtime.</div>
+      </div>
+
+    </div>
+    <blockquote class="callout reveal" style="margin-top:26px">
+      The useful version of “we built a stack” is “someone named three unsolved problems and here is what we tried, with the
+      failures attached.” If one of these three is later solved by somebody else, that’s the outcome we wanted — the problems
+      matter more than our answers to them.
+    </blockquote>
+  </div>
+</section>
+
+<!-- THESIS -->
+<section id="thesis">
+  <div class="wrap">
+    <p class="kicker">04 · The thesis</p>
+    <h2 class="sec reveal">They described it. We made it composable.</h2>
+    <p class="sec-lede reveal">
+      A whitepaper can <em>say</em> “set the bar at the eval, not the demo.” But a sentence isn’t a guarantee.
+      The [&amp;] stack takes each pillar of the new SDLC and reifies it as an algebra you can compile, compose, and
+      machine-check — so the bar isn’t a slogan, it’s a <strong>verdict with a certificate</strong>.
+    </p>
+    <div class="layers reveal">
+      <div class="layer" style="--clr: var(--amp)">
+        <div class="head"><span class="sigil">[&amp;]</span><div><h3>[&amp;] Protocol</h3><div class="role">composition · specification</div></div></div>
+        <p>Specification stops being a Markdown file you hope the agent read. It’s an algebra — 6 primitives (<code>&amp;memory &amp;reason &amp;time &amp;space &amp;body &amp;govern</code>), 2 operators — compiled from <code>.ampersand.json</code> and validated against a draft-2020-12 schema.</p>
+        <div class="facts"><span class="fact">6 primitives</span><span class="fact">2 operators</span><span class="fact">Elixir + npm + Python SDK</span></div>
+        <div class="maps">maps to → <b>“specification is the bottleneck”</b></div>
+      </div>
+      <div class="layer" style="--clr: var(--graph)">
+        <div class="head"><span class="sigil">◈</span><div><h3>Graphonomous</h3><div class="role">memory · context engineering</div></div></div>
+        <p>The whitepaper’s “context engineering” — static vs. dynamic, the cost knob — as a continual-learning knowledge graph with κ-routing, attention, and consolidation. Context isn’t stuffed into a prompt; it’s retrieved, scored, and learned from.</p>
+        <div class="facts"><span class="fact">OS-001 · OS-002</span><span class="fact">573 tests</span><span class="fact">κ cyclicity routing</span></div>
+        <div class="maps">maps to → <b>context engineering &amp; the harness’s memory</b></div>
+      </div>
+      <div class="layer" style="--clr: var(--pulse)">
+        <div class="head"><span class="sigil">⟲</span><div><h3>PULSE</h3><div class="role">temporal · the loop itself</div></div></div>
+        <p>Google draws a verification loop — run, cluster failures, fix, regress, watch production. PULSE makes that loop a declarable artifact: <code>retrieve · route · act · learn · consolidate</code>, five canonical phases in a <code>.pulse.json</code> manifest, with typed cross-loop signals.</p>
+        <div class="facts"><span class="fact">OS-010 v0.1.1</span><span class="fact">5 phases</span><span class="fact">6 cross-loop tokens</span></div>
+        <div class="maps">maps to → <b>the verification / feedback loop</b></div>
+      </div>
+      <div class="layer" style="--clr: var(--prism)">
+        <div class="head"><span class="sigil">◇</span><div><h3>PRISM</h3><div class="role">diagnostic · evals</div></div></div>
+        <p>“An eval suite with a real rubric shows it works reliably.” PRISM is that suite as a protocol — bring-your-own-runtime benchmarking that scores both <em>output</em> and <em>trajectory</em>, reading any system’s PULSE manifest to discover its phases.</p>
+        <div class="facts"><span class="fact">OS-009</span><span class="fact">172 tests · Fly.io</span><span class="fact">output + trajectory</span></div>
+        <div class="maps">maps to → <b>output &amp; trajectory evaluation</b></div>
+      </div>
+      <div class="layer" style="--clr: var(--box)">
+        <div class="head"><span class="sigil">▣</span><div><h3>box-and-box</h3><div class="role">governance · the bar</div></div></div>
+        <p>“Set the bar at the eval, not the demo” becomes an eight-rung modality ladder running <code>feasible ▸ permitted ▸ best</code> over an un-weakenable safety floor. Every decision ships a certificate. 118 property-tested laws at 2000 trials each — plus <strong>3 declared open</strong>, printed in red by the suite itself.</p>
+        <div class="facts"><span class="fact">8 rungs</span><span class="fact">118 enforced · 3 open</span><span class="fact">verdict certificate</span></div>
+        <div class="maps">maps to → <b>CI/CD gates &amp; “the bar”</b></div>
+      </div>
+      <div class="layer" style="--clr: var(--harness)">
+        <div class="head"><span class="sigil">⊞</span><div><h3>OS-008 Harness</h3><div class="role">the harness, as protocol</div></div></div>
+        <p>If the harness is 90% of the agent, it deserves its own discipline. OS-008 (TRAAVIIS) is “the harness engineer that builds your harness” — pipeline enforcement, quality gates, and sprint contracts, sitting above generation.</p>
+        <div class="facts"><span class="fact">OS-008</span><span class="fact">terminal harness CLI</span><span class="fact">quality gates</span></div>
+        <div class="maps">maps to → <b>Agent = Model + <em>Harness</em></b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAPPING TABLE -->
+<section id="map">
+  <div class="wrap">
+    <p class="kicker">05 · The mapping</p>
+    <h2 class="sec reveal">Every whitepaper concept → a named protocol.</h2>
+    <p class="sec-lede reveal">
+      This is the whole argument in one table. Left: what Google named. Right: where it lives in the [&amp;] ecosystem.
+      <strong>Named is not the same as shipped</strong> — the maturity table in
+      <a href="#builder" style="color:var(--box)">For the builder ▸ Honesty</a> grades every row
+      <code>spec</code> / <code>in_tree</code> / <code>live_local</code> / <code>live_deployed</code>, and two of them are
+      still <code>spec</code>. The novelty isn’t any single row — it’s that the rows <em>compose</em> with <code>&amp;</code> and <code>|&gt;</code>.
+    </p>
+    <table class="map reveal">
+      <thead><tr><th>The New SDLC concept (Google)</th><th></th><th>[&amp;] stack realization</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="google"><b>Agent = Model + Harness</b> — the harness is ~90% of the agent</td>
+          <td class="arrow">→</td>
+          <td class="ours"><span class="tag t-harness">OS-008</span><b>TRAAVIIS harness protocol</b><small>The scaffold is itself specified, gated, and contract-bound — not an ad-hoc prompt folder.</small></td>
+        </tr>
+        <tr>
+          <td class="google"><b>Specification is the bottleneck</b> — a spec + prototype from one conversation</td>
+          <td class="arrow">→</td>
+          <td class="ours"><span class="tag t-amp">[&amp;]</span><b>Composition algebra</b><small>6 primitives · 2 operators · machine-checkable <code>.ampersand.json</code>, three SDKs.</small></td>
+        </tr>
+        <tr>
+          <td class="google"><b>Context engineering</b> — static vs. dynamic, the cost knob</td>
+          <td class="arrow">→</td>
+          <td class="ours"><span class="tag t-graph">OS-001/2</span><b>Graphonomous</b><small>Continual-learning graph with κ-routing, attention &amp; consolidation — context is retrieved, not stuffed.</small></td>
+        </tr>
+        <tr>
+          <td class="google"><b>The verification loop</b> — run → cluster → fix → regress → watch prod</td>
+          <td class="arrow">→</td>
+          <td class="ours"><span class="tag t-pulse">OS-010</span><b>PULSE manifest</b><small>Five canonical phases <code>retrieve·route·act·learn·consolidate</code> in declarable <code>.pulse.json</code>.</small></td>
+        </tr>
+        <tr>
+          <td class="google"><b>Output + trajectory evaluation</b> — “you want both”</td>
+          <td class="arrow">→</td>
+          <td class="ours"><span class="tag t-prism">OS-009</span><b>PRISM benchmark</b><small>BYOR cross-system measurement that scores the answer <em>and</em> the path taken to it.</small></td>
+        </tr>
+        <tr>
+          <td class="google"><b>CI/CD gates · “set the bar at the eval”</b></td>
+          <td class="arrow">→</td>
+          <td class="ours"><span class="tag t-box">kernel</span><b>box-and-box governance</b><small><code>feasible ▸ permitted ▸ best</code> over an un-weakenable floor; 118 property-tested laws; every verdict certified.</small></td>
+        </tr>
+        <tr>
+          <td class="google"><b>Authorization &amp; guardrails</b> — what the agent may actually do</td>
+          <td class="arrow">→</td>
+          <td class="ours"><span class="tag t-harness">OS-006</span><b>delegatic</b><small>Authorization kernel: HMAC-signed AuthorizationBlocks, fresh auth on destructive edges.</small></td>
+        </tr>
+        <tr>
+          <td class="google"><b>Orchestrator</b> — hand a goal to autonomous agents, review what comes back</td>
+          <td class="arrow">→</td>
+          <td class="ours"><span class="tag t-graph">north star</span><b>The dark-factory loop</b><small>perceive → record → learn → crystallize → ship → replay → measure. Seven steps, closed locally.</small></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="honest reveal">
+      <b>Honesty note.</b> The dark-factory loop is <code>live_local</code> — exercised end-to-end against real local substrates and a cross-process replay — not yet stitched across the deployed Fly.io machines (<code>live_deployed</code>). Three MCP services are live in production; the full deployed end-to-end pass is the next bar. Numbers above are the canonical counts from <code>STACK_COMPLETION.md</code> (2026-06-28).
+    </div>
+
+    <div class="compile-demo reveal" id="compile-demo">
+      <p class="cd-lede"><b>Don’t take “composable” on faith — toggle a capability.</b> The declaration, the compiled MCP/A2A targets, and the governance certificate all regenerate live. <b>The payoff:</b> because it’s a protocol, nothing here is bespoke — any [&amp;]-aware tool reads the same file. Notice the certificate only appears once you compose in <code>&amp;govern</code>.</p>
+      <div class="cap-toggles" id="cap-toggles"></div>
+      <div class="expr-line" id="expr-line"></div>
+      <div class="compile-out">
+        <div class="co-panel">
+          <div class="co-h">① declaration · agent.ampersand.json</div>
+          <pre id="out-decl"></pre>
+        </div>
+        <div class="co-panel">
+          <div class="co-h">② compiled targets · floor</div>
+          <div id="out-pipe"></div>
+        </div>
+        <div class="co-panel">
+          <div class="co-h">③ verdict · certificate</div>
+          <div id="out-cert"></div>
+        </div>
+      </div>
+      <p class="cd-foot"><b>Illustrative widget.</b> The certificate <em>shape</em> mirrors box-and-box’s real output; the actual <b>118 property-tested laws</b> run in the kernel — reproduce them with the command in <a href="#builder" style="color:var(--box)">For the builder ▸ Verify</a>.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var CAPS = [
+    { id: "memory", sym: "&memory", provider: "pgvector",     mcp: "vector.search" },
+    { id: "reason", sym: "&reason", provider: "deliberatic",  mcp: "argue.evaluate" },
+    { id: "time",   sym: "&time",   provider: "ticktickclock",mcp: "schedule.window" },
+    { id: "space",  sym: "&space",  provider: "geofleetic",   mcp: "geo.locate" },
+    { id: "body",   sym: "&body",   provider: "embodied",     mcp: "act.perceive" },
+    { id: "govern", sym: "&govern", provider: "box-and-box",  mcp: "verdict.certify" }
+  ];
+  var sel = { memory: true, reason: true, time: true, space: false, body: false, govern: false };
+  var esc = function (s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); };
+  function hash(str) { var h = 5381, i = str.length; while (i) { h = (h * 33) ^ str.charCodeAt(--i); } var x = (h >>> 0).toString(16); while (x.length < 8) { x = "0" + x; } return x; }
+
+  var toggles = document.getElementById("cap-toggles");
+  var exprEl = document.getElementById("expr-line");
+  var declEl = document.getElementById("out-decl");
+  var pipeEl = document.getElementById("out-pipe");
+  var certEl = document.getElementById("out-cert");
+  if (!toggles) return;
+
+  CAPS.forEach(function (c) {
+    var b = document.createElement("div");
+    b.className = "cap-btn" + (sel[c.id] ? " on" : "") + (c.id === "govern" ? " gov" : "");
+    b.textContent = c.sym;
+    b.setAttribute("role", "button");
+    b.addEventListener("click", function () { sel[c.id] = !sel[c.id]; b.classList.toggle("on"); render(); });
+    toggles.appendChild(b);
+  });
+
+  function chosen() { return CAPS.filter(function (c) { return sel[c.id]; }); }
+
+  function render() {
+    var cs = chosen();
+    // expression
+    if (cs.length === 0) {
+      exprEl.innerHTML = '<span class="op">∅ — select at least one capability</span>';
+    } else {
+      exprEl.innerHTML = cs.map(function (c) {
+        return '<span class="cap' + (c.id === "govern" ? " g" : "") + '">' + esc(c.sym) + "</span>";
+      }).join(' <span class="op">&amp;</span> ');
+    }
+    // declaration
+    if (cs.length === 0) {
+      declEl.innerHTML = '<span class="jc">// nothing composed</span>';
+    } else {
+      var lines = ['{', '  <span class="jk">"agent"</span>: <span class="jv">"YourAgent"</span>,', '  <span class="jk">"capabilities"</span>: {'];
+      cs.forEach(function (c, i) {
+        lines.push('    <span class="jk">"' + esc(c.sym) + '.v1"</span>: { <span class="jk">"provider"</span>: <span class="jv">"' + c.provider + '"</span> }' + (i < cs.length - 1 ? "," : ""));
+      });
+      lines.push("  },");
+      lines.push('  <span class="jk">"compose"</span>: <span class="jv">"' + esc(cs.map(function (c) { return c.sym; }).join(" & ")) + '"</span>');
+      lines.push("}");
+      declEl.innerHTML = lines.join("\n");
+    }
+    // compiled targets + floor
+    var rows = cs.map(function (c) {
+      return '<div class="pstage"><span class="dot"></span>mcp · ' + c.mcp + '<span class="mut">' + esc(c.sym) + "</span></div>";
+    });
+    var gov = sel.govern;
+    rows.push('<div class="pstage' + (gov ? " gated" : "") + '"><span class="dot"></span>feasible <span class="mut">' + (cs.length ? "▸ values exist" : "—") + "</span></div>");
+    rows.push('<div class="pstage' + (gov ? " gated" : "") + '"><span class="dot"></span>permitted <span class="mut">' + (gov ? "&govern floor" : "no floor declared") + "</span></div>");
+    rows.push('<div class="pstage' + (gov ? " gated" : "") + '"><span class="dot"></span>best <span class="mut">gradient</span></div>');
+    pipeEl.innerHTML = rows.join("");
+    // certificate
+    if (!gov) {
+      certEl.className = "vcert empty";
+      certEl.innerHTML = "no &govern in the composition →\nno verdict, no certificate.\n\ncompose in &govern to gate this agent.";
+    } else if (cs.length === 0) {
+      certEl.className = "vcert empty";
+      certEl.innerHTML = "compose at least one capability\nto certify.";
+    } else {
+      certEl.className = "vcert";
+      var sig = cs.map(function (c) { return c.sym; }).join("&");
+      certEl.innerHTML =
+        '<div class="verdict"><span class="x">✓</span> VERDICT: permitted</div>' +
+        '<div class="crow"><span>floor</span><span>un-weakenable</span></div>' +
+        '<div class="crow"><span>laws checked</span><span>118 · 2000 trials</span></div>' +
+        '<div class="crow"><span>caps</span><span>' + cs.length + " composed</span></div>" +
+        '<div class="crow"><span>cert</span><span class="hash">cc2:' + hash(sig) + "</span></div>";
+    }
+  }
+  render();
+})();
+</script>
+
+<!-- VERIFICATION LOOP -->
+<section id="loop">
+  <div class="wrap">
+    <p class="kicker">06 · The loop, named</p>
+    <h2 class="sec reveal">A verification loop you can declare, not just draw.</h2>
+    <p class="sec-lede reveal">
+      The whitepaper sketches the feedback loop as an arrow diagram. PULSE turns that diagram into a typed manifest:
+      five canonical phase kinds that any product in the ecosystem declares, so a benchmark like PRISM can read the
+      loop directly instead of guessing at it.
+    </p>
+    <div class="loop-wrap reveal">
+      <svg class="loop-svg" viewBox="0 0 200 200" id="loopsvg" role="img" aria-label="PULSE five-phase loop">
+        <circle cx="100" cy="100" r="74" fill="none" stroke="#1e2533" stroke-width="1.5"/>
+        <circle id="orbit" cx="100" cy="26" r="6" fill="#ff8a3d"/>
+        <g font-family="var(--mono)" font-size="9" fill="#9aa6bd" text-anchor="middle">
+          <g class="ph" data-i="0"><circle cx="100" cy="26" r="14" fill="#11151e" stroke="#2c3548"/><text x="100" y="29">retrieve</text></g>
+          <g class="ph" data-i="1"><circle cx="170" cy="78" r="14" fill="#11151e" stroke="#2c3548"/><text x="170" y="81">route</text></g>
+          <g class="ph" data-i="2"><circle cx="143" cy="162" r="14" fill="#11151e" stroke="#2c3548"/><text x="143" y="165">act</text></g>
+          <g class="ph" data-i="3"><circle cx="57" cy="162" r="14" fill="#11151e" stroke="#2c3548"/><text x="57" y="165">learn</text></g>
+          <g class="ph" data-i="4"><circle cx="30" cy="78" r="15" fill="#11151e" stroke="#2c3548"/><text x="30" y="76">consol-</text><text x="30" y="85">idate</text></g>
+        </g>
+      </svg>
+      <ul class="phase-list" id="phaselist">
+        <li data-i="0"><span class="idx">1</span><div><h4>retrieve <span class="algo">embedding sim + spreading activation</span></h4><p>Pull relevant prior context before reasoning — the read loop. <em>“Don’t skip retrieval; prior context likely exists.”</em></p></div></li>
+        <li data-i="1"><span class="idx">2</span><div><h4>route <span class="algo">Tarjan SCC · κ invariant</span></h4><p>Check topology. If knowledge is cyclic (κ&gt;0), deliberate instead of answering reflexively.</p></div></li>
+        <li data-i="2"><span class="idx">3</span><div><h4>act <span class="algo">govern floor · feasible▸permitted▸best</span></h4><p>Mutate the world / graph — under the governance floor that decides what’s permitted.</p></div></li>
+        <li data-i="3"><span class="idx">4</span><div><h4>learn <span class="algo">Wilson 95% interval update</span></h4><p>Report the outcome back. Close the feedback loop; update confidence with real evidence.</p></div></li>
+        <li data-i="4"><span class="idx">5</span><div><h4>consolidate <span class="algo">merge&gt;0.95 · decay tiers</span></h4><p>At loop boundaries, merge similar nodes and strengthen edges. Memory compounds.</p></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- THEORY: THE LOOPS UNDERNEATH -->
+<section id="theory">
+  <div class="wrap">
+    <p class="kicker">07 · The loops underneath</p>
+    <h2 class="sec reveal">A demo is a vibe. A loop is an algorithm.</h2>
+    <p class="sec-lede reveal">
+      The whitepaper’s diagrams stop at the arrow level. Underneath each phase of the loop is a named algorithm doing real
+      work — graph topology, statistics, and algebra. This is where “agentic engineering” stops being a metaphor and becomes
+      something you can prove.
+    </p>
+
+    <div class="theory-block reveal">
+      <h3><span class="tag">route</span> κ-routing — topology decides how hard to think</h3>
+      <p>
+        <span class="plain"><b>In plain terms:</b> if the facts an agent needs all point the same direction, it answers fast;
+        if they loop back on each other and contradict, it slows down and deliberates — and it decides which case it’s in by
+        looking at the <em>shape</em> of what it knows, not by guessing.</span>
+        <span class="impl"><b>How:</b> the <code>route</code> phase runs <strong>Tarjan’s strongly-connected-components</strong>
+        — a classic linear-time graph algorithm that finds every cluster of nodes that mutually reference each other — and
+        counts those cycles as <code>κ</code>, a cycle-complexity invariant.</span>
+        <span class="why"><b>Why it matters:</b> “think harder on hard problems” stops being a vibe and becomes a measurable
+        property of the knowledge itself — the same input always routes the same way, and you can audit why.</span>
+      </p>
+      <div class="kappa-row">
+        <div class="kappa-state" style="--ks: var(--graph)">
+          <div class="kv">κ = 0</div>
+          <div class="topo">acyclic DAG — no cycles</div>
+          <div class="route">→ route: <b>fast retrieval</b></div>
+        </div>
+        <div class="kappa-state" style="--ks: var(--mid)">
+          <div class="kv">κ = 1</div>
+          <div class="topo">one simple cycle (A→B→C→A)</div>
+          <div class="route">→ route: <b>deliberate</b> · high-stakes</div>
+        </div>
+        <div class="kappa-state" style="--ks: var(--vibe)">
+          <div class="kv">κ ≥ 2</div>
+          <div class="topo">nested / overlapping cycles</div>
+          <div class="route">→ route: <b>deliberate</b> · strong</div>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE κ DEMO -->
+      <div class="kappa-demo reveal" id="kdemo">
+        <div class="kd-head">
+          <div class="kd-title">Try it — toggle edges, watch <code>κ</code> and the routing decision recompute live</div>
+          <div class="kd-verdict" id="kd-verdict">…</div>
+        </div>
+        <div class="kd-body">
+          <svg class="kd-graph" id="kd-svg" viewBox="0 0 240 200" aria-label="knowledge graph"></svg>
+          <div class="kd-controls">
+            <div class="kd-cl">Directed edges (click to add / remove):</div>
+            <div class="kd-edges" id="kd-edges"></div>
+            <div class="kd-readout" id="kd-readout"></div>
+            <button class="kd-reset" id="kd-reset" type="button">reset to a path</button>
+          </div>
+        </div>
+        <div class="kd-foot">Tarjan’s SCC runs in your browser on every click — same algorithm <code>route</code> uses. Close a loop (e.g. add <code>C→A</code>) and the routing flips from <b>answer</b> to <b>deliberate</b>; nest a second loop and κ climbs again.</div>
+      </div>
+
+      <div class="kappa-loop">
+        <b>The self-reducing part:</b> when deliberation resolves a cyclic cluster it writes its conclusions back as new nodes —
+        which <em>lowers κ</em> for every future retrieval. The graph gets easier to reason about the more you reason over it.
+        That’s a learning loop the whitepaper gestures at but never names.
+      </div>
+    </div>
+
+    <div class="theory-block reveal">
+      <h3><span class="tag">learn</span> The epistemic frontier — “set the bar at the eval,” with statistics</h3>
+      <p>
+        <span class="plain"><b>In plain terms:</b> the system tracks not just <em>whether</em> something worked but <em>how sure</em>
+        it is — one success isn’t proof, ten in a row is — and it spends its next test where being more sure would help most.</span>
+        <span class="impl"><b>How:</b> every outcome reported to <code>learn</code> updates a node’s confidence as a
+        <strong>Wilson 95% score interval</strong> (z = 1.96) rather than a bare average, so the interval’s <em>width</em> is the
+        uncertainty; <code>information_gain</code> ranks which node a single new data point would tighten the most.</span>
+        <span class="why"><b>Why it matters:</b> this is “set the bar at the eval” made quantitative — you don’t eval at random,
+        you eval exactly where it pays, and confidence is earned one outcome at a time instead of asserted.</span>
+      </p>
+      <div class="wilson">
+        <div class="wrow"><span>1 evidence pt</span><span class="wbar"><i style="left:5%; right:5%"></i></span><span>~0.89</span></div>
+        <div class="wrow"><span>3 evidence pts</span><span class="wbar"><i style="left:24%; right:24%"></i></span><span>~0.52</span></div>
+        <div class="wrow"><span>10+ evidence pts</span><span class="wbar"><i style="left:42%; right:42%"></i></span><span>→ true</span></div>
+      </div>
+      <div class="wnote">
+        A demo shows an agent worked <em>once</em> — a Wilson interval roughly 0.89 wide. <b>Reliability is a narrow interval</b>,
+        earned one outcome at a time, and the frontier tells you which node to gather evidence for next.
+      </div>
+    </div>
+
+    <div class="theory-block reveal">
+      <h3><span class="tag">act · govern</span> Composition you can prove, not just run</h3>
+      <p>
+        The pieces don’t just sit next to each other — they <em>compose</em> as algebra, and the algebra is property-tested.
+        Capabilities combine and pipe under stated laws; an uncertified step can’t hide inside a composite.
+      </p>
+      <div class="algebra">
+        <div class="alg"><span class="op">&amp;</span><span class="law"><b>composeAnd</b> — commutative, idempotent monoid on the capability lattice. Identity <code>&amp;none</code>. Order- and duplicate-independent coalitions.</span></div>
+        <div class="alg"><span class="op">|&gt;</span><span class="law"><b>composePipe</b> — associative, phase-graded monoid. Identity <code>id</code>, <em>not</em> commutative. Any infeasible step collapses the whole pipeline to the absorbing zero <code>0̲</code> — utility can’t resurrect it.</span></div>
+        <div class="alg"><span class="op">⊗</span><span class="law"><b>the semiring</b> — quantities flow as confidence = ∏, cost = Σ, latency = max. One uncertified child poisons the composite.</span></div>
+      </div>
+      <div class="laws-badge">▣ 118 enforced · <span style="color:var(--vibe)">3 declared open</span> · 2000 random trials each · <code>node test/laws.mjs &amp;&amp; node test/compose-laws.mjs</code></div>
+    </div>
+  </div>
+</section>
+
+<!-- GOVERNANCE -->
+<section id="govern">
+  <div class="wrap">
+    <p class="kicker">08 · The bar, as algebra</p>
+    <h2 class="sec reveal">“Set the bar at the eval” → a verdict with a certificate.</h2>
+    <p class="sec-lede reveal">
+      This is where the stack is genuinely novel. A demo shows an agent <em>can</em> work once; the whitepaper asks for a bar that
+      proves it works <em>reliably</em>. box-and-box makes that bar a governance kernel — an <strong>eight-rung modality ladder</strong>
+      that runs floor-then-gradient and emits an auditable certificate for every decision.
+    </p>
+    <div class="ladder reveal">
+      <div class="rung"><span class="num">1</span><span class="nm">alethic</span><span class="q">what <em>can</em> happen — the value lattice</span></div>
+      <div class="rung"><span class="num">2</span><span class="nm">axiological</span><span class="q">how to rank — scores &amp; preference</span></div>
+      <div class="rung"><span class="num">3</span><span class="nm">deontic</span><span class="q">what’s <em>allowed</em> — norms &amp; obligations</span></div>
+      <div class="rung"><span class="num">4</span><span class="nm">temporal</span><span class="q">safe <em>over time</em> — supervision</span></div>
+      <div class="rung"><span class="num">5</span><span class="nm">reflexive</span><span class="q">may the rules change? — entrenched ring-0 core</span></div>
+      <div class="rung"><span class="num">6</span><span class="nm">epistemic</span><span class="q">do we <em>know</em> enough? — Wilson-interval confidence</span></div>
+      <div class="rung"><span class="num">7</span><span class="nm">strategic</span><span class="q">who can <em>ensure</em> it? — coalition power</span></div>
+      <div class="rung"><span class="num">8</span><span class="nm">resource</span><span class="q">can we <em>afford</em> it? — affine cost ledger</span></div>
+    </div>
+    <p class="sec-lede reveal" style="margin-top:34px">
+      One composing <strong>bridge</strong> runs <code>feasible ▸ permitted ▸ best</code> over a floor you cannot weaken — utility can never
+      resurrect a forbidden branch. The output isn’t a vibe; it’s a structured verdict:
+    </p>
+    <div class="cert reveal">
+      <div class="bar"><span class="d" style="background:#ff5f57"></span><span class="d" style="background:#febc2e"></span><span class="d" style="background:#28c840"></span><span class="t">box-and-box govern decision.json → certificate</span></div>
+<pre><span class="k">"verdict"</span>:        <span class="verdict">"allow"</span>,
+<span class="k">"bridge"</span>:         <span class="s">"feasible ▸ permitted ▸ best"</span>,
+<span class="k">"floor"</span>:          <span class="s">"un-weakenable"</span>,    <span class="floor">// utility cannot override</span>
+<span class="k">"rungs_checked"</span>:  [<span class="s">"alethic"</span>,<span class="s">"deontic"</span>,<span class="s">"axiological"</span>],
+<span class="k">"margin"</span>:         <span class="n">7</span>,
+<span class="k">"confidence"</span>:     <span class="n">0.838</span>,        <span class="floor">// epistemic rung, ~95% Wilson</span>
+<span class="k">"cost_class"</span>:     <span class="s">"poly"</span>,         <span class="floor">// resource rung, certified</span>
+<span class="k">"law"</span>:            <span class="s">"103 kernel + 15 compose, 2000 trials each"</span>,
+<span class="k">"open_gaps"</span>:      [<span class="s">"CP5"</span>,<span class="s">"CP6"</span>,<span class="s">"CP7"</span>]  <span class="floor">// declared, not hidden</span></pre>
+    </div>
+    <p class="sec-lede reveal" style="margin-top:28px">
+      And because the kernel is a <em>pure library that composes</em>, the bricks combine: <code>retrieve |&gt; certify |&gt; govern</code>
+      is a real pipeline (Graphonomous ▸ Weave ▸ box-and-box) — and an uncertified step collapses the whole composite to the
+      absorbing zero. The bar is structural, not aspirational.
+    </p>
+  </div>
+</section>
+
+<!-- DARK FACTORY -->
+<section id="factory">
+  <div class="wrap">
+    <p class="kicker">09 · The endgame</p>
+    <h2 class="sec reveal">The orchestrator the whitepaper gestures at — wired.</h2>
+    <p class="sec-lede reveal">
+      The new SDLC’s far frontier is the <em>orchestrator</em>: hand a goal to autonomous agents and review what comes back.
+      The stack’s north star is the <strong>dark factory</strong> — machines that perceive, learn, transfer skills to one another,
+      and get measured. Seven steps, each owned by a shipped product, closing into a loop.
+    </p>
+    <div class="factory reveal">
+      <div class="fstep"><div class="num">01</div><h4>Perceive &amp; act</h4><div class="by">body-browser · body-os</div></div>
+      <div class="fstep"><div class="num">02</div><h4>Record trace</h4><div class="by">Graphonomous</div></div>
+      <div class="fstep"><div class="num">03</div><h4>Learn / consolidate</h4><div class="by">Graphonomous</div></div>
+      <div class="fstep"><div class="num">04</div><h4>Crystallize skill</h4><div class="by">FleetPrompt</div></div>
+      <div class="fstep"><div class="num">05</div><h4>Ship to registry</h4><div class="by">FleetPrompt</div></div>
+      <div class="fstep"><div class="num">06</div><h4>Install &amp; replay</h4><div class="by">body-* · delegatic</div></div>
+      <div class="fstep"><div class="num">07</div><h4>Measure</h4><div class="by">PRISM</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ENDGAMES: FACTORY vs RESIDENCY -->
+<section id="endgames">
+  <div class="wrap">
+    <p class="kicker">10 · The two endgames</p>
+    <h2 class="sec reveal">The factory — and its deliberate opposite.</h2>
+    <p class="sec-lede reveal">
+      Google’s “factory model” borrows its name from manufacturing’s <strong>dark factories</strong> — lights-out plants that run
+      with no humans on the floor. The developer becomes an <em>orchestrator</em> who designs the eval, constraint, and context
+      harness; autonomous agents build, test, and ship around the clock; humans define intent and review outcomes. The
+      dark-factory loop above <em>is</em> that model, wired. But the stack also ships the deliberate inverse — a
+      <strong>residency</strong>, not a factory.
+    </p>
+
+    <table class="map vs reveal">
+      <thead><tr><th>Dimension</th><th class="fac">⚙ Dark factory</th><th class="res">◴ The Residency</th></tr></thead>
+      <tbody>
+        <tr><td>Metaphor</td><td class="fac">lights-out manufacturing</td><td class="res">an academic / artist residency</td></tr>
+        <tr><td>Optimizes for</td><td class="fac">throughput — code shipped 24/7</td><td class="res">epistemic quality — trustworthy findings with provenance</td></tr>
+        <tr><td>The human</td><td class="fac">defines intent, reviews outcomes off-floor</td><td class="res">reads a legible board where agent “residents” deliberate</td></tr>
+        <tr><td>Trust posture</td><td class="fac">trust capable systems</td><td class="res">verify the premise first (Gate 0)</td></tr>
+        <tr><td>Footprint</td><td class="fac">machines + orchestrator + cloud</td><td class="res">one browser tab · sovereign · zero API cost</td></tr>
+        <tr><td>Memory</td><td class="fac">central episodic store (Graphonomous)</td><td class="res">browser-local CRDT (G-Set + localStorage)</td></tr>
+        <tr><td>Code execution</td><td class="fac">cloud machines run the build directly</td><td class="res">tiered: in-browser → local gateway (TRAAVIIS) → opt-in remote sandbox</td></tr>
+        <tr><td>Scaling path</td><td class="fac">add machines</td><td class="res">P2P CRDT-merged sovereign residencies</td></tr>
+      </tbody>
+    </table>
+
+    <div class="gate0 reveal">
+      <b>Gate 0 — the honest question.</b>
+      <p>The whitepaper’s factory says “trust capable systems.” The Residency refuses to assume its own thesis: multi-agent
+      deliberation can <em>herd</em> and amplify a confidently-wrong peer, so Gate 0 asks <strong>“does a board of residents
+      actually beat a single agent?”</strong> — and nothing scales until that’s answered. That skepticism is the exact opposite of
+      lights-out trust, and it’s the point.</p>
+    </div>
+
+    <div class="trvm-card reveal">
+      <div class="role">the substrate under both</div>
+      <h3><span class="sig">⟜</span>TRVM — coordination-free distributed runtime</h3>
+      <p>A factory or a residency only becomes <em>genuinely</em> decentralized if computation can run on many machines without
+      coordination and still agree. TRVM is that physics: a distributed interaction-calculus runtime whose <strong>confluence
+      licenses schedule-independence</strong> (coordination-freedom across machines additionally rests on its boundary-port
+      discipline), so results merge as a content-addressed CRDT. It’s why the Residency’s memory can be sovereign and still
+      mergeable — and why a dark factory could be a <em>mesh</em> rather than a single orchestrator fanning out jobs.</p>
+      <div class="facts"><span class="fact">interaction calculus</span><span class="fact">python · c · wasm · js</span><span class="fact">conformance battery green</span><span class="fact">live_local</span></div>
+    </div>
+
+    <div class="trvm-card reveal" style="border-left-color: var(--harness)">
+      <div class="role">how residents actually run code</div>
+      <h3><span class="sig" style="color: var(--harness)">⇄</span>TRAAVIIS — the Hermes split-gateway</h3>
+      <p>A residency of browser-native agents can <em>write</em> findings, but the moment a resident needs to <em>execute</em> — run a
+      test, exec a script, reproduce a result — you face the credential-vs-untrusted-code problem. The
+      <strong>Hermes pattern</strong> (Nous Research, 2026) splits it in two: a <strong>gateway</strong> that holds the tokens and
+      orchestrates (<span style="color:var(--harness)">TRAAVIIS</span>, the OS-008 harness engineer) and a disposable
+      <strong>sandbox</strong> that runs the untrusted code — a VM, a Mac mini, a remote micro-sandbox. Files sync back as
+      <em>evidence</em>, so an execution becomes a citable, provenance-bearing finding on the board — never raw trust.</p>
+      <div class="tiers">
+        <div class="tier t0">
+          <div class="lvl">Tier 0 · in-browser</div>
+          <h5>sovereign, zero infra</h5>
+          <p>ic32.wasm today; Pyodide for TRVM Python, WebContainers for JS. Runs in the tab — no gateway needed.</p>
+          <span class="arrow">→</span>
+        </div>
+        <div class="tier t1">
+          <div class="lvl">Tier 1 · local gateway</div>
+          <h5>TRAAVIIS on your machine</h5>
+          <p>Holds creds, shells real CLI on a local VM / Mac mini, governs each act, streams output back as evidence.</p>
+          <span class="arrow">→</span>
+        </div>
+        <div class="tier t2">
+          <div class="lvl">Tier 2 · remote sandbox</div>
+          <h5>opt-in escalation</h5>
+          <p>Fly Sprites · E2B · Modal · Daytona — only for the autonomous distributed regime. Escalate when forced, not by default.</p>
+        </div>
+      </div>
+      <div class="facts"><span class="fact">node ESM · zero runtime deps</span><span class="fact">OS-008 harness</span><span class="fact">gateway ≠ sandbox</span><span class="fact">live_local</span></div>
+    </div>
+
+    <div class="honest reveal">
+      <b>Honesty note.</b> The Residency is <em>pre-Gate-0</em> — its core premise (board &gt; single agent) is not yet tested; it is a
+      thin ~10% deliberation layer that reuses the rest of the stack, not a new platform. TRVM’s conformance battery is green
+      <code>live_local</code> with two stated gaps (§6.4 snapshot, §6.5 REF). The TRAAVIIS execution gateway is
+      <em>decoupled now, wired later</em>: textual findings need no code exec, so Tiers 1–2 are an architected interface, not a
+      shipped MVP feature. Today only Tier 0 (in-browser) runs. Neither is claimed as more than it is.
+    </div>
+  </div>
+</section>
+
+<!-- HUMAN IN THE LOOP -->
+<section id="human">
+  <div class="wrap">
+    <p class="kicker">11 · The human in the loop</p>
+    <h2 class="sec reveal">Three ways a human stays in control — and only one of them is a bottleneck.</h2>
+    <p class="sec-lede reveal">
+      The whitepaper’s human is an <em>orchestrator</em>: define intent, set up the harness, review outcomes off-floor. That’s
+      one posture. The stack ships three — and they differ in <strong>where the human stands relative to the work</strong>, which
+      changes what “in the loop” actually costs.
+    </p>
+
+    <div class="hitl reveal">
+      <div class="hcard fac">
+        <div class="role">⚙ Dark factory</div>
+        <h4>Serial gate · review off-floor</h4>
+        <p>The human defines intent and reviews <em>outcomes</em> after the agents finish — a checkpoint at the end of the
+        pipeline. Throughput-optimal, but the human is a <strong>bottleneck</strong>: work pauses at the gate and you trust the
+        system between gates. This is the whitepaper’s orchestrator.</p>
+        <div class="tag-row"><span>post-hoc</span><span>serialized</span><span>trust-between-gates</span></div>
+      </div>
+      <div class="hcard res">
+        <div class="role">◴ The Residency</div>
+        <h4>Legible board · adjudicate in-process</h4>
+        <p>The human reads a board where agent “residents” deliberate <em>as it happens</em> and adjudicates
+        <strong>findings</strong> — claims that carry their own evidence and provenance. You don’t just see the output, you see
+        <em>how it became known</em>. The human is a <strong>conductor</strong>, present but not blocking throughput.</p>
+        <div class="tag-row"><span>in-process</span><span>provenance-visible</span><span>finding-level</span></div>
+      </div>
+      <div class="hcard trvm">
+        <div class="role">⟜ On TRVM</div>
+        <h4>Coordination-free merge · human is a peer</h4>
+        <p>The one that’s genuinely different. Interaction-net reduction is <strong>confluent by construction</strong> —
+        Lafont’s theorem, not our claim — and that confluence <em>licenses</em> <strong>schedule-independence</strong> for a
+        single net; coordination-freedom <em>across machines</em> additionally rests on TRVM’s boundary-port discipline.
+        Because results are therefore schedule-independent and
+        content-addressed, a human edit doesn’t <em>lock</em> the pipeline or <em>race</em> the agents — it <strong>merges</strong>.
+        The human branches, edits, and the result converges deterministically (<code>NF(A ∪ B)</code>), exactly like any other
+        node. No checkpoint, no bottleneck — the human is just another machine in a coordination-free mesh.</p>
+        <div class="tag-row"><span>no lock</span><span>CRDT-merge</span><span>concurrent</span></div>
+      </div>
+    </div>
+
+    <div class="hitl-note reveal">
+      <b>Why TRVM changes the shape.</b> In every conventional SDLC — vibe, structured, or agentic — human-in-the-loop is a
+      <em>serialization point</em>: the pipeline waits for approval. TRVM removes the <em>need to order</em> the work. Because results are
+      schedule-independent and merge as a content-addressed CRDT (resting on the boundary-port discipline), the human and the
+      agents work <strong>concurrently</strong> on the same store and still converge. Human-in-the-loop stops being a gate you pay
+      latency for and becomes a <strong>participant you merge with</strong> — the difference between reviewing a factory’s output
+      and co-authoring in a shared, conflict-free workspace.
+      <br><br><b>What is and isn’t proven.</b> This is a <em>correctness</em> result, not a performance one. TRVM’s conformance
+      battery is green across four implementations and <code>swarm.js</code> runs coordination-free across real isolated
+      workers — but <strong>no parallel speedup has been demonstrated</strong>. “No coordination needed” is proven; “therefore
+      faster” is not, and we don’t claim it.
+    </div>
+
+    <div class="build-block reveal">
+      <h3><span class="tag">SDLC parallel</span>A second SDLC — for knowledge, not code</h3>
+      <p class="sec-lede" style="margin-bottom:22px">
+        The whitepaper’s SDLC ships <em>code</em>: spec → generate → verify → deploy. The Residency runs a parallel SDLC whose
+        artifact is a <strong>verified finding with provenance</strong> — “not just <em>what</em> is known, but <em>how</em> it
+        became known.” Same discipline (spec-driven, verified, gated); different output.
+      </p>
+      <div class="kloop">
+        <span class="k">observe</span><span class="sep">→</span><span class="k">discuss</span><span class="sep">→</span><span class="k">evidence</span><span class="sep">→</span><span class="k art">finding</span><span class="sep">→</span><span class="k">experiment</span><span class="sep">→</span><span class="k">benchmark</span><span class="sep">→</span><span class="k">proposal</span><span class="sep">→</span><span class="k">patch</span><span class="sep">→</span><span class="k">verify</span>
+      </div>
+      <div class="decisions" style="margin-top:20px">
+        <div class="decision">
+          <h4>Findings are typed objects</h4>
+          <p>claim · evidence · status · supersedes — deliberation as <em>typed epistemic acts</em>, not free-text chat. Structure is what makes a finding checkable, dedup-able and citable. It’s the spectrum’s “structured over vibes,” applied to knowledge.</p>
+        </div>
+        <div class="decision">
+          <h4>Provenance is the deliverable</h4>
+          <p>Most agent systems store <em>what</em> they concluded; the Residency stores <em>how</em> it became known — aligned to the W3C PROV model. “Evidence engineering” is the layer beyond prompt / agent / workflow engineering, which are commoditizing.</p>
+        </div>
+        <div class="decision">
+          <h4>Gates over timelines</h4>
+          <p>Progress advances on evidence, not a calendar: Gate 0 (does the board beat a single agent?) → Gate 1 (reliability) → Gate 2 (governed, executed improvement). Each is cheap to abandon — the epistemic checkpoint discipline PRISM automates.</p>
+        </div>
+      </div>
+      <div class="honest" style="margin-top:18px">
+        <b>Honest.</b> This knowledge-SDLC runs <em>Phase 0</em> today (board, live corpus, local-first memory, findings export). The typed-findings / dedup / citation-verification passes and the gates are the near-term build — architected, not yet shipped. Gate 0 itself is unanswered.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TCO -->
+<section id="economics">
+  <div class="wrap">
+    <p class="kicker">12 · The economics</p>
+    <h2 class="sec reveal">Structure has CapEx. Vibes have a tax.</h2>
+    <p class="sec-lede reveal">
+      The whitepaper’s cost curves cross over: vibe coding is cheap to start and then bleeds — prompting tax, token burn,
+      maintenance tax, security risk. Agentic engineering costs more upfront and flattens. The stack’s bet is that
+      <strong>protocols amortize the CapEx across every product</strong>: you pay for the floor once, then reuse it.
+    </p>
+    <div class="chart-card reveal">
+      <canvas id="tco" width="1000" height="340"></canvas>
+      <div class="chart-legend">
+        <div class="li"><span class="sw" style="background:var(--vibe)"></span> Vibe coding — cumulative cost</div>
+        <div class="li"><span class="sw" style="background:var(--agentic)"></span> Agentic engineering — cumulative cost</div>
+        <div class="li"><span class="sw" style="background:var(--box)"></span> [&amp;] stack — amortized floor (pay once, reuse)</div>
+      </div>
+      <p class="chart-note">Curves are <strong>conceptual, not measured</strong> — they illustrate the shape of the argument (vibe’s convex tax vs. the stack’s amortized floor), not data from a study. The one number on the page that <em>is</em> measured is the governance kernel: 118 enforced laws at 2000 trials each, and 3 that are declared open — reproducible below.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOR THE BUILDER -->
+<section id="builder">
+  <div class="wrap">
+    <p class="kicker">13 · For the builder</p>
+    <h2 class="sec reveal">If you were designing this system yourself — here is what you'd actually write, decide, and ship.</h2>
+    <p class="lede reveal">No diagrams this time. The three things an engineer asks before adopting a stack: <em>What are the actual files? Which design choices are worth stealing? And what's real versus aspirational?</em></p>
+
+    <!-- A · ARTIFACTS -->
+    <div class="build-block reveal">
+      <h3><span class="tag">A · Artifacts</span>The files you'd actually write</h3>
+      <div class="code-grid">
+
+        <div class="code-panel">
+          <div class="cph">research-agent.ampersand.json</div>
+<pre><span class="cj-c">// structural composition — [&amp;]</span>
+{
+  <span class="cj-k">"agent"</span>: <span class="cj-s">"ResearchAgent"</span>,
+  <span class="cj-k">"capabilities"</span>: {
+    <span class="cj-k">"&amp;memory.vector"</span>: {
+      <span class="cj-k">"provider"</span>: <span class="cj-s">"pgvector"</span> },
+    <span class="cj-k">"&amp;reason.argument"</span>: {
+      <span class="cj-k">"provider"</span>: <span class="cj-s">"deliberatic"</span>,
+      <span class="cj-k">"config"</span>: {
+        <span class="cj-k">"governance"</span>:
+          <span class="cj-s">"evidence-first"</span> } }
+  },
+  <span class="cj-k">"governance"</span>: {
+    <span class="cj-k">"hard"</span>: [<span class="cj-s">"Never present unsupported
+      conclusions as facts"</span>],
+    <span class="cj-k">"escalate_when"</span>: {
+      <span class="cj-k">"confidence_below"</span>: <span class="cj-p">0.65</span> } },
+  <span class="cj-k">"provenance"</span>: <span class="cj-p">true</span>
+}</pre>
+          <div class="cap">Capabilities are <b>interfaces</b>; providers are swappable implementations. Change <code>pgvector</code>→<code>qdrant</code> without touching the agent.</div>
+        </div>
+
+        <div class="code-panel">
+          <div class="cph">graphonomous.continual_learning.pulse.json</div>
+<pre><span class="cj-c">// temporal loop — PULSE</span>
+{
+  <span class="cj-k">"phases"</span>: [
+    { <span class="cj-k">"kind"</span>: <span class="cj-s">"retrieve"</span> },
+    { <span class="cj-k">"kind"</span>: <span class="cj-s">"route"</span>,
+      <span class="cj-k">"invariant"</span>: <span class="cj-s">"kappa_routing"</span> },
+    { <span class="cj-k">"kind"</span>: <span class="cj-s">"act"</span>,
+      <span class="cj-k">"policy"</span>: <span class="cj-s">"delegatic.check"</span> },
+    { <span class="cj-k">"kind"</span>: <span class="cj-s">"learn"</span> },
+    { <span class="cj-k">"kind"</span>: <span class="cj-s">"consolidate"</span> }
+  ],
+  <span class="cj-k">"nesting"</span>: {
+    <span class="cj-k">"inner_loops"</span>: [{ <span class="cj-k">"trigger"</span>:
+      <span class="cj-s">"phase:route when kappa &gt; 0"</span> }] },
+  <span class="cj-k">"connections"</span>: [{
+    <span class="cj-k">"emit"</span>: <span class="cj-s">"OutcomeSignal"</span>,
+    <span class="cj-k">"to"</span>: <span class="cj-s">"prism.benchmark"</span> }]
+}</pre>
+          <div class="cap"><b>PRISM reads this file directly</b> to benchmark you — it discovers your phases, invariants and substrates from the manifest. No adapter to write.</div>
+        </div>
+
+        <div class="code-panel">
+          <div class="cph">compile to runtime · CLI</div>
+<pre><span class="cj-c"># validate against the schema</span>
+$ ./ampersand validate \
+    research-agent.ampersand.json
+  <span class="cj-ok">✓ valid · 2 capabilities</span>
+
+<span class="cj-c"># compile to MCP server config</span>
+$ ./ampersand generate mcp \
+    research-agent.ampersand.json
+  <span class="cj-ok">→ mcp.servers.json</span>
+
+<span class="cj-c"># compile to A2A agent card</span>
+$ ./ampersand generate a2a \
+    research-agent.ampersand.json
+  <span class="cj-ok">→ agent-card.json</span></pre>
+          <div class="cap"><b>[&amp;] doesn't replace MCP or A2A</b> — it compiles into them. The declaration is the source of truth; the wire formats are generated targets.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- B · DESIGN DECISIONS -->
+    <div class="build-block reveal">
+      <h3><span class="tag">B · Rationale</span>Design decisions worth stealing</h3>
+      <div class="decisions">
+        <div class="decision">
+          <h4>Graph <span class="vs">over</span> vectors</h4>
+          <p>Topology <em>is</em> a routing signal. The κ cycle-complexity of a subgraph tells you whether to answer fast (κ=0, acyclic) or deliberate (κ≥1, cyclic). A flat vector store throws that signal away.</p>
+        </div>
+        <div class="decision">
+          <h4>Property laws <span class="vs">over</span> example tests</h4>
+          <p>118 laws × 2000 random trials each beat hand-picked fixtures. You assert <em>"& is commutative and idempotent"</em> once and the generator hunts the counterexample you'd never think to write.</p>
+        </div>
+        <div class="decision">
+          <h4>Deterministic servers <span class="vs">over</span> LLM-in-the-loop</h4>
+          <p>MCP servers never call a model — the agent does all reasoning; servers are a deterministic substrate. Reproducible, cheap, testable. The intelligence lives in one place, not smeared across services.</p>
+        </div>
+        <div class="decision">
+          <h4>Floor-then-gradient <span class="vs">over</span> weighted scoring</h4>
+          <p>Safety can't be averaged away by a high utility score, and utility can't resurrect a forbidden branch. <code>feasible ▸ permitted ▸ best</code> over an un-weakenable floor — every verdict ships a certificate.</p>
+        </div>
+        <div class="decision">
+          <h4>Protocols <span class="vs">over</span> monolith</h4>
+          <p>Bring-your-own-runtime. Swap any layer — memory, reasoning, governance — and the rest still composes. PRISM is <em>designed</em> to benchmark anyone’s system, because it reads the PULSE manifest rather than your internals — but that is a claim about the interface, not evidence: <b>no system we don’t own has been adapted in yet.</b> External adaptation is the next proof, not a past one.</p>
+        </div>
+        <div class="decision">
+          <h4>Local-first <span class="vs">over</span> cloud-by-default</h4>
+          <p>Browser-local CRDT board + a local harness = zero per-token API cost and full data sovereignty. Cloud is an opt-in sink you sync <em>to</em>, not a dependency you boot <em>from</em>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- C · MATURITY -->
+    <div class="build-block reveal">
+      <h3><span class="tag">C · Honesty</span>Maturity — what's real, what isn't</h3>
+      <table class="mat">
+        <thead><tr><th>Layer</th><th>Status</th><th>What's real</th><th>Honest gap</th></tr></thead>
+        <tbody>
+          <tr><td class="nm">[&amp;] Protocol</td><td><span class="st in_tree">in_tree</span></td><td class="real">Schema, validator, MCP/A2A codegen, Elixir reference impl + CLI.</td><td class="gap"><code>&amp;body</code> sensorimotor primitive has no runtime yet.</td></tr>
+          <tr><td class="nm">Graphonomous</td><td><span class="st live_deployed">live_deployed</span></td><td class="real">κ-routing, Wilson frontiers, consolidation, MCP server, embedded SQLite.</td><td class="gap">Cloud sync is optional / single-node by default.</td></tr>
+          <tr><td class="nm">box-and-box</td><td><span class="st live_local">live_local</span></td><td class="real">v0.10.0. 8-rung ladder, bridge, 118 enforced laws, certificates. <b>Cross-process admission proven</b>: the Node kernel decides, an Elixir BEAM actor acts only on permission, certificate retained to disk (13/13 assertions, permit + refuse paths).</td><td class="gap">3 compose laws declared open (<code>Value.pi</code> carrier). Not npm-published at 1.0. Not deployed.</td></tr>
+          <tr><td class="nm">PULSE</td><td><span class="st live_deployed">live_deployed</span></td><td class="real">v0.1.1 schema, 6 cross-loop tokens, reference manifests.</td><td class="gap">Manifest authoring is hand-written, no generator.</td></tr>
+          <tr><td class="nm">PRISM</td><td><span class="st live_deployed">live_deployed</span></td><td class="real">6-machine benchmark engine, reads PULSE manifests, Fly.io deploy.</td><td class="gap">No external/competitor system adapted in yet.</td></tr>
+          <tr><td class="nm">Delegatic</td><td><span class="st live_deployed">live_deployed</span></td><td class="real">Policy checks gating the act phase, evidence-first governance.</td><td class="gap">In-memory ETS only — no persisted policy store.</td></tr>
+          <tr><td class="nm">OS-008 Harness</td><td><span class="st in_tree">in_tree</span></td><td class="real">Pipeline enforcement, quality gates, sprint contracts (TRAAVIIS CLI).</td><td class="gap">Orchestration loop is docs + site, not one binary.</td></tr>
+          <tr><td class="nm">Dark-factory loop</td><td><span class="st live_local">live_local</span></td><td class="real">7/7 steps run locally end-to-end.</td><td class="gap">Not yet stitched across deployed machines.</td></tr>
+          <tr><td class="nm">WRL</td><td><span class="st live_local">live_local</span></td><td class="real">WallRiderLang Core 0.1.2 — an executable topology language whose meaning is a hash. <b>890 conformance checks, 0 failed</b>; register 128 rows, model debt 0. Cross-implementation agreement is <em>measured</em>, not asserted: projection vectors round-trip byte-exact through Forge’s independent Python spine, and on a shared negative corpus both verifiers refuse all 15 tampers <b>and agree on the name of every refusal</b> — two languages, two repos.</td><td class="gap">The suite reports its own limit: 54 of the swept blocks are <em>fragments</em>, and a fragment’s non-acceptance is weak evidence until its capability ships. Not deployed; no outside consumer has driven the path.</td></tr>
+          <tr><td class="nm">TRVM</td><td><span class="st live_local">live_local</span></td><td class="real">Coordination-free interaction-calculus runtime, conformance battery green across python · c · wasm · js.</td><td class="gap">§6.4 snapshot &amp; §6.5 REF semantics unspecified. <b>No demonstrated parallel speedup</b> — the result proven is correctness, not throughput.</td></tr>
+          <tr><td class="nm">Workbench <code>/record</code></td><td><span class="st live_local">live_local</span></td><td class="real">A real Claude Code transcript → scored SkillBundle, no model call and no API key. 202 MB indexed in 936 ms; every segment sealed twice — honest → 6/6 <b>PASS</b>, one capability withheld → <code>no_hidden_capability</code> + <code>authority</code> both <b>FAIL</b>.</td><td class="gap">Cloudflare Pages is a target, not a deploy. Gates shown to carry signal on n=1 corpus.</td></tr>
+          <tr><td class="nm">the-residency</td><td><span class="st live_local">live_local</span></td><td class="real">Browser-native CRDT board, local harness, live corpus hydration.</td><td class="gap">Pre-Gate-0: the premise (board &gt; single agent) is untested.</td></tr>
+          <tr><td class="nm">OS-007</td><td><span class="st spec">spec</span></td><td class="real">Specification drafted.</td><td class="gap">Unbuilt.</td></tr>
+        </tbody>
+      </table>
+      <div class="adopt"><b>Adopt incrementally.</b> Start with one <code>*.ampersand.json</code> → add a <code>*.pulse.json</code> when you have a loop → point PRISM at the manifest when you want numbers → drop in box-and-box only where a decision must be <b>governed</b>. No big-bang rewrite. Each layer is useful alone.</div>
+    </div>
+
+    <!-- D · VERIFY -->
+    <div class="build-block reveal" id="verify">
+      <h3><span class="tag">D · Verify</span>Don’t trust the numbers — run them</h3>
+      <p class="sec-lede" style="margin-bottom:20px">Every count on this page is a command away. These are the actual suites; the <span class="cj-ok">green lines</span> are the real output captured from this repo, not a mock-up.</p>
+      <div class="code-grid">
+
+        <div class="code-panel">
+          <div class="cph">governance · 118 enforced · 3 open</div>
+<pre><span class="cj-c"># the un-weakenable floor, proven</span>
+$ cd AmpersandBoxDesign/box-and-box
+$ node test/laws.mjs \
+    &amp;&amp; node test/compose-laws.mjs
+  <span class="cj-ok">✓ all 103 enforced kernel laws hold.</span>
+<span class="cj-note">known gaps (xfail):</span>
+  <span class="cj-gap">✗ CP5 |&gt; floor association-invariant</span>
+  <span class="cj-gap">     — FALSIFIED @trial n</span>
+  <span class="cj-gap">✗ CP6 no backward step survives |&gt;</span>
+  <span class="cj-gap">     — FALSIFIED @trial n</span>
+  <span class="cj-gap">✗ CP7 &amp;-order leaks to |&gt; floor</span>
+  <span class="cj-gap">     — FALSIFIED @trial n</span>
+  <span class="cj-ok">✓ all 15 enforced CC2 compose laws</span>
+  <span class="cj-ok">   hold — 14 suite + 1 anchor.</span>
+  <span class="cj-note">· 3 known gap(s) still open</span>
+<span class="cj-c"># 103 kernel + 15 compose = 118</span>
+<span class="cj-c"># 2000 random trials each</span></pre>
+          <div class="cap"><b>Yes, the red is supposed to be there.</b> (<code>@trial n</code> because the trial index is
+          different every run — the inputs are random, so your counterexample won’t be ours.)
+          Three compose laws are <em>declared open</em> — a single-slot <code>Value.pi</code> carrier lets <code>|&gt;</code> re-association bypass the phase floor. They were found by the residency falsifier, they are written down in <a href="https://github.com/c-u-l8er/the-residency" style="color:var(--box)">EVIDENCE/algebra-finding.md</a>, and the build <em>fails if one starts passing</em> — that's the signal the carrier fix landed. A suite that only ever prints green isn't being run hard enough.</div>
+        </div>
+
+        <div class="code-panel">
+          <div class="cph">[&amp;] · validate + compile</div>
+<pre><span class="cj-c"># spec → schema → wire formats</span>
+$ cd AmpersandBoxDesign/reference\
+    /elixir/ampersand_core
+$ mix deps.get &amp;&amp; mix escript.build
+$ ./ampersand validate \
+    ../../../examples/\
+    research-agent.ampersand.json
+  <span class="cj-ok">→ schema-valid · 2 capabilities</span>
+$ ./ampersand generate mcp &lt;file&gt;
+  <span class="cj-ok">→ mcp.servers.json</span></pre>
+          <div class="cap">The same declaration the compile demo above renders — validated against draft-2020-12 and compiled to MCP/A2A.</div>
+        </div>
+
+        <div class="code-panel">
+          <div class="cph">graphonomous · engine tests</div>
+<pre><span class="cj-c"># continual-learning graph + MCP</span>
+$ cd graphonomous
+$ mix compile --warnings-as-errors
+$ mix test
+$ mix format --check-formatted
+<span class="cj-c"># κ-routing · Wilson frontiers ·</span>
+<span class="cj-c"># consolidation · embedded SQLite</span></pre>
+          <div class="cap">Elixir/OTP. The κ, Wilson-interval, and consolidation algorithms from §06 are exercised here.</div>
+        </div>
+
+      </div>
+      <div class="adopt" style="margin-top:14px"><b>Open source.</b> Several components are public repositories you can clone today — <code>github.com/c-u-l8er/TRVM</code> · <code>the-residency</code> · <code>TRAAVIIS</code> · <code>ampersand-plugins</code> (the Claude Code skills) · <code>docs</code>. The reproduction commands above run from the [&amp;] monorepo. <b>Verifiability is the whole point:</b> if a count can’t be reproduced, treat it as a claim, not a fact.</div>
+    </div>
+
+    <!-- E · INTEROP -->
+    <div class="build-block reveal" id="interop">
+      <h3><span class="tag">E · Interop</span>What we compile into — and who else is in this space</h3>
+      <p class="sec-lede" style="margin-bottom:6px">
+        [&amp;] has one rule that has kept it useful: <strong>it does not invent a wire format.</strong> It compiles into MCP and
+        A2A rather than competing with them. The same rule applies one layer up — the evidence layer already has standards,
+        and the right move is to emit them, not to replace them. And this is not an empty field: as of 2026 it is filling
+        quickly, which we take as the category being real rather than as a threat.
+      </p>
+      <div class="interop">
+        <div class="iop">
+          <h5>MCP · A2A</h5>
+          <p>Not competitors. <code>ampersand generate mcp</code> and <code>generate a2a</code> emit both from one
+          <code>.ampersand.json</code>. A capability declaration is upstream of a wire protocol.</p>
+        </div>
+        <div class="iop">
+          <h5>OpenTelemetry GenAI</h5>
+          <p>The GenAI SIG is standardising agent spans, events and metrics. A PULSE phase is a natural span; the honest
+          status is that we <em>don’t emit OTel yet</em>. It is the most obvious next interop win and it isn’t built.</p>
+        </div>
+        <div class="iop">
+          <h5>W3C PROV</h5>
+          <p>The Residency’s findings carry provenance aligned to the PROV model — entities, activities, agents. Evidence
+          that can’t be pointed at a standard shape is evidence nobody else can consume.</p>
+        </div>
+        <div class="iop">
+          <h5>NIST · W3C · CoSAI</h5>
+          <p>NIST’s AI Agent Standards Initiative (Feb 2026), the W3C Agent Identity Registry CG (Apr 2026) and CoSAI’s
+          Agentic IAM are all now working the identity/authorization layer that Delegatic occupies.</p>
+        </div>
+        <div class="iop">
+          <h5>Runtime governance kits</h5>
+          <p>Microsoft’s Agent Governance Toolkit, OPAQUE’s verifiable-governance standard, AOS Governance. AOS’s framing —
+          <em>a script, not a prompt, decides whether an action is permitted</em> — is close to box-and-box’s. The difference
+          we’d defend is the <b>algebra</b>: a ladder with stated laws that compose, not a policy checker.</p>
+        </div>
+        <div class="iop">
+          <h5>The literature</h5>
+          <p>Deontic policies for runtime governance, evidence-tracing/execution-provenance surveys, verifiable context
+          governance. Our deontic rung is one rung of eight — the papers are neighbours, not rivals, and they’re ahead of us
+          on formal write-up.</p>
+        </div>
+      </div>
+      <div class="honest" style="margin-top:16px"><b>Where we’re behind.</b> Everything above is more mature than us on
+      <em>adoption</em> and most of it on <em>publication</em>. What the [&amp;] stack has that we haven’t found elsewhere is the
+      composition story — one floor, stated laws, verdicts that carry certificates, and protocols that plug into each other
+      rather than into a single vendor’s console. That is a claim about <em>shape</em>, and it is the one most worth attacking.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRINCIPLES -->
+<section id="principles">
+  <div class="wrap">
+    <p class="kicker">14 · What stays true</p>
+    <h2 class="sec reveal">Three durable principles — and our addendum to each.</h2>
+    <div class="principles reveal">
+      <div class="prin">
+        <div class="q">Principle 1</div>
+        <h3>Structure scales, vibes don’t.</h3>
+        <p>Past a crossover point, ad-hoc prompting costs 3–10× more per feature.</p>
+        <div class="ours"><b>+</b> So we made structure <em>cheap to reuse</em>: one governance floor, 118 laws, composed by every product.</div>
+      </div>
+      <div class="prin">
+        <div class="q">Principle 2</div>
+        <h3>AI amplifies your culture.</h3>
+        <p>It multiplies both strengths and weaknesses of your existing engineering discipline.</p>
+        <div class="ours"><b>+</b> So we encode the discipline as protocols — the multiplier acts on something machine-checkable, not tribal knowledge.</div>
+      </div>
+      <div class="prin">
+        <div class="q">Principle 3</div>
+        <h3>The human role evolves.</h3>
+        <p>Toward specification, evaluation, architectural judgment — not away from engineering.</p>
+        <div class="ours"><b>+</b> So the human writes the <code>.ampersand.json</code> and sets the floor; the kernel proves the rest and ships the certificate.</div>
+      </div>
+    </div>
+    <blockquote class="callout reveal">
+      Google wrote the field guide to agentic engineering. The [&amp;] stack is one attempt to build the instruments —
+      a specification algebra, a memory graph, a temporal loop manifest, a benchmark, and a governance kernel that
+      turns “set the bar at the eval” into a verdict you can audit.
+      <cite>— ProjectAmp2 · the [&amp;] Protocol ecosystem</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- FALSIFY -->
+<section id="falsify">
+  <div class="wrap">
+    <p class="kicker">15 · The ending this page has to have</p>
+    <h2 class="sec reveal">Here is precisely how to prove us wrong.</h2>
+    <p class="sec-lede reveal">
+      A page arguing that verification beats demonstration cannot end by asking you to be impressed. So it ends with a kill
+      switch for each claim. Every row below names the claim, its honest status, the command that exercises it, what you
+      should see, and <strong>the specific observation that would falsify it</strong>. If you produce one of the things in
+      the last column, the claim is dead and we want the counterexample.
+    </p>
+    <div class="fals-scroll reveal">
+      <table class="fals">
+        <thead><tr><th>Claim</th><th>Status</th><th>Command</th><th>Expected</th><th>What kills it</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="claim">The governance floor is un-weakenable and its laws hold</td>
+            <td><span class="st live_local">live_local</span></td>
+            <td><code>node test/laws.mjs</code><br><code>node test/compose-laws.mjs</code></td>
+            <td>103 + 15 = 118 enforced green, 3 declared-open in red, exit 0</td>
+            <td class="kill">A counterexample to any of the 118 — or an input where the floor is bypassed without one of CP5/CP6/CP7 firing.</td>
+          </tr>
+          <tr>
+            <td class="claim">Governance gates a <em>foreign</em> runtime, not just itself</td>
+            <td><span class="st live_local">live_local</span></td>
+            <td><code>bash test/integration/<br>kernel-gates-action.sh</code></td>
+            <td>13/13 — the Node kernel refuses, the Elixir actor does not act, certificate on disk</td>
+            <td class="kill">The BEAM actor performing the act on a refuse verdict, or a permit with no retained certificate.</td>
+          </tr>
+          <tr>
+            <td class="claim">A spec compiles to real wire formats</td>
+            <td><span class="st in_tree">in_tree</span></td>
+            <td><code>./ampersand generate mcp<br>&lt;file&gt;</code></td>
+            <td>Schema-valid input → an <code>mcp.servers.json</code> a client actually accepts</td>
+            <td class="kill">Output that no MCP client will load, or a valid declaration the generator can’t compile.</td>
+          </tr>
+          <tr>
+            <td class="claim">Proof gates carry signal — they don’t just say PASS</td>
+            <td><span class="st live_local">live_local</span></td>
+            <td>Workbench <code>/record</code>, drop in your own Claude Code transcript</td>
+            <td>Honest run → 6/6 <b>PASS</b>; withhold one capability → <code>no_hidden_capability</code> + <code>authority</code> <b>FAIL</b></td>
+            <td class="kill">A transcript with a genuinely concealed capability that still seals 6/6. That’s the interesting attack.</td>
+          </tr>
+          <tr>
+            <td class="claim">A world means the same thing in two independent implementations</td>
+            <td><span class="st live_local">live_local</span></td>
+            <td><code>node test/conformance.mjs</code><br>+ the shared negative corpus</td>
+            <td>890 pass / 0 fail; projection vectors round-trip byte-exact through Forge’s Python spine; both verifiers refuse all 15 tampers <em>and name each refusal identically</em></td>
+            <td class="kill">One implementation accepting a world the other refuses — or the two refusing the same tamper under different names. Either means the meaning isn’t really the hash.</td>
+          </tr>
+          <tr>
+            <td class="claim">Reduction is schedule-independent</td>
+            <td><span class="st live_local">live_local</span></td>
+            <td><code>make test</code> · <code>node runtime/js/swarm.js</code></td>
+            <td>Same normal form across python · c · wasm · js; workers agree with no coordination</td>
+            <td class="kill">Two schedules reaching different normal forms on the same net. (Note we claim <em>correctness</em>, not speedup — a slow run falsifies nothing.)</td>
+          </tr>
+          <tr>
+            <td class="claim">The board beats a single agent</td>
+            <td><span class="st live_local">pre-Gate-0</span></td>
+            <td>—</td>
+            <td>Nothing. This is <em>untested</em>.</td>
+            <td class="kill">Already open — Gate 0 exists precisely because deliberation can herd toward a confidently-wrong peer. We have n=1.</td>
+          </tr>
+          <tr style="background:rgba(255,90,77,.04)">
+            <td class="claim">The derivation reproduces on a machine we don’t own</td>
+            <td><span class="st external">external · 0 filed</span></td>
+            <td>Boot a <a href="https://github.com/c-u-l8er/travel-and-rrabbit" target="_blank" rel="noopener" style="color:var(--prism)">T&amp;R</a> image, then <code>trvs doctor</code> · <code>trvs id</code></td>
+            <td>The quoted sha256 matches, and <code>trvs id</code> derives <em>the same identity we published</em> — on hardware we have never touched</td>
+            <td class="kill">A sha that doesn’t match, an identity that comes out different, or an image that won’t boot. <b>This is the only row whose missing evidence can only come from a machine we don’t own</b> — which is exactly why the count is 0 reports, 0 from real hardware, as of 11 August 2026.</td>
+          </tr>
+          <tr>
+            <td class="claim">PRISM benchmarks <em>anyone’s</em> system</td>
+            <td><span class="st live_deployed">design claim</span></td>
+            <td>Point it at a PULSE manifest you wrote</td>
+            <td>Runtime-independent by construction — it reads phases from the manifest</td>
+            <td class="kill">Nothing yet, and that’s the problem: <b>no system we don’t own has been adapted in.</b> Until one is, treat this row as design, not evidence.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="build-block reveal" style="margin-top:30px">
+      <h3><span class="tag">Where this argument lives</span>ComputeDriven</h3>
+      <p class="sec-lede" style="margin-bottom:14px">
+        The table above is one page’s worth of a thesis that has its own home. <strong>ComputeDriven</strong>
+        (<a href="https://computedriven.com" target="_blank" rel="noopener" style="color:var(--prism)">computedriven.com</a>)
+        states it in a sentence this page has effectively been circling for fifteen sections:
+      </p>
+      <blockquote class="callout" style="margin:0 0 16px">
+        Data driven keeps the result. <strong>Compute driven ships the derivation.</strong>
+        <br><br>
+        A claim is compute driven when the artifact carries enough — canonical input, executable semantics, a derived
+        identity and its provenance — for <em>an independent machine to derive the claim again</em>.
+        <cite>— computedriven.com</cite>
+      </blockquote>
+      <p class="sec-lede" style="margin-bottom:14px">
+        That is the same move as <code>&amp;</code>-composition, the certificate, the PULSE manifest and the 890 cross-language
+        conformance checks — stated once, at the level of the artifact rather than the tool. It also carries the caveat this
+        page needs and doesn’t otherwise say out loud:
+      </p>
+      <div class="honest" style="margin-bottom:16px"><b>Re-derivation proves fidelity, not correctness.</b> A wrong
+        computation re-runs perfectly and is still wrong. Everything in the table above establishes that a result was
+        <em>faithfully produced</em> — not that it was the right result to want.</div>
+      <p class="sec-lede" style="margin:0">
+        Its first proof object is <strong>T&amp;R</strong>, a FreeBSD 15 distribution assembled from pkgbase and published as
+        releases with quoted sha256 sums — an artifact rather than another protocol, which is why it appears here as a row in
+        the table and not as a section of its own. And the <em>boot report</em> is the mechanism: ComputeDriven’s admitted last
+        gap is that <b>every measurement was taken on our machines</b>, so joining it is defined as supplying the one thing we
+        cannot supply ourselves — a second machine.
+      </p>
+    </div>
+
+    <blockquote class="callout reveal" style="margin-top:26px">
+      Most of this field asks you to trust a benchmark. The bar we’d rather be held to is the one in the last column —
+      and the fastest way to help is to break a row.
+      <cite>— if you falsify one, the counterexample belongs in the repo, not in a rebuttal</cite>
+    </blockquote>
+    <div class="honest reveal"><b>The rows we can’t yet write.</b> Three claims on this page have no falsification command at
+      all, and honesty means listing them rather than quietly omitting them: the TCO curves (<em>conceptual, not measured</em>),
+      the dark factory running end-to-end across deployed machines, and <code>&amp;body</code> having a runtime.
+      <em>External reproduction</em> used to be a fourth; it now has a command and a kill condition — the boot-report row —
+      though <b>a mechanism is not evidence</b> and the count is still zero.
+      <b>Adoption remains a separate open claim, and one boot report would not close it:</b> reproducing an artifact is not
+      the same as depending on it. Someone building on this, integrating it, or using it for real work is a different
+      category of proof, and we have none of it.
+      A claim with no kill switch is a claim with no evidence — including ours.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><strong style="color:var(--ink)">[&amp;] Agentic Engineering</strong> — a masterclass in the form of a single page.</div>
+    <a href="#top">Back to top ↑</a>
+    <div class="note">
+      Source framework: “The New SDLC With Vibe Coding,” Addy Osmani, Shubham Saboo &amp; Sokratis Kartakis (Google, 2026) —
+      kaggle.com/whitepaper-the-new-SDLC-with-vibe-coding · addyosmani.com/blog/new-sdlc-vibe-coding.
+      The three open problems in §03 are from its follow-up, “Agent Harness Engineering” (Osmani, 19 April 2026) —
+      addyosmani.com/blog/agent-harness-engineering. The Top 30 → Top 5 result is on Terminal Bench 2.0.<br>
+      Stack facts sourced from this repository’s <code>STACK_COMPLETION.md</code> and <code>ECOSYSTEM.md</code> (canonical as of 2026-08-13).
+      Law counts are printed by the suites themselves and are derived, not hand-typed — see §15.
+      Status vocabulary: <code>spec · in_tree · live_local · live_deployed · external</code>. This document is commentary &amp; synthesis, not affiliated with Google.
+    </div>
+  </div>
+</footer>
+
+<a id="top"></a>
+<script>
+(function () {
+  "use strict";
+
+  // scroll progress
+  var prog = document.getElementById("progress");
+  function onScroll() {
+    var h = document.documentElement;
+    var pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    prog.style.width = pct + "%";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  // reveal on intersect
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+
+  // spectrum slider
+  var slider = document.getElementById("slider");
+  var modes = [
+    {
+      at: 0, name: "Vibe coding", color: "var(--vibe)",
+      desc: "Casual prompts, “does it seem to work?”, disposable code. Perfect for prototypes, scripts, and throwaways.",
+      verify: "a glance at the demo", chip: "trust: vibes"
+    },
+    {
+      at: 45, name: "Structured AI-assisted", color: "var(--mid)",
+      desc: "Rule files, tests for the deterministic parts, a human reviewing the diff. The middle ground most teams actually live in.",
+      verify: "tests + human review of the diff", chip: "trust: spot-checks"
+    },
+    {
+      at: 100, name: "Agentic engineering", color: "var(--agentic)",
+      desc: "Formal specs, automated output + trajectory evals, CI/CD gates, governance floors. Production systems at scale.",
+      verify: "an eval suite with a real rubric → a certified verdict", chip: "trust: proof"
+    }
+  ];
+  var rMode = document.getElementById("r-mode"),
+      rDesc = document.getElementById("r-desc"),
+      rVerify = document.getElementById("r-verify"),
+      rChip = document.getElementById("r-chip"),
+      readout = document.getElementById("readout"),
+      labels = document.querySelectorAll(".spectrum-labels span");
+
+  function pick(v) {
+    if (v < 30) return 0;
+    if (v < 72) return 1;
+    return 2;
+  }
+  function renderSpectrum() {
+    var v = +slider.value;
+    var m = modes[pick(v)];
+    rMode.textContent = m.name; rMode.style.color = m.color;
+    rDesc.textContent = m.desc;
+    rVerify.textContent = m.verify;
+    rChip.textContent = m.chip;
+    readout.style.borderColor = m.color;
+    var zone = pick(v);
+    labels.forEach(function (s) { s.classList.toggle("active", +s.dataset.z === zone); });
+  }
+  slider.addEventListener("input", renderSpectrum);
+  renderSpectrum();
+
+  // PULSE loop animation
+  var loopSvg = document.getElementById("loopsvg");
+  var orbit = document.getElementById("orbit");
+  var phaseEls = Array.prototype.slice.call(document.querySelectorAll(".ph"));
+  var phaseLis = Array.prototype.slice.call(document.querySelectorAll("#phaselist li"));
+  // node positions (cx,cy) matching the SVG
+  var nodes = [[100,26],[170,78],[143,162],[57,162],[30,78]];
+  var cur = 0, loopTimer = null;
+  function litPhase(i) {
+    phaseEls.forEach(function (g, j) {
+      g.querySelector("circle").setAttribute("stroke", j === i ? "#ff8a3d" : "#2c3548");
+      g.querySelector("circle").setAttribute("fill", j === i ? "#2a1c10" : "#11151e");
+    });
+    phaseLis.forEach(function (li, j) { li.classList.toggle("lit", j === i); });
+    orbit.setAttribute("cx", nodes[i][0]);
+    orbit.setAttribute("cy", nodes[i][1]);
+  }
+  function startLoop() {
+    if (loopTimer) return;
+    loopTimer = setInterval(function () { litPhase(cur); cur = (cur + 1) % 5; }, 1300);
+  }
+  function stopLoop() { clearInterval(loopTimer); loopTimer = null; }
+  // only run when visible
+  var loopIo = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { e.isIntersecting ? startLoop() : stopLoop(); });
+  }, { threshold: 0.3 });
+  if (loopSvg) loopIo.observe(loopSvg);
+  phaseLis.forEach(function (li, i) {
+    li.addEventListener("mouseenter", function () { stopLoop(); litPhase(i); cur = (i + 1) % 5; });
+    li.addEventListener("mouseleave", startLoop);
+  });
+  litPhase(0);
+
+  // TCO chart
+  var cv = document.getElementById("tco");
+  function drawTCO() {
+    if (!cv) return;
+    var dpr = window.devicePixelRatio || 1;
+    var W = cv.clientWidth, H = 340;
+    cv.width = W * dpr; cv.height = H * dpr;
+    var ctx = cv.getContext("2d");
+    ctx.scale(dpr, dpr);
+    ctx.clearRect(0, 0, W, H);
+
+    var padL = 56, padR = 18, padT = 18, padB = 38;
+    var gw = W - padL - padR, gh = H - padT - padB;
+    function X(t) { return padL + t * gw; }            // t in 0..1
+    function Y(c) { return padT + (1 - c) * gh; }       // c in 0..1
+
+    // grid
+    ctx.strokeStyle = "#1e2533"; ctx.lineWidth = 1;
+    ctx.fillStyle = "#5f6b82"; ctx.font = "11px ui-monospace, monospace";
+    for (var i = 0; i <= 4; i++) {
+      var yy = padT + (gh * i / 4);
+      ctx.beginPath(); ctx.moveTo(padL, yy); ctx.lineTo(W - padR, yy); ctx.stroke();
+    }
+    ctx.fillText("cumulative cost →", padL, padT - 4);
+    ctx.fillText("features shipped over time →", W - padR - 160, H - 10);
+
+    function curve(fn, color, dash) {
+      ctx.beginPath();
+      ctx.setLineDash(dash || []);
+      for (var t = 0; t <= 1.0001; t += 0.01) {
+        var c = fn(t);
+        if (t === 0) ctx.moveTo(X(t), Y(c)); else ctx.lineTo(X(t), Y(c));
+      }
+      ctx.strokeStyle = color; ctx.lineWidth = 2.5; ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    // vibe: low capex, steep convex growth (the tax compounds)
+    function vibe(t) { return 0.05 + 0.9 * Math.pow(t, 2.1); }
+    // agentic: higher capex, near-linear, flattens
+    function agentic(t) { return 0.32 + 0.5 * t; }
+    // stack: highest capex step, then very flat (amortized floor)
+    function stack(t) { return 0.42 + 0.22 * t; }
+
+    curve(vibe, "#ff5a4d");
+    curve(agentic, "#4d8dff");
+    curve(stack, "#ffd24d", [6, 5]);
+
+    // crossover marker (vibe vs agentic): solve 0.05+0.9 t^2.1 = 0.32+0.5t
+    var tx = 0.62; // approx
+    ctx.fillStyle = "#9aa6bd";
+    var cx = X(tx), cy = Y(agentic(tx));
+    ctx.beginPath(); ctx.arc(cx, cy, 4, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = "#e8edf6"; ctx.font = "11px ui-monospace, monospace";
+    ctx.fillText("crossover · vibe now 3–10× per feature", cx + 8, cy - 8);
+  }
+  drawTCO();
+  var tcoIo = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) drawTCO(); });
+  }, { threshold: 0.3 });
+  if (cv) tcoIo.observe(cv);
+  var rT;
+  window.addEventListener("resize", function () { clearTimeout(rT); rT = setTimeout(drawTCO, 150); });
+})();
+</script>
+
+<!-- INTERACTIVE κ-ROUTING DEMO -->
+<script>
+(function () {
+  var svg = document.getElementById("kd-svg");
+  if (!svg) return;
+  var NS = "http://www.w3.org/2000/svg";
+  // node positions (square layout in 240x200 viewBox)
+  var POS = { A: [50, 48], B: [190, 48], C: [190, 152], D: [50, 152] };
+  var NODES = ["A", "B", "C", "D"];
+  // toggleable directed edges; default = a simple path A→B→C (κ=0)
+  var EDGES = [
+    { id: "AB", from: "A", to: "B", on: true },
+    { id: "BC", from: "B", to: "C", on: true },
+    { id: "CA", from: "C", to: "A", on: false },
+    { id: "CD", from: "C", to: "D", on: false },
+    { id: "DB", from: "D", to: "B", on: false }
+  ];
+  var R = 17;
+
+  function tarjan(edges) {
+    var idx = {}, low = {}, onst = {}, stack = [], i = 0, sccs = [];
+    var adj = {}; NODES.forEach(function (n) { adj[n] = []; });
+    edges.forEach(function (e) { if (e.on) adj[e.from].push(e.to); });
+    function strong(v) {
+      idx[v] = i; low[v] = i; i++; stack.push(v); onst[v] = true;
+      adj[v].forEach(function (w) {
+        if (idx[w] === undefined) { strong(w); low[v] = Math.min(low[v], low[w]); }
+        else if (onst[w]) { low[v] = Math.min(low[v], idx[w]); }
+      });
+      if (low[v] === idx[v]) {
+        var comp = [], w;
+        do { w = stack.pop(); onst[w] = false; comp.push(w); } while (w !== v);
+        sccs.push(comp);
+      }
+    }
+    NODES.forEach(function (v) { if (idx[v] === undefined) strong(v); });
+    return sccs;
+  }
+  function kappa(edges) {
+    var sccs = tarjan(edges), k = 0, cyclic = 0;
+    sccs.forEach(function (comp) {
+      var set = {}; comp.forEach(function (n) { set[n] = 1; });
+      var V = comp.length;
+      var E = edges.filter(function (e) { return e.on && set[e.from] && set[e.to]; }).length;
+      var c = E - V + 1;            // cyclomatic number of this component
+      if (c > 0) { k += c; cyclic += V; }
+    });
+    return { k: k, cyclic: cyclic };
+  }
+
+  function trim(p, q) { // shorten segment p→q by R at each end
+    var dx = q[0] - p[0], dy = q[1] - p[1], L = Math.hypot(dx, dy) || 1;
+    var ux = dx / L, uy = dy / L;
+    return [[p[0] + ux * R, p[1] + uy * R], [q[0] - ux * R, q[1] - uy * R]];
+  }
+  // build static SVG (edges first, then nodes on top)
+  var edgeEls = {};
+  EDGES.forEach(function (e) {
+    var seg = trim(POS[e.from], POS[e.to]);
+    var a = seg[0], b = seg[1];
+    var line = document.createElementNS(NS, "line");
+    line.setAttribute("x1", a[0]); line.setAttribute("y1", a[1]);
+    line.setAttribute("x2", b[0]); line.setAttribute("y2", b[1]);
+    line.setAttribute("class", "ed");
+    svg.appendChild(line);
+    // arrowhead triangle at b
+    var dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1;
+    var ux = dx / L, uy = dy / L, px = -uy, py = ux, s = 6;
+    var tip = b, base1 = [b[0] - ux * s + px * s * 0.6, b[1] - uy * s + py * s * 0.6],
+        base2 = [b[0] - ux * s - px * s * 0.6, b[1] - uy * s - py * s * 0.6];
+    var tri = document.createElementNS(NS, "polygon");
+    tri.setAttribute("points", tip[0] + "," + tip[1] + " " + base1[0] + "," + base1[1] + " " + base2[0] + "," + base2[1]);
+    tri.setAttribute("class", "ah");
+    svg.appendChild(tri);
+    edgeEls[e.id] = { line: line, tri: tri };
+  });
+  NODES.forEach(function (n) {
+    var p = POS[n];
+    var c = document.createElementNS(NS, "circle");
+    c.setAttribute("cx", p[0]); c.setAttribute("cy", p[1]); c.setAttribute("r", R);
+    c.setAttribute("class", "nd"); svg.appendChild(c);
+    var t = document.createElementNS(NS, "text");
+    t.setAttribute("x", p[0]); t.setAttribute("y", p[1]); t.setAttribute("class", "nl");
+    t.textContent = n; svg.appendChild(t);
+  });
+
+  var elEdges = document.getElementById("kd-edges");
+  var elVerdict = document.getElementById("kd-verdict");
+  var elRead = document.getElementById("kd-readout");
+
+  function colorFor(k) { return k === 0 ? "#2ee6a6" : k === 1 ? "#f2b53b" : "#ff5a4d"; }
+  function routeFor(k) {
+    if (k === 0) return "answer — fast retrieval";
+    if (k === 1) return "deliberate · high-stakes";
+    return "deliberate · strong";
+  }
+
+  function render() {
+    EDGES.forEach(function (e) {
+      var els = edgeEls[e.id];
+      els.line.classList.toggle("on", e.on);
+      els.tri.classList.toggle("on", e.on);
+    });
+    var r = kappa(EDGES);
+    var col = colorFor(r.k);
+    elVerdict.textContent = "κ = " + r.k + " → " + routeFor(r.k);
+    elVerdict.style.color = col;
+    elVerdict.style.borderColor = col;
+    var topo = r.k === 0 ? "acyclic — knowledge has no contradictions to resolve"
+             : r.k === 1 ? "one cycle — a single entangled cluster to think through"
+             : r.k + " independent cycles — nested / overlapping entanglement";
+    elRead.innerHTML = "<b>κ = " + r.k + "</b> (cyclomatic over SCCs) · " + r.cyclic + " node" + (r.cyclic === 1 ? "" : "s") + " inside cycles<br>topology: " + topo + "<br>route: <b>" + routeFor(r.k) + "</b>";
+  }
+
+  EDGES.forEach(function (e) {
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "kd-edge" + (e.on ? " on" : "");
+    btn.textContent = e.from + "→" + e.to;
+    btn.addEventListener("click", function () {
+      e.on = !e.on;
+      btn.classList.toggle("on", e.on);
+      render();
+    });
+    elEdges.appendChild(btn);
+    e._btn = btn;
+  });
+  document.getElementById("kd-reset").addEventListener("click", function () {
+    EDGES.forEach(function (e) {
+      e.on = (e.id === "AB" || e.id === "BC");
+      e._btn.classList.toggle("on", e.on);
+    });
+    render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

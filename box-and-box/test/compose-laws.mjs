@@ -7,6 +7,7 @@
 //
 // Same property-test harness as the 103 stated laws in test/laws.mjs: trial(n,body) returns
 // true or a counter-example tag; runSet folds a suite; N=2000 trials/law; exit(fail?1:0).
+// 14 laws: CA1–CA4 (&), CP1–CP4 (|>), CX1–CX6 (floor/semiring/cost-lattice/closure/fail-closed).
 import { V, V0, PHASES, phaseIdx, combine, consume } from '../value.mjs';
 import { Brick, ZERO, isZero, none, idBrick, composeAnd, composePipe, composeTree } from '../compose.mjs';
 
@@ -158,7 +159,93 @@ const CROSS = [
     if (!isBrick(ab)) return 'not-a-brick';
     // fold an AST whose leaf is itself a composite ⇒ the closure property end to end
     const tree = composeTree({ op: '|>', a: { op: '&', a, b }, b: c });
-    return (isBrick(tree) && !isZero(tree)) ? true : 're-compose-failed'; })]
+    return (isBrick(tree) && !isZero(tree)) ? true : 're-compose-failed'; })],
+  ['CX6', 'fail-closed: a malformed/partial child ⇒ 0̲ or a valid Brick, never an exception', (n) => trial(n, () => {
+    // a fuzzer of partial + garbage operands — the threat directive 1 forbids: a throw where
+    // 0̲ (or a normalized Brick) is the correct answer. Covers both the Brick() entry point
+    // (partial params, B3's repro shape) and raw non-brick operands passed straight to the ops.
+    const garbageVal = () => pick([
+      { beta: 0.9 },                       // partial Value (B3): missing sigma/authority/audit
+      { sigma: 42 },                       // non-iterable array field
+      { beta: 'high', kappa: 1, sigma: null },
+      'not-an-object', 42, null, undefined, [], { error: 'π-violation' },
+      { authority: 'x', audit: 7, n: NaN }
+    ]);
+    const garbageBrickParams = () => pick([
+      { id: 7, value: garbageVal(), cost: { rung: 1 }, q: 'nope', laws: 5, floor: 0 },
+      { value: garbageVal() },
+      { value: garbageVal(), cost: garbageVal() },
+      garbageVal(),                        // the whole param object is garbage
+      undefined
+    ]);
+    // operands: half via the public constructor (with garbage params), half raw garbage objects
+    const mk = () => (Math.random() < 0.5 ? Brick(garbageBrickParams()) : garbageVal());
+    const isBrick = (x) => x && typeof x === 'object' && x.value && x.cost && x.contract && x.q && typeof x.id === 'string';
+    const ok = (x) => isZero(x) || isBrick(x);
+    try {
+      const a = mk(), b = mk(), c = mk();
+      if (!ok(composeAnd(a, b))) return 'and-not-brick-or-zero';
+      if (!ok(composePipe(a, b))) return 'pipe-not-brick-or-zero';
+      if (!ok(composeTree({ op: '|>', a: { op: '&', a, b }, b: c }))) return 'tree-not-brick-or-zero';
+      // and the original B3 repro shape specifically resolves (here: uncertified cost ⇒ 0̲)
+      const r = composeAnd(Brick({ id: 'a', value: { beta: 0.9 }, cost: { rung: 1 }, q: {} }),
+                           Brick({ id: 'b', value: { beta: 0.8 }, cost: { rung: 1 }, q: {} }));
+      return ok(r) ? true : 'b3-repro-not-resolved';
+    } catch (e) {
+      return `threw:${e.constructor.name}:${e.message}`;
+    }
+  })]
+];
+
+// ---------------- KNOWN GAPS (xfail) — laws that SHOULD hold but a real soundness bug FALSIFIES ---
+// The |> phase-floor is NOT association-invariant. chain() (value.mjs) refuses a backward step on
+// the IMMEDIATE pair but sets the composite's exit phase to the LATER stage, and a Value carries a
+// single π — so a|>(b|>c) collapses (b|>c) to its EXIT phase and the outer guard never sees b's
+// earlier ENTRY phase. Counterexample π=[act,retrieve,consolidate]: (a|>b)|>c = 0̲ (floor fires) but
+// a|>(b|>c) = LIVE (floor BYPASSED) — reachable through the public composeTree with a right-leaning
+// AST, not just manual nesting. CP1 cannot see it because it only ever draws SORTED phases.
+// These are XFAIL: they do NOT fail the build while open (the enforced laws stay green); the build
+// FAILS only if one starts PASSING — the signal the fix landed and the law should be promoted into a
+// real suite. Found by the residency falsifier — see the-residency/EVIDENCE/algebra-finding.md.
+//
+// ROOT CAUSE (the deepening): "|> is non-associative" is a SYMPTOM. The disease is Value.pi — a
+// SINGLE-slot phase carrier set ORDER-DEPENDENTLY by combine()'s firstNonNull and READ by |>'s floor.
+// CP5/CP6 are symptom 1 (|> re-association). CP7 is symptom 2: combine() picks pi order-dependently,
+// so &-operand order leaks into a downstream |> floor — even though & is advertised commutative and
+// &'s OWN floor IS commutative (see ANCHOR/AC-COMM below, which PASSES). CP7 breaks fix Option 2
+// (left-fold-only |>): there is no |> re-grouping to outlaw here. Only carrying an [entry,exit]
+// interval (Option 1) closes both symptoms.
+const rndPhase = () => PHASES[(Math.random() * PHASES.length) | 0];
+const descends = (ps) => ps.some((p, i) => i > 0 && phaseIdx(ps[i - 1]) > phaseIdx(p));
+export const GAP = [
+  ['CP5', 'the |> floor is ASSOCIATION-INVARIANT: isZero((a|>b)|>c) === isZero(a|>(b|>c))', (n) => trial(n, () => {
+    const a = pipeBrick(rndPhase()), b = pipeBrick(rndPhase()), c = pipeBrick(rndPhase());
+    const l = composePipe(composePipe(a, b), c), r = composePipe(a, composePipe(b, c));
+    return isZero(l) === isZero(r) ? true
+      : `π=[${a.value.pi}, ${b.value.pi}, ${c.value.pi}] → (a|>b)|>c ${isZero(l) ? '0̲' : 'live'}, a|>(b|>c) ${isZero(r) ? '0̲' : 'live'}`; })],
+  ['CP6', 'NO backward execution step survives |>, in either association', (n) => trial(n, () => {
+    const ps = [rndPhase(), rndPhase(), rndPhase()];
+    const [a, b, c] = ps.map((p) => pipeBrick(p));
+    if (!descends(ps)) return true; // law only constrains backward sequences
+    const l = composePipe(composePipe(a, b), c), r = composePipe(a, composePipe(b, c));
+    return (isZero(l) && isZero(r)) ? true
+      : `π=[${ps.join(', ')}] has a backward step yet survives: (a|>b)|>c ${isZero(l) ? '0̲' : 'LIVE'}, a|>(b|>c) ${isZero(r) ? '0̲' : 'LIVE'}`; })],
+  ['CP7', '&-operand order does not change a downstream |> floor: isZero((a&b)|>c) === isZero((b&a)|>c)', (n) => trial(n, () => {
+    const a = pipeBrick(rndPhase()), b = pipeBrick(rndPhase()), c = pipeBrick(rndPhase());
+    const l = composePipe(composeAnd(a, b), c), r = composePipe(composeAnd(b, a), c);
+    return isZero(l) === isZero(r) ? true
+      : `π=[${a.value.pi}, ${b.value.pi}, ${c.value.pi}] → (a&b)|>c ${isZero(l) ? '0̲' : 'LIVE'}, (b&a)|>c ${isZero(r) ? '0̲' : 'LIVE'} (& is "commutative")`; })]
+];
+
+// PASSING anchor — pins what IS sound about &: its OWN floor is commutative (operand order does not
+// change whether a coalition annihilates), because the floor reads only commutative inputs and NOT
+// pi/authority/audit. Unlike GAP, a FAILURE here counts against the build — a green anchor next to
+// the red gaps. If this ever falsifies, & developed a |>-class bug of its own.
+export const ANCHOR = [
+  ['AC-COMM', "&'s OWN floor is commutative: isZero(a&b) === isZero(b&a)", (n) => trial(n, () => {
+    const a = pipeBrick(rndPhase()), b = pipeBrick(rndPhase());
+    return isZero(composeAnd(a, b)) === isZero(composeAnd(b, a)) ? true
+      : `π=[${a.value.pi}, ${b.value.pi}] a&b ${isZero(composeAnd(a, b)) ? '0̲' : 'live'}, b&a ${isZero(composeAnd(b, a)) ? '0̲' : 'live'}`; })]
 ];
 
 // ---------------- harness (Node CLI; mirrors test/laws.mjs) -----------------------------------
@@ -175,7 +262,7 @@ export function runSet(laws, N) {
 export const SUITES = [
   { key: 'COMB',  label: '& combine  (CA1–CA4) · commutative idempotent monoid', laws: COMB },
   { key: 'PIPE',  label: '|> pipeline (CP1–CP4) · phase-graded monoid',          laws: PIPE },
-  { key: 'CROSS', label: 'floor · 0̲ · semiring · cost lattice (CX1–CX5)',        laws: CROSS }
+  { key: 'CROSS', label: 'floor · 0̲ · semiring · cost lattice · fail-closed (CX1–CX6)', laws: CROSS }
 ];
 
 if (typeof process !== 'undefined' && typeof window === 'undefined') {
@@ -188,7 +275,30 @@ if (typeof process !== 'undefined' && typeof window === 'undefined') {
     r.results.filter((x) => !x.pass).forEach((x) => console.log(`  ✗ ${x.id} ${x.desc} — ${x.cex} @trial ${x.at}`));
     total += r.fail;
   }
+  // passing anchors: green laws that pin what IS sound; a failure here counts against the build.
+  const anchor = runSet(ANCHOR, N);
+  console.log(`anchors (passing · what is provably sound): ${anchor.pass}/${ANCHOR.length} pass${anchor.fail ? ', ' + anchor.fail + ' fail' : ''}`);
+  anchor.results.filter((x) => !x.pass).forEach((x) => console.log(`  ✗ ${x.id} ${x.desc} — ${x.cex} @trial ${x.at}`));
+  total += anchor.fail;
+  // known gaps (xfail): report them, never fail the build WHILE OPEN, but ALARM on an xpass —
+  // a gap law that starts passing means the carrier fix landed and it must be promoted to a real suite.
+  let xpass = 0;
+  console.log(`known gaps (xfail · expected FALSIFIED until the Value.pi carrier fix lands):`);
+  for (const [id, desc, fn] of GAP) {
+    const r = fn(N);
+    if (r.pass) { xpass++; console.log(`  ⚠ ${id} ${desc} — NOW PASSES: the fix landed? promote it into a suite and drop from GAP.`); }
+    else console.log(`  ✗ ${id} ${desc} — FALSIFIED @trial ${r.at} (known gap)${r.cex ? '  ' + r.cex : ''}`);
+  }
   console.log('─'.repeat(52));
-  console.log(total === 0 ? '✓ all CC2 compose laws hold (a brick of bricks is a brick).\n' : `✗ ${total} law(s) failed.\n`);
-  process.exit(total === 0 ? 0 : 1);
+  // Count is DERIVED, never a literal. This banner previously read a hard-coded "116", which was
+  // the OLD whole-kernel total mislabelled as a compose-only count — overstating this suite ~8×.
+  const suiteN = SUITES.reduce((n, s) => n + s.laws.length, 0);
+  const enforced = suiteN + ANCHOR.length;
+  console.log(total === 0
+    ? `✓ all ${enforced} enforced CC2 compose laws hold — ${suiteN} suite + ${ANCHOR.length} anchor (a brick of bricks is a brick).`
+    : `✗ ${total} of ${enforced} enforced law(s) failed.`);
+  console.log(xpass
+    ? `⚠ ${xpass} known-gap law(s) now PASS — promote them out of GAP (build fails to force it).\n`
+    : `· ${GAP.length} known gap(s) still open (xfail) — see the-residency/EVIDENCE/algebra-finding.md.\n`);
+  process.exit((total === 0 && xpass === 0) ? 0 : 1);
 }

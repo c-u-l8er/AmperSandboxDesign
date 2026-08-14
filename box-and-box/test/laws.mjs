@@ -617,6 +617,9 @@ if (typeof process !== 'undefined' && typeof window === 'undefined') {
     console.log(`  use x3 — depletable 'tokens' 3 -> ${RES.balance(dep, 'a', 'tokens')} (consumed); reusable 'skill' 1 -> ${RES.balance(reu, 'a', 'skill')} (intact, the of-course modality)`);
   }
   console.log('─'.repeat(48));
-  console.log(total === 0 ? '✓ all stated laws hold.\n' : `✗ ${total} law(s) failed.\n`);
+  // Count is DERIVED, never a literal — a hard-coded total is how the published number and the
+  // printed number drift apart (they did: this banner once read a stale hand-typed figure).
+  const enforced = SUITES.reduce((n, s) => n + s.laws.length, 0);
+  console.log(total === 0 ? `✓ all ${enforced} enforced kernel laws hold.\n` : `✗ ${total} of ${enforced} law(s) failed.\n`);
   process.exit(total === 0 ? 0 : 1);
 }
