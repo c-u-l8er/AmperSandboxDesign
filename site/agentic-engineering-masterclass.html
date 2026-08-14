@@ -503,6 +503,9 @@
 </style>
 </head>
 <body>
+<!-- The "Back to top" link in the footer targets this. It used to sit AFTER the footer, so the
+     button scrolled to Y=25506 in a 25506px document — the bottom, i.e. exactly backwards. -->
+<a id="top"></a>
 <div id="progress"></div>
 
 <script type="module" src="/amp-nav.js"></script>
@@ -1764,7 +1767,6 @@ $ mix format --check-formatted
   </div>
 </footer>
 
-<a id="top"></a>
 <script>
 (function () {
   "use strict";
