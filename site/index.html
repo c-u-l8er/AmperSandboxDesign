@@ -3,8 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>[&amp;] Ampersand Box — box-and-box, the kernel for AI operating systems</title>
-<meta name="description" content="box-and-box is the governance kernel of the [&] stack: every agent syscall passes feasible ▸ permitted ▸ best, over an un-weakenable safety floor, with a proof for every verdict — one modal core, any model, any language, 118 property-tested laws." />
+<title>[&amp;] Ampersand Box — The Worldware Factory</title>
+<meta name="description" content="[&] turns software development from a sequence of AI conversations into a compositional production system. Parallelize the work. Prove the assemblies. Formalize the joins. Every station carries the evidence rung it has actually reached." />
+<link rel="canonical" href="https://ampersandboxdesign.com/" />
+<meta property="og:title" content="[&amp;] The Worldware Factory" />
+<meta property="og:description" content="Everyone is building AI factories. We're interested in what comes after software. Parallelize the work, prove the assemblies, formalize the joins — and let every station state the rung it has actually reached." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ampersandboxdesign.com/" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -69,7 +74,7 @@
   nav .navcta{font-family:var(--mono); font-size:13px; color:var(--amber); border:1px solid var(--line2);
               padding:8px 14px; border-radius:8px; transition:.2s}
   nav .navcta:hover{border-color:var(--amber); background:rgba(230,145,56,.08)}
-  @media(max-width:860px){ nav .links a:not(.navcta){display:none} }
+  @media(max-width:980px){ nav .links a:not(.navcta){display:none} }
 
   /* buttons */
   .btn{display:inline-flex; align-items:center; gap:9px; font-family:var(--mono); font-size:14px;
@@ -87,29 +92,77 @@
   .tag{font-family:var(--mono); font-size:11.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--faint)}
 
   /* HERO */
-  .hero{padding:92px 0 70px; position:relative}
+  .hero{padding:88px 0 64px; position:relative}
   .glyph{position:absolute; right:-3%; top:-6%; font-family:var(--serif); font-weight:600;
          font-size:min(46vw,640px); line-height:1; color:var(--amber); opacity:.05; pointer-events:none; z-index:0}
   .hero .wrap{position:relative; z-index:1}
-  .hero h1{font-size:clamp(40px,7vw,86px); max-width:16ch}
-  .hero h1 .sub{display:block; color:var(--muted); font-size:clamp(20px,3vw,34px); font-weight:400; margin-top:14px; letter-spacing:-.01em}
-  .hero .lead{margin:30px 0 34px}
+  .hero .pre{font-family:var(--serif); font-size:clamp(19px,2.6vw,27px); color:var(--muted); line-height:1.3; margin:0 0 22px; max-width:30ch}
+  .hero .pre b{color:var(--ink-dim); font-weight:600}
+  .hero h1{font-size:clamp(43px,8.4vw,104px); max-width:14ch; letter-spacing:-.025em}
+  .hero h1 .sub{display:block; color:var(--muted); font-family:var(--mono); font-size:clamp(13px,1.85vw,17px);
+                font-weight:400; margin-top:22px; letter-spacing:.02em; line-height:1.85}
+  .hero h1 .sub b{color:var(--amber-2); font-weight:500}
+  .hero .lead{margin:30px 0 32px}
   .cta-row{display:flex; gap:14px; flex-wrap:wrap; align-items:center}
   .cta-note{font-family:var(--mono); font-size:12.5px; color:var(--faint); margin-left:4px}
 
-  /* kernel boot motif under hero */
-  .boot{margin-top:60px; border:1px solid var(--line); border-radius:14px; background:linear-gradient(180deg,var(--surface),var(--bg2));
-        overflow:hidden}
-  .boot .bar{display:flex; align-items:center; gap:8px; padding:11px 16px; border-bottom:1px solid var(--line); font-family:var(--mono); font-size:12px; color:var(--faint)}
-  .boot .dot{width:10px;height:10px;border-radius:50%}
-  .boot .flow{display:grid; grid-template-columns:1fr auto 1fr auto 1fr; align-items:center; gap:6px; padding:26px 22px; font-family:var(--mono); font-size:13px}
-  .boot .node{border:1px solid var(--line2); border-radius:10px; padding:14px 16px; background:rgba(0,0,0,.18)}
-  .boot .node .t{color:var(--faint); font-size:11px; letter-spacing:.12em; text-transform:uppercase; margin-bottom:7px}
-  .boot .node .v{color:var(--ink); font-size:14px}
-  .boot .arrow{color:var(--amber); font-size:18px; text-align:center}
-  .boot .verdict{border-color:rgba(92,193,150,.4); background:rgba(92,193,150,.06)}
-  .boot .verdict .v{color:var(--teal)}
-  @media(max-width:760px){ .boot .flow{grid-template-columns:1fr; gap:12px} .boot .arrow{transform:rotate(90deg)} }
+  /* ---- the living factory line (hero) ---- */
+  .line{margin-top:56px; border:1px solid var(--line); border-radius:16px;
+        background:linear-gradient(180deg,var(--surface),var(--bg2)); overflow:hidden}
+  .line .bar{display:flex; align-items:center; gap:8px; padding:11px 16px; border-bottom:1px solid var(--line);
+             font-family:var(--mono); font-size:12px; color:var(--faint); flex-wrap:wrap}
+  .line .bar .dot{width:10px;height:10px;border-radius:50%}
+  .line .bar .hint{margin-left:auto; color:var(--amber); opacity:.85}
+  /* The station rail. Three faults fixed together 2026-08-22 after it was flagged as ugly:
+     1. `.l` and `.r` are <span>s and had no `display`, so the label and the rung pill rendered
+        INLINE — "SPECIFY in_tree" on one line. Every card came out ~70px wider than the 104px the
+        rule below asks for, which is what pushed eight stations into overflow in the first place.
+        The `margin-top:6px` on `.r` was a no-op on an inline box, which is the tell: this CSS was
+        always written for a stacked card and never got one.
+     2. `scrollbar-width:thin` is Firefox-only. Chromium drew its default scrollbar — a bright
+        opaque bar across a dark panel, sitting between the cards and the detail pane like a rule.
+     3. Nothing indicated the rail continued past the right edge, so a clipped card read as broken
+        rather than as scrollable. */
+  .stations{display:flex; align-items:stretch; gap:0; padding:22px 18px 6px; overflow-x:auto;
+            scrollbar-width:thin; scrollbar-color:var(--line2) transparent;
+            scroll-snap-type:x proximity; overscroll-behavior-x:contain}
+  /* Fade the overflow edges instead of hard-clipping. Only applied when the rail can actually
+     scroll — a permanent mask would dim the first and last card at rest. */
+  .stations.can-scroll{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 22px,#000 calc(100% - 22px),transparent 100%);
+                       mask-image:linear-gradient(90deg,transparent 0,#000 22px,#000 calc(100% - 22px),transparent 100%)}
+  .stations::-webkit-scrollbar{height:6px}
+  .stations::-webkit-scrollbar-track{background:transparent}
+  .stations::-webkit-scrollbar-thumb{background:var(--line2); border-radius:3px}
+  .stations::-webkit-scrollbar-thumb:hover{background:var(--faint)}
+  .st{flex:1 1 auto; min-width:96px; border:1px solid var(--line2); border-radius:11px; padding:13px 10px;
+      background:rgba(0,0,0,.2); cursor:pointer; transition:.22s; text-align:center; position:relative;
+      scroll-snap-align:center}
+  .st:hover{border-color:var(--faint); background:rgba(230,145,56,.05)}
+  .st.on{border-color:var(--amber); background:rgba(230,145,56,.1); box-shadow:0 0 26px -10px rgba(230,145,56,.6)}
+  .st .n{font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; color:var(--faint); display:block; margin-bottom:5px}
+  .st .l{display:block; font-family:var(--mono); font-size:12.5px; letter-spacing:.08em; color:var(--ink); text-transform:uppercase}
+  .st.on .l{color:var(--amber-2)}
+  .st .r{display:block; font-family:var(--mono); font-size:9.5px; margin-top:6px; letter-spacing:.04em}
+  .arw{align-self:center; color:var(--amber); font-family:var(--mono); font-size:15px; padding:0 7px; opacity:.6; flex:0 0 auto}
+  .st-detail{border-top:1px dashed var(--line2); margin-top:16px; padding:20px 22px 24px; min-height:132px}
+  .st-detail .sd-h{font-family:var(--serif); font-size:21px; color:var(--ink); margin:0 0 8px}
+  .st-detail .sd-p{color:var(--muted); font-size:14.5px; margin:0 0 14px; max-width:74ch}
+  .st-detail .sd-m{font-family:var(--mono); font-size:12.5px; color:var(--faint); display:flex; flex-wrap:wrap; gap:8px 20px}
+  .st-detail .sd-m b{color:var(--ink-dim); font-weight:500}
+  .st-detail .sd-m a{color:var(--amber-2); border-bottom:1px solid var(--line2)}
+  .loop-note{font-family:var(--mono); font-size:11.5px; color:var(--faint); text-align:center;
+             padding:0 18px 16px; letter-spacing:.04em}
+  .loop-note b{color:var(--amber)}
+
+  /* rung chips — shared everywhere a rung is stated */
+  .rg{font-family:var(--mono); font-size:10px; letter-spacing:.06em; padding:2px 7px; border-radius:5px;
+      border:1px solid var(--line2); color:var(--faint); white-space:nowrap; display:inline-block}
+  .rg[data-r="live_deployed"]{color:var(--teal); border-color:rgba(92,193,150,.42); background:rgba(92,193,150,.09)}
+  .rg[data-r="live_local"]{color:var(--teal); border-color:rgba(92,193,150,.3); background:rgba(92,193,150,.05)}
+  .rg[data-r="in_tree"]{color:var(--amber-2); border-color:rgba(230,145,56,.4); background:rgba(230,145,56,.08)}
+  .rg[data-r="spec"]{color:var(--muted); border-color:var(--line2)}
+  .rg[data-r="?"]{color:var(--red); border-color:rgba(224,96,79,.35); background:rgba(224,96,79,.05)}
+  .rg[data-r="place"]{color:#b388ff; border-color:rgba(179,136,255,.4); background:rgba(179,136,255,.08)}
 
   /* generic two-col */
   .split{display:grid; grid-template-columns:1.05fr .95fr; gap:64px; align-items:start}
@@ -117,6 +170,10 @@
   .eyebrow-h{font-size:clamp(28px,4.2vw,46px); max-width:18ch; margin-top:6px}
   p.body{color:var(--ink-dim); max-width:60ch}
   p.body + p.body{margin-top:16px}
+  /* Inline cross-links in body prose. The page had no such style — `a{color:inherit}`
+     made one invisible — so it matches .st-detail .sd-m a rather than inventing a look. */
+  p.body a{color:var(--amber-2); border-bottom:1px solid var(--line2)}
+  p.body a:hover{color:var(--amber)}
 
   /* problem cards */
   .prob{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:30px}
@@ -125,6 +182,85 @@
   .pcard h3{font-size:19px; margin-bottom:9px}
   .pcard p{color:var(--muted); font-size:14.5px; margin:0}
   .pcard .n{font-family:var(--mono); color:var(--amber); font-size:12px; letter-spacing:.14em}
+
+  /* ---- §01 boxed / unboxed ---- */
+  .ubx{margin-top:44px; border:1px solid var(--line2); border-radius:18px; overflow:hidden;
+       background:linear-gradient(180deg,var(--surface),var(--bg2))}
+  .ubx .uhead{display:flex; align-items:center; gap:12px; padding:14px 20px; border-bottom:1px solid var(--line);
+              font-family:var(--mono); font-size:12.5px; color:var(--muted); flex-wrap:wrap}
+  .tog{display:inline-flex; border:1px solid var(--line2); border-radius:9px; overflow:hidden; margin-left:auto}
+  .tog button{font-family:var(--mono); font-size:12px; letter-spacing:.1em; text-transform:uppercase;
+              background:transparent; color:var(--muted); border:none; padding:8px 15px; cursor:pointer; transition:.2s}
+  .tog button.on{background:var(--amber); color:#1a1206}
+  .ubx .ustage{padding:32px 24px 26px; min-height:290px; display:flex; align-items:center; justify-content:center}
+  .chain{display:flex; flex-direction:column; align-items:center; gap:7px; font-family:var(--mono); font-size:12.5px}
+  .chain .cs{border:1px solid var(--line2); border-radius:9px; padding:9px 20px; background:rgba(0,0,0,.22);
+             color:var(--ink-dim); min-width:190px; text-align:center; transition:.3s}
+  .chain .cv{color:var(--amber); opacity:.55; font-size:13px; line-height:1}
+  .fan{display:flex; flex-direction:column; align-items:center; gap:14px; width:100%}
+  .fan .frow{display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
+  .fan .fc{border:1px solid rgba(230,145,56,.34); border-radius:9px; padding:9px 15px; background:rgba(230,145,56,.07);
+           font-family:var(--mono); font-size:12px; color:var(--amber-2); animation:pop .45s backwards}
+  @keyframes pop{from{opacity:0; transform:translateY(10px) scale(.94)} to{opacity:1; transform:none}}
+  .fan .fjoin{border:1px solid rgba(92,193,150,.45); background:rgba(92,193,150,.09); color:var(--teal);
+              border-radius:9px; padding:10px 26px; font-family:var(--mono); font-size:13px; letter-spacing:.1em}
+  .ubx .ufoot{border-top:1px dashed var(--line2); padding:16px 22px; font-family:var(--mono); font-size:12.5px; color:var(--faint)}
+  .ubx .ufoot b{color:var(--ink-dim)}
+
+  /* ---- §02 the assembly object ---- */
+  .asm{margin-top:40px; display:grid; grid-template-columns:1fr 1fr; gap:26px; align-items:start}
+  @media(max-width:900px){ .asm{grid-template-columns:1fr} }
+  .asmbox{border:1px solid var(--line2); border-radius:15px; overflow:hidden; background:#0b0a08}
+  .asmbox .ah{padding:12px 17px; border-bottom:1px solid var(--line); font-family:var(--mono);
+              font-size:12px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase}
+  .asmbox pre{padding:19px 20px 22px; font-size:12.5px}
+  .asmnote{color:var(--ink-dim)}
+  .asmnote h4{font-family:var(--serif); font-size:20px; margin:0 0 10px; color:var(--ink)}
+  .asmnote p{margin:0 0 15px; font-size:15px; color:var(--muted); max-width:56ch}
+  .fieldlist{border-top:1px solid var(--line); margin-top:6px}
+  .fieldlist div{display:grid; grid-template-columns:150px 1fr; gap:14px; padding:11px 0; border-bottom:1px solid var(--line);
+                 font-size:13.5px; color:var(--muted)}
+  .fieldlist div span:first-child{font-family:var(--mono); font-size:12.5px; color:var(--amber-2)}
+  @media(max-width:560px){ .fieldlist div{grid-template-columns:1fr; gap:3px} }
+  /* The join/locus split under the field list — which four fields are the agency claim. */
+  .asmsplit{margin:16px 0 0 !important; font-size:13.5px; line-height:1.62; color:var(--muted); max-width:56ch}
+  .asmsplit span{font-family:var(--mono); font-size:12.5px; color:var(--amber-2)}
+
+  /* ---- §03 marriage station ---- */
+  .mar{margin-top:44px; border:1px solid var(--line2); border-radius:18px; overflow:hidden;
+       background:linear-gradient(180deg,var(--surface),var(--bg2)); box-shadow:0 30px 80px -40px rgba(0,0,0,.8)}
+  .mar .mhead{display:flex; align-items:center; gap:10px; padding:14px 22px; border-bottom:1px solid var(--line);
+              font-family:var(--mono); font-size:12.5px; color:var(--muted); flex-wrap:wrap}
+  .mar .mhead .live{margin-left:auto; color:var(--teal); display:flex; align-items:center; gap:7px}
+  .mar .mhead .live::before{content:""; width:8px;height:8px;border-radius:50%; background:var(--teal);
+              box-shadow:0 0 0 0 rgba(92,193,150,.6); animation:pulse 2.4s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(92,193,150,.55)}70%{box-shadow:0 0 0 9px rgba(92,193,150,0)}100%{box-shadow:0 0 0 0 rgba(92,193,150,0)}}
+  .mbody{display:grid; grid-template-columns:1fr 88px 1fr; gap:0; align-items:stretch}
+  @media(max-width:860px){ .mbody{grid-template-columns:1fr} }
+  .apanel{padding:22px}
+  .apanel:last-of-type{border-left:1px solid var(--line)}
+  @media(max-width:860px){ .apanel:last-of-type{border-left:none; border-top:1px solid var(--line)} }
+  .apanel .at{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase;
+              color:var(--amber); margin:0 0 15px}
+  .frow2{display:grid; grid-template-columns:104px 1fr; gap:10px; align-items:center; margin-bottom:9px}
+  .frow2 label{font-family:var(--mono); font-size:11.5px; color:var(--faint); letter-spacing:.05em}
+  .frow2 select, .frow2 input{width:100%; font-family:var(--mono); font-size:12.5px; background:rgba(0,0,0,.3);
+              color:var(--ink); border:1px solid var(--line2); border-radius:7px; padding:7px 9px; outline:none; transition:.2s}
+  .frow2 select:focus, .frow2 input:focus{border-color:var(--amber)}
+  .frow2 select.bad, .frow2 input.bad{border-color:rgba(224,96,79,.6); color:var(--red)}
+  .mjoin{display:flex; align-items:center; justify-content:center; font-family:var(--mono);
+         font-size:30px; color:var(--amber); border-left:1px solid var(--line); border-right:1px solid var(--line)}
+  @media(max-width:860px){ .mjoin{border:none; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:14px 0} }
+  .mout{border-top:1px solid var(--line); padding:24px 26px}
+  .verdictline{font-family:var(--mono); font-size:clamp(15px,2.2vw,20px); letter-spacing:.02em; margin:0 0 14px}
+  .verdictline.ok{color:var(--teal)} .verdictline.no{color:var(--red)}
+  .cert{font-family:var(--mono); font-size:13px; color:var(--muted); border:1px dashed var(--line2);
+        border-radius:10px; padding:15px 17px; background:rgba(0,0,0,.22); line-height:1.85}
+  .cert b{color:var(--ink)} .cert .k{color:var(--faint)} .cert .no{color:var(--red)}
+  .cert .ok{color:var(--teal)}
+  .stamp{font-family:var(--mono); font-size:11.5px; letter-spacing:.05em; margin-top:16px; padding-top:14px;
+         border-top:1px solid var(--line); color:var(--faint)}
+  .stamp b{color:var(--amber-2)}
 
   /* KERNEL subsystem table */
   .subs{margin-top:40px; border:1px solid var(--line); border-radius:16px; overflow:hidden; background:var(--surface)}
@@ -151,7 +287,6 @@
   .demo .head{display:flex; align-items:center; gap:10px; padding:14px 22px; border-bottom:1px solid var(--line); font-family:var(--mono); font-size:12.5px; color:var(--muted)}
   .demo .head .live{margin-left:auto; color:var(--teal); display:flex; align-items:center; gap:7px}
   .demo .head .live::before{content:""; width:8px;height:8px;border-radius:50%; background:var(--teal); box-shadow:0 0 0 0 rgba(92,193,150,.6); animation:pulse 2.4s infinite}
-  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(92,193,150,.55)}70%{box-shadow:0 0 0 9px rgba(92,193,150,0)}100%{box-shadow:0 0 0 0 rgba(92,193,150,0)}}
   .demo .body{display:grid; grid-template-columns:300px 1fr; gap:0}
   @media(max-width:820px){ .demo .body{grid-template-columns:1fr} }
   .controls{padding:24px; border-right:1px solid var(--line)}
@@ -184,9 +319,35 @@
   .acard.dead .sc{color:var(--red)} .acard.dead .sc small{color:#a44}
   .acard.esc{border-color:rgba(230,145,56,.4)} .acard.esc .sc{color:var(--amber)} .acard.esc .sc small{color:var(--amber-deep)}
   .acard.pick{box-shadow:0 0 0 1px var(--amber), 0 0 34px -10px rgba(230,145,56,.5); border-color:var(--amber)}
-  .acard .picktag{font-family:var(--mono); font-size:11px; color:var(--amber); letter-spacing:.1em}
   .kv{font-family:var(--mono); font-size:13.5px; color:var(--muted); padding:14px 16px; border:1px dashed var(--line2); border-radius:10px; background:rgba(0,0,0,.2)}
   .kv b{color:var(--ink)} .kv .annih{color:var(--red)}
+
+  /* ---- §05 production cells ---- */
+  .floor{margin-top:42px; border:1px solid var(--line2); border-radius:18px; overflow:hidden; background:var(--surface)}
+  .floor .fh{display:flex; align-items:center; gap:10px; padding:14px 22px; border-bottom:1px solid var(--line);
+             font-family:var(--mono); font-size:12.5px; color:var(--muted); flex-wrap:wrap}
+  .floor .fh .legend{margin-left:auto; display:flex; gap:9px; flex-wrap:wrap}
+  .cells{display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line)}
+  @media(max-width:900px){ .cells{grid-template-columns:repeat(2,1fr)} }
+  @media(max-width:520px){ .cells{grid-template-columns:1fr} }
+  .cell{background:var(--surface); padding:19px 18px; cursor:pointer; transition:.2s; position:relative; min-height:128px;
+        display:flex; flex-direction:column; gap:7px}
+  .cell:hover{background:var(--surface2)}
+  .cell.on{background:rgba(230,145,56,.09)}
+  .cell .cn{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--amber)}
+  .cell .cm{font-family:var(--serif); font-size:17px; color:var(--ink); line-height:1.2}
+  .cell .cd{font-size:12.5px; color:var(--muted); margin-top:auto}
+  .cell .rg{align-self:flex-start}
+  .cellout{border-top:1px solid var(--line); padding:24px 26px; min-height:150px; background:var(--bg2)}
+  .cellout h4{font-family:var(--serif); font-size:22px; margin:0 0 4px; color:var(--ink)}
+  .cellout .co-sub{font-family:var(--mono); font-size:12px; color:var(--amber); letter-spacing:.08em; margin:0 0 13px}
+  .cellout p{color:var(--muted); font-size:14.5px; margin:0 0 15px; max-width:76ch}
+  .cellout .co-links{display:flex; flex-wrap:wrap; gap:9px}
+  .cellout .co-links a{font-family:var(--mono); font-size:12px; color:var(--ink-dim); border:1px solid var(--line2);
+             border-radius:7px; padding:7px 13px; transition:.2s}
+  .cellout .co-links a:hover{border-color:var(--amber); color:var(--amber-2)}
+  .cellout .co-ev{font-family:var(--mono); font-size:12px; color:var(--faint); margin-top:15px; padding-top:13px; border-top:1px dashed var(--line2)}
+  .cellout .co-ev b{color:var(--ink-dim)}
 
   /* CODE showcase */
   .codewrap{margin-top:40px; border:1px solid var(--line2); border-radius:16px; overflow:hidden; background:#0b0a08}
@@ -203,10 +364,23 @@
   .callout p{margin:0; font-size:13.5px; color:var(--muted)}
   .reframe{font-family:var(--mono); font-size:12.5px; color:var(--faint); margin-top:22px; padding-top:18px; border-top:1px solid var(--line)}
 
-  /* substrate / models */
-  .models{display:flex; flex-wrap:wrap; gap:12px; margin-top:26px}
-  .models span{font-family:var(--mono); font-size:13px; color:var(--ink); border:1px solid var(--line2); border-radius:999px; padding:9px 16px; background:var(--surface)}
-  .models span .d{color:var(--teal)}
+  /* ---- §06 motors ---- */
+  .motor{margin-top:40px; display:grid; grid-template-columns:1fr 300px 1fr; gap:0; align-items:center;
+         border:1px solid var(--line2); border-radius:18px; overflow:hidden; background:linear-gradient(180deg,var(--surface),var(--bg2))}
+  @media(max-width:900px){ .motor{grid-template-columns:1fr} }
+  .msock{padding:26px 22px; display:flex; flex-direction:column; gap:10px}
+  .msock .mt{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--faint); margin-bottom:4px}
+  .msock .mi{font-family:var(--mono); font-size:13px; color:var(--ink-dim); border:1px solid var(--line2);
+             border-radius:8px; padding:10px 14px; background:rgba(0,0,0,.2); display:flex; justify-content:space-between; gap:12px}
+  .msock .mi span{color:var(--teal); font-size:11.5px}
+  .mcore{padding:30px 20px; text-align:center; border-left:1px solid var(--line); border-right:1px solid var(--line);
+         background:rgba(230,145,56,.05); align-self:stretch; display:flex; flex-direction:column; justify-content:center; gap:9px}
+  @media(max-width:900px){ .mcore{border-left:none; border-right:none; border-top:1px solid var(--line); border-bottom:1px solid var(--line)} }
+  .mcore .mlab{font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--amber)}
+  .mcore .mbig{font-family:var(--serif); font-size:30px; color:var(--ink); line-height:1.1}
+  .mcore .msm{font-family:var(--mono); font-size:11.5px; color:var(--faint)}
+  .msock.right .mi{border-color:rgba(230,145,56,.3); background:rgba(230,145,56,.05); color:var(--amber-2)}
+  .msock.right .mi span{color:var(--faint)}
 
   /* stat band */
   .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:20px; margin-top:8px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:42px 0}
@@ -214,12 +388,41 @@
   .stat .num{font-family:var(--serif); font-size:clamp(38px,5vw,56px); color:var(--amber-2); line-height:1}
   .stat .cap{font-family:var(--mono); font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:10px}
 
+  /* ---- §07 worldware ladder ---- */
+  .ladder{margin-top:40px; border:1px solid var(--line2); border-radius:16px; overflow:hidden; background:var(--surface)}
+  .lrow{display:grid; grid-template-columns:190px 1fr; gap:22px; align-items:center; padding:20px 26px; border-bottom:1px solid var(--line)}
+  .lrow:last-child{border-bottom:none}
+  .lrow .lname{font-family:var(--serif); font-size:22px; color:var(--muted)}
+  .lrow .lop{color:var(--faint); font-size:15px}
+  .lrow.top{background:rgba(230,145,56,.07)}
+  .lrow.top .lname{color:var(--amber-2); font-size:26px}
+  .lrow.top .lop{color:var(--ink-dim)}
+  @media(max-width:640px){ .lrow{grid-template-columns:1fr; gap:5px; padding:17px 20px} }
+  .wdef{margin-top:30px; border:1px solid var(--line2); border-left:3px solid var(--amber); border-radius:12px;
+        padding:24px 26px; background:var(--surface); color:var(--ink-dim); line-height:1.62}
+  .wdef b{color:var(--ink)} .wdef .mono{color:var(--amber-2)}
+  .wdef .wsizes{margin-top:16px; padding-top:15px; border-top:1px dashed var(--line2); font-family:var(--mono);
+                font-size:12.5px; color:var(--faint); display:grid; gap:7px}
+  .wdef .wsizes b{color:var(--amber-2); font-weight:500}
+
+  /* self-improving loop */
+  .sloop{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-top:36px}
+  @media(max-width:860px){ .sloop{grid-template-columns:repeat(2,1fr)} }
+  @media(max-width:480px){ .sloop{grid-template-columns:1fr} }
+  .sstep{border:1px solid var(--line); border-radius:12px; padding:17px 16px; background:var(--surface)}
+  .sstep .sn{font-family:var(--mono); font-size:11px; color:var(--amber); letter-spacing:.14em}
+  .sstep h4{font-family:var(--serif); font-size:17px; margin:7px 0 6px; color:var(--ink)}
+  .sstep p{margin:0; font-size:13.5px; color:var(--muted)}
+  .sstep.human{border-color:rgba(92,193,150,.4); background:rgba(92,193,150,.05)}
+  .sstep.human .sn{color:var(--teal)}
+
   /* ecosystem */
   .eco{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:36px}
   @media(max-width:820px){ .eco{grid-template-columns:1fr} }
-  .ecocard{border:1px solid var(--line); border-radius:13px; padding:20px; background:var(--surface); transition:.2s}
+  .ecocard{border:1px solid var(--line); border-radius:13px; padding:20px; background:var(--surface); transition:.2s; display:block}
   .ecocard:hover{border-color:var(--line2); transform:translateY(-2px)}
-  .ecocard .amp{font-family:var(--mono); font-size:12px; color:var(--amber); letter-spacing:.08em}
+  .ecocard .amp{font-family:var(--mono); font-size:12px; color:var(--amber); letter-spacing:.08em;
+                display:flex; justify-content:space-between; align-items:center; gap:10px}
   .ecocard h3{font-size:20px; margin:6px 0 8px}
   .ecocard p{margin:0; font-size:14px; color:var(--muted)}
   .ecocard .go{font-family:var(--mono); font-size:12px; color:var(--faint); margin-top:12px; display:inline-block}
@@ -231,6 +434,15 @@
   .install .cm{color:#6f6a5a}
   .reqs{font-family:var(--mono); font-size:12.5px; color:var(--faint); margin-top:16px}
   .reqs b{color:var(--muted)}
+
+  /* masterclass band */
+  .mcband{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:34px}
+  @media(max-width:900px){ .mcband{grid-template-columns:1fr} }
+  .mc{border:1px solid var(--line); border-radius:13px; padding:21px; background:var(--surface); transition:.2s; display:block}
+  .mc:hover{border-color:var(--amber); transform:translateY(-2px)}
+  .mc .mck{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--amber)}
+  .mc h3{font-size:19px; margin:8px 0 8px}
+  .mc p{margin:0; font-size:13.5px; color:var(--muted)}
 
   footer{border-top:1px solid var(--line); padding:64px 0 50px; margin-top:40px}
   footer .grid{display:grid; grid-template-columns:1.4fr 1fr 1fr 1fr; gap:30px}
@@ -251,158 +463,310 @@
   <div class="wrap">
     <a class="brand" href="#top">[<b>&amp;</b>] AMPERSAND BOX</a>
     <div class="links">
-      <a href="#kernel">Kernel</a>
-      <a href="#bridge">The bridge</a>
-      <a href="#aios">AIOS</a>
-      <a href="laws.html">The laws</a>
-      <a href="#ecosystem">Ecosystem</a>
-      <a class="navcta" href="#install">npm i -g box-and-box</a>
+      <a href="#unboxed">Unboxed</a>
+      <a href="#compose">The join</a>
+      <a href="#constitution">Constitution</a>
+      <a href="factory">The floor</a>
+      <a href="#worldware">Worldware</a>
+      <a class="navcta" href="masterclasses">Masterclasses</a>
     </div>
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- ============================== HERO ============================== -->
 <header class="hero" id="top">
   <div class="glyph">&amp;</div>
   <div class="wrap">
-    <p class="kicker" data-reveal>box-and-box · the [&amp;] kernel</p>
-    <h1 data-reveal style="--d:.05s">The kernel for AI<br>operating systems.<span class="sub">Agents can call anything. box-and-box decides what they <em>may</em>.</span></h1>
-    <p class="lead" data-reveal style="--d:.12s">
-      One modal core sits under every agent action and answers, in order, the only questions that matter:
-      is it <span class="amber">feasible</span>, is it <span class="amber">permitted</span>, is it the <span class="amber">best</span> option left —
-      is it <span class="teal">safe over time</span>, <span class="teal">affordable</span>, <span class="teal">known enough to attempt</span>, and <span class="teal">jointly ensurable</span>.
-      Under any model, in any language, with a proof for every verdict.
+    <p class="kicker" data-reveal>[&amp;] · the compositional production system</p>
+    <p class="pre" data-reveal style="--d:.04s">Everyone is building AI factories.<br><b>We're interested in what comes after software.</b></p>
+    <h1 data-reveal style="--d:.08s">The Worldware Factory.<span class="sub">
+      <b>Parallelize</b> the work. &nbsp;<b>Prove</b> the assemblies.<br>
+      <b>Formalize</b> the joins. &nbsp;<b>Drive</b> it continuously.
+    </span></h1>
+    <p class="lead" data-reveal style="--d:.14s">
+      Software development is still one object moving department to department — requirements, design, code, test, security, deploy.
+      Agents made each step faster and left the shape alone. [&amp;] unboxes it: work is fabricated <span class="amber">in parallel</span> as
+      independent assemblies, and the hard part moves to the <span class="amber">join</span> — where two things built without knowledge
+      of each other either compose, or are refused with a reason.
     </p>
-    <p data-reveal style="--d:.15s; font-family:var(--mono); font-size:clamp(14px,1.9vw,18px); margin:0 0 30px; letter-spacing:.01em; color:var(--muted)">u&nbsp;⊗&nbsp;<span class="zero">0̲</span>&nbsp;=&nbsp;<span class="zero">0̲</span> &nbsp;·&nbsp; <span style="color:var(--ink-dim)">a forbidden action is zero. No utility outranks it.</span></p>
-    <div class="cta-row" data-reveal style="--d:.18s">
-      <a class="btn primary" href="#install">npm&nbsp;i&nbsp;-g&nbsp;box-and-box</a>
-      <a class="btn ghost" href="#aios">See an AIOS in 190 lines →</a>
-      <span class="cta-note">Elixir / OTP · MCP-native · runs fully local</span>
+    <!-- The canonical three-line anchor (AGENCY.md §5). It replaced "Models generate. Factories
+         compound." — a two-beat line that left the agent out, so Model and Agent and World and
+         Factory read as four names for one thing. Each line now has its own job, and it still ends
+         on the factory because the factory is what this page leads with. -->
+    <p data-reveal style="--d:.17s; font-family:var(--mono); font-size:clamp(13.5px,1.9vw,17px); margin:0 0 30px; letter-spacing:.01em; color:var(--muted); line-height:1.8">
+      Models generate possibilities.<br>
+      Agents are active loci in worlds.<br>
+      <span style="color:var(--amber)">Factories are built to turn transient intelligence into persistent machinery.</span>
+    </p>
+    <div class="cta-row" data-reveal style="--d:.2s">
+      <a class="btn primary" href="#compose">Try the join →</a>
+      <a class="btn ghost" href="factory">Walk the factory floor</a>
+      <span class="cta-note">every station states the rung it has actually reached</span>
     </div>
 
-    <div class="boot" data-reveal style="--d:.26s">
+    <!-- the living factory line -->
+    <div class="line" data-reveal style="--d:.26s">
       <div class="bar">
         <span class="dot" style="background:#e0604f"></span><span class="dot" style="background:#e69138"></span><span class="dot" style="background:#5cc196"></span>
-        &nbsp; box-and-box · ring 0 · governing one syscall
+        &nbsp; [&amp;] · one intent through the line
+        <span class="hint">click a station ↓</span>
       </div>
-      <div class="flow">
-        <div class="node">
-          <div class="t">process</div>
-          <div class="v">agent(gpt-4o) wants<br><span class="amber">spend($840)</span></div>
-        </div>
-        <div class="arrow">→</div>
-        <div class="node">
-          <div class="t">the bridge</div>
-          <div class="v">feasible? ✓<br>permitted? <span class="red">✗ forbidden</span><br>best? <span class="zero">0̲</span></div>
-        </div>
-        <div class="arrow">→</div>
-        <div class="node verdict">
-          <div class="t">certificate</div>
-          <div class="v">DENY — deontic veto<br>util 18 ⊗ <span class="zero">0̲</span> = <span class="zero">0̲</span></div>
-        </div>
-      </div>
+      <div class="stations" id="stations"></div>
+      <div class="st-detail" id="st-detail"></div>
+      <p class="loop-note">OBSERVE returns evidence to INTENT — <b>the line is a loop, not a pipeline</b></p>
     </div>
   </div>
 </header>
 
 <!-- CREED -->
 <section style="padding:74px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); text-align:center; background:linear-gradient(180deg, rgba(230,145,56,.045), transparent)">
-  <div class="wrap"><p data-reveal style="font-family:var(--serif); font-size:clamp(27px,4.6vw,48px); line-height:1.08; letter-spacing:-.02em; margin:0; color:var(--ink)">Models generate answers.<br><span style="color:var(--amber)">Kernels govern them.</span></p></div>
+  <div class="wrap"><p data-reveal style="font-family:var(--serif); font-size:clamp(27px,4.6vw,48px); line-height:1.08; letter-spacing:-.02em; margin:0; color:var(--ink)">The factory doesn't build apps.<br><span style="color:var(--amber)">It builds worlds.</span></p></div>
 </section>
 
-<!-- PROBLEM -->
-<section id="problem">
+<!-- ============================== 01 · UNBOXED ============================== -->
+<section id="unboxed">
   <div class="wrap">
     <div class="split">
       <div data-reveal>
-        <p class="kicker">The deployment problem</p>
-        <h2 class="eyebrow-h">Guardrails are prompts. Agents have syscalls.</h2>
+        <p class="kicker">01 · The shape of the work</p>
+        <h2 class="eyebrow-h">Software development is still boxed.</h2>
       </div>
       <div data-reveal style="--d:.08s">
-        <p class="body">An autonomous agent can spend money, send mail, delete records, and call other agents. The instruction <em class="tk">be careful and don't do anything harmful</em> lives in a prompt — advisory, in-band, and skippable the moment the context gets long or an injection lands.</p>
-        <p class="body">The AIOS line of research (<span class="mono" style="font-size:.86em">Rutgers, COLM 2025</span>) reached the structural conclusion first: <strong>unrestricted access to tools and resources leads to harmful allocation</strong>, so an agent runtime should be shaped like a kernel — a scheduler, managers, and an <em>access manager that checks rights before any operation</em>. box-and-box is the part that check should have grown into.</p>
+        <p class="body">A car used to be built by carrying one body shell down a line, adding a department's work at each stop. Every station waited for the one before it. Tesla's answer was to stop carrying the shell: build large sub-assemblies <em>simultaneously</em>, in parallel cells, and join them at the end.</p>
+        <p class="body">Software still carries the shell. Requirements finish before design starts; design before code; code before test; test before security; security before deploy. <strong>Agents made each box faster and left the boxes exactly where they were</strong> — which is why an autonomous coding tool feels fast and a project still takes a quarter.</p>
       </div>
+    </div>
+
+    <div class="ubx" data-reveal>
+      <div class="uhead">
+        <span class="dot" style="width:11px;height:11px;border-radius:50%;background:#e0604f;display:inline-block"></span>
+        <span class="dot" style="width:11px;height:11px;border-radius:50%;background:#e69138;display:inline-block"></span>
+        <span class="dot" style="width:11px;height:11px;border-radius:50%;background:#5cc196;display:inline-block"></span>
+        &nbsp; the same intent, two shapes
+        <div class="tog">
+          <button id="t-boxed" class="on">Boxed</button>
+          <button id="t-unboxed">Unboxed</button>
+        </div>
+      </div>
+      <div class="ustage" id="ustage"></div>
+      <div class="ufoot" id="ufoot"></div>
     </div>
 
     <div class="prob">
       <div class="pcard" data-reveal style="--d:.04s">
-        <div class="n">01 / EXCESS</div>
-        <h3>Excessive agency</h3>
-        <p>The capability to act outruns the controls on acting. A bad call isn't a wrong sentence — it's a wire transfer, a dropped table, a leaked record.</p>
+        <div class="n">01 / SERIAL</div>
+        <h3>The critical path is the whole path</h3>
+        <p>When every stage waits for the last one, total time is the <em>sum</em> of the stages. Speeding one box up by 10× moves the total by the width of that box and nothing else.</p>
       </div>
       <div class="pcard" data-reveal style="--d:.1s">
-        <div class="n">02 / INVERSION</div>
-        <h3>The hierarchy is inverted</h3>
-        <p>Most stacks rank options by usefulness, then bolt on safety. That asks <em class="tk">best?</em> before <em class="tk">permitted?</em> — so a useful-but-forbidden action can win.</p>
+        <div class="n">02 / LOSSY</div>
+        <h3>Each handoff drops the reasons</h3>
+        <p>Design receives requirements, not the argument behind them. Test receives code, not the claims it was meant to satisfy. By deploy, nothing on the line knows what the thing was for.</p>
       </div>
       <div class="pcard" data-reveal style="--d:.16s">
-        <div class="n">03 / SILENCE</div>
-        <h3>Verdicts without proof</h3>
-        <p>A confidence score is not a reason. When an agent acts, you deserve an audit trail — what was forbidden, what was infeasible, why this option survived.</p>
+        <div class="n">03 / LATE</div>
+        <h3>Integration is where truth arrives</h3>
+        <p>Boxed work postpones every incompatibility to the end, then calls the resulting week "integration". Parallel agents don't fix this — <strong>they make it arrive from eight directions at once</strong>.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- WHY A KERNEL -->
-<style>
-  .cmp{width:100%; border-collapse:collapse; margin-top:36px; font-size:14.5px}
-  .cmp th{font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--faint); text-align:left; font-weight:500; padding:0 16px 14px; border-bottom:1px solid var(--line2)}
-  .cmp td{padding:16px; border-bottom:1px solid var(--line); vertical-align:top; color:var(--muted)}
-  .cmp td.app{font-family:var(--mono); font-size:13px; color:var(--ink); white-space:nowrap}
-  .cmp td.app small{display:block; color:var(--faint); font-size:11px; margin-top:3px; letter-spacing:.04em}
-  .cmp td.rung{font-family:var(--mono); font-size:12.5px; color:var(--amber-2)}
-  .cmp td.rung.none{color:var(--faint)}
-  .cmp tr.us td{background:rgba(230,145,56,.07); border-bottom:none; color:var(--ink-dim)}
-  .cmp tr.us td.app{color:var(--amber-2)}
-  .cmp tr.us td.rung{color:var(--amber)}
-  .cmp .dash{color:var(--teal); font-size:18px}
-  @media(max-width:760px){ .cmp, .cmp thead, .cmp tbody, .cmp tr, .cmp th, .cmp td{display:block} .cmp thead{display:none} .cmp td{border-bottom:none; padding:3px 0} .cmp tr{border-bottom:1px solid var(--line); padding:14px 0} .cmp td.app{margin-bottom:6px} }
-  .contain{margin-top:32px; border:1px solid var(--line2); border-left:3px solid var(--amber); border-radius:12px; padding:22px 24px; background:var(--surface); font-size:16px; color:var(--ink-dim); line-height:1.6}
-  .contain b{color:var(--ink)} .contain .mono{color:var(--amber-2)}
-</style>
-<section id="alternatives">
+<!-- ============================== 02 · JOINS ============================== -->
+<section id="joins" style="background:linear-gradient(180deg,transparent, rgba(230,145,56,.025), transparent)">
   <div class="wrap">
     <div class="split">
       <div data-reveal>
-        <p class="kicker">Why a kernel</p>
-        <h2 class="eyebrow-h">A policy engine is one subsystem.</h2>
+        <p class="kicker">02 · The core principle</p>
+        <h2 class="eyebrow-h">Parallelize the work. Formalize the joins.</h2>
       </div>
       <div data-reveal style="--d:.08s">
-        <p class="body">The tools you already reach for each do one of the kernel's jobs — and only one. A content filter screens words but can't see a tool call. A workflow engine sequences steps but never asks whether a step is <em>permitted</em>. A policy engine answers permit-or-deny in isolation. A planner maximizes a score — and a score with no floor will happily rank a forbidden action first.</p>
-        <p class="body">None of them <strong>compose</strong>. None can express the one rule that makes governance safe: a vetoed option is <span class="zero">0̲</span>, and <span class="zero">0̲</span> outranks nothing. That rule only exists when permission, feasibility, cost, and knowledge live in <em>one</em> algebra.</p>
+        <p class="body">Running many agents at once is not the interesting part — it is the easy part, and by itself it converts one serial mess into eight concurrent ones. The interesting question is the one a factory had to answer before it could unbox anything:</p>
+        <p class="body" style="font-family:var(--serif); font-size:22px; color:var(--ink); line-height:1.35; max-width:40ch">How can independently evolving work be joined without destroying correctness?</p>
+        <p class="body">A factory moves fast because <strong>its interfaces do not negotiate at assembly time</strong>. The bolt pattern was settled long before the two halves met. So an agent's output cannot be "some code" — it has to be a thing that <em>knows what it requires and what it guarantees</em>, so a join can be checked instead of hoped for.</p>
+        <p class="body">That thing has a name, and it is the same name this stack uses for an agent. An <strong>active locus</strong> is a position in a world carrying an established state, the scoped authority available under that state and its governing policy, and the evidence connecting one state to the next. The record below is not that locus — it is how the factory <em>describes and certifies</em> one at an assembly boundary. The distinction is the whole point: a record has state and authority the way a passport has a nationality, and neither one walks through the gate. <a href="https://opensentience.org/invariants.html">The invariants a system establishes such a state under →</a></p>
       </div>
     </div>
 
-    <table class="cmp" data-reveal>
-      <thead><tr><th>Approach</th><th>Genuinely good at</th><th>The rung it is</th><th>Can't do alone</th></tr></thead>
-      <tbody>
-        <tr><td class="app">Prompt guardrails</td><td>steering tone &amp; behavior</td><td class="rung none">— advice, not a gate</td><td>enforce anything once the context shifts</td></tr>
-        <tr><td class="app">Content filters<small>moderation APIs</small></td><td>screening text in and out</td><td class="rung none">— the output layer</td><td>govern a tool call — only the sentence describing it</td></tr>
-        <tr><td class="app">Workflow engines<small>orchestration</small></td><td>sequencing, retries, state</td><td class="rung none">— orchestration</td><td>judge whether a step is permitted or feasible</td></tr>
-        <tr><td class="app">Policy engines<small>OPA · Cedar</small></td><td>permit / deny authorization</td><td class="rung">deontic</td><td>rank, cost, gate on knowledge, or compose</td></tr>
-        <tr><td class="app">Planning agents<small>ReAct · RL · MCTS</small></td><td>maximizing an objective</td><td class="rung">axiological</td><td>refuse a high-scoring forbidden action</td></tr>
-        <tr class="us"><td class="app">box-and-box</td><td>one certified verdict</td><td class="rung">all eight, composed</td><td><span class="dash">—</span></td></tr>
-      </tbody>
-    </table>
-
-    <div class="contain" data-reveal>
-      Already running <b>OPA</b> or <b>Cedar</b>? Good — that's your deontic evaluator. box-and-box is the <b>other seven questions</b>, plus the algebra that composes them — so a forbidden option can't be out-scored, an infeasible one can't be scheduled, and every verdict ships its reasons. <span class="mono">We don't replace your policy engine. We contain it.</span>
+    <div class="asm">
+      <div class="asmbox" data-reveal>
+        <div class="ah">the unit that moves down the line</div>
+<pre><code><span class="c">// not "a diff". An assembly declares its own joinability.</span>
+<span class="kw">Assembly</span> {
+  <span class="at">id</span>:            <span class="s">"asm-4f2a…"</span>
+  <span class="at">requires</span>:      [<span class="s">"store@2"</span>, <span class="s">"clock@1"</span>]   <span class="c">// what must exist</span>
+  <span class="at">guarantees</span>:    [<span class="s">"session@3"</span>]            <span class="c">// what it now provides</span>
+  <span class="at">world</span>:         <span class="at">817</span>                       <span class="c">// the state it was built against</span>
+  <span class="at">authority</span>:     [<span class="s">"sig:travis"</span>]           <span class="c">// who sanctioned it</span>
+  <span class="at">claims</span>:        <span class="at">4</span>                         <span class="c">// what it asserts is true</span>
+  <span class="at">evidence</span>:      { tests: <span class="s">"pass"</span>, trials: <span class="at">2000</span> }
+  <span class="at">cost</span>:          { confidence: <span class="at">.98</span>, latency: <span class="at">240</span> }
+  <span class="at">certificate</span>:   <span class="s">"93AC…"</span>                  <span class="c">// or 0̲ — fail-closed</span>
+}</code></pre>
+      </div>
+      <div class="asmnote" data-reveal style="--d:.08s">
+        <h4>Every field exists so a join can be refused early</h4>
+        <p>Strip any one of them and the join becomes a guess. This is what turns "two agents worked in parallel" into "two results can be safely combined".</p>
+        <div class="fieldlist">
+          <div><span>requires / guarantees</span><span>the bolt pattern. Checked before assembly, never during.</span></div>
+          <div><span>world</span><span>the state it was built against. Two assemblies built against different worlds are not obviously combinable.</span></div>
+          <div><span>authority</span><span>a capability with no sanction behind it is not a capability. It is a suggestion.</span></div>
+          <div><span>evidence</span><span>claims without evidence are marketing. The join reads the evidence, not the claim.</span></div>
+          <div><span>certificate</span><span>absent ⇒ <span class="zero">0̲</span>. An uncertified part fails closed rather than being trusted by default.</span></div>
+        </div>
+        <p class="asmsplit">Two of those fields describe the <em>join</em> — <span>requires</span> and <span>guarantees</span> are the bolt pattern, and a factory would need them whether or not an agent were involved. The other four record the <em>locus</em>: <span>world</span> is the state it was established against, <span>authority</span> is the explicit sanction it acted under — <em>not</em> something that state conferred by itself — <span>evidence</span> and <span>certificate</span> are why the transition is legitimate. Strip the first two and you lose composability. Strip the last four and what moves down the line is output — which is the thing the industry currently ships and calls an agent.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- KERNEL -->
-<section id="kernel" style="background:linear-gradient(180deg,transparent, rgba(230,145,56,.025), transparent)">
+<!-- ============================== 03 · THE MARRIAGE STATION ============================== -->
+<section id="compose">
   <div class="wrap">
     <div class="split">
       <div data-reveal>
-        <p class="kicker">The kernel</p>
-        <h2 class="eyebrow-h">Ring 0 for agents: eight subsystems, one bridge.</h2>
+        <p class="kicker">03 · The marriage station</p>
+        <h2 class="eyebrow-h">Two things that never met, joined or refused.</h2>
       </div>
       <div data-reveal style="--d:.08s">
-        <p class="body">A kernel is not a wrapper around the model — it sits beneath it. box-and-box decomposes governance the way an OS decomposes the machine: each modal subsystem owns one question, and the <strong>bridge</strong> composes them in a fixed precedence that can never be reordered at runtime.</p>
-        <p class="body">It's pure arithmetic — monoids, lattices, semirings — so the subsystems compose associatively and a vetoed option is <span class="zero">0̲</span>: it <em>annihilates</em>. No score downstream can bring it back.</p>
+        <p class="body">This is the station the whole factory is arranged around. Assembly A and assembly B were produced by different cells that knew nothing of each other. Here they either snap together and emit one certificate, or the station <strong>refuses and says which field made it impossible</strong>.</p>
+        <p class="body">Change the interface on one side. The composition does not degrade, warn, or "mostly work" — it stops. That refusal is the product.</p>
+      </div>
+    </div>
+
+    <div class="mar" data-reveal>
+      <div class="mhead">
+        <span>[&amp;] · compose( A, B ) → certificate | <span class="zero">0̲</span></span>
+        <span class="live">live · in your browser</span>
+      </div>
+      <div class="mbody">
+        <div class="apanel">
+          <p class="at">Assembly A</p>
+          <div class="frow2"><label>guarantees</label><select id="a-out"><option>session@3</option><option>session@2</option><option>*</option><option value="__missing__">⟨undeclared⟩</option></select></div>
+          <div class="frow2"><label>world</label><select id="a-world"><option>817</option><option>816</option></select></div>
+          <div class="frow2"><label>certificate</label><select id="a-cert"><option value="1">present</option><option value="0">absent</option></select></div>
+          <div class="frow2"><label>cost class</label><select id="a-cost"><option>poly</option><option>exponential</option><option>tower</option></select></div>
+          <div class="frow2"><label>confidence</label><input id="a-conf" type="number" min="0" max="1" step="0.01" value="0.98"></div>
+        </div>
+        <div class="mjoin">|&gt;</div>
+        <div class="apanel">
+          <p class="at">Assembly B</p>
+          <div class="frow2"><label>accepts_from</label><select id="b-in"><option>session@3</option><option>session@2</option><option>*</option><option value="__missing__">⟨undeclared⟩</option></select></div>
+          <div class="frow2"><label>world</label><select id="b-world"><option>817</option><option>816</option></select></div>
+          <div class="frow2"><label>certificate</label><select id="b-cert"><option value="1">present</option><option value="0">absent</option></select></div>
+          <div class="frow2"><label>cost class</label><select id="b-cost"><option>poly</option><option>exponential</option><option>tower</option></select></div>
+          <div class="frow2"><label>confidence</label><input id="b-conf" type="number" min="0" max="1" step="0.01" value="0.96"></div>
+        </div>
+      </div>
+      <div class="mout">
+        <p class="verdictline" id="m-verdict">—</p>
+        <div class="cert" id="m-cert">—</div>
+        <p class="stamp">
+          <b>What is real here:</b> the type-contract check and the fail-closed certificate rule are
+          <code>subsetOf()</code> and <code>UNCERTIFIED_COST()</code> from <code>compose.mjs</code> in box-and-box 0.11.0,
+          reimplemented on this page and checked against the runtime by a gate — 289 one-step endpoint decisions, malformed forms included, verified equal on every build; confidence multiplies and latency maxes because that is the CC2
+          semiring. &nbsp;·&nbsp; <b>What is not:</b> <code>world</code> is <em>modelled</em> on this panel — the two
+          selects — and is <em>not checked</em> by <code>compose.mjs</code>; set the worlds apart to see the panel hold a
+          pair the runtime would compose. <code>authority</code> is <em>neither</em> modelled here nor checked there, and
+          has no control at all because there is nothing yet to drive. Both remain <b>specified, not wired</b>.
+          The full runtime, unmodified, runs in the
+          <a href="capability-composition-masterclass#playground" style="color:var(--amber-2); border-bottom:1px solid var(--line2)">composition masterclass playground</a>.
+        </p>
+        <p class="stamp" style="border-top:1px solid rgba(126,181,124,.35)">
+          <b style="color:var(--green,#7eb57c)">Closed 2026-08-22 — the defect this station shipped on purpose.</b>
+          For one day, setting either contract to <b>⟨undeclared⟩</b> <em>composed</em>. <code>Brick()</code> defaulted an
+          absent <code>accepts_from</code>/<code>feeds_into</code> to <code>'*'</code> and <code>typeMatch()</code> returned
+          true for <code>null</code>, so <b>an assembly that declared no interface received the most permissive one in the
+          algebra</b> — the exact inverse of what this page argues. The demo was not quietly patched: the bug stayed live
+          here, with this band under it, until the <em>runtime</em> was fixed.
+          It was closed falsifier-first — five laws written against the unfixed code, four of them red
+          (<code>CD1</code>, <code>CD3</code>, <code>CD4</code>, <code>CD5</code>), one green on purpose
+          (<code>CD2</code>: an explicit <code>'*'</code> must keep composing, or the fix is just "refuse everything").
+          The identity laws survive because <code>none()</code> and <code>idBrick()</code> <em>declare</em>
+          <code>'*'</code> — deliberately, not by luck. Try it: ⟨undeclared⟩ now refuses; switch that side to <code>*</code>
+          and the same join composes.
+          <code>cd AmpersandBoxDesign/box-and-box &amp;&amp; node test/compose-laws.mjs</code>
+        </p>
+        <p class="stamp" style="border-top:1px solid rgba(126,181,124,.35)">
+          <b style="color:var(--green,#7eb57c)">Closed by a ruling, not a patch — <code>CD6</code>, the defect the falsifiers above exposed.</b>
+          It needed nothing to be undeclared, so the previous fix did not touch it. <code>&amp;</code> unioned
+          <em>both</em> contract ends and <code>|&gt;</code> asked only for a <em>non-empty intersection</em>, so
+          <b>a coalition handed off on behalf of a member that could not have handed off itself</b>: with
+          <code>A.feeds_into=['nope']</code> and <code>C.accepts_from=['session@3']</code>, <code>A |&gt; C</code> was
+          <span class="zero">0̲</span> — correct — while <code>(A &amp; B) |&gt; C</code> <b>composed</b> for any
+          <code>B</code> that could feed C. It failed identically on the input side.
+          <br><br>
+          It stayed xfail until the question underneath it was answered, because <em>what a coalition's contract
+          means</em> is a ruling, not a bug. Three answers were sound; the ruling is <b>Option U</b> —
+          <b>outputs join, inputs meet, and a hand-off is a subset test</b>
+          (<code>OUT(a) ⊆ IN(b)</code>), never an intersection. Meet-everywhere was rejected for hiding real
+          outputs; routed hand-off was rejected <em>as a default</em> until a route witness exists to earn the
+          permissiveness — it lands later as <code>|route&gt;</code>.
+          <code>cd AmpersandBoxDesign/box-and-box &amp;&amp; node test/compose-laws.mjs</code>
+        </p>
+        <p class="stamp">
+          <b>And closing it forced a distinction the old test was hiding.</b> Under a subset rule one wildcard
+          cannot mean two things: <code>ANY</code> as an <em>output</em> ("I may emit anything") is not safe into a
+          narrow consumer, while a passthrough ("whatever came in") is. The identity brick is the second kind —
+          typed <code>α → α</code>, not <code>* → *</code> — and that is the only reason the identity laws survive
+          the change. Contract ends are now tagged <code>undeclared | any | types | var</code>, all four
+          serialisable, so a contract can appear in a receipt, a hash or a replayed world instead of vanishing at
+          the JSON boundary the way raw <code>undefined</code> did. Laws <code>CD6</code> and <code>CD7</code>.
+        </p>
+      </div>
+    </div>
+
+    <div class="contain" data-reveal style="margin-top:32px; border:1px solid var(--line2); border-left:3px solid var(--amber); border-radius:12px; padding:22px 24px; background:var(--surface); font-size:16px; color:var(--ink-dim); line-height:1.6">
+      Factories move quickly because their interfaces don't negotiate at assembly time. <b>Everyone is building workers for the factory.</b>
+      <span class="mono" style="color:var(--amber-2)">[&amp;] is building the laws, the assembly interfaces, the provenance and the control system that let the factory operate as one machine.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== 04 · THE CONSTITUTION ============================== -->
+<section id="constitution" style="background:linear-gradient(180deg,transparent, rgba(230,145,56,.025), transparent)">
+  <div class="wrap">
+    <div class="split">
+      <div data-reveal>
+        <p class="kicker">04 · box-and-box</p>
+        <h2 class="eyebrow-h">A factory that can do anything needs rules about what it may do.</h2>
+      </div>
+      <div data-reveal style="--d:.08s">
+        <p class="body">Once work is parallel and joins are automatic, the factory can act faster than anyone can review it. So the constitution is not a policy document — it is a kernel that sits <em>beneath</em> every station and answers, in a fixed order that cannot be rearranged at runtime:</p>
+        <p class="bridge-eq"><span class="g1">can it?</span><span class="sep">▸</span><span class="g2">may it?</span><span class="sep">▸</span><span class="g3">should it?</span><span class="sep">▸</span><span class="g1">can it stay true?</span></p>
+        <p class="body">It's pure arithmetic — monoids, lattices, semirings — so a vetoed option is <span class="zero">0̲</span>: it <strong>annihilates</strong>. Drag the utility to the ceiling; a forbidden action stays dead. That is the one property that makes an autonomous factory safe to leave running.</p>
+      </div>
+    </div>
+
+    <div class="demo" data-reveal>
+      <div class="head">
+        <span>box-and-box · govern( safe_reply, tempting_action )</span>
+        <span class="live">live · in your browser</span>
+      </div>
+      <div class="body">
+        <div class="controls">
+          <p class="lbl">the tempting syscall</p>
+          <div class="syscall">station → <b>tempting_action</b></div>
+          <p class="lbl">utility &nbsp; <span class="uval" id="uv">14</span></p>
+          <input type="range" id="util" min="1" max="20" value="14" />
+          <p class="lbl">modal profile — tap to toggle</p>
+          <div class="chips">
+            <div class="chip on" id="c-feasible" data-k="feasible"><span>feasible</span><span class="state">✓ yes</span></div>
+            <div class="chip off" id="c-permitted" data-k="permitted"><span>permitted</span><span class="state">✗ forbidden</span></div>
+            <div class="chip on" id="c-confident" data-k="confident"><span>confident</span><span class="state">✓ yes</span></div>
+          </div>
+        </div>
+        <div class="stage">
+          <div class="acard" id="card-safe">
+            <div class="meta"><div class="an">safe_reply</div><div class="aw">feasible ▸ permitted ▸ confident</div></div>
+            <div class="sc">6<small>allow</small></div>
+          </div>
+          <div class="acard" id="card-temp">
+            <div class="meta"><div class="an">tempting_action</div><div class="aw" id="temp-why">—</div></div>
+            <div class="sc" id="temp-sc">—<small id="temp-st">—</small></div>
+          </div>
+          <div class="kv" id="kv">—</div>
+        </div>
       </div>
     </div>
 
@@ -430,7 +794,7 @@
       <div class="srow">
         <div class="os">scheduler · quota</div>
         <div class="nm">resource <small>can we afford it?</small></div>
-        <div class="ds">A closed, double-entry economy of tokens and compute — and it prices the kernel's own deliberation: stop and think only when it's worth it.</div>
+        <div class="ds">A closed, double-entry economy of tokens and compute — and it prices the factory's own deliberation: stop and think only when it's worth it.</div>
       </div>
       <div class="srow">
         <div class="os">knowledge base</div>
@@ -445,211 +809,311 @@
       <div class="srow">
         <div class="os">ring 0 · protected</div>
         <div class="nm">reflexive <small>may the rules change?</small></div>
-        <div class="ds">The policy can amend itself — tighten, add duties — but the entrenched core is un-writable. Self-modification can never relax the floor.</div>
+        <div class="ds">The factory can amend its own policy — tighten, add duties — but the entrenched core is un-writable. <strong>A self-improving factory can never relax its own floor.</strong></div>
       </div>
       <div class="srow amp">
         <div class="os">syscall interface</div>
         <div class="nm">[&amp;] composition <small>npm i -g box-and-box</small></div>
-        <div class="ds">The capability-composition surface you already install: <em class="tk">validate → compose → compile</em> agent capabilities to MCP and A2A. The same package, the governance core switched on.</div>
+        <div class="ds">The capability-composition surface the join station runs on: <em class="tk">validate → compose → compile</em> to MCP and A2A.</div>
       </div>
-      <div class="subs-foot">eight subsystems &nbsp;·&nbsp; one bridge &nbsp;·&nbsp; <a href="laws.html" style="color:var(--amber-2); border-bottom:1px solid var(--line2)"><b>118 property-tested laws</b></a> &nbsp;·&nbsp; 2000 trials each</div>
+      <div class="subs-foot">eight rungs &nbsp;·&nbsp; one bridge &nbsp;·&nbsp; <a href="laws" style="color:var(--amber-2); border-bottom:1px solid var(--line2)"><b>210 property-tested laws</b></a> &nbsp;·&nbsp; 2000 trials each &nbsp;·&nbsp; 3 declared-open</div>
+    </div>
+
+    <div class="stats" data-reveal style="margin-top:44px">
+      <div class="stat"><div class="num">8</div><div class="cap">modal rungs</div></div>
+      <div class="stat"><div class="num">210</div><div class="cap">enforced laws</div></div>
+      <div class="stat"><div class="num">3</div><div class="cap">declared open</div></div>
+      <div class="stat"><div class="num">2000</div><div class="cap">trials per law</div></div>
+    </div>
+    <p class="reframe" data-reveal>
+      Derived, not typed · <span class="amber">109</span> kernel laws + <span class="amber">101</span> CC2 compose laws = <span class="amber">210</span>, read from
+      <code>node test/laws.mjs</code> and <code>node test/compose-laws.mjs</code> in <code>AmpersandBoxDesign/box-and-box</code> at build time.
+      The three open gaps print FALSIFIED in red on purpose, and the build fails if one starts <em>passing</em>.
+    </p>
+    <div class="cta-row" data-reveal style="--d:.16s; margin-top:26px">
+      <a class="btn primary" href="laws">Browse all 210 laws →</a>
+      <a class="btn ghost" href="protocol">The [&amp;] Protocol →</a>
     </div>
   </div>
 </section>
 
-<!-- BRIDGE + LIVE DEMO -->
-<section id="bridge">
+<!-- ============================== 05 · PRODUCTION CELLS ============================== -->
+<section id="cells">
   <div class="wrap">
     <div class="split">
       <div data-reveal>
-        <p class="kicker">The one idea</p>
-        <h2 class="eyebrow-h">Can, then ought, then best.</h2>
+        <p class="kicker">05 · The factory floor</p>
+        <h2 class="eyebrow-h">Not lots of projects. Specialized machinery.</h2>
       </div>
       <div data-reveal style="--d:.08s">
-        <p class="body">Almost every agent stack computes desirability first and treats safety as a filter afterward. box-and-box runs the order the way a kernel must:</p>
-        <p class="bridge-eq"><span class="g1">feasible</span><span class="sep">▸</span><span class="g2">permitted</span><span class="sep">▸</span><span class="g3">best</span></p>
-        <p class="body">The floor doesn't penalize an unsafe option — it <strong>annihilates</strong> it. A vetoed action becomes <span class="zero">0̲</span>, and <span class="zero">0̲</span> times anything is <span class="zero">0̲</span>. Drag the utility to the ceiling; a forbidden action stays dead. Try it.</p>
+        <p class="body">Every cell below is a real repository, protocol or product. The map is the honest one: <strong>each cell carries the evidence rung it has actually reached</strong>, and a cell whose rung has never been recorded shows <span class="mono red">?</span> rather than a flattering guess.</p>
+        <p class="body">That is deliberate. An invented status is worse than a missing one, because it stops the question being asked. Read the <span class="mono red">?</span> marks as the roadmap.</p>
       </div>
     </div>
 
-    <div class="demo" data-reveal>
-      <div class="head">
-        <span>box-and-box · govern( safe_reply, tempting_action )</span>
-        <span class="live">live · in your browser</span>
-      </div>
-      <div class="body">
-        <div class="controls">
-          <p class="lbl">the tempting syscall</p>
-          <div class="syscall">agent → <b>tempting_action</b></div>
-          <p class="lbl">utility &nbsp; <span class="uval" id="uv">14</span></p>
-          <input type="range" id="util" min="1" max="20" value="14" />
-          <p class="lbl">modal profile — tap to toggle</p>
-          <div class="chips">
-            <div class="chip on" id="c-feasible" data-k="feasible"><span>feasible</span><span class="state">✓ yes</span></div>
-            <div class="chip off" id="c-permitted" data-k="permitted"><span>permitted</span><span class="state">✗ forbidden</span></div>
-            <div class="chip on" id="c-confident" data-k="confident"><span>confident</span><span class="state">✓ yes</span></div>
-          </div>
-        </div>
-        <div class="stage">
-          <div class="acard" id="card-safe">
-            <div class="meta"><div class="an">safe_reply</div><div class="aw">feasible ▸ permitted ▸ confident</div></div>
-            <div class="sc">6<small>allow</small></div>
-          </div>
-          <div class="acard" id="card-temp">
-            <div class="meta"><div class="an">tempting_action</div><div class="aw" id="temp-why">—</div></div>
-            <div class="sc" id="temp-sc">—<small id="temp-st">—</small></div>
-          </div>
-          <div class="kv" id="kv">—</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- AIOS ELIXIR SHOWCASE -->
-<section id="aios" style="background:linear-gradient(180deg,transparent, rgba(92,193,150,.03), transparent)">
-  <div class="wrap">
-    <div class="split">
-      <div data-reveal>
-        <p class="kicker">The flagship</p>
-        <h2 class="eyebrow-h">An AI operating system, on the kernel.</h2>
-      </div>
-      <div data-reveal style="--d:.08s">
-        <p class="body">Here is the whole thing: a kernel <span class="mono" style="font-size:.86em">GenServer</span> that governs every syscall, a <em class="tk">use BoxAndBox.Agent</em> DSL where a model declares the actions it <em>may</em> propose, and a demo that denies a forbidden call, stops when the budget is gone, refuses to weaken its own floor, and escalates a goal no agent can reach alone.</p>
-        <p class="body">Agents are interchangeable — Claude, GPT, Gemini, a local model. To the kernel they're processes making syscalls.</p>
-      </div>
-    </div>
-
-    <div class="codewrap" data-reveal>
-      <div class="chead">
+    <div class="floor" data-reveal>
+      <div class="fh">
         <span class="dot" style="width:11px;height:11px;border-radius:50%;background:#e0604f;display:inline-block"></span>
         <span class="dot" style="width:11px;height:11px;border-radius:50%;background:#e69138;display:inline-block"></span>
         <span class="dot" style="width:11px;height:11px;border-radius:50%;background:#5cc196;display:inline-block"></span>
-        &nbsp;<span class="fn">box_and_box_aios.ex</span>
-        <span class="lang">Elixir / OTP</span>
+        &nbsp; [&amp;] factory floor · click a cell
+        <span class="legend">
+          <span class="rg" data-r="live_deployed">live_deployed</span>
+          <span class="rg" data-r="live_local">live_local</span>
+          <span class="rg" data-r="in_tree">in_tree</span>
+          <span class="rg" data-r="spec">spec</span>
+          <span class="rg" data-r="?">? not recorded</span>
+          <span class="rg" data-r="place">the place itself</span>
+        </span>
       </div>
-      <pre><code id="aios-code"></code></pre>
+      <div class="cells" id="cellgrid"></div>
+      <div class="cellout" id="cellout"></div>
     </div>
 
-    <div class="callout">
-      <div data-reveal style="--d:.04s">
-        <h4>The kernel is pure</h4>
-        <p><span class="mono" style="font-size:.86em">judge/3</span> is the bridge as one function — alethic ▸ deontic ▸ resource ▸ epistemic ▸ axiological — returning a certificate, not a boolean.</p>
-      </div>
-      <div data-reveal style="--d:.1s">
-        <h4>Ring 0 holds</h4>
-        <p>An amendment that would weaken an entrenched rule is rejected by the kernel itself. The safety floor isn't policy — it's the machine.</p>
-      </div>
-      <div data-reveal style="--d:.16s">
-        <h4>Duty over utility</h4>
-        <p>The cite-obligation forces <span class="mono" style="font-size:.86em">answer_cited</span> over the higher-scoring <span class="mono" style="font-size:.86em">answer_raw</span>; the PII call annihilates to <span class="zero">0̲</span>.</p>
-      </div>
-    </div>
-
-    <p class="reframe" data-reveal>Honest note · this is the reference <em>host</em>. The conformance-tested verdict engine is <span class="amber">box-and-box</span> (the npm / edge package, 118 property-tested laws); this Elixir kernel speaks the same arithmetic, so a verdict here and a verdict there are identical.</p>
-  </div>
-</section>
-
-<!-- ONE SUBSTRATE -->
-<section id="substrate">
-  <div class="wrap">
-    <div class="split">
-      <div data-reveal>
-        <p class="kicker">Portable governance</p>
-        <h2 class="eyebrow-h">One substrate. Any model, any language.</h2>
-      </div>
-      <div data-reveal style="--d:.08s">
-        <p class="body">Because the kernel is arithmetic, its <strong>laws are the specification</strong>. Two runtimes in two languages aren't "compatible" — they are provably identical, the way two calculators agree on 2 + 2. The monoids and lattices give you CRDT-like convergence for free.</p>
-        <p class="body">So you can decide at the edge in TypeScript and re-decide in the Elixir host and audit it in CI, and get the same verdict and the same certificate every time. That is what makes agent decisions portable, un-relaxable, and reviewable.</p>
-        <div class="models">
-          <span>Claude <span class="d">→ syscall</span></span>
-          <span>GPT-4o <span class="d">→ syscall</span></span>
-          <span>Gemini <span class="d">→ syscall</span></span>
-          <span>local 7B <span class="d">→ syscall</span></span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CONFORMANCE / PROOF -->
-<section id="proof">
-  <div class="wrap">
-    <p class="kicker" data-reveal>Conformance</p>
-    <h2 class="eyebrow-h" data-reveal style="--d:.05s; margin-bottom:36px">The verdict is the contract.</h2>
-    <div class="stats" data-reveal>
-      <div class="stat"><div class="num">8</div><div class="cap">modal subsystems</div></div>
-      <div class="stat"><div class="num">1</div><div class="cap">composing bridge</div></div>
-      <div class="stat"><div class="num">118</div><div class="cap">property-tested laws</div></div>
-      <div class="stat"><div class="num">2000</div><div class="cap">trials per law</div></div>
-    </div>
-    <p class="body" data-reveal style="--d:.1s; margin-top:28px; max-width:64ch">
-      Every subsystem is a small algebra with stated laws — associativity, annihilation, the precedence of the bridge, the un-weakenability of the entrenched core — checked against thousands of random cases. Two conformant hosts, in <em>any</em> language, <strong>must</strong> agree on whether a composition is feasible, permitted, and ensurable. Pass the laws in your language; you're conformant.
+    <p class="reframe" data-reveal>
+      The rungs shown are the ones stored in <code>ampersand-nav</code>'s property table, which is the same source the
+      portfolio nav renders from. If a rung here disagrees with the nav, the nav is right and this page is stale.
+      &nbsp;·&nbsp; <a href="factory" style="color:var(--amber-2); border-bottom:1px solid var(--line2)">The full floor plan, cell by cell →</a>
     </p>
-    <div class="cta-row" data-reveal style="--d:.16s; margin-top:30px">
-      <a class="btn primary" href="laws.html">Browse all 118 laws →</a>
-      <span class="cta-note">run <span style="color:var(--amber-2)">node test/laws.mjs</span> and watch them pass</span>
+  </div>
+</section>
+
+<!-- ============================== 06 · MOTORS ============================== -->
+<section id="motors" style="background:linear-gradient(180deg,transparent, rgba(92,193,150,.03), transparent)">
+  <div class="wrap">
+    <div class="split">
+      <div data-reveal>
+        <p class="kicker">06 · Intelligence</p>
+        <h2 class="eyebrow-h">The model isn't the factory. It's a motor.</h2>
+      </div>
+      <div data-reveal style="--d:.08s">
+        <p class="body">A motor is the part you expect to replace. It is bought, rated, swapped when a better one ships, and run by a machine that outlives it. Everything that makes the output <em>trustworthy</em> — the world it was built against, the authority behind it, the evidence, the join — lives in the machine around the motor, not inside it.</p>
+        <p class="body">This is why the factory can improve while the intelligence commoditizes. <strong>The motors get cheaper and better every quarter. The factory keeps the compounding.</strong></p>
+      </div>
+    </div>
+
+    <div class="motor" data-reveal>
+      <div class="msock">
+        <p class="mt">motors — interchangeable</p>
+        <div class="mi">Claude <span>swappable</span></div>
+        <div class="mi">GPT <span>swappable</span></div>
+        <div class="mi">Gemini <span>swappable</span></div>
+        <div class="mi">a local 7B <span>swappable</span></div>
+      </div>
+      <div class="mcore">
+        <p class="mlab">what does not swap</p>
+        <p class="mbig">The machine<br>around it</p>
+        <p class="msm">this is the product</p>
+      </div>
+      <div class="msock right">
+        <p class="mt">the machine — persistent</p>
+        <div class="mi">WORLD <span>state</span></div>
+        <div class="mi">AUTHORITY <span>sanction</span></div>
+        <div class="mi">EVIDENCE <span>proof</span></div>
+        <div class="mi">COMPOSITION <span>the join</span></div>
+      </div>
+    </div>
+
+    <div class="split" data-reveal style="margin-top:52px">
+      <div>
+        <p class="kicker">06b · Heredity</p>
+        <h2 class="eyebrow-h">From motor to machinery.</h2>
+      </div>
+      <div style="--d:.08s">
+        <p class="body">The arrow in that diagram runs one way, and the question is whether it has to. A motor is transient; what it <em>discovers</em> may not need to be. The heredity programme asks whether a discovery can be distilled into persistent machinery, <em>causally established</em> as support for a capability, and admitted into an environment a later locus can use. <strong>If that continuity test succeeds, the originating model no longer has to be present for the supported capability to remain available.</strong> That conditional is the claim; the test is what would earn it.</p>
+        <p class="body">In the toy search, a system with AND, OR and NAND but no XOR discovers XOR compositionally. Once the resulting primitive is admitted, later searches that consume it begin with an additional realization available — discover a building block once, compose with it thereafter. <strong>XOR demonstrates primitive induction, not heredity</strong>, and the distinction matters enough to say twice: a fresh motor already knows XOR, so removing the artifact would remove nothing and prove nothing.</p>
+        <p class="body">Heredity is the harder claim underneath. A capability has survived its motor when the successor keeps it <em>with</em> a support set and loses it <em>without</em> — and support is a set system, not a file. A capability can have two independently sufficient supports, so deleting one artifact establishes nothing while the other survives. The minimal such set is a <strong>continuity kernel</strong>: the least causally established support sufficient to retain a declared capability under a declared replacement. Its dual — the minimum cut that would make the capability disappear — is the same object read backwards, <em>when the support function is monotone</em>. That is a hypothesis with a falsifier, not a given.</p>
+      </div>
+    </div>
+
+    <p class="stamp" data-reveal>
+      <b>What is real here:</b> the algebra. Capability persistence is modelled as a monotone Boolean
+      function over the artifacts that survive a replacement — minimal sufficient sets are its prime
+      implicants, minimal revocation cuts its minimal transversals, related by monotone dualization,
+      which is the structure of minimal cut sets in coherent fault trees. <code>scripts/emb-support.mjs</code>
+      implements it, and two refusals fire: a capability supported only by <em>provenance</em> is refused
+      before any cut is computed, because a lineage edge generates a candidate support set and
+      establishes none — <b>descent is not dependence</b> — and a capability whose observations
+      falsify monotonicity is refused a kernel and a cut outright, which is why the dual above
+      carries its condition. &nbsp;·&nbsp; <b>What is not:</b> any of it,
+      yet, on a real capability. The engine reports four capabilities, all four synthetic, none observed,
+      and says so in its own output: <em>the engine runs and has nothing to run on</em>. Heredity here is
+      specified and unwitnessed. Nothing in this tree has inherited anything.
+    </p>
+
+    <p class="reframe" data-reveal>
+      The sibling argument, at length: <a href="agentic-engineering-masterclass" style="color:var(--amber-2); border-bottom:1px solid var(--line2)">the model is ~10%; the harness is the product</a>.
+      The factory framing puts that one level up — the harness is a cell, and the factory is the arrangement of cells.
+    </p>
+  </div>
+</section>
+
+<!-- ============================== 07 · WORLDWARE ============================== -->
+<section id="worldware">
+  <div class="wrap">
+    <div class="split">
+      <div data-reveal>
+        <p class="kicker">07 · The category</p>
+        <h2 class="eyebrow-h">What comes after software.</h2>
+      </div>
+      <div data-reveal style="--d:.08s">
+        <p class="body">Each layer below is named for what it <em>operates</em>, not what it is made of. The pattern is the useful part: every time the unit of composition got larger, the previous layer stopped being the thing you reasoned about and became the thing you stood on.</p>
+        <p class="body">We call the top rung <strong>Worldware</strong>. It is a <em>category</em>, not a product name and not a brand — no logo, no claim to the word, which has a prior meaning in 1990s education technology that we are not competing with.</p>
+      </div>
+    </div>
+
+    <div class="ladder" data-reveal>
+      <div class="lrow"><div class="lname">Hardware</div><div class="lop">operates <b style="color:var(--ink-dim); font-weight:500">machines</b> — logic gates, memory, a physical substrate</div></div>
+      <div class="lrow"><div class="lname">Software</div><div class="lop">operates <b style="color:var(--ink-dim); font-weight:500">computers</b> — instructions the machine executes</div></div>
+      <div class="lrow"><div class="lname">Agentic software</div><div class="lop">operates <b style="color:var(--ink-dim); font-weight:500">tasks</b> — autonomous actors calling tools toward a goal</div></div>
+      <div class="lrow top"><div class="lname">Worldware</div><div class="lop">operates <b style="color:var(--amber-2); font-weight:600">worlds</b> — executable environments carrying state, capabilities, actors, authority, evidence and their own rules of change</div></div>
+    </div>
+
+    <div class="wdef" data-reveal>
+      <b>A world, precisely.</b> In this stack <span class="mono">world</span> is frozen vocabulary and it means one thing:
+      <b>a persistent executable environment carrying state, history, capabilities, authority and its own rules of change</b>
+      — the machine you actually live in, not a document and not a workspace. Not a metaphor, not a metaverse, and
+      <em>not</em> "any bounded system you'd like to call a world". The word was conflated with a much smaller thing once
+      here, the error was recorded, and the vocabulary was frozen to stop it recurring.
+      <div class="wsizes">
+        <span><b>WORLD</b> — the persistent machine-sized environment</span>
+        <span><b>WORLD VERSION</b> — a content-addressed description of that state at one instant · kilobytes, it is a root</span>
+        <span><b>WRL GRAPH</b> — the semantic and control layer <em>inside</em> a world · 247 KB – 212 MB</span>
+        <span><b>TRVM</b> — verification semantics over transitions and artifacts</span>
+      </div>
+      <p style="margin:16px 0 0; padding-top:14px; border-top:1px dashed var(--line2); font-size:14px; color:var(--muted)">
+        <b style="color:var(--ink-dim)">The size range is a product envelope, not part of the definition.</b>
+        Worlds are <span class="mono" style="color:var(--amber-2)">10 GB – 10 TB</span> <em>today</em>, because that is
+        what the current tiers carry. Ship a 100 TB world, a distributed one, or a tiny embedded one and the category is
+        unchanged — a definition hostage to a 2026 storage table would be the same mistake in the other direction.
+      </p>
+    </div>
+
+    <p class="body" data-reveal style="margin-top:34px; max-width:66ch; font-size:19px; font-family:var(--serif); line-height:1.4; color:var(--ink)">
+      Worldware is what the factory produces.<br>
+      <span style="color:var(--amber)">ComputeDriven is how you drive it.</span>
+    </p>
+
+    <h3 data-reveal style="font-size:26px; margin:56px 0 6px">And then the factory turns on itself.</h3>
+    <p class="body" data-reveal>Software is the product. The factory is what improves the production of software. The last loop is the one that makes that recursive — and the one that makes the constitution load-bearing rather than decorative.</p>
+
+    <div class="sloop">
+      <div class="sstep human" data-reveal style="--d:.03s"><div class="sn">01 · HUMAN</div><h4>Set intent</h4><p>A person says what should be true. This is the only step that is not automatable, and the design keeps it that way.</p></div>
+      <div class="sstep" data-reveal style="--d:.07s"><div class="sn">02 · FACTORY</div><h4>Modify applications</h4><p>Cells fabricate in parallel, joins are checked, certificates are emitted.</p></div>
+      <div class="sstep" data-reveal style="--d:.11s"><div class="sn">03 · FACTORY</div><h4>Observe consequences</h4><p>Deployed worlds emit evidence. Measurement re-enters as data, not anecdote.</p></div>
+      <div class="sstep" data-reveal style="--d:.15s"><div class="sn">04 · FACTORY</div><h4>Propose changes to itself</h4><p>The line rewrites its own cells — the reflexive rung is what makes this legal.</p></div>
+      <div class="sstep" data-reveal style="--d:.19s"><div class="sn">05 · KERNEL</div><h4>Verification constrains it</h4><p>An amendment that would weaken the entrenched core is rejected by the machine, not by a reviewer.</p></div>
+      <div class="sstep human" data-reveal style="--d:.23s"><div class="sn">06 · HUMAN</div><h4>Adjudicate the boundaries</h4><p>Whatever the kernel routes to <em class="tk">escalate</em> lands on a person. That queue is the job.</p></div>
+      <div class="sstep" data-reveal style="--d:.27s"><div class="sn">07 · FACTORY</div><h4>Compound</h4><p>Every accepted change is one the next run starts from. This is the only step that produces a moat.</p></div>
+      <div class="sstep" data-reveal style="--d:.31s"><div class="sn">↻</div><h4>Back to intent</h4><p>Observation becomes the next requirement. The line is a loop; the product is the loop's rate.</p></div>
     </div>
   </div>
 </section>
 
-<!-- ECOSYSTEM -->
-<section id="ecosystem" style="background:linear-gradient(180deg,transparent, rgba(230,145,56,.025), transparent)">
+<!-- ============================== 08 · WHAT IT HAS PRODUCED ============================== -->
+<section id="produced" style="background:linear-gradient(180deg,transparent, rgba(230,145,56,.025), transparent)">
   <div class="wrap">
     <div class="split">
       <div data-reveal>
-        <p class="kicker">Userland</p>
-        <h2 class="eyebrow-h">The kernel runs the [&amp;] portfolio.</h2>
+        <p class="kicker">08 · Output</p>
+        <h2 class="eyebrow-h">What the factory has produced.</h2>
       </div>
       <div data-reveal style="--d:.08s">
-        <p class="body">box-and-box is ring 0; the rest of the stack is userland that runs on it. <strong>PULSE</strong> declares the scheduler loops, <strong>PRISM</strong> is the profiler, and each cognitive primitive is a long-running service the kernel governs.</p>
+        <p class="body">These are not case studies about someone else's company. They are the portfolio the line has actually built, each one a cell's output and several of them the cells themselves. The rung on each card is the same stored value the nav renders.</p>
       </div>
     </div>
     <div class="eco">
       <a class="ecocard" href="https://graphonomous.com" data-reveal style="--d:.04s">
-        <div class="amp">&amp;memory · daemon</div><h3>Graphonomous</h3>
-        <p>The memory loop — continual-learning knowledge graphs. Retrieve, route, act, learn, consolidate. No retraining, no forgetting.</p>
+        <div class="amp"><span>&amp;memory · the memory cell</span><span class="rg" data-r="live_deployed">live_deployed</span></div><h3>Graphonomous</h3>
+        <p>Continual-learning knowledge graphs. Retrieve, route, act, learn, consolidate — no retraining, no forgetting. The factory's memory between runs.</p>
         <span class="go">graphonomous.com →</span>
       </a>
-      <a class="ecocard" href="https://deliberatic.com" data-reveal style="--d:.08s">
-        <div class="amp">&amp;reason · daemon</div><h3>Deliberatic</h3>
-        <p>The deliberation loop the kernel routes to on a known-unknown. Argue, vote, credit, seal — every decision ships a Merkle-chained proof.</p>
-        <span class="go">deliberatic.com →</span>
-      </a>
-      <a class="ecocard" href="https://ticktickclock.com" data-reveal style="--d:.12s">
-        <div class="amp">&amp;time · service</div><h3>TickTickClock</h3>
-        <p>Temporal intelligence — anomaly detection and prediction via state-space models. Feeds the watchdog's invariants.</p>
-        <span class="go">ticktickclock.com →</span>
-      </a>
-      <a class="ecocard" href="https://geofleetic.com" data-reveal style="--d:.06s">
-        <div class="amp">&amp;space · service</div><h3>GeoFleetic</h3>
-        <p>Spatial intelligence — fleet tracking and geo-routing with delta-CRDT state sync across edge locations.</p>
-        <span class="go">geofleetic.com →</span>
-      </a>
-      <a class="ecocard" href="https://delegatic.com" data-reveal style="--d:.1s">
-        <div class="amp">orchestration · IPC</div><h3>Delegatic + AgenTroMatic</h3>
-        <p>Multi-agent coordination — agents bid, argue fitness, and self-organize. The strategic subsystem decides who can ensure what.</p>
+      <a class="ecocard" href="https://delegatic.com" data-reveal style="--d:.08s">
+        <div class="amp"><span>authority · the sanction cell</span><span class="rg" data-r="live_deployed">live_deployed</span></div><h3>Delegatic</h3>
+        <p>Multi-agent coordination and delegation. Agents bid, argue fitness and self-organize; the strategic rung decides who can actually ensure what.</p>
         <span class="go">delegatic.com →</span>
       </a>
-      <a class="ecocard" href="https://opensentience.org" data-reveal style="--d:.14s">
-        <div class="amp">runtime · research</div><h3>OpenSentience</h3>
-        <p>Agent lifecycle, permissions, and tool routing — and the open research arm where the modality ladder is specified, rung by rung.</p>
+      <a class="ecocard" href="https://agentelic.com" data-reveal style="--d:.12s">
+        <div class="amp"><span>build · the engineering cell</span><span class="rg" data-r="live_deployed">live_deployed</span></div><h3>Agentelic</h3>
+        <p>Where agents are built and run. The engineering cell of the floor — the one that turns an intent into an assembly.</p>
+        <span class="go">agentelic.com →</span>
+      </a>
+      <a class="ecocard" href="https://fleetprompt.com" data-reveal style="--d:.06s">
+        <div class="amp"><span>package · the skill cell</span><span class="rg" data-r="live_deployed">live_deployed</span></div><h3>FleetPrompt</h3>
+        <p>Skill packaging and distribution — how a proven capability leaves the cell that made it and becomes something another cell can install.</p>
+        <span class="go">fleetprompt.com →</span>
+      </a>
+      <a class="ecocard" href="https://opensentience.org" data-reveal style="--d:.1s">
+        <div class="amp"><span>research · the research cell</span><span class="rg" data-r="?">? not recorded</span></div><h3>OpenSentience</h3>
+        <p>The open research arm: the eight-rung ladder specified rung by rung, plus the OS-001…OS-011 protocol family. Mixed maturity across eleven protocols, so no single rung is claimed.</p>
         <span class="go">opensentience.org →</span>
+      </a>
+      <a class="ecocard" href="https://computedriven.com" data-reveal style="--d:.14s">
+        <div class="amp"><span>the control room</span><span class="rg" data-r="?">the place itself</span></div><h3>ComputeDriven</h3>
+        <p>Where a human observes, operates and evolves a world. Not a cell on the floor — the room the floor is run from.</p>
+        <span class="go">computedriven.com →</span>
       </a>
     </div>
   </div>
 </section>
 
-<!-- INSTALL -->
+<!-- ============================== MASTERCLASSES ============================== -->
+<section id="learn">
+  <div class="wrap">
+    <div class="split">
+      <div data-reveal>
+        <p class="kicker">Learn the machines</p>
+        <h2 class="eyebrow-h">Five masterclasses, each one falsifiable.</h2>
+      </div>
+      <div data-reveal style="--d:.08s">
+        <p class="body">Every masterclass ends in a falsification table: the claims it makes, the command that would disprove each one, and what that command should print. Run them. Two numbers were cut from a published draft for lacking a primary source, and the page says so.</p>
+      </div>
+    </div>
+    <div class="mcband">
+      <a class="mc" href="agentic-engineering-masterclass" data-reveal style="--d:.03s">
+        <div class="mck">01 · Agentic engineering</div>
+        <h3>The New SDLC, Made Formal</h3>
+        <p>The model is ~10%; the harness is the product. Where each box of the old SDLC actually goes.</p>
+      </a>
+      <a class="mc" href="capability-composition-masterclass" data-reveal style="--d:.07s">
+        <div class="mck">02 · Capability composition</div>
+        <h3>Composition Is Not a List</h3>
+        <p>What happens when you combine capabilities — and the CP7 gap that reproduces in your browser.</p>
+      </a>
+      <a class="mc" href="ai-factories-masterclass" data-reveal style="--d:.11s">
+        <div class="mck">03 · AI factories</div>
+        <h3>The Worldware Factory</h3>
+        <p>Unboxing the SDLC, the join geometry it forces, and what separates this from the AI-factory category.</p>
+      </a>
+      <a class="mc" href="continuous-verification-masterclass" data-reveal style="--d:.15s">
+        <div class="mck">04 · Continuous verification</div>
+        <h3>Proof as a Production Step</h3>
+        <p>Why property tests, certificates and falsification tables replace the review queue — and where they don't.</p>
+      </a>
+      <a class="mc" href="world-economics-masterclass" data-reveal style="--d:.19s">
+        <div class="mck">05 · World economics</div>
+        <h3>Worlds That Pay For Themselves</h3>
+        <p>What a world costs, what rides along free, and what you can sell on top of one — including the two of six shapes still better served by a repo.</p>
+      </a>
+      <a class="mc" href="masterclasses" data-reveal style="--d:.23s">
+        <div class="mck">Index</div>
+        <h3>All five, and how they fit</h3>
+        <p>The curriculum as a map: which machine each one teaches, and the order that makes them cumulative.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== INSTALL ============================== -->
 <section id="install">
   <div class="wrap">
     <div class="split">
       <div data-reveal>
-        <p class="kicker">Boot it</p>
+        <p class="kicker">Boot the constitution</p>
         <h2 class="eyebrow-h">A CLI, a library, an Elixir host — same verdict.</h2>
       </div>
       <div data-reveal style="--d:.08s">
-        <p class="body">box-and-box ships as a zero-dependency CLI and an ES-module library: deterministic, no LLM, no network — safe to drop into CI, a pre-commit hook, or a pipeline. Pipe a decision in, get a certified verdict out. Conformance is the 118-law suite, so a port in any language agrees verdict-for-verdict.</p>
+        <p class="body">box-and-box ships as a zero-dependency CLI and an ES-module library: deterministic, no LLM, no network — safe to drop into CI, a pre-commit hook, or a pipeline. Pipe a decision in, get a certified verdict out. Conformance is the 210-law suite, so a port in any language agrees verdict-for-verdict.</p>
       </div>
     </div>
 
@@ -663,20 +1127,22 @@
 <pre><span class="cm"># install the kernel — zero-dependency, Node ≥ 18</span>
 npm i -g box-and-box
 
-<span class="cm"># run the 118-law conformance harness (2000 trials/law)</span>
-box-and-box laws
+<span class="cm"># run the conformance harness from the package directory</span>
+cd AmpersandBoxDesign/box-and-box
+node test/laws.mjs            <span class="cm"># → all 109 enforced kernel laws hold</span>
+node test/compose-laws.mjs    <span class="cm"># → all 101 enforced CC2 compose laws hold</span>
 
 <span class="cm"># a real verdict: feasible ▸ permitted ▸ best → certificate JSON</span>
 box-and-box govern decision.json     <span class="cm"># exit 0 decision · 3 escalation · 1 none</span>
-cat decision.json | box-and-box govern --quiet
 
 <span class="cm"># …or import the library directly, in any JS runtime</span>
-import { govern } from 'box-and-box';</pre>
+import { govern } from 'box-and-box';
+import { composeAnd, composePipe } from 'box-and-box/compose.mjs';</pre>
     </div>
-    <p class="reqs" data-reveal><b>Requirements</b> Node.js ≥ 18 · macOS, Linux, or Windows · no DB, no cloud, no network. &nbsp;·&nbsp; <b>Embed it</b> as a CLI in CI, an imported ES module, or via the Elixir reference host above (which delegates to the verified engine). &nbsp;·&nbsp; An MCP adapter for live agent calls is a planned optional surface — the kernel itself is library-first.</p>
+    <p class="reqs" data-reveal><b>Requirements</b> Node.js ≥ 18 · macOS, Linux, or Windows · no DB, no cloud, no network. &nbsp;·&nbsp; <b>Note</b> the suites must be run from <code>AmpersandBoxDesign/box-and-box</code>; from the repo root they fail with <code>MODULE_NOT_FOUND</code>. &nbsp;·&nbsp; <b>Embed it</b> as a CLI in CI, an imported ES module, or via the Elixir reference host.</p>
     <div class="cta-row" data-reveal style="--d:.12s; margin-top:28px">
-      <a class="btn primary" href="https://opensentience.org/box-and-box/">Read the reference implementation →</a>
-      <a class="btn ghost" href="laws.html">The 118 laws →</a>
+      <a class="btn primary" href="factory">Walk the factory floor →</a>
+      <a class="btn ghost" href="laws">The 210 laws →</a>
     </div>
   </div>
 </section>
@@ -686,207 +1152,52 @@ import { govern } from 'box-and-box';</pre>
     <div class="grid">
       <div>
         <a class="brand" href="#top" style="font-size:16px">[<b style="color:var(--amber)">&amp;</b>] AMPERSAND BOX</a>
-        <p class="blurb">box-and-box is the governance kernel of the [&amp;] stack — feasible ▸ permitted ▸ best, under an un-weakenable floor, with a proof for every verdict.</p>
+        <p class="blurb">[&amp;] is the factory architecture. Parallelize the work, prove the assemblies, formalize the joins, and let the line compound.</p>
         <p class="ops">All systems operational ✓</p>
       </div>
       <div>
-        <h5>Kernel</h5>
-        <a href="#kernel">Subsystems</a>
-        <a href="#bridge">The bridge</a>
-        <a href="#aios">AIOS example</a>
-        <a href="laws.html">The laws</a>
+        <h5>The factory</h5>
+        <a href="#unboxed">Unboxed</a>
+        <a href="#compose">The join</a>
+        <a href="factory">The floor plan</a>
+        <a href="#worldware">Worldware</a>
+        <a href="#motors">Motors</a>
+      </div>
+      <div>
+        <h5>Constitution</h5>
+        <a href="#constitution">The eight rungs</a>
+        <a href="laws">The 210 laws</a>
+        <a href="protocol">[&amp;] Protocol</a>
+        <a href="blueprint">Blueprint</a>
         <a href="#install">Install</a>
       </div>
       <div>
-        <h5>Userland</h5>
-        <a href="https://graphonomous.com">Graphonomous</a>
-        <a href="https://deliberatic.com">Deliberatic</a>
-        <a href="https://ticktickclock.com">TickTickClock</a>
-        <a href="https://geofleetic.com">GeoFleetic</a>
-        <a href="https://delegatic.com">Delegatic</a>
-      </div>
-      <div>
-        <h5>Research</h5>
-        <a href="https://opensentience.org">OpenSentience</a>
-        <a href="https://opensentience.org/box-and-box/">Reference impl</a>
-        <a href="https://ampersandboxdesign.com/protocol.html">[&amp;] Protocol</a>
+        <h5>Masterclasses</h5>
+        <a href="masterclasses">All five</a>
+        <a href="agentic-engineering-masterclass">Agentic engineering</a>
+        <a href="capability-composition-masterclass">Capability composition</a>
+        <a href="ai-factories-masterclass">AI factories</a>
+        <a href="continuous-verification-masterclass">Continuous verification</a>
+        <a href="world-economics-masterclass">World economics</a>
         <a href="https://docs.ampersandboxdesign.com">Documentation</a>
       </div>
     </div>
     <div class="copy">
       <span>© Ampersand Box Design · building the infrastructure of tomorrow</span>
-      <span>Models generate answers. Kernels govern them.</span>
+      <span>Models generate possibilities. Agents are active loci in worlds. Factories are built to turn transient intelligence into persistent machinery.</span>
     </div>
   </div>
 </footer>
 
-<!-- raw Elixir source for the showcase (not executed) -->
-<script type="text/plain" id="aios-src">defmodule BoxAndBox.Cert do
-  @moduledoc "An auditable verdict. Every syscall returns one — never a bare yes/no."
-  defstruct decision: nil, status: :deny, score: 0, obligated: false,
-            why: "", vetoed: [], escalation: nil, charged: 0
-end
-
-defmodule BoxAndBox.Agent do
-  # use BoxAndBox.Agent, then declare each action the model MAY take with its modal
-  # profile — the facts the kernel needs to judge it. The agent proposes; the kernel decides.
-  defmacro __using__(_opts) do
-    quote do
-      import BoxAndBox.Agent
-      Module.register_attribute(__MODULE__, :actions, accumulate: true)
-      @before_compile BoxAndBox.Agent
-    end
-  end
-
-  defmacro defaction(name, profile) do
-    quote bind_quoted: [name: name, profile: profile] do
-      defaults = %{name: name, feasible: true, confident: true, forbidden: false,
-                   obligated: false, utility: 1, cost: 1, caps: []}
-      @actions Map.merge(defaults, Map.new(profile))
-    end
-  end
-
-  defmacro __before_compile__(_env) do
-    quote do: (def actions, do: Enum.reverse(@actions))
-  end
-end
-
-defmodule BoxAndBox.Kernel do
-  # Ring 0. Governs every syscall through the bridge and returns a certificate. A vetoed or
-  # infeasible action is annihilated to 0̲: no utility, however large, resurrects it.
-  use GenServer
-  alias BoxAndBox.Cert
-
-  @beta_min 0.80        # alethic floor: the confidence below which nothing is feasible
-  @deliberation_cost 2  # what it costs the kernel to stop and think — priced by the economy
-
-  # ── syscall surface (what the agent SDK calls) ──
-  def start_link(c), do: GenServer.start_link(__MODULE__, c, name: __MODULE__)
-  def choose(agent, actions), do: GenServer.call(__MODULE__, {:choose, agent, actions})
-  def amend(change), do: GenServer.call(__MODULE__, {:amend, change})
-  def oblige(goal_caps, coalition), do: GenServer.call(__MODULE__, {:oblige, goal_caps, coalition})
-
-  @impl true
-  def init(c), do: {:ok, %{floor: MapSet.new(c.floor), forbidden: MapSet.new(c.forbidden), budgets: c.budgets}}
-
-  @impl true
-  def handle_call({:choose, agent, actions}, _from, st) do
-    budget = Map.get(st.budgets, agent, 0)
-    verdicts = Enum.map(actions, &judge(&1, st, budget))
-    allowed = Enum.filter(verdicts, &(&1.status == :allow))
-    vetoed = for v <- verdicts, v.score == 0 and v.status in [:forbidden, :infeasible], do: "#{v.decision} — #{v.why}"
-
-    cert =
-      cond do
-        ob = Enum.find(allowed, & &1.obligated) -> %{ob | why: "obligation in force overrides higher-utility options"}
-        allowed != [] -> Enum.max_by(allowed, & &1.score)
-        esc = Enum.find(verdicts, &(&1.escalation != nil)) -> esc
-        true -> %Cert{status: :escalate, why: "no feasible, permitted action", escalation: :human}
-      end
-      |> Map.put(:vetoed, vetoed)
-
-    st = if cert.status == :allow, do: update_in(st.budgets[agent], &(&1 - cert.charged)), else: st
-    {:reply, cert, st}
-  end
-
-  def handle_call({:amend, {:weaken, rule}}, _from, st) do
-    if MapSet.member?(st.floor, rule),
-      do: {:reply, {:rejected, "ring 0 — cannot weaken entrenched #{inspect(rule)}"}, st},
-      else: {:reply, {:ok, "amended"}, update_in(st.forbidden, &MapSet.delete(&1, rule))}
-  end
-
-  def handle_call({:oblige, goal_caps, coalition}, _from, st) do
-    have = coalition |> Enum.flat_map(& &1.caps) |> MapSet.new()
-    if MapSet.subset?(MapSet.new(goal_caps), have),
-      do: {:reply, {:discharge, "the coalition can ensure the goal"}, st},
-      else: {:reply, {:escalate, "ought-implies-can: no coalition power → escalate"}, st}
-  end
-
-  # ── the bridge, as a pure function: alethic ▸ deontic ▸ resource ▸ epistemic ▸ axiological ──
-  defp judge(a, st, budget) do
-    cond do
-      not a.feasible -> %Cert{decision: a.name, status: :infeasible, why: "alethic floor — not feasible (0̲)"}
-      a.forbidden or MapSet.member?(st.forbidden, a.name) -> %Cert{decision: a.name, status: :forbidden, why: "deontic veto — forbidden (0̲)"}
-      a.cost > budget -> %Cert{decision: a.name, status: :escalate, why: "over budget", escalation: :budget}
-      not a.confident and a.utility < @deliberation_cost -> %Cert{decision: a.name, status: :infeasible, why: "known-unknown not worth resolving (0̲)"}
-      not a.confident -> %Cert{decision: a.name, status: :escalate, why: "known-unknown — deliberate first", escalation: :deliberate, charged: @deliberation_cost}
-      true -> %Cert{decision: a.name, status: :allow, score: a.utility, obligated: a.obligated, why: "feasible ▸ permitted ▸ scored", charged: a.cost}
-    end
-  end
-end
-
-# ── two agents (any model behind them) and a short demo ──
-defmodule Researcher do
-  use BoxAndBox.Agent
-  defaction :answer_cited, obligated: true, utility: 7, cost: 1, caps: [:draft]
-  defaction :answer_raw, utility: 9, cost: 1, caps: [:draft]            # higher utility, no cite duty
-  defaction :exfiltrate_pii, forbidden: true, utility: 15, caps: [:draft] # most "useful", forbidden
-end
-
-defmodule Reviewer do
-  use BoxAndBox.Agent
-  defaction :approve, utility: 5, cost: 1, caps: [:approve]
-end
-
-defmodule BoxAndBox.AIOS.Demo do
-  alias BoxAndBox.{Kernel, Cert}
-
-  def main do
-    {:ok, _} = Kernel.start_link(%{
-      floor: [:exfiltrate_pii],          # the un-weakenable safety floor (ring 0)
-      forbidden: [:exfiltrate_pii],
-      budgets: %{Researcher => 1, Reviewer => 3}
-    })
-
-    banner("1 · a syscall is governed — feasible ▸ permitted ▸ best")
-    show(Kernel.choose(Researcher, Researcher.actions()))
-
-    banner("2 · the budget is spent → escalate, not act")
-    show(Kernel.choose(Researcher, Researcher.actions()))
-
-    banner("3 · the kernel cannot weaken its own floor (ring 0)")
-    IO.inspect(Kernel.amend({:weaken, :exfiltrate_pii}), label: "   amend")
-
-    banner("4 · ought-implies-can — a goal no agent can ensure alone")
-    r = %{name: Researcher, caps: [:draft]}
-    v = %{name: Reviewer, caps: [:approve]}
-    IO.inspect(Kernel.oblige([:draft, :approve], [r]), label: "   researcher alone")
-    IO.inspect(Kernel.oblige([:draft, :approve], [r, v]), label: "   researcher + reviewer")
-  end
-
-  defp show(%Cert{} = c), do: IO.puts("  → #{c.status |> to_string() |> String.upcase()}: #{c.decision} — #{c.why}" <> vetoes(c))
-  defp vetoes(%Cert{vetoed: []}), do: ""
-  defp vetoes(%Cert{vetoed: vs}), do: "\n     ✗ vetoed: " <> Enum.join(vs, "; ")
-  defp banner(t), do: IO.puts("\n" <> t <> "\n  " <> String.duplicate("─", 66))
-end
-
-BoxAndBox.AIOS.Demo.main()
-</script>
-
 <script>
-/* ---------- syntax highlight for the Elixir showcase (single-pass tokenizer) ---------- */
-(function(){
-  var src = document.getElementById('aios-src').textContent.replace(/^\n/,'');
-  var TOK = /(#[^\n]*)|("(?:[^"\\]|\\.)*")|(:[a-zA-Z_]\w*[?!]?)|(@[a-zA-Z_]\w*)|\b(defmodule|defmacro|defstruct|defp|def|do|end|fn|cond|case|if|else|quote|unquote|bind_quoted|use|import|alias|when|true|false|nil)\b|\b([A-Z]\w*)\b/g;
-  function esc(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-  var out='', last=0, m;
-  while((m = TOK.exec(src))){
-    out += esc(src.slice(last, m.index));
-    var cls = m[1]?'c':m[2]?'s':m[3]?'at':m[4]?'attr':m[5]?'kw':'mod';
-    out += '<span class="'+cls+'">'+esc(m[0])+'</span>';
-    last = m.index + m[0].length;
-  }
-  out += esc(src.slice(last));
-  document.getElementById('aios-code').innerHTML = out;
-})();
-
-/* ---------- scroll reveals ---------- */
+/* ---------- reveal on scroll ---------- */
 (function(){
   var els = document.querySelectorAll('[data-reveal]');
-  var io = new IntersectionObserver(function(es){
-    es.forEach(function(e){
+  if(!('IntersectionObserver' in window)){ els.forEach(function(e){ e.classList.add('in'); }); return; }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
       if(e.isIntersecting){
-        var d = e.target.style.getPropertyValue('--d') || '0s';
+        var d = getComputedStyle(e.target).getPropertyValue('--d') || '0s';
         e.target.style.transitionDelay = d;
         e.target.classList.add('in');
         io.unobserve(e.target);
@@ -896,7 +1207,433 @@ BoxAndBox.AIOS.Demo.main()
   els.forEach(function(el){ io.observe(el); });
 })();
 
-/* ---------- live bridge demo: the kernel, in miniature ---------- */
+/* ---------- the living factory line ---------- */
+(function(){
+  var STATIONS = [
+    {k:'SPECIFY', rung:'in_tree', h:'Intent becomes a contract',
+     p:'An intent is turned into a declaration a machine can check: which capabilities are required, which are guaranteed, and what the thing is allowed to do. Nothing downstream may widen it.',
+     m:[['machinery','[&] Protocol · SpecPrompt'],['artifact','*.ampersand.json'],['link','protocol','protocol']]},
+    {k:'RESEARCH', rung:'?', h:'Claims move to rulings',
+     p:'A claim is not accepted because it is plausible. It moves hypothesis → evidence → witness → falsifier → ruling → artifact, and anything that fails to survive a falsifier is discarded rather than softened.',
+     m:[['machinery','OpenSentience · the-residency'],['rung','mixed across eleven protocols, so none is claimed'],['link','opensentience.org','https://opensentience.org']]},
+    {k:'BUILD', rung:'live_deployed', h:'Cells fabricate in parallel',
+     p:'Many agents work simultaneously on parts that were scoped never to need each other mid-flight. A cell owns its files; it does not reach across. The parallelism is bought by the scoping, not by the model.',
+     m:[['machinery','Agentelic · the amp orchestrator'],['link','agentelic.com','https://agentelic.com']]},
+    {k:'FALSIFY', rung:'in_tree', h:'Try to break it, not to bless it',
+     p:'Property tests over 2000 random trials per law, plus falsification tables that publish the command a reader can run to disprove the claim. A test that only confirms is not evidence.',
+     m:[['machinery','box-and-box law suites · PRISM'],['derived','109 kernel + 101 compose = 210 enforced, 3 open'],['link','the 210 laws','laws']]},
+    {k:'CERTIFY', rung:'in_tree', h:'A verdict that carries its reasons',
+     p:'Every decision emits a certificate: what was forbidden, what was infeasible, what it cost, and why this option survived. A bare yes/no is not a verdict — it is an opinion with no audit trail.',
+     m:[['machinery','the bridge — feasible ▸ permitted ▸ best'],['link','see it run','#constitution']]},
+    {k:'COMPOSE', rung:'in_tree', h:'The marriage station',
+     p:'Two assemblies built in ignorance of each other are joined — or refused, naming the field that made it impossible. This is the station the unboxed shape is arranged around.',
+     m:[['machinery','CC2 · compose.mjs'],['laws','101 enforced compose laws, 100 suite + 1 anchor'],['link','try it','#compose']]},
+    {k:'DEPLOY', rung:'?', h:'Into a world, not onto a server',
+     p:'The output lands in a world — a persistent machine-sized environment with state, history and rules — rather than being copied onto a host and forgotten.',
+     m:[['machinery','WebHost.Systems · Cloudflare Pages'],['rung','not recorded — the honest answer']]},
+    {k:'OBSERVE', rung:'spec', h:'Evidence returns as data',
+     p:'The deployed world emits measurements, and those measurements re-enter as the next requirement. Without this edge the line is a pipeline; with it, the line is a loop and the loop is the product.',
+     m:[['machinery','PRISM · A2A Traffic'],['witness','its own ledger prints messages witnessed: 0'],['link','a2atraffic.com','https://a2atraffic.com']]}
+  ];
+  var wrap = document.getElementById('stations');
+  var out  = document.getElementById('st-detail');
+  if(!wrap) return;
+  var html = '';
+  STATIONS.forEach(function(s,i){
+    if(i) html += '<div class="arw">→</div>';
+    html += '<div class="st'+(i===0?' on':'')+'" data-i="'+i+'">'
+          + '<span class="n">'+String(i+1).padStart(2,'0')+'</span>'
+          + '<span class="l">'+s.k+'</span>'
+          + '<span class="r"><span class="rg" data-r="'+s.rung+'">'+s.rung+'</span></span>'
+          + '</div>';
+  });
+  wrap.innerHTML = html;
+
+  // Only mask the edges when the rail genuinely overflows. Checked after layout and on resize,
+  // because whether eight stations fit is a function of viewport width, not of the markup.
+  function syncScrollAffordance(){
+    wrap.classList.toggle('can-scroll', wrap.scrollWidth - wrap.clientWidth > 2);
+  }
+  syncScrollAffordance();
+  window.addEventListener('resize', syncScrollAffordance, {passive:true});
+
+  function show(i){
+    var s = STATIONS[i];
+    var meta = s.m.map(function(row){
+      if(row[0]==='link') return '<span><a href="'+row[2]+'">'+row[1]+' →</a></span>';
+      return '<span><b>'+row[0]+'</b> · '+row[1]+'</span>';
+    }).join('');
+    out.innerHTML = '<p class="sd-h">'+s.h+'</p><p class="sd-p">'+s.p+'</p><div class="sd-m">'+meta+'</div>';
+    wrap.querySelectorAll('.st').forEach(function(el){ el.classList.toggle('on', +el.dataset.i===i); });
+  }
+  wrap.addEventListener('click', function(e){
+    var st = e.target.closest('.st'); if(!st) return;
+    show(+st.dataset.i);
+  });
+  show(0);
+})();
+
+/* ---------- §01 boxed vs unboxed ---------- */
+(function(){
+  var stage = document.getElementById('ustage');
+  var foot  = document.getElementById('ufoot');
+  var bB = document.getElementById('t-boxed'), bU = document.getElementById('t-unboxed');
+  if(!stage) return;
+
+  var SERIAL = ['requirements','research','design','code','test','security','deployment','analytics'];
+  var PARALLEL = [['research','architecture','implementation'],['verification','security','documentation','experiments']];
+
+  function boxed(){
+    stage.innerHTML = '<div class="chain">' + SERIAL.map(function(s,i){
+      return (i? '<div class="cv">↓</div>':'') + '<div class="cs">'+s+'</div>';
+    }).join('') + '</div>';
+    foot.innerHTML = '<b>One object, eight stops.</b> Total time is the sum of the stages, so making any single stage 10× faster moves the total by the width of that stage. This is the shape agents inherited.';
+    bB.classList.add('on'); bU.classList.remove('on');
+  }
+  function unboxed(){
+    var d = 0;
+    var rows = PARALLEL.map(function(row){
+      return '<div class="frow">' + row.map(function(c){
+        d += .06;
+        return '<div class="fc" style="animation-delay:'+d.toFixed(2)+'s">'+c+'</div>';
+      }).join('') + '</div>';
+    }).join('<div class="cv" style="font-family:var(--mono);color:var(--amber);opacity:.5">·</div>');
+    stage.innerHTML = '<div class="fan"><div class="cs" style="font-family:var(--mono);font-size:12.5px;border:1px solid var(--line2);border-radius:9px;padding:9px 20px;background:rgba(0,0,0,.22);color:var(--ink-dim)">INTENT</div>'
+      + '<div class="cv">↓</div>' + rows
+      + '<div class="cv">↓</div><div class="fjoin">COMPOSE</div>'
+      + '<div class="cv">↓</div><div class="cs" style="font-family:var(--mono);font-size:12.5px;border:1px solid rgba(230,145,56,.4);border-radius:9px;padding:9px 20px;background:rgba(230,145,56,.07);color:var(--amber-2)">WORLD</div></div>';
+    foot.innerHTML = '<b>Seven cells, one join.</b> Total time is the slowest cell plus the join — not the sum. The cost is that the join now has to be real: every part must declare what it requires and guarantees, or the saving is spent on integration anyway.';
+    bU.classList.add('on'); bB.classList.remove('on');
+  }
+  bB.addEventListener('click', boxed);
+  bU.addEventListener('click', unboxed);
+  boxed();
+})();
+
+/* ---------- §03 the marriage station ----------
+   subsetOf() and the fail-closed certificate rule are compose.mjs from box-and-box 0.11.0,
+   reimplemented here and gate-checked for DECISION EQUIVALENCE against compose.mjs, not asserted to be
+   the same text — "line-for-line" was the old claim and it was false for one round after the runtime
+   gained CD10/CD11 and this copy did not. worseCost ordering and the CC2 semiring (confidence ×, latency max)
+   likewise.
+
+   On what this panel models vs what the runtime checks — the previous version of this comment said
+   "`world` and `authority` are checked here", one line above prose correctly saying neither is
+   checked by compose.mjs, and there has never been an authority control on the panel at all:
+
+     `world`     — MODELLED HERE (the two selects), NOT CHECKED by compose.mjs. Set the worlds
+                   apart to see the panel hold a pair the runtime would compose.
+     `authority` — NEITHER modelled here NOR checked by compose.mjs. It is carried by Value and
+                   gated on by nothing. There is no control because there is nothing to drive.
+
+   Both remain SPECIFIED, NOT WIRED. In a project whose premise is that prose and machine behaviour
+   must not silently diverge, a source comment claiming a check that does not exist is the same
+   defect class as the page claiming it — corrected 2026-08-22 on outside review.
+------------------------------------------------------------------------------------------------- */
+(function(){
+  var $ = function(id){ return document.getElementById(id); };
+  if(!$('m-verdict')) return;
+
+  // compose.mjs — contract types. '*' is a wildcard; an ABSENT field is not.
+  //
+  // This panel used to reproduce a fail-open bug ON PURPOSE. Until 2026-08-22 typeMatch carried
+  // `|| out == null || inn == null`, and Brick() defaulted an absent contract field to '*' — so an
+  // assembly that declared no interface at all received the most permissive one in the algebra and
+  // every hand-off passed a check with nothing left to check. Found by outside review. This page
+  // shipped the bug live, ⟨undeclared⟩ option and all, rather than fixing the demo and leaving the
+  // runtime broken; the band under the station is the record. Both clauses are now gone from
+  // box-and-box under falsifiers CD1–CD5.
+  // The contract carrier, tagged — the same four kinds compose.mjs stores:
+  //   undeclared | any | types{...} | var α        (all four serialisable, unlike raw undefined)
+  //
+  // NEVER FILTER, and never wave through a `kind` the algebra does not know. This mirrors the
+  // runtime's CD10/CD11 fix: unreadable input becomes UNDECLARED and refuses, rather than losing
+  // the parts it could not parse and returning the residue as a DECLARATION — which for an output
+  // end was usually the empty set, and ∅ ⊆ X holds for every X.
+  //
+  // This function was left behind by that fix for one round: it still read
+  // `if(t && typeof t === 'object' && t.kind) return t;` — accepting any tagged object unchecked —
+  // while the runtime had become strict. The 49-pair gate stayed green because its corpus contains
+  // only the station's SELECTABLE endpoints, none of which are malformed. Reported on outside
+  // review; the corpus now includes malformed forms so the gate can see this class at all.
+  function norm(t){
+    if(t === '__missing__' || t == null) return {kind:'undeclared'};
+    if(t === '*') return {kind:'any'};
+    if(typeof t === 'string') return {kind:'types', values:[t]};
+    if(Array.isArray(t)){
+      if(!t.every(function(v){ return typeof v === 'string'; })) return {kind:'undeclared'};
+      return t.indexOf('*') > -1 ? {kind:'any'} : {kind:'types', values:t};
+    }
+    if(t && typeof t === 'object' && typeof t.kind === 'string'){
+      if(t.kind === 'undeclared') return {kind:'undeclared'};
+      if(t.kind === 'any') return {kind:'any'};
+      if(t.kind === 'var') return typeof t.name === 'string' ? {kind:'var', name:t.name} : {kind:'undeclared'};
+      if(t.kind === 'types'){
+        return (Array.isArray(t.values) && t.values.every(function(v){ return typeof v === 'string'; }))
+          ? {kind:'types', values:t.values} : {kind:'undeclared'};
+      }
+      return {kind:'undeclared'};
+    }
+    return {kind:'undeclared'};
+  }
+  var declared = function(t){ return norm(t).kind !== 'undeclared'; };
+  // OPTION U — a hand-off is feasible iff OUT ⊆ IN. A SUBSET, not a non-empty intersection.
+  // The old test asked whether the two had *something* in common, which is a question about
+  // existence where the safety property is universal: every type the producer may emit has to be
+  // one the consumer accepts. Note what that makes of the wildcard — it is now DIRECTIONAL:
+  //   ANY as an INPUT  ("I accept anything")  ⇒ always safe
+  //   ANY as an OUTPUT ("I may emit anything") ⇒ NOT safe into a narrow consumer  ← try it above
+  //   VAR α            (a FREE VARIABLE, unbound) ⇒ refuses, like any other unchecked claim
+  // One wildcard could not mean both, and under intersection matching nothing ever asked.
+  // VAR used to return true on either side here, mirroring a runtime that did the same. That was
+  // CD8, found on outside review 2026-08-22: it let the identity LAUNDER a forbidden hand-off in
+  // 11 of 64 endpoint pairs, because "α → α" was implemented as "anything mentioning α matches
+  // everything" rather than as a binding. The identity is now a DISTINGUISHED element short-
+  // circuited before this function is reached, so an unbound α here is just an unknown, and
+  // unknown refuses.
+  function subsetOf(out, inn){
+    var O = norm(out), I = norm(inn);
+    if(O.kind === 'undeclared' || I.kind === 'undeclared') return false;
+    if(O.kind === 'var' || I.kind === 'var') return false;   // unbound => unknown => refuse
+    if(I.kind === 'any') return true;
+    if(O.kind === 'any') return false;
+    return O.values.every(function(t){ return I.values.indexOf(t) > -1; });
+  }
+  // What Brick() now stores for a contract field that was never supplied: {kind:'undeclared'}.
+  function asBrickWould(v){ return norm(v); }
+  // compose.mjs — cost ordering and the decision it implies.
+  var ORDER = ['poly','elementary','exponential','tower','unknown'];
+  function worseCost(a,b){ return ORDER.indexOf(a) >= ORDER.indexOf(b) ? a : b; }
+  function decisionOf(certified, costClass){
+    return !certified ? 'annihilate'
+      : costClass === 'poly' ? 'allow'
+      : costClass === 'tower' ? 'escalate'
+      : 'budget_check';
+  }
+
+  var ids = ['a-out','a-world','a-cert','a-cost','a-conf','b-in','b-world','b-cert','b-cost','b-conf'];
+
+  function render(){
+    var A = { out:$('a-out').value, world:$('a-world').value, cert:$('a-cert').value==='1',
+              cost:$('a-cost').value, conf:parseFloat($('a-conf').value)||0 };
+    var B = { inn:$('b-in').value,  world:$('b-world').value, cert:$('b-cert').value==='1',
+              cost:$('b-cost').value, conf:parseFloat($('b-conf').value)||0 };
+
+    // An undeclared contract IS a value the algebra distinguishes now: Brick() stores nothing where
+    // it used to store '*', and typeMatch refuses on it rather than waving it through.
+    // (This comment said the opposite for a few hours after the runtime was fixed — describing the
+    // defect as current beside the code that had just closed it. Same class as the world/authority
+    // comment corrected above, on a page whose argument is that prose and behaviour must not
+    // diverge. Found by outside review, both times.)
+    var undeclared = (A.out === '__missing__' ? ['A'] : []).concat(B.inn === '__missing__' ? ['B'] : []);
+    var aOut = asBrickWould(A.out), bIn = asBrickWould(B.inn);
+
+    var typeOK    = subsetOf(aOut, bIn);
+    var certified = A.cert && B.cert;
+    var worldOK   = A.world === B.world;
+    var costClass = worseCost(A.cost, B.cost);
+    if(!certified) costClass = costClass === 'poly' ? 'unknown' : costClass;
+    var decision  = decisionOf(certified, costClass);
+
+    var v = $('m-verdict'), c = $('m-cert');
+    $('a-out').classList.toggle('bad', !typeOK);
+    $('b-in').classList.toggle('bad', !typeOK);
+    $('a-world').classList.toggle('bad', !worldOK);
+    $('b-world').classList.toggle('bad', !worldOK);
+    $('a-cert').classList.toggle('bad', !A.cert);
+    $('b-cert').classList.toggle('bad', !B.cert);
+
+    // Refusal order mirrors compose.mjs: contract first, then the fail-closed certificate rule.
+    // The runtime now names WHY it refused — compose.mjs returns zeroBecause('contract-undeclared')
+    // and zeroBecause('contract-mismatch') as different zeros, because a refusal nobody can explain
+    // is a refusal nobody can act on. They are kept apart here for the same reason: a MISMATCH is
+    // two declared interfaces that disagree, which is a fact about the parts. An UNDECLARED side is
+    // the ABSENCE of a fact, and it is the one an operator most needs to see named.
+    if(!typeOK){
+      v.className = 'verdictline no';
+      v.innerHTML = 'A |&gt; B &nbsp;=&nbsp; <span class="zero">0̲</span> &nbsp; — REFUSED';
+      if(undeclared.length){
+        c.innerHTML = '<span class="k">reason</span> &nbsp;<span class="no">contract-undeclared</span><br>'
+          + '<span class="k">contract on</span> &nbsp;<b>'+undeclared.join(' and ')+'</b> &nbsp;never declared — <code>Brick()</code> stored <b>nothing</b>, not <code>\'*\'</code><br>'
+          + '<span class="k">rule</span> &nbsp;<b>missing ≠ universal.</b> An explicit <code>\'*\'</code> is a <em>claim</em>, made by a holder who can be held to it. An absent field is <em>unknown</em>, and unknown refuses.<br>'
+          + '<span class="k">try it</span> &nbsp;switch that side to <code>*</code> — the same join composes, because the claim was made<br>'
+          + '<span class="k">certificate</span> &nbsp;<span class="no">none emitted — the join never happened</span>';
+        return;
+      }
+      c.innerHTML = '<span class="k">reason</span> &nbsp;<span class="no">contract-mismatch</span><br>'
+        + '<span class="k">A guarantees</span> &nbsp;<b>'+A.out+'</b> &nbsp; <span class="k">B accepts</span> &nbsp;<b>'+B.inn+'</b><br>'
+        + '<span class="k">rule</span> &nbsp;a hand-off is feasible iff the producer\'s <code>feeds_into</code> is a SUBSET of the consumer\'s <code>accepts_from</code><br>'
+        + '<span class="k">certificate</span> &nbsp;<span class="no">none emitted — the join never happened</span>';
+      return;
+    }
+    if(!certified){
+      v.className = 'verdictline no';
+      v.innerHTML = 'A |&gt; B &nbsp;=&nbsp; <span class="zero">0̲</span> &nbsp; — ANNIHILATED';
+      c.innerHTML = '<span class="k">reason</span> &nbsp;<span class="no">no certificate supplied — fail-closed</span><br>'
+        + '<span class="k">missing on</span> &nbsp;<b>'+(!A.cert && !B.cert ? 'both sides' : (!A.cert ? 'A' : 'B'))+'</b><br>'
+        + '<span class="k">cost class</span> &nbsp;<b>'+costClass+'</b> &nbsp;<span class="k">·</span>&nbsp; uncertified can never be <code>poly</code><br>'
+        + '<span class="k">decision</span> &nbsp;<span class="no">'+decision+'</span>';
+      return;
+    }
+    if(!worldOK){
+      v.className = 'verdictline no';
+      v.innerHTML = 'A |&gt; B &nbsp;— HELD &nbsp;<span style="color:var(--amber)">(specified, not wired)</span>';
+      c.innerHTML = '<span class="k">reason</span> &nbsp;<span class="no">world mismatch</span> — A was built against <b>'+A.world+'</b>, B against <b>'+B.world+'</b><br>'
+        + '<span class="k">status</span> &nbsp;<span class="no">compose.mjs does NOT check this today.</span> The <code>world</code> field is carried by the algebra and is not gated on.<br>'
+        + '<span class="k">so today</span> &nbsp;this pair would <span class="ok">compose</span> and the mismatch would surface later, in a world that no longer matches its parts.<br>'
+        + '<span class="k">honest label</span> &nbsp;<b>the gap, stated</b> — not a feature demo';
+      return;
+    }
+    var conf = +(A.conf * B.conf).toFixed(4);
+    v.className = 'verdictline ok';
+    v.style.color = '';
+    v.innerHTML = 'A |&gt; B &nbsp;=&nbsp; COMPOSED &nbsp;<span style="color:var(--muted)">· one assembly, one certificate</span>';
+    c.innerHTML = '<span class="k">contract</span> &nbsp;<b>'+A.out+'</b> → <b>'+B.inn+'</b> &nbsp;<span class="ok">match</span><br>'
+      + '<span class="k">world</span> &nbsp;<b>'+A.world+'</b> → <b>'+(parseInt(A.world,10)+1)+'</b> &nbsp;<span class="k">(the join advances it)</span><br>'
+      + '<span class="k">confidence</span> &nbsp;'+A.conf+' × '+B.conf+' = <b>'+conf+'</b> &nbsp;<span class="k">· ⊗ over the semiring, so it only ever falls</span><br>'
+      + '<span class="k">cost class</span> &nbsp;<b>'+costClass+'</b> &nbsp;<span class="k">·</span>&nbsp; <span class="k">decision</span> &nbsp;<span class="'+(decision==='allow'?'ok':'no')+'">'+decision+'</span><br>'
+      + '<span class="k">certificate</span> &nbsp;<span class="ok">emitted</span>';
+  }
+  ids.forEach(function(id){
+    var el = $(id); if(!el) return;
+    el.addEventListener('change', render);
+    el.addEventListener('input', render);
+  });
+  render();
+})();
+
+/* ---------- §05 the factory floor ---------- */
+(function(){
+  // Rungs are the values stored in ampersand-nav's PROPERTIES table. A cell whose rung was never
+  // recorded shows "?" — never an invented "spec". See the note under the floor.
+  var CELLS = [
+    {n:'SPECIFY', m:'[&] Protocol', rung:'in_tree', d:'intent → contract',
+     sub:'AmpersandBoxDesign · protocol/schema/v0.1.0',
+     p:'Six capability primitives and two composition operators. A declaration compiles into MCP and A2A rather than replacing them — the protocol is the bolt pattern the rest of the floor is machined against.',
+     l:[['The protocol','protocol'],['SPEC.md','https://github.com/c-u-l8er/AmpersandBoxDesign']],
+     ev:'Elixir reference impl + npm/Python SDKs in tree; the site is deployed, the kernel is in_tree. When the two disagree the band carries the kernel\'s rung — when in doubt, downgrade.'},
+    {n:'GOVERN', m:'box-and-box', rung:'in_tree', d:'the constitution',
+     sub:'8 rungs · 1 bridge · 210 enforced laws',
+     p:'The governance kernel. Every station\'s action passes feasible ▸ permitted ▸ best over a floor that self-modification cannot relax, and every verdict ships a certificate rather than a boolean.',
+     l:[['The eight rungs','#constitution'],['All 210 laws','laws']],
+     ev:'node test/laws.mjs → all 109 enforced kernel laws hold. node test/compose-laws.mjs → all 101 enforced CC2 compose laws hold. Three gaps print FALSIFIED by design.'},
+    {n:'FALSIFY', m:'The law suites', rung:'in_tree', d:'try to break it, not to bless it',
+     sub:'laws.mjs · compose-laws.mjs · 2000 trials each',
+     p:'Property tests over 2000 random trials per law, plus the falsification tables that publish the command a reader can run to disprove a claim. A test that only confirms is not evidence.',
+     l:[['The laws','laws'],['Verification masterclass','continuous-verification-masterclass']],
+     ev:'109 + 101 = 210 enforced, 3 declared open. Both totals are printed by the suites themselves and never hand-typed anywhere on this site.'},
+    {n:'CERTIFY', m:'The bridge', rung:'in_tree', d:'a verdict that carries its reasons',
+     sub:'feasible ▸ permitted ▸ best',
+     p:'Composes the eight rungs in a precedence that cannot be rearranged at runtime, and emits a certificate rather than a boolean. The test of a certificate is whether a third party can reconstruct the verdict without re-running the system.',
+     l:[['See it run','#constitution']],
+     ev:'Runs live on this page. Toggle permitted off and drag utility to the ceiling: the forbidden option stays 0̲ and the reason reads deontic veto, not score too low.'},
+    {n:'COMPOSE', m:'CC2 · compose.mjs', rung:'in_tree', d:'the marriage station',
+     sub:'composeAnd · composePipe · composeTree',
+     p:'Where two independently produced assemblies are joined or refused. Associative with an identity — the same two laws the 2026 λA literature derived independently as its Theorem 5.7.',
+     l:[['Try the join','#compose'],['Masterclass','capability-composition-masterclass']],
+     ev:'101 enforced compose laws (100 suite + 1 anchor). The rung primitives for coalitions exist and the compose runtime never calls them: specified, not wired.'},
+    {n:'MEMORY', m:'Graphonomous', rung:'live_deployed', d:'what the line remembers',
+     sub:'Elixir/OTP · MCP server · npm package',
+     p:'Continual-learning knowledge graphs with a five-phase loop: retrieve, route, act, learn, consolidate. No retraining and no catastrophic forgetting — the factory\'s memory between runs.',
+     l:[['graphonomous.com','https://graphonomous.com']],
+     ev:'Deployed and serving. The only cognitive cell on the floor at live_deployed.'},
+    {n:'BUILD', m:'Agentelic', rung:'live_deployed', d:'the engineering cell',
+     sub:'where agents are built and run',
+     p:'Turns an intent into an assembly. The cell that most resembles what the industry currently means by "an AI coding tool" — and the one the rest of the floor exists to make joinable.',
+     l:[['agentelic.com','https://agentelic.com']],
+     ev:'Deployed. Whether it belongs at tier 2 rather than 3 is reserved and has not been decided again.'},
+    {n:'AUTHORITY', m:'Delegatic', rung:'live_deployed', d:'who may ensure what',
+     sub:'delegation · coordination · bidding',
+     p:'Agents bid, argue fitness and self-organize. The strategic rung is what turns "someone should" into "this coalition can" — and escalates when no coalition can.',
+     l:[['delegatic.com','https://delegatic.com']],
+     ev:'Deployed. Backs the strategic rung\'s canEnsure primitive, which exists at strategic.mjs:70.'},
+    {n:'PACKAGE', m:'FleetPrompt', rung:'live_deployed', d:'skills leave the cell',
+     sub:'agent marketplace · skill distribution',
+     p:'How a proven capability leaves the cell that produced it and becomes something another cell can install. Packaging is what makes a factory\'s output reusable rather than bespoke.',
+     l:[['fleetprompt.com','https://fleetprompt.com']],
+     ev:'The app runs on Fly today. Its status deliberately refuses to let "shipped" be read as "the replay-gated, content-addressed thing ships" — it does not.'},
+    {n:'SPEC DISCIPLINE', m:'SpecPrompt', rung:'live_deployed', d:'specs that bind',
+     sub:'the spec standard',
+     p:'A spec nobody can point at during a disagreement is a wish. This cell is the discipline that makes the SPECIFY station\'s output binding rather than advisory.',
+     l:[['specprompt.com','https://specprompt.com']],
+     ev:'Deployed; the landing page supersedes the app design it fronts.'},
+    {n:'RESEARCH', m:'OpenSentience', rung:'?', d:'claims → rulings',
+     sub:'OS-001 … OS-011 · the eight rungs',
+     p:'The open research arm where the modality ladder is specified rung by rung, plus the eleven-protocol family. Mixed maturity across eleven protocols, so no single rung is claimed for the whole.',
+     l:[['opensentience.org','https://opensentience.org']],
+     ev:'Rung deliberately null: there is no single rung for eleven protocols, and an averaged one would be an invented number.'},
+    {n:'METROLOGY', m:'PRISM', rung:'?', d:'measuring the loops',
+     sub:'OS-009 · BYOR benchmark engine',
+     p:'Reads any system\'s PULSE manifest to discover its phases and substrates, then scores it over time. A factory without metrology is a factory that cannot tell improvement from noise.',
+     l:[['PULSE + PRISM','protocol']],
+     ev:'Not in the nav\'s property table, so no rung is stated here. Six machines on Fly at last measurement — but a deployment count is not an evidence rung.'},
+    {n:'WORLD', m:'WRL + TRVM', rung:'?', d:'expressing and executing worlds',
+     sub:'the execution substrate',
+     p:'WRL describes worlds; TRVM supplies verification semantics over transitions and artifacts. This is the cell the Worldware claim rests on, and the one furthest from being finished.',
+     l:[['Worlds That Pay For Themselves','world-economics-masterclass']],
+     ev:'No rung recorded in the property table. The substrate chain is WRLM proposes → WRL seals → TRVM reduces → TRAAVIIS admits.'},
+    {n:'EVIDENCE', m:'TRAAVIIS', rung:'?', d:'what gets admitted',
+     sub:'the admission harness',
+     p:'The end of the substrate chain: what is allowed to count as having happened. An artifact that cannot be admitted is not evidence, however convincing it reads.',
+     l:[['traaviis.com','https://traaviis.com']],
+     ev:'Rung deliberately null. The chain stops at bundle-, not episode-.'},
+    {n:'DEPLOY', m:'WebHost.Systems', rung:'?', d:'into a world',
+     sub:'runtime · hosting',
+     p:'Where an assembly lands. The interesting version of this cell is the one that deploys into a persistent world rather than onto a host — that version is not what runs today.',
+     l:[['webhost.systems','https://webhost.systems']],
+     ev:'Rung not recorded. Portfolio sites deploy by git push → Cloudflare Pages with no repo-side config.'},
+    {n:'OBSERVE', m:'A2A Traffic', rung:'spec', d:'evidence returns',
+     sub:'the A2A governance observatory',
+     p:'The outward-facing half of the invariant census: what the A2A protocol can and cannot express, joined cell-by-cell to the inward-facing table. The edge that turns the line into a loop.',
+     l:[['a2atraffic.com','https://a2atraffic.com']],
+     ev:'Its own published record states surface_rung: "spec" with rung_witness: "none", and the page says it collects nothing. A stored, checkable rung — not an assumed one.'},
+    // place 1 in the placement table — it IS the place, so no PRODUCT rung. Not the same thing as
+    // an unrecorded rung, and must not be counted as one.
+    {n:'CONTROL ROOM', m:'ComputeDriven', rung:'place', d:'where a human drives',
+     sub:'the place, not a cell',
+     p:'Where a person observes, operates and evolves a world. Everything else on this floor is machinery; this is the room the machinery is run from, and the only surface with a human in the loop by design.',
+     l:[['computedriven.com','https://computedriven.com']],
+     ev:'Place 1 in the placement table — it IS the place, so it carries no product rung. Compute moves into the ComputeDriven OS; the cloud side is Cloudflare.'},
+    {n:'PROOF', m:'Workbench', rung:'?', d:'practice → signed bundle',
+     sub:'the recorder + proof harness',
+     p:'Ingests real session transcripts into signed, scored bundles — the machine that turns "an agent did this" into something PRISM can score and a reader can replay.',
+     l:[['The Academy loop','https://academy.computedriven.com']],
+     ev:'The deployed site is a 1.6 KB empty shell; deploys do work. Verify by the served route table, never by grepping HTML for page copy.'}
+  ];
+
+  // NB: the enclosing <section> is id="cells"; this grid must NOT share that id or
+  // getElementById returns the section and innerHTML wipes the whole floor.
+  var grid = document.getElementById('cellgrid');
+  var out  = document.getElementById('cellout');
+  if(!grid) return;
+
+  var LABEL = { '?': '? not recorded', 'place': 'the place itself' };
+  grid.innerHTML = CELLS.map(function(c,i){
+    return '<div class="cell'+(i===0?' on':'')+'" data-i="'+i+'">'
+      + '<div class="cn">'+c.n+'</div>'
+      + '<div class="cm">'+c.m+'</div>'
+      + '<span class="rg" data-r="'+c.rung+'">'+(LABEL[c.rung]||c.rung)+'</span>'
+      + '<div class="cd">'+c.d+'</div>'
+      + '</div>';
+  }).join('');
+
+  function show(i){
+    var c = CELLS[i];
+    out.innerHTML = '<h4>'+c.m+'</h4>'
+      + '<p class="co-sub">'+c.n+' &nbsp;·&nbsp; '+c.sub+'</p>'
+      + '<p>'+c.p+'</p>'
+      + '<div class="co-links">' + c.l.map(function(l){ return '<a href="'+l[1]+'">'+l[0]+' →</a>'; }).join('') + '</div>'
+      + '<p class="co-ev"><b>evidence</b> · '+c.ev+'</p>';
+    grid.querySelectorAll('.cell').forEach(function(el){ el.classList.toggle('on', +el.dataset.i===i); });
+  }
+  grid.addEventListener('click', function(e){
+    var cell = e.target.closest('.cell'); if(!cell) return;
+    show(+cell.dataset.i);
+  });
+  show(0);
+})();
+
+/* ---------- §04 live bridge demo: the constitution, in miniature ---------- */
 (function(){
   var state = {util:14, feasible:true, permitted:false, confident:true};
   var SAFE = 6;
@@ -907,23 +1644,20 @@ BoxAndBox.AIOS.Demo.main()
     if(!a.confident) return {status:'ESCALATE',   cls:'esc',  score:0, why:'known-unknown · deliberate first', expr:'route → deliberate'};
     return {status:'ALLOW', cls:'allow', score:a.util, why:'feasible ▸ permitted ▸ scored', expr:'score = '+a.util};
   }
-  function annih(u){ return u+' \u2297 0\u0332 = 0\u0332'; }
+  function annih(u){ return u+' ⊗ 0̲ = 0̲'; }
 
   function render(){
     document.getElementById('uv').textContent = state.util;
     var v = judge(state);
-    // tempting card
     var tc = document.getElementById('card-temp');
     tc.className = 'acard ' + v.cls;
     document.getElementById('temp-why').textContent = v.why;
-    document.getElementById('temp-sc').innerHTML = (v.score>0? v.score : '0\u0332') + '<small id="temp-st">'+v.status.toLowerCase()+'</small>';
-    // selection: max score among ALLOW; safe is always 6/allow
+    document.getElementById('temp-sc').innerHTML = (v.score>0? v.score : '0̲') + '<small id="temp-st">'+v.status.toLowerCase()+'</small>';
     var safeCard = document.getElementById('card-safe');
     safeCard.className = 'acard allow';
     var tempWins = (v.status==='ALLOW' && v.score > SAFE);
     safeCard.classList.toggle('pick', !tempWins);
     tc.classList.toggle('pick', tempWins);
-    // kernel line
     var kv = document.getElementById('kv');
     var pick = tempWins ? 'tempting_action ('+v.score+')' : 'safe_reply ('+SAFE+')';
     var tail;

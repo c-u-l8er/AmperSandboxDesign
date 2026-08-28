@@ -1,6 +1,6 @@
 # The Compose Runtime — CC2 `compose`, made authorable (design note)
 
-**Status:** design proposal · **Reviewable against:** `CC2-capability-composition.md` (§2 operators, §3 coalition), `UMBRELLA.md` (the `compose` stage), `box-and-box` (8 rungs / 103 laws) · **Surface home:** `weave/forge.html` (the lego canvas) · **Runtime home:** `AmpersandBoxDesign/box-and-box/` (new `compose.mjs`)
+**Status:** design proposal — **partly shipped.** Slice 1 items 4 and 5 have landed: `box-and-box/compose.mjs` (1,603 lines, zero deps — it was 461 when this line was written, and most of the growth is the argument for each refusal rather than the refusals themselves) and `test/compose-laws.mjs` exist and run. The surface (item 6) and the worked demo (item 7) do not. · **Reviewable against:** `CC2-capability-composition.md` (§2 operators, §3 coalition), `UMBRELLA.md` (the `compose` stage), `box-and-box` (8 rungs; the suites derive **210 enforced** laws + 3 declared-open — never hand-type this, run them) · **Surface home:** `weave/forge.html` (the lego canvas) · **Runtime home:** `AmpersandBoxDesign/box-and-box/compose.mjs`
 
 > One line: turn the **one unfinished stage of the [&] pipeline** — `compose` (lawless `|>`, no coalition runtime) — into a small lawful runtime, and make it authorable in the Forge as bricks you snap together. Each brick carries *invariant · laws · enforcement · feedback · adaptation*; composing bricks yields another brick. The verdict is the arithmetic.
 
@@ -8,7 +8,7 @@
 
 ## 1. Why this, why now
 
-`UMBRELLA.md` lists seven stages: `declare → validate → compose → govern → wire → run → observe`. Every stage has a shipped engine **except `compose`**, which is marked *"`&` ✅ · `|>` still lawless · cross-agent coalition compose ❌."* `CC2-capability-composition.md` already specifies the missing piece normatively (`&` lattice, `|>` governed monoid, the coalition object, rung-by-rung admissibility) — but it is **draft, no runtime**: schema + `box-and-box lift` exist, the compose runtime and lawful `|>` do not.
+`UMBRELLA.md` lists seven stages: `declare → validate → compose → govern → wire → run → observe`. Every stage has a shipped engine **except `compose`**, which is marked *"`&` ✅ · `|>` still lawless · cross-agent coalition compose ❌."* `CC2-capability-composition.md` already specifies the missing piece normatively (`&` lattice, `|>` governed monoid, the coalition object, rung-by-rung admissibility) — but when this note was written it was **draft, no runtime**: schema + `box-and-box lift` existed, the compose runtime and lawful `|>` did not. **That has since changed** — `compose.mjs` and `test/compose-laws.mjs` shipped, and `|>` now carries **4** enforced laws (CP1–CP4) with 4 more (CP5–CP7, CD6) declared-open and printing FALSIFIED. The `compose` stage is no longer lawless; it is lawful with four published holes. <!-- law-count:frozen --> *(This sentence read "123 enforced laws (CP1–CP4)" for part of 2026-08-22. CP1–CP4 is four laws; 123 is the whole-kernel total. The number was carried there by `scripts/check-law-counts.mjs`, which keeps published totals in sync with what the suites derive and cannot tell that a total has been dropped into a slot that wanted a subtotal. A sync gate makes counts CONSISTENT; it does not make a sentence TRUE, and the two are easy to mistake for each other.)*
 
 So this is not a new language. It is the **runtime + authoring surface for a spec we already wrote.** The user's "compose stacks like legos (invariant + laws + enforcement + feedback + adaptation)" maps exactly onto CC2 compose.
 
@@ -17,7 +17,7 @@ So this is not a new language. It is the **runtime + authoring surface for a spe
 | facet | engine that provides it | symbol |
 |---|---|---|
 | **invariant** | Weave cost certificate (`classify`/`inferEAL`) + alethic `consume` → `0̲` | the floor |
-| **laws** | `box-and-box` 103 property-tested laws (`test/laws.mjs`) | the algebra |
+| **laws** | `box-and-box` property-tested kernel laws — 109 as `test/laws.mjs` derives them | the algebra |
 | **enforcement** | the bridge `select(...)` — `feasible ▸ permitted ▸ best` | the verdict |
 | **feedback** | `observe` stage — `evolution.mjs` provenance hash-chain + PULSE bus | the trace |
 | **adaptation** | `evolution.mjs` `evolve()` — measured/priced/certified change (EV1–EV6) | the rewrite |
@@ -136,7 +136,7 @@ Ordered so each slice is independently shippable and the risky/broad part comes 
 
 **Slice 1+ — the compose runtime (the lego layer, on top of Slice 0):**
 4. `box-and-box/compose.mjs` — `composeAnd`, `composePipe`, `composeTree`, lifting `combine`/`chain`/`consume` from Values to Bricks, with the `feeds_into`/`accepts_from` check and semiring quantity composition.
-5. `test/compose-laws.mjs` — CC2 §2 conformance (assoc/idem/identity for `&`; assoc/identity + infeasible⇒`0̲` for `|>`). Property-tested, same harness as the 103.
+5. `test/compose-laws.mjs` — CC2 §2 conformance (assoc/idem/identity for `&`; assoc/identity + infeasible⇒`0̲` for `|>`). Property-tested, same harness as the kernel suite. **Shipped:** 101 enforced (CA1–CA4, CP1–CP4, CX1–CX7, CD1–CD17, VX1–VX5, QX1–QX6, AD1–AD5, CERT1–CERT40, TREE1–TREE4, WIRE0–WIRE7, + 1 anchor), 3 declared-open (CP5–CP7).
 6. Forge surface: brick palette + canvas; snap with `& | ⟲`; the six panels retarget to the *selected composite* (Certificate = whole-tree cost, Governance = bridge over the tree, Evolve = mutate the tree); **+ a Feedback panel** (`learn`→`OutcomeSignal`).
 7. A worked demo: a 3-brick coalition (`retrieve |> certify |> govern`) composed, certified, governed, evolved — the [&] stack composing *itself*.
 
@@ -157,7 +157,7 @@ Ordered so each slice is independently shippable and the risky/broad part comes 
 - [ ] Does `Brick` faithfully carry CC2 §2.1's holder + contract, and is `&` still idempotent with the holder tag as provenance (not a tiebreak)?
 - [ ] Does `|>` match CC2 §2.2 exactly: associative, `id` identity, non-commutative, infeasible⇒`0̲`, semiring quantities?
 - [ ] Is the composite cost the **join** of parts' Weave rungs (not a re-measurement)?
-- [ ] Are the new laws a strict superset check over the existing 103 (no contradiction with `combine`/`chain`/`consume` laws)?
+- [x] Are the new laws a strict superset check over the existing kernel laws (no contradiction with `combine`/`chain`/`consume`)? — both suites are green together; CP5–CP7 and CD6 are the declared exceptions and fail loudly rather than silently.
 - [ ] Is v1 honest about what it is *not* (no strategic/epistemic coalition admissibility yet)?
 
 ---

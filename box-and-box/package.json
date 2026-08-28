@@ -1,7 +1,7 @@
 {
   "name": "box-and-box",
   "version": "0.10.0",
-  "description": "box-and-box — faithful runtime of the seven-rung modality ladder plus the resource economy beneath it: alethic, axiological, deontic, temporal, reflexive, epistemic, strategic, and resource (linear/reusable accounting with conservation, capacity-as-continual-learning, and Type-II pricing of the ladder's repair operators). One bridge composes them; an evolution surface measures, prices, and certifies its own revisions on a provenance chain; a compose layer snaps capability bricks together with & and |> over the shared floor. 118 laws property-tested.",
+  "description": "box-and-box \u2014 faithful runtime of the seven-rung modality ladder plus the resource economy beneath it: alethic, axiological, deontic, temporal, reflexive, epistemic, strategic, and resource (linear/reusable accounting with conservation, capacity-as-continual-learning, and Type-II pricing of the ladder's repair operators). One bridge composes them; an evolution surface measures, prices, and certifies its own revisions on a provenance chain; a compose layer snaps capability bricks together with & and |> over the shared floor, over an explicit admission gate (raw \u2192 canonical \u2192 admitted|0\u0332) with attested cost certificates. 179 laws property-tested (103 kernel + 76 compose), plus 3 declared-open.",
   "type": "module",
   "main": "index.mjs",
   "exports": {
@@ -48,10 +48,12 @@
     "LICENSE"
   ],
   "scripts": {
-    "test": "node test/laws.mjs && node test/compose-laws.mjs",
+    "test": "node test/laws.mjs && node test/compose-laws.mjs && node test/transport.mjs",
     "laws": "node test/laws.mjs",
     "compose-laws": "node test/compose-laws.mjs",
-    "prepublishOnly": "node test/laws.mjs && node test/compose-laws.mjs",
+    "parity": "node ../../scripts/check-port-parity.mjs",
+    "transport": "node test/transport.mjs",
+    "prepublishOnly": "node test/laws.mjs && node test/compose-laws.mjs && node test/transport.mjs",
     "rag": "node examples/rag.mjs",
     "select": "node examples/select.mjs",
     "govern": "node examples/govern.mjs",

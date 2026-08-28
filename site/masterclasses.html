@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The [&amp;] Masterclasses — five machines, and the order that makes them cumulative</title>
+<meta name="description" content="Five masterclasses on building an AI factory: agentic engineering, capability composition, AI factories, continuous verification and world-based computing. Each one ends in a falsification table naming the command that would prove it wrong." />
+<link rel="canonical" href="https://ampersandboxdesign.com/masterclasses" />
+<meta property="og:title" content="The [&] Masterclasses" />
+<meta property="og:description" content="Five masterclasses, each ending in a falsification table: the claims it makes, the command that would disprove each one, and what that command should print." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ampersandboxdesign.com/masterclasses" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d0c0a; --bg2:#090907; --surface:#15130e; --surface2:#1b1813;
+    --ink:#f3ecdf; --ink-dim:#cabf9d; --muted:#988e7c; --faint:#615a4d;
+    --line:#2a261d; --line2:#383022;
+    --amber:#e69138; --amber-2:#f0b15f;
+    --teal:#5cc196; --red:#e0604f; --violet:#b388ff; --blue:#4fc3ff;
+    --serif:"Fraunces",Georgia,serif;
+    --sans:"Hanken Grotesk",system-ui,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--sans);
+       font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased; overflow-x:hidden}
+  body::before{content:""; position:fixed; inset:0; z-index:-2; pointer-events:none;
+    background:radial-gradient(820px 520px at 78% -8%, rgba(230,145,56,.13), transparent 60%),
+               radial-gradient(700px 600px at 6% 8%, rgba(92,193,150,.06), transparent 55%)}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px}
+  a{color:inherit; text-decoration:none}
+  ::selection{background:rgba(230,145,56,.28); color:#fff}
+  h1,h2,h3{font-family:var(--serif); font-weight:600; letter-spacing:-.015em; line-height:1.06; margin:0}
+  .kicker{font-family:var(--mono); font-size:12px; letter-spacing:.22em; text-transform:uppercase;
+          color:var(--amber); margin:0 0 18px; display:inline-flex; align-items:center; gap:10px}
+  .kicker::before{content:""; width:22px; height:1px; background:var(--amber); opacity:.7}
+  .lead{color:var(--muted); font-size:clamp(17px,2.1vw,21px); line-height:1.62; max-width:64ch}
+  .lead strong{color:var(--ink-dim)}
+  code{font-family:var(--mono); font-size:.88em; color:var(--amber-2); background:rgba(230,145,56,.08);
+       padding:.08em .38em; border-radius:5px}
+  section{padding:76px 0; position:relative}
+
+  nav{position:sticky; top:0; z-index:50; backdrop-filter:blur(11px);
+      background:rgba(13,12,10,.66); border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex; align-items:center; height:64px; gap:30px}
+  .brand{font-family:var(--mono); font-weight:600; letter-spacing:.04em; font-size:15px}
+  .brand b{color:var(--amber)}
+  nav .links{display:flex; gap:26px; margin-left:auto; align-items:center}
+  nav .links a{font-size:14px; color:var(--muted); transition:color .2s}
+  nav .links a:hover{color:var(--ink)}
+  @media(max-width:900px){ nav .links a{display:none} }
+
+  header.hero{padding:80px 0 40px}
+  header.hero h1{font-size:clamp(36px,6.6vw,74px); max-width:15ch}
+  header.hero .lead{margin-top:26px}
+
+  /* the curriculum */
+  .curr{display:grid; gap:16px; margin-top:14px}
+  .mc{border:1px solid var(--line); border-radius:16px; background:var(--surface); overflow:hidden;
+      display:grid; grid-template-columns:76px 1fr; transition:.2s}
+  .mc:hover{border-color:var(--line2); transform:translateY(-2px)}
+  @media(max-width:700px){ .mc{grid-template-columns:1fr} }
+  .mc .num{display:flex; align-items:center; justify-content:center; font-family:var(--mono);
+           font-size:23px; font-weight:600; color:var(--faint); border-right:1px solid var(--line);
+           background:rgba(0,0,0,.2)}
+  @media(max-width:700px){ .mc .num{border-right:none; border-bottom:1px solid var(--line); padding:10px 0} }
+  .mc .in{padding:24px 26px}
+  .mc .top{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; margin-bottom:9px}
+  .mc .top .teaches{font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase}
+  .mc h3{font-size:25px; margin:0 0 10px}
+  .mc p{margin:0 0 15px; color:var(--muted); font-size:15px; max-width:74ch}
+  .mc .q{color:var(--ink-dim); font-size:15px; margin:0 0 16px; font-style:italic; max-width:74ch}
+  .mc .foot{display:flex; flex-wrap:wrap; gap:8px 18px; align-items:center;
+            font-family:var(--mono); font-size:11.5px; color:var(--faint);
+            padding-top:14px; border-top:1px dashed var(--line2)}
+  .mc .foot b{color:var(--ink-dim); font-weight:500}
+  .mc .go{margin-left:auto; color:var(--amber-2)}
+  .mc.c1 .num,.mc.c1 .teaches{color:var(--teal)}
+  .mc.c2 .num,.mc.c2 .teaches{color:var(--violet)}
+  .mc.c3 .num,.mc.c3 .teaches{color:var(--blue)}
+  .mc.c4 .num,.mc.c4 .teaches{color:var(--teal)}
+  .mc.c5 .num,.mc.c5 .teaches{color:var(--amber)}
+
+  .note{border:1px solid var(--line2); border-left:3px solid var(--amber); border-radius:12px; padding:22px 24px;
+        background:var(--surface); color:var(--ink-dim); line-height:1.62; margin-top:34px; font-size:15.5px}
+  .note b{color:var(--ink)}
+  .note.teal{border-left-color:var(--teal)}
+
+  /* the map */
+  .map{border:1px solid var(--line2); border-radius:16px; overflow:hidden; margin-top:32px; background:var(--surface)}
+  .map .mh{padding:14px 22px; border-bottom:1px solid var(--line); font-family:var(--mono);
+           font-size:12.5px; color:var(--muted)}
+  .maprow{display:grid; grid-template-columns:210px 1fr; gap:22px; padding:17px 24px; border-bottom:1px solid var(--line); align-items:center}
+  .maprow:last-child{border-bottom:none}
+  .maprow .cellname{font-family:var(--mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--amber)}
+  .maprow .taught{color:var(--muted); font-size:14.5px}
+  .maprow .taught a{color:var(--amber-2); border-bottom:1px solid var(--line2)}
+  @media(max-width:700px){ .maprow{grid-template-columns:1fr; gap:5px} }
+
+  footer{border-top:1px solid var(--line); padding:56px 0 46px; margin-top:30px}
+  footer .grid{display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:28px}
+  @media(max-width:820px){ footer .grid{grid-template-columns:1fr 1fr} }
+  footer h5{font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--faint); margin:0 0 14px}
+  footer a{display:block; color:var(--muted); font-size:14px; margin-bottom:9px}
+  footer a:hover{color:var(--amber-2)}
+  footer .blurb{color:var(--muted); font-size:14px; max-width:36ch; margin:14px 0 0}
+  .copy{font-family:var(--mono); font-size:12px; color:var(--faint); margin-top:36px; padding-top:22px;
+        border-top:1px solid var(--line); display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px}
+</style>
+</head>
+<body>
+<script type="module" src="/amp-nav.js"></script>
+<amp-nav property="masterclasses" style="--amp-nav-bg:rgba(13,12,10,.82);--amp-nav-fg:#f3ecdf;--amp-nav-muted:#988e7c;--amp-nav-accent:#e69138;--amp-nav-border:rgba(243,236,223,.1);--amp-nav-hover:rgba(243,236,223,.05);--amp-nav-cta-bg:#e69138;--amp-nav-cta-fg:#0d0c0a;"></amp-nav>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="/">[<b>&amp;</b>] AMPERSAND BOX</a>
+    <div class="links">
+      <a href="/">The factory</a>
+      <a href="/factory">The floor</a>
+      <a href="/laws">The laws</a>
+      <a href="/protocol">Protocol</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="kicker">The curriculum</p>
+    <h1>Five machines, and the order that makes them cumulative.</h1>
+    <p class="lead">
+      The factory is an arrangement of specialized machinery. These five pages teach the machines — one each —
+      and they are ordered so that every page can assume the one before it.
+      <strong>Every one ends in a falsification table</strong>: the claims it makes, the command that would
+      disprove each one, and what that command should print. Run them.
+    </p>
+  </div>
+</header>
+
+<section style="padding-top:26px">
+  <div class="wrap">
+    <div class="curr">
+
+      <a class="mc c1" href="/agentic-engineering-masterclass">
+        <div class="num">01</div>
+        <div class="in">
+          <div class="top"><span class="teaches">teaches the BUILD cell</span></div>
+          <h3>The New SDLC, Made Formal</h3>
+          <p class="q">"If the model is doing the work, what exactly am I building?"</p>
+          <p>The answer that the harness — not the model — is the product, and where each box of the old software lifecycle actually goes once agents are doing the typing. Start here if you have used a coding agent and found it fast but not compounding.</p>
+          <div class="foot"><span><b>Agentic engineering</b></span><span>the model is ~10%</span><span class="go">Read →</span></div>
+        </div>
+      </a>
+
+      <a class="mc c2" href="/capability-composition-masterclass">
+        <div class="num">02</div>
+        <div class="in">
+          <div class="top"><span class="teaches">teaches the COMPOSE cell</span></div>
+          <h3>Composition Is Not a List</h3>
+          <p class="q">"I have capabilities, skills, tools and agent cards. What happens when I combine them?"</p>
+          <p>Two operators, a zero, and a suite of property-tested laws — plus three counterexamples where the laws still do not hold, one of which you can reproduce in your browser tab by pressing a button. The runtime on that page is the real <code>compose.mjs</code>, inlined unmodified.</p>
+          <div class="foot"><span><b>Capability composition</b></span><span>CP7 reproduces live</span><span class="go">Read →</span></div>
+        </div>
+      </a>
+
+      <a class="mc c3" href="/ai-factories-masterclass">
+        <div class="num">03</div>
+        <div class="in">
+          <div class="top"><span class="teaches">teaches the whole ARRANGEMENT</span></div>
+          <h3>The Worldware Factory</h3>
+          <p class="q">"Everyone says AI factory. What would actually make one compound?"</p>
+          <p>The load-bearing page. What the term already means to three different industries, why parallel agents alone do not compound, and an arithmetic model showing that unboxing without checked joins is <strong>faster and wrong at exactly the same rate</strong>. Introduces Worldware as a category.</p>
+          <div class="foot"><span><b>AI factories</b></span><span>run the line simulator</span><span class="go">Read →</span></div>
+        </div>
+      </a>
+
+      <a class="mc c4" href="/continuous-verification-masterclass">
+        <div class="num">04</div>
+        <div class="in">
+          <div class="top"><span class="teaches">teaches the FALSIFY + CERTIFY cells</span></div>
+          <h3>Proof as a Production Step</h3>
+          <p class="q">"Nobody can read all of this. What replaces the review queue?"</p>
+          <p>Property tests over 2000 trials, certificates that carry their reasons, and the arithmetic of what N random trials actually buys you — including the uncomfortable part, which is that a passing suite is evidence of rarity and never of absence.</p>
+          <div class="foot"><span><b>Continuous verification</b></span><span>3 laws print FALSIFIED by design</span><span class="go">Read →</span></div>
+        </div>
+      </a>
+
+      <a class="mc c5" href="/world-economics-masterclass">
+        <div class="num">05</div>
+        <div class="in">
+          <div class="top"><span class="teaches">teaches the WORLD cell</span></div>
+          <h3>Worlds That Pay For Themselves</h3>
+          <p class="q">"What does a world cost, and what can you charge for once you ship one?"</p>
+          <p>Where a world beats a repository and a CI pipeline and where it does not — two of six shapes favour the incumbent. The bounded semantic layer that makes the differentiated part of a world nearly free. A sizing calculator with published formulas. And four line items that are hard to bill for when you ship a repo.</p>
+          <div class="foot"><span><b>World economics</b></span><span>arguments from properties, no customers yet</span><span class="go">Read →</span></div>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="note teal">
+      <b>The contract every one of these pages signs.</b> Each ends with a table naming the claims it makes, the
+      command that exercises each claim, what you should see, and <b>the specific observation that would kill
+      it</b>. Commands carry their directory — run them from the repository root and they fail with
+      <code>MODULE_NOT_FOUND</code>, which on a page whose contract is <em>run the command</em> would be the worst
+      available defect. Counts are derived by the suites that produce them and are never hand-typed, because a
+      published count and a printed count drifted apart exactly once and that was enough.
+    </div>
+
+    <div class="note">
+      <b>Two figures were removed from a published draft for lacking a primary source</b>, and the composition
+      masterclass says so in its own text rather than quietly correcting them. A third page's hand-typed cell
+      count disagreed with its own data array and now derives the number instead. These are not incidental —
+      they are the same discipline the falsification tables enforce, applied to the pages themselves.
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <p class="kicker">Which machine, which page</p>
+    <h2 style="font-size:clamp(26px,3.8vw,40px); max-width:20ch">Every cell on the floor, and where it is taught.</h2>
+    <div class="map">
+      <div class="mh">the factory floor → the curriculum</div>
+      <div class="maprow"><div class="cellname">SPECIFY</div><div class="taught">The [&amp;] Protocol itself — <a href="/protocol">the specification</a>, with composition covered in <a href="/capability-composition-masterclass">02</a>.</div></div>
+      <div class="maprow"><div class="cellname">BUILD</div><div class="taught"><a href="/agentic-engineering-masterclass">01 · Agentic Engineering</a> — the harness argument.</div></div>
+      <div class="maprow"><div class="cellname">COMPOSE</div><div class="taught"><a href="/capability-composition-masterclass">02 · Capability Composition</a> — the operators, the zero, and the three open gaps.</div></div>
+      <div class="maprow"><div class="cellname">GOVERN</div><div class="taught"><a href="/#constitution">The eight rungs on the homepage</a> and <a href="/laws">the 210 laws</a>; the verification discipline in <a href="/continuous-verification-masterclass">04</a>.</div></div>
+      <div class="maprow"><div class="cellname">FALSIFY · CERTIFY</div><div class="taught"><a href="/continuous-verification-masterclass">04 · Continuous Verification</a> — properties, trials, certificates and their limits.</div></div>
+      <div class="maprow"><div class="cellname">WORLD</div><div class="taught"><a href="/world-economics-masterclass">05 · World economics</a> — and it is honest that this is the least-finished cell.</div></div>
+      <div class="maprow"><div class="cellname">THE ARRANGEMENT</div><div class="taught"><a href="/ai-factories-masterclass">03 · The Worldware Factory</a> — how the cells relate, and why the join is the whole problem.</div></div>
+      <div class="maprow"><div class="cellname">RESEARCH · SPEC DISCIPLINE · MEMORY · AUTHORITY · PACKAGE · METROLOGY · DEPLOY · EVIDENCE · PROOF · OBSERVE · CONTROL ROOM</div><div class="taught">Not yet taught by a masterclass. Described on <a href="/factory">the factory floor</a> with their real repositories and evidence rungs.</div></div>
+    </div>
+    <p style="font-family:var(--mono); font-size:12.5px; color:var(--faint); margin-top:22px">
+      <b style="color:var(--ink-dim)">Eleven of the eighteen cells have no masterclass.</b> That is stated rather
+      than padded — a curriculum that claimed to cover the whole floor would be the first thing on this site to
+      fail its own falsification test. The seven that are covered are the seven the join argument depends on.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <a class="brand" href="/" style="font-size:16px">[<b style="color:var(--amber)">&amp;</b>] AMPERSAND BOX</a>
+        <p class="blurb">The factory architecture. Parallelize the work, prove the assemblies, formalize the joins, and let the line compound.</p>
+      </div>
+      <div>
+        <h5>The factory</h5>
+        <a href="/">Overview</a>
+        <a href="/factory">The floor plan</a>
+        <a href="/#compose">The join</a>
+        <a href="/#worldware">Worldware</a>
+      </div>
+      <div>
+        <h5>Constitution</h5>
+        <a href="/#constitution">The eight rungs</a>
+        <a href="/laws">The 210 laws</a>
+        <a href="/protocol">[&amp;] Protocol</a>
+        <a href="/blueprint">Blueprint</a>
+      </div>
+      <div>
+        <h5>Masterclasses</h5>
+        <a href="/agentic-engineering-masterclass">01 · Agentic engineering</a>
+        <a href="/capability-composition-masterclass">02 · Composition</a>
+        <a href="/ai-factories-masterclass">03 · AI factories</a>
+        <a href="/continuous-verification-masterclass">04 · Verification</a>
+        <a href="/world-economics-masterclass">05 · Worlds That Pay For Themselves</a>
+      </div>
+    </div>
+    <div class="copy">
+      <span>© Ampersand Box Design</span>
+      <span>Every page names the command that would prove it wrong.</span>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

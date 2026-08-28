@@ -1,0 +1,1781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI Capability Composition Masterclass | [&amp;] Compose</title>
+<meta name="description" content="Learn how AI agent capabilities compose across tools, skills, MCP and A2A — using explicit operators, tested laws, fail-closed semantics and live counterexamples." />
+<link rel="canonical" href="https://ampersandboxdesign.com/capability-composition-masterclass" />
+<meta property="og:title" content="Composition Is Not a List — an AI Capability Composition Masterclass" />
+<meta property="og:description" content="The agent ecosystem standardized capabilities. The unresolved question is what happens when you combine them. Two operators, 210 enforced laws, 3 open counterexamples you can reproduce in the browser." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ampersandboxdesign.com/capability-composition-masterclass" />
+<style>
+  :root {
+    --bg: #07090d;
+    --bg-2: #0b0e14;
+    --panel: #11151e;
+    --panel-2: #161b27;
+    --ink: #e8edf6;
+    --ink-dim: #9aa6bd;
+    --ink-faint: #5f6b82;
+    --line: #1e2533;
+    --line-bright: #2c3548;
+    /* the two operators get their own colours and keep them the whole page */
+    --amp: #b388ff;      /* & — combine  */
+    --pipe: #4fc3ff;     /* |> — pipeline */
+    --zero: #ff5a4d;     /* 0̲ — annihilation */
+    --live: #2ee6a6;     /* a surviving composite */
+    --box: #ffd24d;      /* governance / the floor */
+    --pulse: #ff8a3d;    /* phases */
+    --ext: #8b93a8;      /* external / other people's work */
+    --radius: 14px;
+    --maxw: 1080px;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: radial-gradient(1200px 800px at 78% -12%, #1a1430 0%, var(--bg) 55%) fixed;
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: var(--pipe); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+    background: linear-gradient(90deg, var(--amp), var(--pipe) 60%, var(--live));
+    z-index: 100; transition: width .1s linear;
+    box-shadow: 0 0 14px rgba(179,136,255,.6);
+  }
+
+  nav.top {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(14px);
+    background: rgba(7,9,13,.72);
+    border-bottom: 1px solid var(--line);
+  }
+  nav.top .wrap { display: flex; align-items: center; gap: 18px; height: 56px; }
+  .brand { font-weight: 800; letter-spacing: .02em; font-size: 15px; display: flex; align-items: center; gap: 9px; }
+  .brand .amp { color: var(--amp); font-family: var(--mono); }
+  nav.top .links { margin-left: auto; display: flex; gap: 18px; font-size: 13px; color: var(--ink-dim); }
+  nav.top .links a { color: var(--ink-dim); }
+  nav.top .links a:hover { color: var(--ink); text-decoration: none; }
+  @media (max-width: 900px) { nav.top .links { display: none; } }
+
+  header.hero { padding: 84px 0 60px; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink-dim); border: 1px solid var(--line-bright); border-radius: 999px;
+    padding: 6px 14px; margin-bottom: 26px; background: var(--panel);
+  }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amp); box-shadow: 0 0 10px var(--amp); animation: pulse 2.4s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+
+  h1.title { font-size: clamp(34px, 6.4vw, 66px); line-height: 1.03; margin: 0 0 22px; font-weight: 850; letter-spacing: -.025em; }
+  h1.title .grad { background: linear-gradient(100deg, var(--amp), var(--pipe) 55%, var(--live)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lede { font-size: clamp(17px, 2.1vw, 21px); color: var(--ink-dim); max-width: 780px; }
+  .lede strong { color: var(--ink); font-weight: 650; }
+
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
+  .btn { font-family: var(--mono); font-size: 13px; letter-spacing: .03em; padding: 12px 20px; border-radius: 10px; border: 1px solid var(--line-bright); background: var(--panel); color: var(--ink); cursor: pointer; transition: .2s; display: inline-block; }
+  .btn:hover { border-color: var(--amp); transform: translateY(-2px); text-decoration: none; }
+  .btn.primary { background: linear-gradient(100deg, #3a2168, #52308f); border-color: #6b45b8; }
+  .btn.danger { border-color: rgba(255,90,77,.5); color: var(--zero); }
+
+  .hero-stats { display: flex; flex-wrap: wrap; gap: 34px; margin-top: 50px; padding-top: 30px; border-top: 1px solid var(--line); }
+  .stat .n { font-size: 30px; font-weight: 800; font-family: var(--mono); letter-spacing: -.01em; }
+  .stat .n.c1 { color: var(--live); } .stat .n.c2 { color: var(--zero); }
+  .stat .n.c3 { color: var(--pipe); } .stat .n.c4 { color: var(--amp); }
+  .stat .l { font-size: 12.5px; color: var(--ink-faint); letter-spacing: .03em; max-width: 210px; }
+
+  section { padding: 74px 0; border-top: 1px solid var(--line); position: relative; }
+  .kicker { font-family: var(--mono); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-faint); margin: 0 0 14px; }
+  h2.sec { font-size: clamp(26px, 4vw, 40px); margin: 0 0 18px; letter-spacing: -.015em; font-weight: 800; line-height: 1.1; }
+  .sec-lede { font-size: 17.5px; color: var(--ink-dim); max-width: 750px; margin: 0 0 34px; }
+  .sec-lede strong { color: var(--ink); }
+  h3.sub { font-size: 19px; margin: 40px 0 14px; letter-spacing: -.01em; }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* GEO answer block — every section opens with a self-contained definition */
+  .answer { background: var(--panel); border: 1px solid var(--line-bright); border-left: 3px solid var(--amp); border-radius: 0 12px 12px 0; padding: 20px 24px; margin: 0 0 30px; }
+  .answer h3 { margin: 0 0 9px; font-size: 15.5px; color: var(--ink); font-weight: 700; letter-spacing: -.005em; }
+  .answer p { margin: 0; font-size: 15px; color: var(--ink-dim); line-height: 1.7; }
+  .answer p b { color: var(--ink); }
+
+  .op { font-family: var(--mono); font-weight: 700; }
+  .op.amp { color: var(--amp); } .op.pipe { color: var(--pipe); } .op.zero { color: var(--zero); }
+
+  /* hero: list vs composition */
+  .lvc { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 44px; }
+  @media (max-width: 880px) { .lvc { grid-template-columns: 1fr; } }
+  .lvc-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+  .lvc-card.right { border-color: var(--line-bright); }
+  .lvc-h { font-family: var(--mono); font-size: 11px; letter-spacing: .13em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 16px; }
+  .lvc-card.right .lvc-h { color: var(--amp); }
+  .caps { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cap-tok { font-family: var(--mono); font-size: 12.5px; padding: 7px 12px; border-radius: 8px; background: var(--bg-2); border: 1px solid var(--line); color: var(--ink-dim); }
+  .lvc-verdict { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--line); font-size: 13.5px; color: var(--ink-faint); line-height: 1.6; }
+  .lvc-expr { font-family: var(--mono); font-size: 14.5px; padding: 13px 15px; background: #0a0d13; border: 1px solid var(--line); border-radius: 10px; overflow-x: auto; white-space: nowrap; color: var(--ink); }
+  .derived { margin-top: 16px; display: grid; gap: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .drow { display: flex; align-items: baseline; gap: 10px; padding: 8px 14px; font-family: var(--mono); font-size: 12px; border-bottom: 1px solid var(--line); background: #0a0d13; }
+  .drow:last-child { border-bottom: 0; }
+  .drow .dk { color: var(--ink-faint); min-width: 104px; }
+  .drow .dv { color: var(--ink-dim); }
+  .drow .dv.ok { color: var(--live); } .drow .dv.bad { color: var(--zero); font-weight: 700; }
+  .drow.final { background: var(--panel-2); }
+  .drow.final .dv { font-weight: 700; font-size: 13px; }
+  .break-row { margin-top: 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: var(--mono); font-size: 12px; color: var(--ink-faint); }
+  .toggle { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; padding: 7px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg-2); color: var(--ink-dim); transition: .15s; }
+  .toggle:hover { border-color: var(--line-bright); }
+  .toggle.on { border-color: var(--zero); color: var(--zero); background: rgba(255,90,77,.08); }
+  .toggle input { display: none; }
+
+  /* generic tables */
+  .tbl { width: 100%; border-collapse: collapse; font-size: 14px; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .tbl thead th { text-align: left; padding: 13px 16px; background: var(--panel-2); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; border-bottom: 1px solid var(--line-bright); }
+  .tbl tbody td { padding: 14px 16px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--ink-dim); }
+  .tbl tbody tr:last-child td { border-bottom: 0; }
+  .tbl tbody tr:hover { background: rgba(255,255,255,.018); }
+  .tbl .nm { color: var(--ink); font-weight: 650; }
+  .tbl code { font-size: 12px; }
+  .scroll-x { overflow-x: auto; }
+  @media (max-width: 800px) { .scroll-x .tbl { min-width: 680px; } }
+
+  .st { font-family: var(--mono); font-size: 10.5px; padding: 3px 9px; border-radius: 999px; white-space: nowrap; display: inline-block; }
+  .st.running { background: rgba(46,230,166,.14); color: var(--live); }
+  .st.specified { background: rgba(179,136,255,.15); color: var(--amp); }
+  .st.draft { background: rgba(242,181,59,.15); color: var(--box); }
+  .st.none { background: rgba(95,107,130,.2); color: var(--ink-dim); }
+  .st.open { background: rgba(255,90,77,.15); color: var(--zero); }
+  .st.ext { background: rgba(95,107,130,.14); color: var(--ink-faint); }
+
+  /* two operators */
+  .ops { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 820px) { .ops { grid-template-columns: 1fr; } }
+  .opcard { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; position: relative; overflow: hidden; }
+  .opcard::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--clr); }
+  .opcard .glyph { font-family: var(--mono); font-size: 34px; font-weight: 800; color: var(--clr); line-height: 1; }
+  .opcard h3 { margin: 12px 0 4px; font-size: 19px; }
+  .opcard .role { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); }
+  .opcard p { font-size: 14px; color: var(--ink-dim); margin: 12px 0 0; }
+  .opcard ul { margin: 14px 0 0; padding-left: 18px; font-size: 13.5px; color: var(--ink-dim); }
+  .opcard ul li { margin-bottom: 6px; }
+  .opcard .lawline { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 12px; color: var(--ink-faint); line-height: 1.9; }
+  .opcard .lawline b { color: var(--clr); }
+
+  /* laws as engineering questions */
+  .lawq { display: grid; gap: 10px; }
+  .lq { display: grid; grid-template-columns: 168px 1fr; gap: 18px; padding: 15px 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 11px; align-items: start; }
+  @media (max-width: 700px) { .lq { grid-template-columns: 1fr; gap: 6px; } }
+  .lq .law { font-family: var(--mono); font-size: 13px; color: var(--ink); font-weight: 650; }
+  .lq .law small { display: block; color: var(--ink-faint); font-size: 11px; font-weight: 400; margin-top: 3px; }
+  .lq .q { font-size: 14px; color: var(--ink-dim); }
+  .lq .q b { color: var(--ink); }
+
+  /* code / certificate */
+  .cert { background: #0a0d13; border: 1px solid var(--line-bright); border-radius: var(--radius); overflow: hidden; font-family: var(--mono); font-size: 13px; }
+  .cert .bar { display: flex; align-items: center; gap: 8px; padding: 11px 16px; background: var(--panel-2); border-bottom: 1px solid var(--line); }
+  .cert .bar .d { width: 11px; height: 11px; border-radius: 50%; }
+  .cert .bar .t { margin-left: 8px; color: var(--ink-faint); font-size: 12px; }
+  .cert pre { margin: 0; padding: 20px; overflow-x: auto; line-height: 1.7; color: var(--ink-dim); }
+  .cert .k { color: var(--pipe); } .cert .s { color: var(--live); } .cert .n { color: var(--box); } .cert .c { color: var(--ink-faint); }
+  .cert .bad { color: var(--zero); }
+
+  /* slider */
+  .rel-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; }
+  .rel-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+  @media (max-width: 700px) { .rel-controls { grid-template-columns: 1fr; } }
+  .rel-controls label { display: block; font-family: var(--mono); font-size: 12px; color: var(--ink-faint); margin-bottom: 10px; letter-spacing: .04em; }
+  .rel-controls label b { color: var(--ink); font-size: 14px; }
+  input[type=range] { -webkit-appearance: none; appearance: none; display: block; width: 100%; height: 26px; background: transparent; cursor: pointer; margin: 0; }
+  input[type=range]::-webkit-slider-runnable-track { height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--zero), var(--box) 55%, var(--live)); }
+  input[type=range]::-moz-range-track { height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--zero), var(--box) 55%, var(--live)); }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; margin-top: -7px; border-radius: 50%; background: #fff; border: 3px solid #0b0e14; box-shadow: 0 0 0 2px #fff; }
+  input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 3px solid #0b0e14; box-shadow: 0 0 0 2px #fff; }
+  #chain-canvas { width: 100%; height: 220px; display: block; margin-top: 26px; }
+  .rel-readout { display: flex; flex-wrap: wrap; gap: 26px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 13px; }
+  .rel-readout .rr .rk { color: var(--ink-faint); font-size: 11px; display: block; letter-spacing: .06em; text-transform: uppercase; }
+  .rel-readout .rr .rv { font-size: 21px; font-weight: 800; }
+
+  /* playground */
+  .pg { background: var(--panel); border: 1px solid var(--line-bright); border-radius: var(--radius); padding: 24px; }
+  .pg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 900px) { .pg-grid { grid-template-columns: 1fr; } }
+  .brick-ed { background: var(--bg-2); border: 1px solid var(--line); border-radius: 11px; padding: 15px 16px; margin-bottom: 10px; }
+  .brick-ed .bh { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; }
+  .brick-ed .bid { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--amp); }
+  .brick-ed .bholder { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); }
+  .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+  @media (max-width: 520px) { .fields { grid-template-columns: 1fr; } }
+  .fld label { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 4px; }
+  .fld select, .fld input {
+    width: 100%; font-family: var(--mono); font-size: 12px; padding: 6px 9px; border-radius: 7px;
+    background: #0a0d13; border: 1px solid var(--line); color: var(--ink); outline: none;
+  }
+  .fld select:focus, .fld input:focus { border-color: var(--amp); }
+  .expr-pick { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .ebtn { font-family: var(--mono); font-size: 12px; padding: 7px 12px; border-radius: 8px; cursor: pointer; background: var(--bg-2); border: 1px solid var(--line); color: var(--ink-faint); transition: .15s; }
+  .ebtn:hover { border-color: var(--line-bright); color: var(--ink-dim); }
+  .ebtn.on { background: rgba(179,136,255,.16); border-color: var(--amp); color: var(--amp); }
+  .out-panel { background: #0a0d13; border: 1px solid var(--line); border-radius: 11px; overflow: hidden; }
+  .out-panel .oh { font-family: var(--mono); font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-faint); padding: 9px 14px; border-bottom: 1px solid var(--line); background: var(--panel-2); }
+  .verdict-big { padding: 22px 16px; text-align: center; font-family: var(--mono); font-weight: 800; font-size: 40px; letter-spacing: -.01em; transition: .25s; }
+  .verdict-big.live { color: var(--live); }
+  .verdict-big.zero { color: var(--zero); }
+  .verdict-why { padding: 0 16px 16px; text-align: center; font-family: var(--mono); font-size: 11.5px; color: var(--ink-faint); line-height: 1.6; }
+
+  /* CP7 — the broken law */
+  .broken { border: 1px solid rgba(255,90,77,.4); border-radius: var(--radius); background: linear-gradient(180deg, rgba(255,90,77,.06), transparent 60%); padding: 28px; margin-top: 8px; }
+  .broken .btag { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--zero); }
+  .broken h3 { margin: 10px 0 10px; font-size: 22px; color: var(--ink); }
+  .swap-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center; margin-top: 22px; }
+  @media (max-width: 720px) { .swap-row { grid-template-columns: 1fr; } }
+  .swap-side { background: #0a0d13; border: 1px solid var(--line); border-radius: 11px; padding: 18px; text-align: center; transition: .3s; }
+  .swap-side .sexpr { font-family: var(--mono); font-size: 15px; color: var(--ink); margin-bottom: 12px; }
+  .swap-side .sres { font-family: var(--mono); font-size: 30px; font-weight: 800; }
+  .swap-side .sres.live { color: var(--live); } .swap-side .sres.zero { color: var(--zero); }
+  .swap-side.hot { border-color: var(--zero); box-shadow: 0 0 24px rgba(255,90,77,.18); }
+  .swap-mid { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); text-align: center; }
+  .lawrow { display: flex; align-items: baseline; gap: 12px; padding: 11px 15px; border: 1px solid var(--line); border-radius: 9px; background: #0a0d13; margin-bottom: 8px; font-family: var(--mono); font-size: 12.5px; }
+  .lawrow .lid { font-weight: 800; min-width: 42px; }
+  .lawrow.fail { border-color: rgba(255,90,77,.35); }
+  .lawrow.fail .lid { color: var(--zero); }
+  .lawrow.pass .lid { color: var(--live); }
+  .lawrow .ltext { color: var(--ink-dim); }
+
+  /* landscape */
+  .land { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+  .lcard { border: 1px solid var(--line); border-left: 3px solid var(--clr); border-radius: 11px; padding: 17px 19px; background: var(--panel); }
+  .lcard h4 { margin: 0 0 4px; font-size: 14.5px; color: var(--ink); }
+  .lcard .who { font-family: var(--mono); font-size: 10.5px; color: var(--ink-faint); letter-spacing: .04em; }
+  .lcard p { margin: 11px 0 0; font-size: 13px; color: var(--ink-dim); line-height: 1.62; }
+  .lcard.ours { border-left-color: var(--amp); background: linear-gradient(180deg, rgba(179,136,255,.07), transparent); }
+
+  blockquote.callout {
+    margin: 34px 0 0; padding: 22px 26px; border-left: 3px solid var(--amp);
+    background: linear-gradient(90deg, rgba(179,136,255,.07), transparent);
+    border-radius: 0 12px 12px 0; font-size: 18px; color: var(--ink);
+  }
+  blockquote.callout cite { display: block; margin-top: 10px; font-size: 13px; color: var(--ink-faint); font-style: normal; font-family: var(--mono); }
+
+  .honest { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); margin-top: 18px; padding: 13px 16px; border: 1px dashed var(--line-bright); border-radius: 10px; line-height: 1.75; }
+  .honest b { color: var(--ink-dim); }
+
+  /* falsification */
+  .fals { width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin-top: 24px; }
+  .fals th { text-align: left; padding: 12px 15px; background: var(--panel-2); font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-faint); border-bottom: 1px solid var(--line-bright); }
+  .fals td { padding: 13px 15px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--ink-dim); }
+  .fals tr:last-child td { border-bottom: 0; }
+  .fals .claim { color: var(--ink); font-weight: 600; }
+  .fals code { font-size: 11.5px; white-space: nowrap; }
+  .fals .kill { color: var(--zero); font-family: var(--mono); font-size: 11.5px; line-height: 1.6; }
+  @media (max-width: 760px) { .fals-scroll { overflow-x: auto; } .fals { min-width: 760px; } }
+
+  footer { padding: 56px 0 80px; border-top: 1px solid var(--line); color: var(--ink-faint); font-size: 13px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 18px 40px; align-items: baseline; }
+  footer a { color: var(--ink-dim); }
+  footer .note { flex-basis: 100%; margin-top: 18px; font-family: var(--mono); font-size: 12px; line-height: 1.8; color: var(--ink-faint); }
+  .srcs { flex-basis: 100%; margin-top: 16px; font-size: 12px; line-height: 1.9; color: var(--ink-faint); }
+  .srcs a { color: var(--ink-dim); }
+</style>
+</head>
+<body>
+<a id="top"></a>
+<div id="progress"></div>
+
+<script type="module" src="/amp-nav.js"></script>
+<amp-nav
+  property="compose_masterclass"
+  style="
+    --amp-nav-bg: rgba(7,9,13,.975);
+    --amp-nav-fg: #e8edf6;
+    --amp-nav-muted: #5f6b82;
+    --amp-nav-accent: #b388ff;
+    --amp-nav-border: #1e2533;
+    --amp-nav-hover: rgba(232,237,246,.045);
+    --amp-nav-cta-bg: #b388ff;
+    --amp-nav-cta-fg: #07090d;
+  "
+></amp-nav>
+
+<nav class="top">
+  <div class="wrap">
+    <div class="brand"><span class="amp">[&amp;]</span> Compose</div>
+    <div class="links">
+      <a href="#capability-composition">Composition</a>
+      <a href="#combine-operator">Operators</a>
+      <a href="#zero">Zero</a>
+      <a href="#composition-safety">Safety</a>
+      <a href="#playground">Playground</a>
+      <a href="#cp7" style="color:var(--zero)">Break It</a>
+      <a href="#falsify" style="color:var(--zero)">Falsify</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span> Masterclass · Capability Composition</div>
+    <h1 class="title">Composition Is <span class="grad">Not a List</span>.</h1>
+    <p class="lede">
+      The agent ecosystem has standardized capabilities, skills, tools, and agent cards.
+      <strong>The unresolved question is what happens when you combine them.</strong>
+      This page gives that question two operators, a zero, a suite of property-tested laws — and three
+      counterexamples where our own laws still don't hold, which you can reproduce in this browser tab.
+    </p>
+    <div class="hero-cta">
+      <a class="btn primary" href="#playground">Compose something →</a>
+      <a class="btn" href="#capability-composition">Start at the beginning</a>
+      <a class="btn danger" href="#cp7">Show me a broken law</a>
+    </div>
+
+    <!-- the defining visual: a list, then a composition -->
+    <div class="lvc">
+      <div class="lvc-card">
+        <div class="lvc-h">A list</div>
+        <div class="caps">
+          <span class="cap-tok">&amp;memory</span>
+          <span class="cap-tok">&amp;reason</span>
+          <span class="cap-tok">&amp;body</span>
+          <span class="cap-tok">&amp;govern</span>
+        </div>
+        <div class="lvc-verdict">
+          All present. Nothing said about how they interact — not order, not compatibility, not authority,
+          not what happens to confidence, cost or latency, and not what the system does when one of them
+          is wrong for the job.
+        </div>
+      </div>
+      <div class="lvc-card right">
+        <div class="lvc-h">A composition</div>
+        <div class="lvc-expr" id="hero-expr"></div>
+        <div class="derived" id="hero-derived"></div>
+        <div class="break-row">
+          <label class="toggle" id="hero-break-t">
+            <input type="checkbox" id="hero-break" /> break the hand-off type
+          </label>
+          <label class="toggle" id="hero-back-t">
+            <input type="checkbox" id="hero-back" /> send a step backwards
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat"><div class="n c1" id="s-enforced">210</div><div class="l">enforced laws, derived by the suites — never hand-typed</div></div>
+      <div class="stat"><div class="n c2">3</div><div class="l">declared-open laws that print FALSIFIED on purpose</div></div>
+      <div class="stat"><div class="n c3">30</div><div class="l">protocol failures that appear <em>only</em> under composition (AgentThread)</div></div>
+      <div class="stat"><div class="n c4">824</div><div class="l">annotated agent-to-agent hand-offs behind the failure taxonomy (AgentAsk)</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- 01 -->
+<section id="capability-moment">
+  <div class="wrap">
+    <p class="kicker">01 · The capability moment</p>
+    <h2 class="sec reveal">Four ecosystems, one word, four different meanings.</h2>
+    <div class="answer reveal">
+      <h3>What is a capability, in 2026?</h3>
+      <p>
+        A <b>capability</b> is a packaged unit of agent behavior that can be defined once and reused across
+        agents. In 2026 four major ecosystems converged on capability-shaped objects: Pydantic AI v2 bundles
+        instructions, tools, lifecycle hooks and model settings into a <code>capability</code>; Agent Skills
+        packages procedural knowledge as a folder with a <code>SKILL.md</code>; MCP exposes tools and
+        resources a client can invoke; A2A publishes an Agent Card so other agents can discover and delegate.
+        All four answer <b>what an agent can do</b>. None of them specify <b>what it means to combine two</b>.
+      </p>
+    </div>
+    <p class="sec-lede reveal">
+      The convergence is real and it is recent. It is worth being precise about who did what, because the
+      argument on this page depends on the difference between <em>having</em> capabilities and
+      <em>composing</em> them.
+    </p>
+
+    <div class="scroll-x reveal">
+      <table class="tbl">
+        <thead><tr><th>Ecosystem</th><th>The unit</th><th>How you combine them</th><th>Composition semantics</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="nm">Pydantic AI v2<br /><span style="font-family:var(--mono);font-size:11px;color:var(--ink-faint)">23 June 2026</span></td>
+            <td>A <code>capability</code> — "a reusable, composable unit of agent behavior" bundling tools, lifecycle hooks, instructions, model settings and models.</td>
+            <td><code>Agent(model, capabilities=[a, b, …])</code></td>
+            <td>The docs say capabilities "all compose, with each other and with your own." In the published material we found <b>no stated ordering rule, no conflict-resolution or precedence mechanism, and no algebraic properties</b>. <span class="st ext">a list</span></td>
+          </tr>
+          <tr>
+            <td class="nm">Agent Skills</td>
+            <td>A skill — an open-format folder centred on <code>SKILL.md</code>, with progressive disclosure.</td>
+            <td>Put more folders on disk; the agent loads what looks relevant.</td>
+            <td>Relevance-triggered. Two skills that disagree are resolved by the model, at inference time. <span class="st ext">a directory</span></td>
+          </tr>
+          <tr>
+            <td class="nm">MCP<br /><span style="font-family:var(--mono);font-size:11px;color:var(--ink-faint)">spec 2026-07-28</span></td>
+            <td>Tools, resources, prompts on a server. The newest spec moves to a stateless request/response core with header-based routing and cacheable, deterministically ordered list results.</td>
+            <td>Connect another server.</td>
+            <td>Vertical: model to tool. Names share one flat space per client; nothing in the protocol decides what two servers offering the same tool mean together. <span class="st ext">a namespace</span></td>
+          </tr>
+          <tr>
+            <td class="nm">A2A<br /><span style="font-family:var(--mono);font-size:11px;color:var(--ink-faint)">joined AAIF 17 Aug 2026</span></td>
+            <td>An Agent Card. "Other agents read that card, discover capabilities, and delegate tasks without a human brokering the hand-off."</td>
+            <td>Delegate to another agent.</td>
+            <td>Horizontal: agent to agent. Discovery and delegation are specified; what a delegated result <em>composes with</em> on return is not. <span class="st ext">a hand-off</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <blockquote class="callout reveal">
+      The protocols are converging institutionally. Their composition semantics are not.
+      <cite>— A2A joined the Agentic AI Foundation on 17 August 2026, alongside MCP, AGENTS.md, goose and agentgateway. This page was written the same day.</cite>
+    </blockquote>
+
+    <div class="honest reveal">
+      <b>What this page is not.</b> It is not a claim that Pydantic, Anthropic, or Google did something wrong.
+      Shipping the noun first is the correct order — you cannot specify composition for a unit that does not
+      exist yet. The claim is narrower and, we think, uncontroversial: <b>the unit landed in 2026 and the
+      algebra has not</b>, and the gap is now the interesting engineering problem.
+    </div>
+  </div>
+</section>
+
+<!-- 02 -->
+<section id="capability-composition">
+  <div class="wrap">
+    <p class="kicker">02 · Composition is not aggregation</p>
+    <h2 class="sec reveal">A list tells you what is present. An algebra tells you what happens when things meet.</h2>
+    <div class="answer reveal">
+      <h3>What is capability composition?</h3>
+      <p>
+        <b>Capability composition</b> is the process of combining independently defined agent abilities into a
+        larger executable behavior while preserving — or explicitly resolving — their interfaces, authority,
+        state, confidence, cost, provenance, and failure semantics. It is distinct from <em>aggregation</em>,
+        which only asserts that several capabilities are available. Aggregation is a set membership question;
+        composition is an algebraic one, because the combined behavior has properties that none of the parts
+        had individually.
+      </p>
+    </div>
+    <p class="sec-lede reveal">
+      Here is the concrete test. Given <code>capabilities=[A, B, C]</code>, answer these six questions using only
+      the list. You cannot answer any of them.
+    </p>
+
+    <div class="lawq reveal">
+      <div class="lq"><div class="law">Order<small>does sequence matter?</small></div><div class="q">If <b>B</b> writes state that <b>A</b> reads, <code>[A, B]</code> and <code>[B, A]</code> are different programs. A list is unordered by intent and ordered by accident — whichever the runtime happens to iterate first.</div></div>
+      <div class="lq"><div class="law">Compatibility<small>do the ends meet?</small></div><div class="q">If <b>A</b> emits a document and <b>B</b> consumes a table, the pair is not a smaller capability, it is <b>no capability at all</b>. Nothing in a list expresses that.</div></div>
+      <div class="lq"><div class="law">Authority<small>who is allowed?</small></div><div class="q">If <b>A</b> may read a customer record and <b>B</b> may send email, the composite can exfiltrate a customer record by email. Neither part is unsafe. <b>The pair is.</b></div></div>
+      <div class="lq"><div class="law">Confidence<small>how sure is the whole?</small></div><div class="q">Two steps at 0.9 confidence do not make a 0.9 pipeline. They make 0.81 — if confidence multiplies, which it does. A list has no place to put that number.</div></div>
+      <div class="lq"><div class="law">Cost &amp; latency<small>what does the whole cost?</small></div><div class="q">Cost accumulates along a sequence; worst-case latency is the maximum over a parallel merge. Different quantities compose by different rules, and a list applies none of them.</div></div>
+      <div class="lq"><div class="law">Failure<small>what happens when one is wrong?</small></div><div class="q">Does a bad component kill the composite, degrade it, or silently disappear from consideration? This is the most consequential question and the one a list is furthest from answering.</div></div>
+    </div>
+
+    <p class="sec-lede reveal" style="margin-top:34px">
+      Every one of those six is a question about <strong>what the combination means</strong>, and each has a
+      standard mathematical answer. The rest of this page is those answers, in the order you would need them.
+    </p>
+  </div>
+</section>
+
+<!-- 03 -->
+<section id="combine-operator">
+  <div class="wrap">
+    <p class="kicker">03 · Two operators</p>
+    <h2 class="sec reveal">Two ways things meet: side by side, and one after another.</h2>
+    <div class="answer reveal">
+      <h3>How does sequential capability composition differ from parallel composition?</h3>
+      <p>
+        <b>Parallel composition</b> (written <code>A &amp; B</code>) merges two capabilities into a joint capability
+        set that a single agent or coalition holds at once. Order does not matter and adding the same capability
+        twice changes nothing. <b>Sequential composition</b> (written <code>A |&gt; B</code>) feeds the output of one
+        into the input of the next. Order matters absolutely, the hand-off types must line up, and quantities
+        like confidence and cost accumulate along the chain. They are different algebras, and conflating them is
+        where most composition bugs live.
+      </p>
+    </div>
+    <p class="sec-lede reveal">
+      [&amp;] has had exactly these two operators since draft v0.1.0, before either had laws attached. Look at the
+      shapes before the terminology — the terminology is only a name for what you can already see.
+    </p>
+
+    <div class="ops reveal">
+      <div class="opcard" style="--clr: var(--amp)">
+        <div class="glyph">&amp;</div>
+        <div class="role">combine · parallel</div>
+        <h3>A &amp; B — hold both</h3>
+        <p>A merge. The result is a capability set containing everything either side offered, tagged with
+        <em>who</em> provides it so provenance survives the merge.</p>
+        <ul>
+          <li><b>Order-free.</b> Registering B before A gives the same set.</li>
+          <li><b>Duplicate-safe.</b> Adding A twice gives you A.</li>
+          <li><b>Has a unit.</b> There is an empty set that changes nothing.</li>
+        </ul>
+        <div class="lawline">
+          <b>CA1</b> associative · <b>CA2</b> commutative<br />
+          <b>CA3</b> idempotent · <b>CA4</b> identity <code>&amp;none</code><br />
+          <span style="color:var(--live)">4 / 4 pass · 2000 trials each</span>
+        </div>
+      </div>
+      <div class="opcard" style="--clr: var(--pipe)">
+        <div class="glyph">|&gt;</div>
+        <div class="role">pipeline · sequential</div>
+        <h3>A |&gt; B — then</h3>
+        <p>A hand-off. The result is a pipeline whose external interface is A's input and B's output, and whose
+        internals must agree at every joint.</p>
+        <ul>
+          <li><b>Order-critical.</b> Reversing it is a different program, usually an invalid one.</li>
+          <li><b>Not duplicate-safe.</b> Running A twice is running A twice.</li>
+          <li><b>Has a unit.</b> A typed pass-through changes nothing.</li>
+        </ul>
+        <div class="lawline">
+          <b>CP1</b> associative · <b>CP2</b> identity <code>id</code><br />
+          <b>CP3</b> non-commutative · <b>CP4</b> infeasible ⇒ <span class="op zero">0̲</span><br />
+          <span style="color:var(--live)">4 / 4 pass</span> · <span style="color:var(--zero)">CP5–CP7 open — §12</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="honest reveal">
+      <b>This is the operator CC1 left undefined.</b> The first version of [&amp;]'s composition spec gave
+      <code>&amp;</code> an algebra — a bounded join-semilattice, which is what lets independent agents merge to the
+      same set — and left <code>|&gt;</code> as "data flows through," with no laws at all. Everything hard on this
+      page comes from closing that gap, and §12 is where closing it is still incomplete.
+    </div>
+  </div>
+</section>
+
+<!-- 04 -->
+<section id="composition-laws">
+  <div class="wrap">
+    <p class="kicker">04 · What laws buy you</p>
+    <h2 class="sec reveal">Every algebraic law is an engineering question in disguise.</h2>
+    <div class="answer reveal">
+      <h3>What is a composition law?</h3>
+      <p>
+        A <b>composition law</b> is a property that must hold for every possible combination of capabilities,
+        stated precisely enough to be tested. Laws are not decoration on top of a runtime — they are the part of
+        the runtime you can rely on without reading its source. Each of the five classical laws answers a
+        question a systems engineer already asks; naming them just makes the answer checkable.
+      </p>
+    </div>
+
+    <div class="lawq reveal">
+      <div class="lq">
+        <div class="law">Associativity<small>(A ∘ B) ∘ C = A ∘ (B ∘ C)</small></div>
+        <div class="q"><b>Can I refactor the grouping without changing behavior?</b> If yes, you can build sub-assemblies, cache them, ship them as units, and let different teams group differently. If no, every regrouping is a rewrite and the "reusable module" story is fiction.</div>
+      </div>
+      <div class="lq">
+        <div class="law">Commutativity<small>A ∘ B = B ∘ A</small></div>
+        <div class="q"><b>Does registration order matter?</b> For a parallel merge it must not — otherwise two agents that loaded the same plugins in different orders hold different capability sets and will disagree forever. For a pipeline it <em>must</em>, or sequence means nothing.</div>
+      </div>
+      <div class="lq">
+        <div class="law">Idempotence<small>A ∘ A = A</small></div>
+        <div class="q"><b>Is adding the same capability twice safe?</b> Two packages that both depend on the same memory capability should not double-install it. Idempotence is what makes a dependency graph collapse into a set instead of a multiset.</div>
+      </div>
+      <div class="lq">
+        <div class="law">Identity<small>A ∘ e = A</small></div>
+        <div class="q"><b>Is there a safe default?</b> An identity element is what lets you write <code>reduce(compose, capabilities, empty)</code> and have the empty case be correct rather than special-cased. No identity means every fold needs a branch.</div>
+      </div>
+      <div class="lq">
+        <div class="law">Annihilation<small>A ∘ 0̲ = 0̲</small></div>
+        <div class="q"><b>Does one bad component kill the composite, or silently degrade it?</b> This is the safety question. An absorbing zero means a broken part cannot be outvoted by good parts — the whole thing is refused. Without it, a high-scoring plan can carry an uncertified step to production.</div>
+      </div>
+    </div>
+
+    <p class="sec-lede reveal" style="margin-top:34px">
+      Two things are worth noting about that last row. First, it is the only law of the five that is about
+      <strong>refusal</strong> rather than rearrangement. Second, it is the one most composition systems don't
+      have — which is the subject of the next section.
+    </p>
+  </div>
+</section>
+
+<!-- 05 -->
+<section id="zero">
+  <div class="wrap">
+    <p class="kicker">05 · Zero is an answer</p>
+    <h2 class="sec reveal">An incompatible composition is not an error. It's a value.</h2>
+    <div class="answer reveal">
+      <h3>What happens when two AI capabilities conflict?</h3>
+      <p>
+        In [&amp;], an incompatible composition produces <b><code>0̲</code></b> — a distinguished zero value that
+        absorbs everything it touches. A type-incompatible pipeline does not "fail validation" and it does not
+        throw; <b>it evaluates to the zero of the composition</b>, exactly as multiplying by zero evaluates rather
+        than erroring. Anything composed with <code>0̲</code> is <code>0̲</code>. The practical consequence is that a
+        broken step cannot be compensated for by good steps around it, and a high utility score cannot resurrect
+        it — the floor is checked before ranking, never after.
+      </p>
+    </div>
+    <p class="sec-lede reveal">
+      Four things collapse a composite to <span class="op zero">0̲</span>, and they are checked in this order,
+      before any scoring happens at all.
+    </p>
+
+    <div class="lawq reveal">
+      <div class="lq"><div class="law" style="color:var(--zero)">Infeasible hand-off</div><div class="q">The producer's <code>feeds_into</code> does not intersect the consumer's <code>accepts_from</code>. There is no partial credit for a pipeline whose joints don't meet.</div></div>
+      <div class="lq"><div class="law" style="color:var(--zero)">Backward phase</div><div class="q">A step tries to run at an earlier phase than the one before it — consolidating before acting, learning before retrieving. Time only goes one way through a pipeline.</div></div>
+      <div class="lq"><div class="law" style="color:var(--zero)">Unresolved conflict or cycle</div><div class="q">The merged value still carries a contradiction tag, or the capability graph closed a loop on itself.</div></div>
+      <div class="lq"><div class="law" style="color:var(--zero)">Uncertified cost</div><div class="q">A component arrived without a cost certificate, or with one that could not be verified. <b>Fail-closed:</b> in production, unknown becomes <code>0̲</code>, always — never a low score.</div></div>
+    </div>
+
+    <h3 class="sub reveal">The certificate a composite carries</h3>
+    <p class="sec-lede reveal">
+      Because refusal is a value rather than an exception, it can carry an explanation. Every composite — surviving
+      or annihilated — ships a certificate saying which gate decided and why.
+    </p>
+    <div class="cert reveal">
+      <div class="bar"><span class="d" style="background:#ff5f57"></span><span class="d" style="background:#febc2e"></span><span class="d" style="background:#28c840"></span><span class="t">composite certificate — annihilated branch</span></div>
+<pre><span class="c">// (retrieve |&gt; act) |&gt; consolidate  — with a backward step introduced</span>
+{
+  <span class="k">"subject"</span>:  { <span class="k">"kind"</span>: <span class="s">"weave-composite"</span>, <span class="k">"parts"</span>: [<span class="s">"a1c4…"</span>, <span class="s">"7f20…"</span>] },
+  <span class="k">"analyzer"</span>: { <span class="k">"name"</span>: <span class="s">"compose"</span>, <span class="k">"version"</span>: <span class="s">"0.1.0"</span> },
+  <span class="k">"verdict"</span>:  {
+    <span class="k">"certified"</span>: <span class="bad">false</span>,
+    <span class="k">"costClass"</span>: <span class="s">"unknown"</span>
+  },
+  <span class="k">"policy"</span>: {
+    <span class="k">"resourceDecision"</span>: <span class="bad">"annihilate"</span>,
+    <span class="k">"reason"</span>: <span class="s">"π-violation: cannot chain 'act' after 'consolidate'"</span>
+  }
+}
+<span class="c">// result: </span><span class="bad">0̲</span><span class="c">  — and no amount of utility on the surviving steps changes it.</span></pre>
+    </div>
+  </div>
+</section>
+
+<!-- 06 -->
+<section id="composition-safety">
+  <div class="wrap">
+    <p class="kicker">06 · Composition creates new failures</p>
+    <h2 class="sec reveal">Correct components do not imply a correct composition.</h2>
+    <div class="answer reveal">
+      <h3>Why can two safe AI capabilities become unsafe when combined?</h3>
+      <p>
+        Because safety is <b>non-compositional</b>: a property proven of each part separately need not hold of the
+        whole. Two agents that individually cannot reach a forbidden capability can collectively reach it when
+        one supplies a precondition the other was missing. This is not a hypothetical — as of 2026 it has been
+        formally proven for capability-based AI systems, and separately measured in deployed agent protocols,
+        by two independent groups.
+      </p>
+    </div>
+
+    <h3 class="sub reveal">Measured: 30 failures that appear only when protocols are composed</h3>
+    <p class="sec-lede reveal">
+      <em>Formal Security Analysis of Agent Protocol Composition</em> (AgentThread) analysed five protocols —
+      <strong>MCP, A2A, ANP, ACP-Cap and ACP-Client</strong>. It reports <strong>35 specification-level
+      findings</strong>, supports them with <strong>80 implementation tests</strong> against production SDKs and
+      MCP reference servers, and then finds <strong>30 additional failures that emerge only under protocol
+      composition</strong> — failures invisible to any analysis of a single protocol.
+    </p>
+    <blockquote class="callout reveal">
+      No protocol assigns enforcement for cross-protocol behavior.
+      <cite>— AgentThread. The paper's conclusion is that insecurity here is "not only a specification or implementation problem, but also a responsibility gap across protocols, SDKs, and deployments."</cite>
+    </blockquote>
+    <div class="honest reveal">
+      <b>Read that gap precisely, because it is the whole argument for a composition layer.</b> It is not that
+      MCP is insecure, or that A2A is insecure. It is that when an MCP tool runs inside an ACP-Client agent that
+      was reached through an A2A conductor, <b>no specification owns the joint</b>. Composition is where the
+      failures are and it is also where nobody is standing.
+    </div>
+
+    <h3 class="sub reveal">Proven: safety does not compose, and the dependencies are not pairwise</h3>
+    <p class="sec-lede reveal">
+      <em>Safety is Non-Compositional: A Formal Framework for Capability-Based AI Systems</em> (Spera) contains
+      what it describes as the first formal proof that safety is non-compositional in the presence of
+      <strong>conjunctive capability dependencies</strong> — cases where a capability requires several others
+      simultaneously. The paper argues these need hyperedges with multi-element tails, because a pairwise graph
+      can only encode single preconditions and so cannot express "A <em>and</em> B together unlock C" without
+      inventing intermediate nodes that do not exist.
+    </p>
+    <div class="scroll-x reveal">
+      <table class="tbl">
+        <thead><tr><th>Measurement</th><th>Value</th><th>What it is</th></tr></thead>
+        <tbody>
+          <tr><td class="nm">Trajectories analysed</td><td><code>900</code></td><td>Real multi-tool agent runs, across two independent benchmarks.</td></tr>
+          <tr><td class="nm">Conjunctive dependencies</td><td><code>42.6%</code></td><td>Share of trajectories containing a conjunctive dependency. 95% CI <code>[39.4%, 45.8%]</code>.</td></tr>
+          <tr><td class="nm">ToolBench G3</td><td><code>47.4%</code></td><td>Prevalence in the first benchmark.</td></tr>
+          <tr><td class="nm">TaskBench DAG</td><td><code>36.5%</code></td><td>Prevalence in the second.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="sec-lede reveal" style="margin-top:26px">
+      Roughly two in five real agent trajectories already contain the structure that makes safety
+      non-compositional. That is the empirical case for treating composition as its own layer with its own
+      refusal semantics, rather than as a property you can infer from well-behaved parts.
+    </p>
+  </div>
+</section>
+
+<!-- 07 -->
+<section id="handoff-failures">
+  <div class="wrap">
+    <p class="kicker">07 · Hand-offs are compositions</p>
+    <h2 class="sec reveal">Where multi-agent systems actually break, measured on 824 hand-offs.</h2>
+    <div class="answer reveal">
+      <h3>What causes errors when one AI agent hands off to another?</h3>
+      <p>
+        An audit of <b>824 agent-to-agent execution logs</b> published at ACL 2026 found four dominant error
+        types at the message hand-off — the edge, not the node. In order of prevalence: <b>Signal Corruption</b>
+        (36.8%), <b>Data Gap</b> (29.1%), <b>Referential Drift</b> (27.3%) and <b>Capability Gap</b> (6.8%). The
+        significant finding is where the errors live: not inside agents, but between them. A hand-off is a
+        sequential composition, and these are its failure modes.
+      </p>
+    </div>
+    <p class="sec-lede reveal">
+      Each of those four is refused by a different part of the composition machinery — and each is refused
+      <strong>at compose time</strong>, before the pipeline runs, rather than diagnosed afterwards from a
+      transcript.
+    </p>
+
+    <div class="scroll-x reveal">
+      <table class="tbl">
+        <thead><tr><th>Failure class</th><th>Share</th><th>What goes wrong</th><th>What refuses it</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="nm">Signal Corruption</td>
+            <td><code style="color:var(--zero);font-size:15px">36.8%</code></td>
+            <td>The message degrades in transit — meaning is altered, truncated, or re-encoded as it crosses the boundary.</td>
+            <td>The <span class="op pipe">|&gt;</span> provenance chain: every stage's contribution is recorded, so a corrupted step is attributable rather than absorbed. <span class="st running">running</span></td>
+          </tr>
+          <tr>
+            <td class="nm">Data Gap</td>
+            <td><code style="color:var(--zero);font-size:15px">29.1%</code></td>
+            <td>The receiver needs something the sender never provided. The classic silent failure: the agent proceeds with a hole.</td>
+            <td>The contract check. <code>feeds_into</code> must intersect <code>accepts_from</code> or the stage <em>is</em> <span class="op zero">0̲</span>. A gap is not a degraded run; it is no run. <span class="st running">running</span></td>
+          </tr>
+          <tr>
+            <td class="nm">Referential Drift</td>
+            <td><code style="color:var(--zero);font-size:15px">27.3%</code></td>
+            <td>Both agents use the same term for different things. Nobody errors; they simply stop talking about the same object.</td>
+            <td>The epistemic requirement that coordination facts be <em>common knowledge</em>, not merely known — a joint plan resting on a fact one member does not commonly know is not executable. <span class="st specified">specified</span></td>
+          </tr>
+          <tr>
+            <td class="nm">Capability Gap</td>
+            <td><code style="color:var(--zero);font-size:15px">6.8%</code></td>
+            <td>The receiver was handed work it fundamentally cannot do.</td>
+            <td>The strategic check — <em>ought implies can</em>. A coalition may not be bound to a goal it cannot force; if it cannot, the composition is inadmissible and escalates instead of running. <span class="st specified">specified</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="honest reveal">
+      <b>On the correspondence.</b> The authors of that taxonomy did not derive their four categories from
+      [&amp;], and we did not predict them. We noticed, after the fact, that each category lands on a different
+      part of the composition machinery — and that two of the four are refused by code that runs today while
+      two are refused only by specification. <b>The honest scorecard is two out of four</b>, and it is marked
+      that way in the table above rather than rounded up.
+    </div>
+  </div>
+</section>
+
+<!-- 08 -->
+<section id="reliability">
+  <div class="wrap">
+    <p class="kicker">08 · Reliability composes too</p>
+    <h2 class="sec reveal">The "three agents is the ceiling" rule is not folklore. It's arithmetic.</h2>
+    <div class="answer reveal">
+      <h3>How does reliability change as you chain more AI agents together?</h3>
+      <p>
+        Different quantities compose by different rules. Along a sequential pipeline, <b>confidence multiplies</b>,
+        <b>cost sums</b>, and <b>worst-case latency takes the maximum</b>. Because confidence is a product of
+        numbers below one, it falls geometrically with chain length — which is why practitioners keep
+        rediscovering that long agent relays are unreliable. It is not a property of agents. It is a property of
+        products.
+      </p>
+    </div>
+    <p class="sec-lede reveal">
+      Move the sliders. The curve is <code>c<sup>n</sup></code>, and the threshold line is whatever the consuming
+      step demands before it will accept the input.
+    </p>
+
+    <div class="rel-card reveal">
+      <div class="rel-controls">
+        <div>
+          <label>per-step confidence <b id="rel-c-lab">0.98</b></label>
+          <input type="range" id="rel-c" min="80" max="100" step="1" value="98" />
+        </div>
+        <div>
+          <label>chain length <b id="rel-n-lab">3 steps</b></label>
+          <input type="range" id="rel-n" min="1" max="12" step="1" value="3" />
+        </div>
+      </div>
+      <canvas id="chain-canvas" width="1000" height="220"></canvas>
+      <div class="rel-readout">
+        <div class="rr"><span class="rk">composed confidence</span><span class="rv" id="rel-out">0.941</span></div>
+        <div class="rr"><span class="rk">the rule</span><span class="rv" style="font-size:15px;color:var(--ink-dim)" id="rel-expr">0.98³</span></div>
+        <div class="rr"><span class="rk">vs. 0.90 threshold</span><span class="rv" style="font-size:15px" id="rel-verdict">passes</span></div>
+      </div>
+    </div>
+
+    <div class="honest reveal">
+      <b>Two numbers we removed from an earlier draft of this page.</b> A widely repeated claim that tool-selection
+      accuracy collapses from 43% to under 14%, and a "practical ceiling of 5–7 MCP servers," both traced back to
+      blog posts rather than to a primary experiment we could read. They are gone. What replaced them is a
+      chance-corrected study that evaluated registries from <b>20 to 3,251 tools</b> and validated downstream on
+      Claude Sonnet 4.6: on medium-difficulty queries — where the correct tool exists but is not ranked first —
+      an adaptive shortlist reached <b>76.8%</b> against <b>60.9%</b> for a fixed list of five. Shortlist length
+      should be chosen per query, not fixed by folklore. <b>The number of tools is a composition parameter, and
+      it has an optimum.</b>
+    </div>
+  </div>
+</section>
+
+<!-- 09 -->
+<section id="governance">
+  <div class="wrap">
+    <p class="kicker">09 · Communication is not governance</p>
+    <h2 class="sec reveal">Six things a group of agents needs. The protocols express one and a half.</h2>
+    <div class="answer reveal">
+      <h3>Can agent interoperability protocols express governance?</h3>
+      <p>
+        Largely not. A June 2026 gap analysis by Kang and Diponegoro applied a <b>six-dimension governance
+        taxonomy</b> — membership, deliberation, voting, dissent preservation, human escalation, and audit/replay —
+        to MCP, A2A, ACP, ANP and ERC-8004. It found <b>voting and dissent preservation universally absent</b>,
+        deliberation absent or partial, and concluded that agent community governance is <b>a missing
+        architectural layer rather than a set of missing protocol features</b>.
+      </p>
+    </div>
+    <p class="sec-lede reveal">
+      That conclusion — governance belongs in a layer <em>above</em> interoperability, not inside it — is
+      independent confirmation of a design decision [&amp;] made for its own reasons: it does not replace MCP or
+      A2A, it compiles into them, and it keeps the verdict layer separate from the transport.
+      The <strong>State</strong> column below is ours, and it is deliberately unkind.
+    </p>
+
+    <div class="scroll-x reveal">
+      <table class="tbl">
+        <thead><tr><th>Governance dimension</th><th>In the surveyed protocols</th><th>The [&amp;] concept</th><th>State</th></tr></thead>
+        <tbody>
+          <tr><td class="nm">Membership</td><td>Partial — identity and discovery exist; belonging to a decision-making body does not.</td><td>The coalition's <code>agents</code> set, with each capability holder-tagged through the merge.</td><td><span class="st specified">specified</span></td></tr>
+          <tr><td class="nm">Deliberation</td><td>Absent or partial.</td><td>Cyclicity routing — a topology with a cycle routes to deliberation instead of acting.</td><td><span class="st running">running</span></td></tr>
+          <tr><td class="nm">Voting</td><td><b style="color:var(--zero)">Universally absent.</b></td><td>—</td><td><span class="st none">not implemented</span></td></tr>
+          <tr><td class="nm">Dissent preservation</td><td><b style="color:var(--zero)">Universally absent.</b></td><td>Unresolved conflict tags survive a merge and floor the composite rather than being averaged away.</td><td><span class="st running">running</span></td></tr>
+          <tr><td class="nm">Human escalation</td><td>Partial.</td><td>Contrary-to-duty escalation — a failed obligation routes to a human rather than degrading silently.</td><td><span class="st specified">specified</span></td></tr>
+          <tr><td class="nm">Audit / replay</td><td>Partial.</td><td>The provenance hash-chain carried by every composite, plus the decision certificate naming the gate that decided.</td><td><span class="st running">running</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="honest reveal">
+      <b>Three running, two specified, one absent.</b> We have no voting mechanism and are not building one this
+      quarter; a row that says <code>not implemented</code> is more useful to you than a row that says
+      "roadmap." Note also that we score no better than the protocols on the two dimensions the paper found
+      universally missing — <b>we match on dissent and lose on voting.</b>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section id="coalition">
+  <div class="wrap">
+    <p class="kicker">10 · Capability → coalition</p>
+    <h2 class="sec reveal">One agent holding capabilities is the easy case.</h2>
+    <div class="answer reveal">
+      <h3>What is a coalition, and how is it different from a composed capability?</h3>
+      <p>
+        A <b>coalition</b> lifts composition from one agent to a group. The question stops being "do I hold these
+        capabilities?" and becomes: <b>can this group, by pooling typed capabilities and coordinating, ensure the
+        goal — with each task owned, the shared facts common knowledge, the joint run supervised, and a safety
+        floor none of them can weaken?</b> Every clause in that sentence is a separate admissibility check, and a
+        coalition that fails any of them is refused before it runs.
+      </p>
+    </div>
+    <div class="honest reveal" style="margin-top:0;margin-bottom:30px;border-color:var(--amp)">
+      <b style="color:var(--amp)">STATUS — read this before the code block.</b> Everything in this section is
+      <b>specified, not wired</b>, and the distinction is worth stating exactly. The rung primitives are real
+      and testable: <code>canEnsure</code> exists at <code>strategic.mjs:70</code>, common knowledge at
+      <code>epistemic.mjs:68</code>. <b>The compose runtime calls neither.</b> Its exports are
+      <code>composeAnd</code>, <code>composePipe</code> and <code>composeTree</code>, and
+      <code>grep -n "strategic\|canEnsure\|common" compose.mjs</code> returns nothing. So the pieces exist and
+      the wiring does not — the coalition object below is a draft schema over primitives that have never been
+      asked to admit one. The playground in §11 runs; this does not. We are marking it rather than blurring it,
+      because a page about verification that overclaims its own maturity has refuted itself in advance.
+    </div>
+
+    <div class="cert reveal">
+      <div class="bar"><span class="d" style="background:#ff5f57"></span><span class="d" style="background:#febc2e"></span><span class="d" style="background:#28c840"></span><span class="t">a coalition — draft spec, no runtime</span></div>
+<pre>{
+  <span class="k">"coalition"</span>: <span class="s">"ship_it"</span>,
+  <span class="k">"agents"</span>: [<span class="s">"dev"</span>, <span class="s">"qa"</span>, <span class="s">"ops"</span>],
+  <span class="k">"ensure"</span>: <span class="s">"deployed AND tests_pass"</span>,      <span class="c">// can the group FORCE this?</span>
+  <span class="k">"common_knowledge"</span>: [<span class="s">"release_plan"</span>,       <span class="c">// not just known — commonly known</span>
+                       <span class="s">"rollback_ready"</span>],
+  <span class="k">"owns"</span>: { <span class="k">"dev"</span>: <span class="s">"build"</span>,                  <span class="c">// every task has exactly one owner</span>
+             <span class="k">"qa"</span>: <span class="s">"verify"</span>,
+             <span class="k">"ops"</span>: <span class="s">"release"</span> },
+  <span class="k">"shield"</span>: [<span class="s">"NEVER secrets_leaked"</span>],       <span class="c">// safety over the JOINT trajectory</span>
+  <span class="k">"floor"</span>:  [<span class="s">"entrench: no_prod_without_qa"</span>], <span class="c">// un-weakenable, even by learning</span>
+  <span class="k">"compose"</span>: <span class="s">"build |&gt; verify |&gt; release"</span>
+}</pre>
+    </div>
+
+    <p class="sec-lede reveal" style="margin-top:30px">
+      The interesting clause is <code>ensure</code>, because it is the one that can refuse a plan that is
+      otherwise perfectly well-typed. In the worked example, the full coalition can force the goal — but
+      <code>dev</code> alone <strong>cannot</strong>. So a dev-only coalition is inadmissible and escalates to
+      recruit QA and ops, rather than starting work it cannot finish. That is the <em>Capability Gap</em> from
+      §07, caught before the hand-off instead of after it.
+    </p>
+
+    <p class="sec-lede reveal">
+      And <code>floor</code> is the clause that survives learning. A coalition may revise anything it likes as it
+      gets better at its job — except the entrenched floor. If it later discovers a faster path that skips QA,
+      the floor refuses the improvement. <strong>That refusal is the feature.</strong>
+    </p>
+  </div>
+</section>
+
+<!-- 11 -->
+<section id="playground">
+  <div class="wrap">
+    <p class="kicker">11 · Compose it yourself</p>
+    <h2 class="sec reveal">Don't trust the diagram. Snap two bricks together.</h2>
+    <div class="answer reveal">
+      <h3>How can an AI agent composition be verified?</h3>
+      <p>
+        By running it. Below is the actual composition runtime — <code>compose.mjs</code>, <code>value.mjs</code>
+        and <code>numerics.mjs</code> from the box-and-box package, inlined into this page unmodified except for
+        their import statements. Nothing here is a mock or a re-implementation for the web. Pick an expression
+        shape, set the contract types and phases, and watch the verdict. When it says <code>0̲</code>, that is the
+        same code path that would refuse the composition in production.
+      </p>
+    </div>
+
+    <div class="pg reveal">
+      <div class="expr-pick" id="expr-pick">
+        <button class="ebtn on" data-shape="pipe3">A |&gt; B |&gt; C</button>
+        <button class="ebtn" data-shape="andpipe">(A &amp; B) |&gt; C</button>
+        <button class="ebtn" data-shape="pipeand">A |&gt; (B &amp; C)</button>
+        <button class="ebtn" data-shape="and3">A &amp; B &amp; C</button>
+      </div>
+      <div class="pg-grid">
+        <div id="brick-editors"></div>
+        <div>
+          <div class="out-panel" style="margin-bottom:12px">
+            <div class="oh">verdict</div>
+            <div class="verdict-big" id="pg-verdict">—</div>
+            <div class="verdict-why" id="pg-why"></div>
+          </div>
+          <div class="out-panel">
+            <div class="oh">the composed brick</div>
+            <div class="derived" id="pg-derived" style="margin-top:0;border:0;border-radius:0"></div>
+          </div>
+        </div>
+      </div>
+      <div class="honest" style="margin-top:20px">
+        <b>Phases are ordered:</b> <code>retrieve → route → act → learn → consolidate</code>. A pipeline may stay
+        at a phase or move forward through it; it may never go back. <b>Two experiments worth a minute:</b> set
+        <code>B.accepts_from</code> to <code>image</code> and watch the type floor fire; then set <b>A's phase to
+        <code>learn</code></b> while B stays at <code>route</code> and watch the backward-step floor fire instead.
+        Those are the <em>Data Gap</em> and <em>backward step</em> refusals from §07 and §05, in the real runtime.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 -->
+<section id="cp7">
+  <div class="wrap">
+    <p class="kicker">12 · Break it</p>
+    <h2 class="sec reveal">Three of our laws do not hold. Here is the one you can feel.</h2>
+    <p class="sec-lede reveal">
+      A page arguing that composition needs laws would be worthless if it hid the laws it fails. The compose
+      suite runs 2000 trials per law and prints three lines in red on every single run, by design — the build
+      breaks if one of them ever starts <em>passing</em>, because that is the signal the fix landed and the law
+      should be promoted into the real suite.
+    </p>
+
+    <div class="broken reveal">
+      <div class="btag">CP7 · declared open · reproducible below</div>
+      <h3><span class="op amp">&amp;</span>-operand order changes a downstream <span class="op pipe">|&gt;</span> floor.</h3>
+      <p style="color:var(--ink-dim);font-size:15px;margin:0">
+        Swap the two operands of a commutative merge. One side lives. One side annihilates.
+      </p>
+
+      <div class="swap-row">
+        <div class="swap-side" id="cp7-left">
+          <div class="sexpr">(A &amp; B) |&gt; C</div>
+          <div class="sres" id="cp7-lres">—</div>
+        </div>
+        <div class="swap-mid">
+          swap A and B<br />
+          <button class="btn danger" id="cp7-swap" style="margin-top:10px">⇄ swap</button>
+        </div>
+        <div class="swap-side" id="cp7-right">
+          <div class="sexpr">(B &amp; A) |&gt; C</div>
+          <div class="sres" id="cp7-rres">—</div>
+        </div>
+      </div>
+      <div class="verdict-why" id="cp7-why" style="text-align:left;padding:18px 0 0"></div>
+    </div>
+
+    <h3 class="sub reveal">Why this is not simply "our commutativity law is wrong"</h3>
+    <p class="sec-lede reveal">
+      It would be easier to report if it were. The precise situation is more specific, and worth stating exactly:
+    </p>
+    <div class="reveal">
+      <div class="lawrow pass"><span class="lid">CA2</span><span class="ltext"><code>A &amp; B == B &amp; A</code> holds on the commutative sub-carrier — the families that genuinely are commutative. <b style="color:var(--live)">Passes, 2000 trials.</b></span></div>
+      <div class="lawrow pass"><span class="lid">AC‑COMM</span><span class="ltext"><code>isZero(a&amp;b) === isZero(b&amp;a)</code> — the merge's <em>own</em> floor is commutative. <b style="color:var(--live)">Passes.</b> This anchor exists so the gap below cannot be mistaken for a broken merge.</span></div>
+      <div class="lawrow fail"><span class="lid">CP7</span><span class="ltext"><code>isZero((a&amp;b)|&gt;c) === isZero((b&amp;a)|&gt;c)</code> — <b style="color:var(--zero)">FALSIFIED.</b> Operand order at <code>&amp;</code> leaks into a <em>downstream</em> pipeline floor.</span></div>
+      <div class="lawrow fail"><span class="lid">CP5</span><span class="ltext"><code>isZero((a|&gt;b)|&gt;c) === isZero(a|&gt;(b|&gt;c))</code> — <b style="color:var(--zero)">FALSIFIED.</b> The pipeline floor is not association-invariant.</span></div>
+      <div class="lawrow fail"><span class="lid">CP6</span><span class="ltext">No backward execution step survives <code>|&gt;</code>, in either association — <b style="color:var(--zero)">FALSIFIED.</b> A right-leaning grouping can smuggle a backward step past the floor.</span></div>
+    </div>
+
+    <h3 class="sub reveal">The root cause, which is one bug wearing three hats</h3>
+    <p class="sec-lede reveal">
+      "The pipeline is non-associative" is a symptom, not the disease. The disease is that the phase carrier is a
+      <strong>single slot</strong>. The merge sets it with a first-non-null rule, which is order-dependent, and the
+      pipeline's floor reads it. So merge order writes a value that pipeline safety later depends on — and the
+      three failing laws are three routes to that same leak. A left-fold-only pipeline would close CP5 and CP6
+      and <em>not</em> CP7, because there is no re-grouping to outlaw in CP7. Only carrying an
+      <code>[entry, exit]</code> phase interval instead of one slot closes all three.
+    </p>
+    <div class="honest reveal">
+      <b>How this was found:</b> not by reading the spec. A falsifier searched for counterexamples and produced
+      one; the laws were then written down as expected-fail so the suite would keep printing them. <b>The suite
+      prints them in red on every run</b>, and the count of enforced laws excludes them — which is why the number
+      in this page's header is 210 and not 121.
+    </div>
+  </div>
+</section>
+
+<!-- 13 -->
+<section id="landscape">
+  <div class="wrap">
+    <p class="kicker">13 · The broader formal landscape</p>
+    <h2 class="sec reveal">The field is independently reinventing this problem.</h2>
+    <div class="answer reveal">
+      <h3>Is anyone else formalizing AI agent composition?</h3>
+      <p>
+        Yes — and increasingly, in 2026. A typed lambda calculus for agent composition, a hypergraph framework
+        for capability safety, assume-guarantee contracts for autonomous agents, and a formal security analysis
+        of protocol composition were all published within months of each other, by unrelated groups, in
+        unrelated venues. That convergence is the strongest available evidence that composition semantics is a
+        real gap rather than a framing we invented to sell an idea.
+      </p>
+    </div>
+
+    <div class="land reveal">
+      <div class="lcard" style="--clr: var(--ext)">
+        <div class="who">Pydantic AI v2 · June 2026</div>
+        <h4>The capability as a first-class primitive</h4>
+        <p>Bundles instructions, tools, hooks and model settings into one reusable unit. Establishes the noun the whole ecosystem now shares.</p>
+      </div>
+      <div class="lcard" style="--clr: var(--ext)">
+        <div class="who">Agent Skills</div>
+        <h4>The capability as a portable package</h4>
+        <p>An open folder format so a capability can move between vendors and runtimes rather than living inside one framework.</p>
+      </div>
+      <div class="lcard" style="--clr: var(--ext)">
+        <div class="who">A2A · AAIF, August 2026</div>
+        <h4>Capability discovery and delegation</h4>
+        <p>Agent Cards let agents find each other and hand off work without a human broker. Solves finding; leaves combining open.</p>
+      </div>
+      <div class="lcard" style="--clr: var(--pipe)">
+        <div class="who">λA · Qin Liu, April 2026</div>
+        <h4>Typed formal semantics for composition</h4>
+        <p>A typed lambda calculus extending STLC with oracle calls, bounded fixpoints, probabilistic choice and mutable environments. <b>Theorem 5.7 proves pipeline composition is associative with an identity</b> — independently deriving the two laws our <code>|&gt;</code> claims.</p>
+      </div>
+      <div class="lcard" style="--clr: var(--zero)">
+        <div class="who">Spera, 2026</div>
+        <h4>Safety is non-compositional</h4>
+        <p>Formal proof that per-part safety does not imply whole-system safety under conjunctive dependencies, plus the measurement that 42.6% of real trajectories contain them.</p>
+      </div>
+      <div class="lcard" style="--clr: var(--zero)">
+        <div class="who">AgentThread, 2026</div>
+        <h4>Composition-only failures, measured</h4>
+        <p>Five protocols, 35 specification findings, 80 implementation tests — and 30 failures that appear only when protocols are composed, with no protocol owning the joint.</p>
+      </div>
+      <div class="lcard ours">
+        <div class="who">[&amp;] Compose · this page</div>
+        <h4>An executable answer</h4>
+        <p>Two operators with property-tested laws, an absorbing zero with fail-closed defaults, decision certificates on every verdict — and three published counterexamples where the laws still fail. Not first, and not alone. <b>Just runnable, and honest about its holes.</b></p>
+      </div>
+    </div>
+
+    <blockquote class="callout reveal">
+      Look at where these independent lines of work are pointing. That is the layer.
+      <cite>— The claim is not that others missed it. It is that everyone is arriving at the same place, and the place needs a runtime.</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- 14 -->
+<section id="compile">
+  <div class="wrap">
+    <p class="kicker">14 · Compile outward</p>
+    <h2 class="sec reveal">This does not replace MCP or A2A. It compiles into them.</h2>
+    <div class="answer reveal">
+      <h3>How do MCP and A2A relate to capability composition?</h3>
+      <p>
+        They are the transports; composition is the layer above. MCP standardizes how a model reaches a tool
+        (vertical). A2A standardizes how an agent reaches another agent (horizontal). Neither says what the
+        combination <b>means</b>, and — per the governance analysis in §09 — that is best answered in a separate
+        architectural layer rather than by extending either protocol. A composition declaration is validated and
+        governed on its own terms, then <b>generated down</b> into MCP server configuration and A2A agent cards.
+      </p>
+    </div>
+    <p class="sec-lede reveal">
+      Concretely, the reference implementation takes a declaration and emits both wire formats:
+    </p>
+    <div class="cert reveal">
+      <div class="bar"><span class="d" style="background:#ff5f57"></span><span class="d" style="background:#febc2e"></span><span class="d" style="background:#28c840"></span><span class="t">reference CLI — one declaration, two targets</span></div>
+<pre><span class="c"># the reference CLI lives in the Elixir implementation; example paths are relative to it</span>
+<span class="c">$</span> cd AmpersandBoxDesign/reference/elixir/ampersand_core
+<span class="c">$</span> mix deps.get && mix escript.build
+<span class="c">$</span> ./ampersand validate ../../../examples/infra-operator.ampersand.json
+<span class="c">$</span> ./ampersand compose  ../../../examples/infra-operator.ampersand.json
+<span class="c">$</span> ./ampersand generate mcp ../../../examples/infra-operator.ampersand.json
+<span class="c">$</span> ./ampersand generate a2a ../../../examples/infra-operator.ampersand.json
+
+<span class="c"># the law suites live in the kernel package — a DIFFERENT directory</span>
+<span class="c">$</span> cd AmpersandBoxDesign/box-and-box
+<span class="c">$</span> node test/laws.mjs           <span class="c">// 109 enforced kernel laws</span>
+<span class="c">$</span> node test/compose-laws.mjs   <span class="c">// 101 enforced + 3 declared-open</span></pre>
+    </div>
+    <div class="honest reveal">
+      <b>Why compile rather than extend.</b> Extending a transport protocol with governance means every
+      implementation of that protocol must now implement governance, and the ones that don't become silent
+      holes — which is precisely the responsibility gap AgentThread measured. Compiling downward keeps the
+      refusal on our side of the boundary, where it can be tested, and leaves the wire formats exactly as their
+      specifications define them.
+    </div>
+  </div>
+</section>
+
+<!-- 15 -->
+<section id="falsify">
+  <div class="wrap">
+    <p class="kicker">15 · The ending this page has to have</p>
+    <h2 class="sec reveal">Here is precisely how to prove us wrong.</h2>
+    <p class="sec-lede reveal">
+      Every row names a claim, its honest status, the command that exercises it, what you should see, and
+      <strong>the specific observation that would falsify it</strong>. If you produce something in the last
+      column, the claim is dead and we want the counterexample.
+    </p>
+    <div class="fals-scroll reveal">
+      <table class="fals">
+        <thead><tr><th>Claim</th><th>Status</th><th>Command</th><th>Expected</th><th>What kills it</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="claim">The two operators' enforced laws hold</td>
+            <td><span class="st running">running</span></td>
+            <td><code>cd box-and-box && node test/compose-laws.mjs</code></td>
+            <td>101 enforced pass (100 suite + 1 anchor); CP5/CP6/CP7 print FALSIFIED in red</td>
+            <td class="kill">Any of CA1–CA4, CP1–CP4, CX1–CX6 or AC-COMM failing. Or CP5/CP6/CP7 <em>passing</em> without a fix landing — that would mean the trial generator stopped reaching the counterexample.</td>
+          </tr>
+          <tr>
+            <td class="claim">210 enforced laws, derived not typed</td>
+            <td><span class="st running">running</span></td>
+            <td><code>cd box-and-box && node test/laws.mjs && node test/compose-laws.mjs</code></td>
+            <td>109 kernel + 101 compose, both totals printed by the suites themselves</td>
+            <td class="kill">A total on this page that no suite prints. The published and printed counts drifted apart once before; that is why nothing here is hand-typed.</td>
+          </tr>
+          <tr>
+            <td class="claim">An incompatible hand-off annihilates rather than degrading</td>
+            <td><span class="st running">running</span></td>
+            <td>The playground in §11 — set B's <code>accepts_from</code> to something A does not feed</td>
+            <td><code>0̲</code>, immediately, with the failing gate named</td>
+            <td class="kill">A surviving composite with a degraded score instead of a zero. Or a thrown exception rather than a value.</td>
+          </tr>
+          <tr>
+            <td class="claim">Utility cannot resurrect a floored branch</td>
+            <td><span class="st running">running</span></td>
+            <td>Set a brick's utility arbitrarily high, then break its contract</td>
+            <td>Still <code>0̲</code> — the floor is checked before ranking</td>
+            <td class="kill">Any ordering of gates where a high-utility uncertified branch survives to be selected.</td>
+          </tr>
+          <tr>
+            <td class="claim">CP7 is reproducible in this browser tab</td>
+            <td><span class="st open">declared open</span></td>
+            <td>§12 — press swap</td>
+            <td>One side LIVE, one side <code>0̲</code>, from a commutative operator</td>
+            <td class="kill">Both sides agreeing. If you cannot reproduce it here, this page is lying about its own defect and we want to know first.</td>
+          </tr>
+          <tr>
+            <td class="claim">The coalition rungs exist but composition does not call them</td>
+            <td><span class="st specified">specified</span></td>
+            <td><code>cd box-and-box && grep -n "strategic\|canEnsure\|common" compose.mjs</code></td>
+            <td><b>No output.</b> <code>canEnsure</code> is real — <code>strategic.mjs:70</code> — and so is <code>common</code> at <code>epistemic.mjs:68</code>. The compose runtime references neither; its exports are <code>composeAnd</code>, <code>composePipe</code>, <code>composeTree</code>.</td>
+            <td class="kill">Any hit in that grep, which would mean coalition admissibility is wired into composition and §10 understates what ships. Equally: us describing §10 as shipped while this grep stays empty.</td>
+          </tr>
+          <tr>
+            <td class="claim">Every external number here traces to a primary source</td>
+            <td><span class="st ext">external</span></td>
+            <td>Follow the links in the footer</td>
+            <td>Each figure appears in the paper itself, not in a summary of it</td>
+            <td class="kill">Any number here that only exists in a blog post. Two were removed from a draft of this page for exactly that reason — see §08.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <blockquote class="callout reveal">
+      Absence of evidence must remain distinguishable from evidence of absence, and every consequential
+      transformation must expose why it occurred.
+      <cite>— the [&amp;] doctrine. It is why <code>0̲</code> is a value that carries a reason rather than an exception that carries a stack trace.</cite>
+    </blockquote>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><strong style="color:var(--ink)">[&amp;] Capability Composition</strong> — a masterclass in the form of a single page.</div>
+    <a href="#top">Back to top ↑</a>
+    <div class="note">
+      The composition runtime on this page is <code>compose.mjs</code>, <code>value.mjs</code> and
+      <code>numerics.mjs</code> from box-and-box 0.10.0, inlined unmodified except for import statements.
+      Law counts are printed by the suites and are derived, not hand-typed.
+      Status vocabulary: <code>running · specified · draft · not implemented · declared open · external</code>.
+      This document is commentary and synthesis; it is not affiliated with Pydantic, Anthropic, Google, or the
+      Agentic AI Foundation.
+    </div>
+    <div class="srcs">
+      <strong style="color:var(--ink-dim)">Sources.</strong>
+      Pydantic AI v2 — <a href="https://pydantic.dev/articles/pydantic-ai-v2" target="_blank" rel="noopener">release article</a> and <a href="https://pydantic.dev/docs/ai/core-concepts/capabilities/" target="_blank" rel="noopener">capabilities docs</a> ·
+      MCP <a href="https://blog.modelcontextprotocol.io/posts/2026-07-28/" target="_blank" rel="noopener">2026-07-28 specification</a> ·
+      <a href="https://aaif.io/blog/a2a-joins-aaif" target="_blank" rel="noopener">A2A joins AAIF</a> ·
+      <a href="https://agentskills.io/home" target="_blank" rel="noopener">Agent Skills</a> ·
+      AgentThread, <a href="https://arxiv.org/abs/2606.28690" target="_blank" rel="noopener">Formal Security Analysis of Agent Protocol Composition</a> ·
+      Spera, <a href="https://arxiv.org/abs/2603.15973" target="_blank" rel="noopener">Safety is Non-Compositional</a> ·
+      Kang &amp; Diponegoro, <a href="https://arxiv.org/abs/2606.31498" target="_blank" rel="noopener">Governance Gaps in Agent Interoperability Protocols</a> ·
+      Lin et al., <a href="https://aclanthology.org/2026.acl-long.1294/" target="_blank" rel="noopener">AgentAsk: Multi-Agent Systems Need to Ask</a> (ACL 2026) ·
+      Qin Liu, <a href="https://arxiv.org/abs/2604.11767" target="_blank" rel="noopener">λA: A Typed Lambda Calculus for LLM Agent Composition</a> ·
+      Repantis et al., <a href="https://arxiv.org/abs/2605.24660" target="_blank" rel="noopener">How Many Tools Should an LLM Agent See?</a> ·
+      Cemri et al., <a href="https://arxiv.org/abs/2503.13657" target="_blank" rel="noopener">Why Do Multi-Agent LLM Systems Fail?</a> (MAST)
+    </div>
+  </div>
+</footer>
+
+<!-- ===================================================================================
+     The composition runtime, inlined. numerics.mjs + value.mjs + compose.mjs from
+     box-and-box 0.10.0, concatenated with their `import` lines removed and nothing else
+     changed. If this page's verdicts ever disagree with `node test/compose-laws.mjs`,
+     the page is wrong and the suite is right.
+     =================================================================================== -->
+<script type="module">
+"use strict";
+
+/* ---------- numerics.mjs ---------- */
+const DP = 3;
+function round(x, dp = DP) {
+  if (!Number.isFinite(x)) return x;
+  const f = 10 ** dp;
+  return Math.round(x * f) / f;
+}
+
+/* ---------- value.mjs ---------- */
+const PHASES = ['retrieve', 'route', 'act', 'learn', 'consolidate'];
+const phaseIdx = (p) => PHASES.indexOf(p);
+const uniq = (arr) => [...new Set(arr)];
+const firstNonNull = (a, b) => (a !== null && a !== undefined) ? a : b;
+
+const V0 = () => ({
+  n: 0, kappa: false, beta: 1, sigma: [], pi: null, iota: null, psi: null,
+  authority: [], denyDefault: true, audit: []
+});
+const V = (p = {}) => ({
+  ...V0(), ...p,
+  sigma: [...(p.sigma || [])],
+  authority: [...(p.authority || [])],
+  audit: [...(p.audit || [])]
+});
+function combine(a, b) {
+  return {
+    n: a.n + b.n,
+    kappa: a.kappa || b.kappa,
+    beta: Math.min(a.beta, b.beta),
+    sigma: uniq([...a.sigma, ...b.sigma]),
+    pi: firstNonNull(a.pi, b.pi),
+    iota: firstNonNull(a.iota, b.iota),
+    psi: firstNonNull(a.psi, b.psi),
+    authority: [...a.authority, ...b.authority],
+    denyDefault: a.denyDefault && b.denyDefault,
+    audit: [...a.audit, ...b.audit]
+  };
+}
+function chain(a, b) {
+  if (a.pi != null && b.pi != null && phaseIdx(a.pi) > phaseIdx(b.pi)) {
+    return { error: `π-violation: cannot chain '${b.pi}' after '${a.pi}'` };
+  }
+  const r = combine(a, b);
+  r.pi = firstNonNull(b.pi, a.pi);
+  return r;
+}
+function consume(v, req = {}) {
+  const failures = [];
+  if (req.beta_min != null && v.beta < req.beta_min)
+    failures.push({ family: 'β', why: `β=${round(v.beta)} < β_min=${req.beta_min}` });
+  if (req.sigma_empty && v.sigma.length > 0)
+    failures.push({ family: 'σ', why: `unresolved conflicts {${v.sigma.join(', ')}}` });
+  if (req.acyclic && v.kappa)
+    failures.push({ family: 'κ', why: 'cyclic — self-reference detected' });
+  if (req.phase && v.pi !== req.phase)
+    failures.push({ family: 'π', why: `phase ${v.pi} ≠ required ${req.phase}` });
+  if (req.forward_from && v.pi != null && phaseIdx(v.pi) < phaseIdx(req.forward_from))
+    failures.push({ family: 'π', why: `phase ${v.pi} precedes ${req.forward_from}` });
+  if (req.deny_default === 'must_allow' && v.denyDefault === true && req.authorized !== true)
+    failures.push({ family: 'governance', why: 'deny_default with empty authority_path' });
+  return { ok: failures.length === 0, failures, value: v };
+}
+
+/* ---------- compose.mjs ---------- */
+const COST_ORDER = ['poly', 'elementary', 'exponential', 'tower', 'unknown'];
+const costRank = (c) => { const i = COST_ORDER.indexOf(c); return i < 0 ? COST_ORDER.length : i; };
+const worseCost = (a, b) => (costRank(a) >= costRank(b) ? a : b);
+const decisionOf = (certified, costClass) =>
+  !certified ? 'annihilate'
+  : costClass === 'poly' ? 'allow'
+  : costClass === 'tower' ? 'escalate'
+  : 'budget_check';
+const FREE_COST = () => ({
+  subject: { kind: 'weave-ir', hash: '00000000' },
+  analyzer: { name: 'identity', version: '0' },
+  verdict: { certified: true, total: true, oracleFree: true, costClass: 'poly' },
+  policy: { resourceDecision: 'allow', reason: 'identity brick — costless' }
+});
+const UNCERTIFIED_COST = () => ({
+  subject: { kind: 'weave-ir', hash: '00000000' },
+  analyzer: { name: 'none', version: '0' },
+  verdict: { certified: false, total: false, oracleFree: false, costClass: 'unknown' },
+  policy: { resourceDecision: 'annihilate', reason: 'no certificate supplied — fail-closed' }
+});
+function composeCost(a, b) {
+  const certified = !!(a?.verdict?.certified && b?.verdict?.certified);
+  const ca = a?.verdict?.costClass ?? 'unknown';
+  const cb = b?.verdict?.costClass ?? 'unknown';
+  let costClass = worseCost(ca, cb);
+  if (!certified) costClass = costClass === 'poly' ? 'unknown' : costClass;
+  const resourceDecision = decisionOf(certified, costClass);
+  return {
+    subject: { kind: 'weave-composite', parts: [a?.subject?.hash, b?.subject?.hash].filter(Boolean) },
+    analyzer: { name: 'compose', version: '0.1.0' },
+    verdict: { certified, costClass },
+    policy: { resourceDecision, reason: `composite of {${ca}, ${cb}} ⇒ ${costClass}` }
+  };
+}
+const Q0 = () => ({ confidence: 1, cost: 0, latency: 0 });
+const q = (b) => ({ ...Q0(), ...(b.q || {}) });
+function composeQ(a, b) {
+  return {
+    confidence: a.confidence * b.confidence,
+    cost: a.cost + b.cost,
+    latency: Math.max(a.latency, b.latency)
+  };
+}
+const asSet = (t) => (t == null ? [] : Array.isArray(t) ? t : [t]);
+const uni = (a, b) => [...new Set([...asSet(a), ...asSet(b)])];
+function typeMatch(out, inn) {
+  if (out === '*' || inn === '*' || out == null || inn == null) return true;
+  const O = asSet(out), I = asSet(inn);
+  return O.includes('*') || I.includes('*') || O.some((t) => I.includes(t));
+}
+const asArr = (x) => (Array.isArray(x) ? x : x == null ? [] : [x]);
+function normValue(v) {
+  if (v == null || typeof v !== 'object' || v.error) return V0();
+  return V({ ...v, sigma: asArr(v.sigma), authority: asArr(v.authority), audit: asArr(v.audit) });
+}
+function Brick(p = {}) {
+  const o = p && typeof p === 'object' ? p : {};
+  return {
+    id: typeof o.id === 'string' ? o.id : 'brick',
+    holder: o.holder ?? null,
+    contract: { accepts_from: o.contract?.accepts_from ?? '*', feeds_into: o.contract?.feeds_into ?? '*' },
+    value: normValue(o.value),
+    cost: o.cost ?? UNCERTIFIED_COST(),
+    q: { ...Q0(), ...(o.q && typeof o.q === 'object' ? o.q : {}) },
+    utility: typeof o.utility === 'number' ? o.utility : 0,
+    laws: asArr(o.laws),
+    floor: asArr(o.floor),
+    annihilated: !!o.annihilated
+  };
+}
+const ZERO = Object.freeze(Brick({
+  id: '0̲', annihilated: true,
+  value: V({ sigma: ['annihilated'] }),
+  cost: UNCERTIFIED_COST(),
+  q: { confidence: 0, cost: Infinity, latency: Infinity },
+  utility: 0
+}));
+const isZero = (b) => !b || b === ZERO || b.annihilated === true;
+const holders = (a, b) => {
+  const flat = [a.holder, b.holder].flatMap((h) => (h == null ? [] : Array.isArray(h) ? h : [h]));
+  const hs = [...new Set(flat)];
+  return hs.length === 0 ? null : hs.length === 1 ? hs[0] : hs;
+};
+const isBrickShaped = (x) =>
+  x && typeof x === 'object' && x.contract && x.value && Array.isArray(x.value.sigma) && x.cost && x.q && typeof x.id === 'string';
+const ensure = (x) => (isBrickShaped(x) ? x : Brick(x));
+function floored(value, cost, floorReqs) {
+  if (cost.verdict.certified === false) return true;
+  const req = Object.assign({ sigma_empty: true, acyclic: true }, floorReqs || {});
+  return !consume(value, req).ok;
+}
+function composeAnd(a, b) {
+  if (isZero(a) || isZero(b)) return ZERO;
+  a = ensure(a); b = ensure(b);
+  const value = combine(a.value, b.value);
+  const cost = composeCost(a.cost, b.cost);
+  if (floored(value, cost)) return ZERO;
+  return Brick({
+    id: `(${a.id} & ${b.id})`,
+    holder: holders(a, b),
+    contract: { accepts_from: uni(a.contract.accepts_from, b.contract.accepts_from),
+                feeds_into: uni(a.contract.feeds_into, b.contract.feeds_into) },
+    value, cost,
+    q: composeQ(q(a), q(b)),
+    utility: a.utility + b.utility,
+    laws: [...new Set([...a.laws, ...b.laws, 'CC2.&'])],
+    floor: [...new Set([...a.floor, ...b.floor])]
+  });
+}
+function composePipe(a, b) {
+  if (isZero(a) || isZero(b)) return ZERO;
+  a = ensure(a); b = ensure(b);
+  if (!typeMatch(a.contract.feeds_into, b.contract.accepts_from)) return ZERO;
+  const chained = chain(a.value, b.value);
+  if (chained.error) return ZERO;
+  const cost = composeCost(a.cost, b.cost);
+  if (floored(chained, cost)) return ZERO;
+  return Brick({
+    id: `(${a.id} |> ${b.id})`,
+    holder: holders(a, b),
+    contract: { accepts_from: a.contract.accepts_from, feeds_into: b.contract.feeds_into },
+    value: chained, cost,
+    q: composeQ(q(a), q(b)),
+    utility: a.utility + b.utility,
+    laws: [...new Set([...a.laws, ...b.laws, 'CC2.|>'])],
+    floor: [...new Set([...a.floor, ...b.floor])]
+  });
+}
+
+/* =====================================================================================
+   Page wiring. Everything below is presentation; every verdict above is the real runtime.
+   ===================================================================================== */
+
+const CERT_POLY = () => ({
+  subject: { kind: 'weave-ir', hash: 'a1c4f0' },
+  analyzer: { name: 'weave-eal', version: '0.3' },
+  verdict: { certified: true, total: true, oracleFree: true, costClass: 'poly' },
+  policy: { resourceDecision: 'allow', reason: 'certified poly' }
+});
+
+function mkBrick(id, holder, phase, accepts, feeds, qq) {
+  return Brick({
+    id, holder,
+    contract: { accepts_from: accepts, feeds_into: feeds },
+    value: V({ pi: phase }),
+    cost: CERT_POLY(),
+    q: qq
+  });
+}
+
+const fmt = (n) => (Number.isFinite(n) ? round(n, 3) : '∞');
+
+/* ---------- hero ---------- */
+(function hero() {
+  const exprEl = document.getElementById('hero-expr');
+  const derEl  = document.getElementById('hero-derived');
+  const brk    = document.getElementById('hero-break');
+  const back   = document.getElementById('hero-back');
+  if (!exprEl) return;
+
+  function render() {
+    const broken = brk.checked, backward = back.checked;
+    document.getElementById('hero-break-t').classList.toggle('on', broken);
+    document.getElementById('hero-back-t').classList.toggle('on', backward);
+
+    // The merge sets its phase by first-non-null, so &memory's phase IS the merged block's exit
+    // phase. Pushing &memory to `consolidate` is therefore what makes the downstream `act` step
+    // backward — moving &body earlier does nothing, because nothing precedes `retrieve`.
+    const mem = mkBrick('&memory', 'store', backward ? 'consolidate' : 'retrieve', '*', 'facts', { confidence: 0.98, cost: 4, latency: 120 });
+    const rsn = mkBrick('&reason', 'planner', 'route', 'facts', 'plan', { confidence: 0.96, cost: 9, latency: 640 });
+    const bod = mkBrick('&body', 'robot', 'act',
+      broken ? 'image' : 'plan', 'effect', { confidence: 0.97, cost: 5, latency: 840 });
+
+    exprEl.innerHTML =
+      '<span class="op amp">(</span>&memory <span class="op amp">&</span> &reason<span class="op amp">)</span> ' +
+      '<span class="op pipe">|&gt;</span> &body';
+
+    const merged = composeAnd(mem, rsn);
+    const out = composePipe(merged, bod);
+    const dead = isZero(out);
+
+    let why = '';
+    if (dead) {
+      if (broken) why = 'feeds_into "plan" ∌ accepts_from "image"';
+      else if (backward) why = "π-violation: cannot chain 'act' after 'consolidate'";
+      else why = 'floored';
+    }
+
+    derEl.innerHTML = dead ? `
+      <div class="drow"><span class="dk">compatible</span><span class="dv bad">✗ ${why}</span></div>
+      <div class="drow"><span class="dk">confidence</span><span class="dv bad">0</span></div>
+      <div class="drow"><span class="dk">cost</span><span class="dv bad">∞</span></div>
+      <div class="drow"><span class="dk">provenance</span><span class="dv bad">— (nothing ran)</span></div>
+      <div class="drow final"><span class="dk">result</span><span class="dv bad">0̲</span></div>
+    ` : `
+      <div class="drow"><span class="dk">compatible</span><span class="dv ok">✓</span></div>
+      <div class="drow"><span class="dk">confidence</span><span class="dv">${fmt(out.q.confidence)}</span></div>
+      <div class="drow"><span class="dk">cost</span><span class="dv">${fmt(out.q.cost)}</span></div>
+      <div class="drow"><span class="dk">latency</span><span class="dv">${fmt(out.q.latency)}ms</span></div>
+      <div class="drow"><span class="dk">holders</span><span class="dv">${[].concat(out.holder).join(' · ')}</span></div>
+      <div class="drow"><span class="dk">exit phase</span><span class="dv">${out.value.pi}</span></div>
+      <div class="drow final"><span class="dk">result</span><span class="dv ok">live</span></div>
+    `;
+  }
+  brk.addEventListener('change', render);
+  back.addEventListener('change', render);
+  render();
+})();
+
+/* ---------- §08 reliability ---------- */
+(function reliability() {
+  const cEl = document.getElementById('rel-c'), nEl = document.getElementById('rel-n');
+  const cv = document.getElementById('rel-c-lab'), nv = document.getElementById('rel-n-lab');
+  const out = document.getElementById('rel-out'), expr = document.getElementById('rel-expr');
+  const verdict = document.getElementById('rel-verdict');
+  const cvs = document.getElementById('chain-canvas');
+  if (!cEl || !cvs) return;
+  const ctx = cvs.getContext('2d');
+  const THRESH = 0.90;
+  const SUP = { 1:'¹',2:'²',3:'³',4:'⁴',5:'⁵',6:'⁶',7:'⁷',8:'⁸',9:'⁹',10:'¹⁰',11:'¹¹',12:'¹²' };
+
+  function draw(c, n) {
+    const W = cvs.width, H = cvs.height, pad = 34;
+    ctx.clearRect(0, 0, W, H);
+    const x = (i) => pad + (i / 12) * (W - pad * 2);
+    const y = (v) => H - pad - v * (H - pad * 2);
+
+    // threshold
+    ctx.strokeStyle = 'rgba(255,210,77,.55)'; ctx.setLineDash([6, 6]); ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(pad, y(THRESH)); ctx.lineTo(W - pad, y(THRESH)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = 'rgba(255,210,77,.85)'; ctx.font = '13px ui-monospace, monospace';
+    ctx.fillText('requires ≥ 0.90', pad + 6, y(THRESH) - 8);
+
+    // curve
+    ctx.strokeStyle = '#4fc3ff'; ctx.lineWidth = 2.5; ctx.beginPath();
+    for (let i = 1; i <= 12; i++) {
+      const v = Math.pow(c, i);
+      if (i === 1) ctx.moveTo(x(i), y(v)); else ctx.lineTo(x(i), y(v));
+    }
+    ctx.stroke();
+
+    // points
+    for (let i = 1; i <= 12; i++) {
+      const v = Math.pow(c, i);
+      const on = i === n;
+      ctx.beginPath(); ctx.arc(x(i), y(v), on ? 7 : 3.2, 0, Math.PI * 2);
+      ctx.fillStyle = v >= THRESH ? '#2ee6a6' : '#ff5a4d';
+      ctx.fill();
+      if (on) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.stroke(); }
+    }
+    ctx.fillStyle = '#5f6b82'; ctx.font = '12px ui-monospace, monospace';
+    ctx.fillText('1 step', pad - 4, H - 12);
+    ctx.fillText('12 steps', W - pad - 54, H - 12);
+  }
+
+  function render() {
+    const c = +cEl.value / 100, n = +nEl.value;
+    cv.textContent = c.toFixed(2);
+    nv.textContent = n + (n === 1 ? ' step' : ' steps');
+    const v = Math.pow(c, n);
+    out.textContent = v.toFixed(3);
+    out.style.color = v >= THRESH ? 'var(--live)' : 'var(--zero)';
+    expr.textContent = c.toFixed(2) + (SUP[n] || ('^' + n));
+    verdict.textContent = v >= THRESH ? 'passes' : 'refused';
+    verdict.style.color = v >= THRESH ? 'var(--live)' : 'var(--zero)';
+    draw(c, n);
+  }
+  cEl.addEventListener('input', render);
+  nEl.addEventListener('input', render);
+  render();
+})();
+
+/* ---------- §11 playground ---------- */
+(function playground() {
+  const editors = document.getElementById('brick-editors');
+  const pick = document.getElementById('expr-pick');
+  if (!editors) return;
+
+  const TYPES = ['*', 'facts', 'plan', 'effect', 'image', 'table'];
+  const state = {
+    shape: 'pipe3',
+    bricks: [
+      { id: 'A', holder: 'store',   phase: 'retrieve', accepts: '*',     feeds: 'facts',  conf: 0.98, cost: 4 },
+      { id: 'B', holder: 'planner', phase: 'route',    accepts: 'facts', feeds: 'plan',   conf: 0.96, cost: 9 },
+      { id: 'C', holder: 'robot',   phase: 'act',      accepts: 'plan',  feeds: 'effect', conf: 0.97, cost: 5 }
+    ]
+  };
+
+  function buildEditors() {
+    editors.innerHTML = state.bricks.map((b, i) => `
+      <div class="brick-ed">
+        <div class="bh"><span class="bid">${b.id}</span><span class="bholder">holder: ${b.holder}</span></div>
+        <div class="fields">
+          <div class="fld"><label>phase</label>
+            <select data-i="${i}" data-f="phase">${PHASES.map(p => `<option ${p === b.phase ? 'selected' : ''}>${p}</option>`).join('')}</select>
+          </div>
+          <div class="fld"><label>confidence</label>
+            <input type="number" min="0" max="1" step="0.01" value="${b.conf}" data-i="${i}" data-f="conf" />
+          </div>
+          <div class="fld"><label>accepts_from</label>
+            <select data-i="${i}" data-f="accepts">${TYPES.map(t => `<option ${t === b.accepts ? 'selected' : ''}>${t}</option>`).join('')}</select>
+          </div>
+          <div class="fld"><label>feeds_into</label>
+            <select data-i="${i}" data-f="feeds">${TYPES.map(t => `<option ${t === b.feeds ? 'selected' : ''}>${t}</option>`).join('')}</select>
+          </div>
+        </div>
+      </div>`).join('');
+    editors.querySelectorAll('select, input').forEach(el => {
+      el.addEventListener('change', (e) => {
+        const i = +e.target.dataset.i, f = e.target.dataset.f;
+        state.bricks[i][f] = f === 'conf' ? Math.max(0, Math.min(1, +e.target.value)) : e.target.value;
+        render();
+      });
+    });
+  }
+
+  function toBrick(b) {
+    return mkBrick(b.id, b.holder, b.phase, b.accepts, b.feeds, { confidence: b.conf, cost: b.cost, latency: 100 });
+  }
+
+  function evaluate() {
+    const [A, B, C] = state.bricks.map(toBrick);
+    switch (state.shape) {
+      case 'pipe3':   return composePipe(composePipe(A, B), C);
+      case 'andpipe': return composePipe(composeAnd(A, B), C);
+      case 'pipeand': return composePipe(A, composeAnd(B, C));
+      case 'and3':    return composeAnd(composeAnd(A, B), C);
+    }
+  }
+
+  function diagnose() {
+    // Report the FIRST floor that a reader can act on, in the order the runtime checks them.
+    const [a, b, c] = state.bricks;
+    const fwd = (x, y) => phaseIdx(x.phase) <= phaseIdx(y.phase);
+    const tm = (x, y) => typeMatch(x.feeds, y.accepts);
+    if (state.shape === 'pipe3') {
+      if (!tm(a, b)) return `A.feeds_into "${a.feeds}" does not meet B.accepts_from "${b.accepts}"`;
+      if (!fwd(a, b)) return `π-violation: cannot chain '${b.phase}' after '${a.phase}'`;
+      if (!tm(b, c)) return `B.feeds_into "${b.feeds}" does not meet C.accepts_from "${c.accepts}"`;
+      if (!fwd(b, c)) return `π-violation: cannot chain '${c.phase}' after '${b.phase}'`;
+    }
+    if (state.shape === 'andpipe' || state.shape === 'pipeand') {
+      return 'a merged operand carried a phase the pipeline could not accept, or the hand-off types did not meet';
+    }
+    return 'floored';
+  }
+
+  function render() {
+    const out = evaluate();
+    const dead = isZero(out);
+    const vEl = document.getElementById('pg-verdict');
+    const wEl = document.getElementById('pg-why');
+    const dEl = document.getElementById('pg-derived');
+
+    vEl.textContent = dead ? '0̲' : 'live';
+    vEl.className = 'verdict-big ' + (dead ? 'zero' : 'live');
+    wEl.textContent = dead ? diagnose() : 'every hand-off met, every step forward, cost certified';
+
+    dEl.innerHTML = dead ? `
+      <div class="drow"><span class="dk">id</span><span class="dv bad">0̲</span></div>
+      <div class="drow"><span class="dk">confidence</span><span class="dv bad">0</span></div>
+      <div class="drow"><span class="dk">cost</span><span class="dv bad">∞</span></div>
+      <div class="drow"><span class="dk">certified</span><span class="dv bad">false</span></div>
+      <div class="drow"><span class="dk">decision</span><span class="dv bad">annihilate</span></div>
+    ` : `
+      <div class="drow"><span class="dk">id</span><span class="dv" style="font-size:11px">${out.id}</span></div>
+      <div class="drow"><span class="dk">confidence</span><span class="dv ok">${fmt(out.q.confidence)}</span></div>
+      <div class="drow"><span class="dk">cost</span><span class="dv">${fmt(out.q.cost)}</span></div>
+      <div class="drow"><span class="dk">latency</span><span class="dv">${fmt(out.q.latency)}ms</span></div>
+      <div class="drow"><span class="dk">accepts_from</span><span class="dv">${[].concat(out.contract.accepts_from).join(', ')}</span></div>
+      <div class="drow"><span class="dk">feeds_into</span><span class="dv">${[].concat(out.contract.feeds_into).join(', ')}</span></div>
+      <div class="drow"><span class="dk">exit phase</span><span class="dv">${out.value.pi ?? '·'}</span></div>
+      <div class="drow"><span class="dk">holders</span><span class="dv">${[].concat(out.holder).filter(Boolean).join(' · ')}</span></div>
+      <div class="drow"><span class="dk">costClass</span><span class="dv ok">${out.cost.verdict.costClass}</span></div>
+      <div class="drow final"><span class="dk">decision</span><span class="dv ok">${out.cost.policy.resourceDecision}</span></div>
+    `;
+  }
+
+  pick.addEventListener('click', (e) => {
+    const btn = e.target.closest('.ebtn');
+    if (!btn) return;
+    state.shape = btn.dataset.shape;
+    pick.querySelectorAll('.ebtn').forEach(b => b.classList.toggle('on', b === btn));
+    render();
+  });
+
+  buildEditors();
+  render();
+})();
+
+/* ---------- §12 CP7 ---------- */
+(function cp7() {
+  const swap = document.getElementById('cp7-swap');
+  if (!swap) return;
+  // The exact counterexample shape the suite reports: π = [route, learn, act].
+  // combine() sets π by first-non-null, so (a&b) exits at 'route' and (b&a) exits at 'learn'.
+  // Chaining into 'act' is forward from 'route' and BACKWARD from 'learn'.
+  let flipped = false;
+
+  function run() {
+    const a = mkBrick('A', 'x', 'route', '*', '*', { confidence: 0.99, cost: 1, latency: 10 });
+    const b = mkBrick('B', 'y', 'learn', '*', '*', { confidence: 0.99, cost: 1, latency: 10 });
+    const c = mkBrick('C', 'z', 'act',   '*', '*', { confidence: 0.99, cost: 1, latency: 10 });
+
+    const left  = composePipe(flipped ? composeAnd(b, a) : composeAnd(a, b), c);
+    const right = composePipe(flipped ? composeAnd(a, b) : composeAnd(b, a), c);
+
+    const set = (side, res, expr) => {
+      const box = document.getElementById('cp7-' + side);
+      const el = document.getElementById('cp7-' + side[0] + 'res');
+      const dead = isZero(res);
+      el.textContent = dead ? '0̲' : 'LIVE';
+      el.className = 'sres ' + (dead ? 'zero' : 'live');
+      box.classList.toggle('hot', dead);
+      box.querySelector('.sexpr').innerHTML = expr;
+    };
+    set('left',  left,  flipped ? '(B &amp; A) |&gt; C' : '(A &amp; B) |&gt; C');
+    set('right', right, flipped ? '(A &amp; B) |&gt; C' : '(B &amp; A) |&gt; C');
+
+    document.getElementById('cp7-why').innerHTML =
+      `π = [<b style="color:var(--pulse)">route</b>, <b style="color:var(--pulse)">learn</b>, <b style="color:var(--pulse)">act</b>]. ` +
+      `The merge sets the composite's phase by first-non-null, so <code>(A &amp; B)</code> exits at <b>route</b> and ` +
+      `<code>(B &amp; A)</code> exits at <b>learn</b>. Chaining into <b>act</b> is forward from route and <b>backward</b> ` +
+      `from learn — so one side survives and one annihilates, from an operator advertised as commutative. ` +
+      `<b style="color:var(--zero)">That is CP7, live, in your browser.</b>`;
+  }
+  swap.addEventListener('click', () => { flipped = !flipped; run(); });
+  run();
+})();
+
+/* ---------- chrome ---------- */
+(function chrome() {
+  const prog = document.getElementById('progress');
+  function onScroll() {
+    const h = document.documentElement;
+    prog.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100 + '%';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+})();
+</script>
+</body>
+</html>

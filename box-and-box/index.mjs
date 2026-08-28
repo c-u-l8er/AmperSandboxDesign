@@ -12,4 +12,7 @@ export * as epistemic from './epistemic.mjs'; // 6 epistemic — knowledge & gra
 export * as strategic from './strategic.mjs'; // 7 strategic — coalitional ability (S1–S8, SB1–SB3)
 export * as resource from './resource.mjs'; // + resource — the economy the ladder runs on (C1–C8, CB1–CB3)
 export * as evolution from './evolution.mjs'; // + evolution — measured, priced, certified policy change on a provenance chain (EV1–EV6)
-export * as compose from './compose.mjs'; // the lego layer — bricks compose with & and |> over the shared floor (CA1–CA4, CP1–CP4, CX1–CX6)
+export * as compose from './compose.mjs'; // the lego layer — bricks compose with & and |> over an explicit
+                                          // admission gate (raw → canonical → admitted|0̲) with attested cost
+                                          // certificates. CA1–CA4 · CP1–CP4 · CX1–CX7 · CD1–CD17 · VX1–VX5 ·
+                                          // QX1–QX6 · AD1–AD5 · CERT1–CERT5.

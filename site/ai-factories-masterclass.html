@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI Factories Masterclass | [&amp;] The Worldware Factory</title>
+<meta name="description" content="An AI-factories masterclass: what the term already means, why parallel agents do not compound without checked joins, and the arithmetic that separates faster-and-equally-wrong from faster-and-refusable." />
+<link rel="canonical" href="https://ampersandboxdesign.com/ai-factories-masterclass" />
+<meta property="og:title" content="The Worldware Factory — an AI-Factories Masterclass" />
+<meta property="og:description" content="Everyone is building AI factories, and the term means three different things. This page is about the join: what an assembly must carry so a merge can be checked rather than hoped for." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ampersandboxdesign.com/ai-factories-masterclass" />
+<style>
+  :root {
+    --bg: #07090d;
+    --bg-2: #0b0e14;
+    --panel: #11151e;
+    --panel-2: #161b27;
+    --ink: #e8edf6;
+    --ink-dim: #9aa6bd;
+    --ink-faint: #5f6b82;
+    --line: #1e2533;
+    --line-bright: #2c3548;
+    /* the two operators get their own colours and keep them the whole page */
+    --amp: #b388ff;      /* & — combine  */
+    --pipe: #4fc3ff;     /* |> — pipeline */
+    --zero: #ff5a4d;     /* 0̲ — annihilation */
+    --live: #2ee6a6;     /* a surviving composite */
+    --box: #ffd24d;      /* governance / the floor */
+    --pulse: #ff8a3d;    /* phases */
+    --ext: #8b93a8;      /* external / other people's work */
+    --radius: 14px;
+    --maxw: 1080px;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: radial-gradient(1200px 800px at 78% -12%, #1a1430 0%, var(--bg) 55%) fixed;
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: var(--pipe); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+    background: linear-gradient(90deg, var(--amp), var(--pipe) 60%, var(--live));
+    z-index: 100; transition: width .1s linear;
+    box-shadow: 0 0 14px rgba(179,136,255,.6);
+  }
+
+  nav.top {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(14px);
+    background: rgba(7,9,13,.72);
+    border-bottom: 1px solid var(--line);
+  }
+  nav.top .wrap { display: flex; align-items: center; gap: 18px; height: 56px; }
+  .brand { font-weight: 800; letter-spacing: .02em; font-size: 15px; display: flex; align-items: center; gap: 9px; }
+  .brand .amp { color: var(--amp); font-family: var(--mono); }
+  nav.top .links { margin-left: auto; display: flex; gap: 18px; font-size: 13px; color: var(--ink-dim); }
+  nav.top .links a { color: var(--ink-dim); }
+  nav.top .links a:hover { color: var(--ink); text-decoration: none; }
+  @media (max-width: 900px) { nav.top .links { display: none; } }
+
+  header.hero { padding: 84px 0 60px; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink-dim); border: 1px solid var(--line-bright); border-radius: 999px;
+    padding: 6px 14px; margin-bottom: 26px; background: var(--panel);
+  }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amp); box-shadow: 0 0 10px var(--amp); animation: pulse 2.4s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+
+  h1.title { font-size: clamp(34px, 6.4vw, 66px); line-height: 1.03; margin: 0 0 22px; font-weight: 850; letter-spacing: -.025em; }
+  h1.title .grad { background: linear-gradient(100deg, var(--amp), var(--pipe) 55%, var(--live)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lede { font-size: clamp(17px, 2.1vw, 21px); color: var(--ink-dim); max-width: 780px; }
+  .lede strong { color: var(--ink); font-weight: 650; }
+
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
+  .btn { font-family: var(--mono); font-size: 13px; letter-spacing: .03em; padding: 12px 20px; border-radius: 10px; border: 1px solid var(--line-bright); background: var(--panel); color: var(--ink); cursor: pointer; transition: .2s; display: inline-block; }
+  .btn:hover { border-color: var(--amp); transform: translateY(-2px); text-decoration: none; }
+  .btn.primary { background: linear-gradient(100deg, #3a2168, #52308f); border-color: #6b45b8; }
+  .btn.danger { border-color: rgba(255,90,77,.5); color: var(--zero); }
+
+  .hero-stats { display: flex; flex-wrap: wrap; gap: 34px; margin-top: 50px; padding-top: 30px; border-top: 1px solid var(--line); }
+  .stat .n { font-size: 30px; font-weight: 800; font-family: var(--mono); letter-spacing: -.01em; }
+  .stat .n.c1 { color: var(--live); } .stat .n.c2 { color: var(--zero); }
+  .stat .n.c3 { color: var(--pipe); } .stat .n.c4 { color: var(--amp); }
+  .stat .l { font-size: 12.5px; color: var(--ink-faint); letter-spacing: .03em; max-width: 210px; }
+
+  section { padding: 74px 0; border-top: 1px solid var(--line); position: relative; }
+  .kicker { font-family: var(--mono); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-faint); margin: 0 0 14px; }
+  h2.sec { font-size: clamp(26px, 4vw, 40px); margin: 0 0 18px; letter-spacing: -.015em; font-weight: 800; line-height: 1.1; }
+  .sec-lede { font-size: 17.5px; color: var(--ink-dim); max-width: 750px; margin: 0 0 34px; }
+  .sec-lede strong { color: var(--ink); }
+  h3.sub { font-size: 19px; margin: 40px 0 14px; letter-spacing: -.01em; }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* GEO answer block — every section opens with a self-contained definition */
+  .answer { background: var(--panel); border: 1px solid var(--line-bright); border-left: 3px solid var(--amp); border-radius: 0 12px 12px 0; padding: 20px 24px; margin: 0 0 30px; }
+  .answer h3 { margin: 0 0 9px; font-size: 15.5px; color: var(--ink); font-weight: 700; letter-spacing: -.005em; }
+  .answer p { margin: 0; font-size: 15px; color: var(--ink-dim); line-height: 1.7; }
+  .answer p b { color: var(--ink); }
+
+  .op { font-family: var(--mono); font-weight: 700; }
+  .op.amp { color: var(--amp); } .op.pipe { color: var(--pipe); } .op.zero { color: var(--zero); }
+
+  /* hero: list vs composition */
+  .lvc { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 44px; }
+  @media (max-width: 880px) { .lvc { grid-template-columns: 1fr; } }
+  .lvc-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+  .lvc-card.right { border-color: var(--line-bright); }
+  .lvc-h { font-family: var(--mono); font-size: 11px; letter-spacing: .13em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 16px; }
+  .lvc-card.right .lvc-h { color: var(--amp); }
+  .caps { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cap-tok { font-family: var(--mono); font-size: 12.5px; padding: 7px 12px; border-radius: 8px; background: var(--bg-2); border: 1px solid var(--line); color: var(--ink-dim); }
+  .lvc-verdict { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--line); font-size: 13.5px; color: var(--ink-faint); line-height: 1.6; }
+  .lvc-expr { font-family: var(--mono); font-size: 14.5px; padding: 13px 15px; background: #0a0d13; border: 1px solid var(--line); border-radius: 10px; overflow-x: auto; white-space: nowrap; color: var(--ink); }
+  .derived { margin-top: 16px; display: grid; gap: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .drow { display: flex; align-items: baseline; gap: 10px; padding: 8px 14px; font-family: var(--mono); font-size: 12px; border-bottom: 1px solid var(--line); background: #0a0d13; }
+  .drow:last-child { border-bottom: 0; }
+  .drow .dk { color: var(--ink-faint); min-width: 104px; }
+  .drow .dv { color: var(--ink-dim); }
+  .drow .dv.ok { color: var(--live); } .drow .dv.bad { color: var(--zero); font-weight: 700; }
+  .drow.final { background: var(--panel-2); }
+  .drow.final .dv { font-weight: 700; font-size: 13px; }
+  .break-row { margin-top: 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: var(--mono); font-size: 12px; color: var(--ink-faint); }
+  .toggle { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; padding: 7px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg-2); color: var(--ink-dim); transition: .15s; }
+  .toggle:hover { border-color: var(--line-bright); }
+  .toggle.on { border-color: var(--zero); color: var(--zero); background: rgba(255,90,77,.08); }
+  .toggle input { display: none; }
+
+  /* generic tables */
+  .tbl { width: 100%; border-collapse: collapse; font-size: 14px; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .tbl thead th { text-align: left; padding: 13px 16px; background: var(--panel-2); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; border-bottom: 1px solid var(--line-bright); }
+  .tbl tbody td { padding: 14px 16px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--ink-dim); }
+  .tbl tbody tr:last-child td { border-bottom: 0; }
+  .tbl tbody tr:hover { background: rgba(255,255,255,.018); }
+  .tbl .nm { color: var(--ink); font-weight: 650; }
+  .tbl code { font-size: 12px; }
+  .scroll-x { overflow-x: auto; }
+  @media (max-width: 800px) { .scroll-x .tbl { min-width: 680px; } }
+
+  .st { font-family: var(--mono); font-size: 10.5px; padding: 3px 9px; border-radius: 999px; white-space: nowrap; display: inline-block; }
+  .st.running { background: rgba(46,230,166,.14); color: var(--live); }
+  .st.specified { background: rgba(179,136,255,.15); color: var(--amp); }
+  .st.draft { background: rgba(242,181,59,.15); color: var(--box); }
+  .st.none { background: rgba(95,107,130,.2); color: var(--ink-dim); }
+  .st.open { background: rgba(255,90,77,.15); color: var(--zero); }
+  .st.ext { background: rgba(95,107,130,.14); color: var(--ink-faint); }
+
+  /* two operators */
+  .ops { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 820px) { .ops { grid-template-columns: 1fr; } }
+  .opcard { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; position: relative; overflow: hidden; }
+  .opcard::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--clr); }
+  .opcard .glyph { font-family: var(--mono); font-size: 34px; font-weight: 800; color: var(--clr); line-height: 1; }
+  .opcard h3 { margin: 12px 0 4px; font-size: 19px; }
+  .opcard .role { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); }
+  .opcard p { font-size: 14px; color: var(--ink-dim); margin: 12px 0 0; }
+  .opcard ul { margin: 14px 0 0; padding-left: 18px; font-size: 13.5px; color: var(--ink-dim); }
+  .opcard ul li { margin-bottom: 6px; }
+  .opcard .lawline { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 12px; color: var(--ink-faint); line-height: 1.9; }
+  .opcard .lawline b { color: var(--clr); }
+
+  /* laws as engineering questions */
+  .lawq { display: grid; gap: 10px; }
+  .lq { display: grid; grid-template-columns: 168px 1fr; gap: 18px; padding: 15px 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 11px; align-items: start; }
+  @media (max-width: 700px) { .lq { grid-template-columns: 1fr; gap: 6px; } }
+  .lq .law { font-family: var(--mono); font-size: 13px; color: var(--ink); font-weight: 650; }
+  .lq .law small { display: block; color: var(--ink-faint); font-size: 11px; font-weight: 400; margin-top: 3px; }
+  .lq .q { font-size: 14px; color: var(--ink-dim); }
+  .lq .q b { color: var(--ink); }
+
+  /* code / certificate */
+  .cert { background: #0a0d13; border: 1px solid var(--line-bright); border-radius: var(--radius); overflow: hidden; font-family: var(--mono); font-size: 13px; }
+  .cert .bar { display: flex; align-items: center; gap: 8px; padding: 11px 16px; background: var(--panel-2); border-bottom: 1px solid var(--line); }
+  .cert .bar .d { width: 11px; height: 11px; border-radius: 50%; }
+  .cert .bar .t { margin-left: 8px; color: var(--ink-faint); font-size: 12px; }
+  .cert pre { margin: 0; padding: 20px; overflow-x: auto; line-height: 1.7; color: var(--ink-dim); }
+  .cert .k { color: var(--pipe); } .cert .s { color: var(--live); } .cert .n { color: var(--box); } .cert .c { color: var(--ink-faint); }
+  .cert .bad { color: var(--zero); }
+
+  /* slider */
+  .rel-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; }
+  .rel-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+  @media (max-width: 700px) { .rel-controls { grid-template-columns: 1fr; } }
+  .rel-controls label { display: block; font-family: var(--mono); font-size: 12px; color: var(--ink-faint); margin-bottom: 10px; letter-spacing: .04em; }
+  .rel-controls label b { color: var(--ink); font-size: 14px; }
+  input[type=range] { -webkit-appearance: none; appearance: none; display: block; width: 100%; height: 26px; background: transparent; cursor: pointer; margin: 0; }
+  input[type=range]::-webkit-slider-runnable-track { height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--zero), var(--box) 55%, var(--live)); }
+  input[type=range]::-moz-range-track { height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--zero), var(--box) 55%, var(--live)); }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; margin-top: -7px; border-radius: 50%; background: #fff; border: 3px solid #0b0e14; box-shadow: 0 0 0 2px #fff; }
+  input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 3px solid #0b0e14; box-shadow: 0 0 0 2px #fff; }
+  #chain-canvas { width: 100%; height: 220px; display: block; margin-top: 26px; }
+  .rel-readout { display: flex; flex-wrap: wrap; gap: 26px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 13px; }
+  .rel-readout .rr .rk { color: var(--ink-faint); font-size: 11px; display: block; letter-spacing: .06em; text-transform: uppercase; }
+  .rel-readout .rr .rv { font-size: 21px; font-weight: 800; }
+
+  /* playground */
+  .pg { background: var(--panel); border: 1px solid var(--line-bright); border-radius: var(--radius); padding: 24px; }
+  .pg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 900px) { .pg-grid { grid-template-columns: 1fr; } }
+  .brick-ed { background: var(--bg-2); border: 1px solid var(--line); border-radius: 11px; padding: 15px 16px; margin-bottom: 10px; }
+  .brick-ed .bh { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; }
+  .brick-ed .bid { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--amp); }
+  .brick-ed .bholder { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); }
+  .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+  @media (max-width: 520px) { .fields { grid-template-columns: 1fr; } }
+  .fld label { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 4px; }
+  .fld select, .fld input {
+    width: 100%; font-family: var(--mono); font-size: 12px; padding: 6px 9px; border-radius: 7px;
+    background: #0a0d13; border: 1px solid var(--line); color: var(--ink); outline: none;
+  }
+  .fld select:focus, .fld input:focus { border-color: var(--amp); }
+  .expr-pick { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .ebtn { font-family: var(--mono); font-size: 12px; padding: 7px 12px; border-radius: 8px; cursor: pointer; background: var(--bg-2); border: 1px solid var(--line); color: var(--ink-faint); transition: .15s; }
+  .ebtn:hover { border-color: var(--line-bright); color: var(--ink-dim); }
+  .ebtn.on { background: rgba(179,136,255,.16); border-color: var(--amp); color: var(--amp); }
+  .out-panel { background: #0a0d13; border: 1px solid var(--line); border-radius: 11px; overflow: hidden; }
+  .out-panel .oh { font-family: var(--mono); font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-faint); padding: 9px 14px; border-bottom: 1px solid var(--line); background: var(--panel-2); }
+  .verdict-big { padding: 22px 16px; text-align: center; font-family: var(--mono); font-weight: 800; font-size: 40px; letter-spacing: -.01em; transition: .25s; }
+  .verdict-big.live { color: var(--live); }
+  .verdict-big.zero { color: var(--zero); }
+  .verdict-why { padding: 0 16px 16px; text-align: center; font-family: var(--mono); font-size: 11.5px; color: var(--ink-faint); line-height: 1.6; }
+
+  /* CP7 — the broken law */
+  .broken { border: 1px solid rgba(255,90,77,.4); border-radius: var(--radius); background: linear-gradient(180deg, rgba(255,90,77,.06), transparent 60%); padding: 28px; margin-top: 8px; }
+  .broken .btag { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--zero); }
+  .broken h3 { margin: 10px 0 10px; font-size: 22px; color: var(--ink); }
+  .swap-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center; margin-top: 22px; }
+  @media (max-width: 720px) { .swap-row { grid-template-columns: 1fr; } }
+  .swap-side { background: #0a0d13; border: 1px solid var(--line); border-radius: 11px; padding: 18px; text-align: center; transition: .3s; }
+  .swap-side .sexpr { font-family: var(--mono); font-size: 15px; color: var(--ink); margin-bottom: 12px; }
+  .swap-side .sres { font-family: var(--mono); font-size: 30px; font-weight: 800; }
+  .swap-side .sres.live { color: var(--live); } .swap-side .sres.zero { color: var(--zero); }
+  .swap-side.hot { border-color: var(--zero); box-shadow: 0 0 24px rgba(255,90,77,.18); }
+  .swap-mid { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); text-align: center; }
+  .lawrow { display: flex; align-items: baseline; gap: 12px; padding: 11px 15px; border: 1px solid var(--line); border-radius: 9px; background: #0a0d13; margin-bottom: 8px; font-family: var(--mono); font-size: 12.5px; }
+  .lawrow .lid { font-weight: 800; min-width: 42px; }
+  .lawrow.fail { border-color: rgba(255,90,77,.35); }
+  .lawrow.fail .lid { color: var(--zero); }
+  .lawrow.pass .lid { color: var(--live); }
+  .lawrow .ltext { color: var(--ink-dim); }
+
+  /* landscape */
+  .land { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+  .lcard { border: 1px solid var(--line); border-left: 3px solid var(--clr); border-radius: 11px; padding: 17px 19px; background: var(--panel); }
+  .lcard h4 { margin: 0 0 4px; font-size: 14.5px; color: var(--ink); }
+  .lcard .who { font-family: var(--mono); font-size: 10.5px; color: var(--ink-faint); letter-spacing: .04em; }
+  .lcard p { margin: 11px 0 0; font-size: 13px; color: var(--ink-dim); line-height: 1.62; }
+  .lcard.ours { border-left-color: var(--amp); background: linear-gradient(180deg, rgba(179,136,255,.07), transparent); }
+
+  blockquote.callout {
+    margin: 34px 0 0; padding: 22px 26px; border-left: 3px solid var(--amp);
+    background: linear-gradient(90deg, rgba(179,136,255,.07), transparent);
+    border-radius: 0 12px 12px 0; font-size: 18px; color: var(--ink);
+  }
+  blockquote.callout cite { display: block; margin-top: 10px; font-size: 13px; color: var(--ink-faint); font-style: normal; font-family: var(--mono); }
+
+  .honest { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); margin-top: 18px; padding: 13px 16px; border: 1px dashed var(--line-bright); border-radius: 10px; line-height: 1.75; }
+  .honest b { color: var(--ink-dim); }
+
+  /* falsification */
+  .fals { width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin-top: 24px; }
+  .fals th { text-align: left; padding: 12px 15px; background: var(--panel-2); font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-faint); border-bottom: 1px solid var(--line-bright); }
+  .fals td { padding: 13px 15px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--ink-dim); }
+  .fals tr:last-child td { border-bottom: 0; }
+  .fals .claim { color: var(--ink); font-weight: 600; }
+  .fals code { font-size: 11.5px; white-space: nowrap; }
+  .fals .kill { color: var(--zero); font-family: var(--mono); font-size: 11.5px; line-height: 1.6; }
+  @media (max-width: 760px) { .fals-scroll { overflow-x: auto; } .fals { min-width: 760px; } }
+
+  footer { padding: 56px 0 80px; border-top: 1px solid var(--line); color: var(--ink-faint); font-size: 13px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 18px 40px; align-items: baseline; }
+  footer a { color: var(--ink-dim); }
+  footer .note { flex-basis: 100%; margin-top: 18px; font-family: var(--mono); font-size: 12px; line-height: 1.8; color: var(--ink-faint); }
+  .srcs { flex-basis: 100%; margin-top: 16px; font-size: 12px; line-height: 1.9; color: var(--ink-faint); }
+  .srcs a { color: var(--ink-dim); }
+
+  /* ============ AI-FACTORIES MASTERCLASS — page-specific components ============ */
+
+  /* rung chips, same vocabulary the portfolio nav stores */
+  .rg { font-family: var(--mono); font-size: 10px; letter-spacing: .05em; padding: 2px 7px;
+        border-radius: 5px; border: 1px solid var(--line-bright); color: var(--ink-faint);
+        white-space: nowrap; display: inline-block; }
+  .rg[data-r="live_deployed"] { color: var(--live); border-color: rgba(46,230,166,.42); background: rgba(46,230,166,.09); }
+  .rg[data-r="in_tree"]       { color: var(--box);  border-color: rgba(255,210,77,.4);  background: rgba(255,210,77,.08); }
+  .rg[data-r="spec"]          { color: var(--ink-dim); }
+  .rg[data-r="?"]             { color: var(--zero); border-color: rgba(255,90,77,.35); background: rgba(255,90,77,.06); }
+  .rg[data-r="place"]         { color: var(--amp);  border-color: rgba(179,136,255,.4); background: rgba(179,136,255,.08); }
+
+  /* boxed vs unboxed diagram */
+  .shape { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin: 30px 0 10px; }
+  @media (max-width: 800px) { .shape { grid-template-columns: 1fr; } }
+  .shapecol { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 20px; }
+  .shapecol h4 { margin: 0 0 4px; font-size: 15px; font-family: var(--mono); letter-spacing: .04em; }
+  .shapecol .sh-sub { font-size: 12.5px; color: var(--ink-faint); margin: 0 0 18px; font-family: var(--mono); }
+  .shapecol.a h4 { color: var(--ext); } .shapecol.b h4 { color: var(--pipe); }
+  .sbox { font-family: var(--mono); font-size: 12px; border: 1px solid var(--line-bright); border-radius: 8px;
+          padding: 7px 12px; background: var(--bg-2); color: var(--ink-dim); text-align: center; margin: 0 auto; max-width: 210px; }
+  .sarr { text-align: center; color: var(--ink-faint); font-size: 12px; line-height: 1.5; }
+  .srow-p { display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; }
+  .srow-p .sbox { margin: 0; max-width: none; border-color: rgba(79,195,255,.35); color: var(--pipe); background: rgba(79,195,255,.06); }
+  .sjoin { border-color: rgba(46,230,166,.45) !important; color: var(--live) !important; background: rgba(46,230,166,.07) !important; letter-spacing: .1em; }
+  .shapefoot { font-size: 12.5px; color: var(--ink-faint); margin-top: 16px; padding-top: 13px; border-top: 1px dashed var(--line-bright); }
+  .shapefoot b { color: var(--ink-dim); }
+
+  /* the line simulator */
+  .sim { background: var(--panel); border: 1px solid var(--line-bright); border-radius: var(--radius); overflow: hidden; margin: 30px 0; }
+  .sim .simhead { display: flex; align-items: center; gap: 10px; padding: 13px 20px; border-bottom: 1px solid var(--line);
+                  font-family: var(--mono); font-size: 12.5px; color: var(--ink-dim); flex-wrap: wrap; }
+  .sim .simhead .tagm { margin-left: auto; color: var(--box); font-size: 11.5px; }
+  .simbody { display: grid; grid-template-columns: 290px 1fr; }
+  @media (max-width: 860px) { .simbody { grid-template-columns: 1fr; } }
+  .simctl { padding: 22px 20px; border-right: 1px solid var(--line); }
+  @media (max-width: 860px) { .simctl { border-right: none; border-bottom: 1px solid var(--line); } }
+  .simctl label { display: block; font-family: var(--mono); font-size: 11.5px; color: var(--ink-faint);
+                  letter-spacing: .05em; margin: 0 0 6px; }
+  .simctl label b { color: var(--pipe); float: right; }
+  .simctl input[type=range] { width: 100%; -webkit-appearance: none; appearance: none; height: 4px; border-radius: 4px;
+                  background: var(--line-bright); outline: none; margin: 0 0 20px; }
+  .simctl input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+                  background: var(--pipe); cursor: pointer; box-shadow: 0 0 0 4px rgba(79,195,255,.16); }
+  .simctl input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border: none; border-radius: 50%; background: var(--pipe); cursor: pointer; }
+  .modes { display: flex; flex-direction: column; gap: 7px; margin-top: 4px; }
+  .modes button { font-family: var(--mono); font-size: 12px; text-align: left; padding: 10px 13px; border-radius: 8px;
+                  border: 1px solid var(--line-bright); background: var(--bg-2); color: var(--ink-dim); cursor: pointer; transition: .18s; }
+  .modes button:hover { border-color: var(--ink-faint); }
+  .modes button.on { border-color: var(--pipe); background: rgba(79,195,255,.1); color: var(--ink); }
+  .modes button small { display: block; color: var(--ink-faint); font-size: 10.5px; margin-top: 2px; }
+  .simout { padding: 22px 24px; }
+  .simmetrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+  @media (max-width: 620px) { .simmetrics { grid-template-columns: 1fr; } }
+  .metric { border: 1px solid var(--line); border-radius: 10px; padding: 14px 15px; background: var(--bg-2); }
+  .metric .mk { font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); }
+  .metric .mv { font-family: var(--mono); font-size: 26px; font-weight: 700; margin-top: 6px; letter-spacing: -.01em; }
+  .metric .mn { font-size: 11.5px; color: var(--ink-faint); margin-top: 4px; }
+  .metric.good .mv { color: var(--live); } .metric.bad .mv { color: var(--zero); } .metric.neutral .mv { color: var(--pipe); }
+  .simbars { display: grid; gap: 9px; }
+  .bar { display: grid; grid-template-columns: 128px 1fr 74px; gap: 12px; align-items: center; font-family: var(--mono); font-size: 12px; }
+  @media (max-width: 620px) { .bar { grid-template-columns: 100px 1fr 62px; gap: 8px; font-size: 11px; } }
+  .bar .bk { color: var(--ink-faint); }
+  .bar .btrack { height: 9px; border-radius: 5px; background: var(--line); overflow: hidden; }
+  /* display:block is load-bearing. .btrack is blockified because it is a grid item of .bar,
+     but .bfill is a <span> INSIDE it and stays inline, where width/height are ignored —
+     it rendered 0x0 with width:100% set. Reported as "the bar charts are not working". */
+  .bar .bfill { display: block; height: 100%; border-radius: 5px; transition: width .3s cubic-bezier(.2,.7,.2,1); }
+  .bar .bv { text-align: right; color: var(--ink); }
+  .simnote { margin-top: 20px; padding-top: 16px; border-top: 1px dashed var(--line-bright);
+             font-size: 13.5px; color: var(--ink-dim); line-height: 1.7; }
+  .simnote b { color: var(--ink); }
+  .simnote .warn { color: var(--box); }
+
+  /* cell grid */
+  .cellgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line);
+              border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin: 26px 0; }
+  @media (max-width: 900px) { .cellgrid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .cellgrid { grid-template-columns: 1fr; } }
+  .cellgrid .cg { background: var(--panel); padding: 16px 15px; display: flex; flex-direction: column; gap: 6px; min-height: 112px; }
+  .cellgrid .cg .cgk { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--pulse); }
+  .cellgrid .cg .cgm { font-size: 15px; font-weight: 650; color: var(--ink); }
+  .cellgrid .cg .cgd { font-size: 12px; color: var(--ink-faint); margin-top: auto; }
+  .cellgrid .cg .rg { align-self: flex-start; }
+
+  /* the worldware ladder */
+  .wl { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin: 26px 0; }
+  .wl .wr { display: grid; grid-template-columns: 190px 1fr; gap: 20px; padding: 16px 22px; border-bottom: 1px solid var(--line);
+            background: var(--panel); align-items: center; }
+  .wl .wr:last-child { border-bottom: none; }
+  .wl .wr .wn { font-size: 19px; font-weight: 700; color: var(--ink-dim); }
+  .wl .wr .wo { font-size: 14px; color: var(--ink-faint); }
+  .wl .wr .wo b { color: var(--ink-dim); }
+  .wl .wr.top { background: rgba(79,195,255,.07); }
+  .wl .wr.top .wn { color: var(--pipe); font-size: 22px; }
+  .wl .wr.top .wo b { color: var(--pipe); }
+  @media (max-width: 640px) { .wl .wr { grid-template-columns: 1fr; gap: 4px; } }
+
+  /* the four frozen sizes */
+  .sizes { display: grid; gap: 8px; font-family: var(--mono); font-size: 12.5px; color: var(--ink-faint);
+           margin-top: 16px; padding-top: 15px; border-top: 1px dashed var(--line-bright); }
+  .sizes b { color: var(--pipe); font-weight: 500; }
+</style>
+</head>
+<body>
+<a id="top"></a>
+<div id="progress"></div>
+
+<script type="module" src="/amp-nav.js"></script>
+<amp-nav
+  property="factory_masterclass"
+  style="
+    --amp-nav-bg: rgba(7,9,13,.975);
+    --amp-nav-fg: #e8edf6;
+    --amp-nav-muted: #5f6b82;
+    --amp-nav-accent: #4fc3ff;
+    --amp-nav-border: #1e2533;
+    --amp-nav-hover: rgba(232,237,246,.045);
+    --amp-nav-cta-bg: #4fc3ff;
+    --amp-nav-cta-fg: #07090d;
+  "
+></amp-nav>
+
+<nav class="top">
+  <div class="wrap">
+    <div class="brand"><span class="amp">[&amp;]</span> Factory</div>
+    <div class="links">
+      <a href="#three-meanings">The word</a>
+      <a href="#unboxing">Unboxing</a>
+      <a href="#amdahl">Why it fails</a>
+      <a href="#simulator">Simulator</a>
+      <a href="#join">The join</a>
+      <a href="#worldware">Worldware</a>
+      <a href="#gaps" style="color:var(--box)">What's missing</a>
+      <a href="#falsify" style="color:var(--zero)">Falsify</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span> Masterclass · AI Factories</div>
+    <h1 class="title">The <span class="grad">Worldware</span> Factory.</h1>
+    <p class="lede">
+      Everyone is building AI factories, and the term already means three incompatible things.
+      <strong>This page is about the part almost nobody is working on: the join.</strong>
+      Parallel agents are the easy half. What decides whether a factory compounds or merely churns is
+      whether two things built in ignorance of each other can be combined — and whether the system can
+      <em>refuse</em> when they can't.
+    </p>
+    <div class="hero-cta">
+      <a class="btn primary" href="#simulator">Run the line →</a>
+      <a class="btn" href="#three-meanings">Start at the beginning</a>
+      <a class="btn danger" href="#gaps">What we don't have</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="n c1" id="s-enforced">210</div><div class="l">enforced laws behind the join, derived by the suites — never hand-typed</div></div>
+      <div class="stat"><div class="n c3" id="s-cells">16</div><div class="l">production cells on the floor, each carrying the rung it has actually reached</div></div>
+      <div class="stat"><div class="n c2" id="s-unrecorded">6</div><div class="l">of those cells have <em>no recorded rung at all</em>, and this page names every one</div></div>
+      <div class="stat"><div class="n c4">3</div><div class="l">categories in the MAST failure taxonomy. None of them is "the model was not good enough"</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= 01 ================= -->
+<section id="three-meanings">
+  <div class="wrap">
+    <p class="kicker">01 · Vocabulary</p>
+    <h2 class="sec reveal">"AI factory" already means three different things.</h2>
+    <div class="answer reveal">
+      <h3>What is an AI factory?</h3>
+      <p>There is no single answer, and that is the first thing worth knowing. As of 2026 the phrase is used
+      for at least three distinct referents: <b>an infrastructure plant</b> that converts compute and data into
+      model workloads; <b>an agent-native delivery system</b> that runs the software lifecycle end to end; and
+      <b>a production architecture</b> concerned with how independently produced work is joined. They are not
+      competing definitions of one thing — they are three different layers, and a claim at one layer says
+      almost nothing about the others.</p>
+    </div>
+
+    <div class="scroll-x reveal">
+      <table class="tbl">
+        <thead><tr><th>Sense</th><th>Who uses it this way</th><th>The unit it optimises</th><th>What it does not address</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="nm">Infrastructure plant</td>
+            <td>NVIDIA and the hardware ecosystem</td>
+            <td>Tokens per watt. GPUs, networking, storage, deployment.</td>
+            <td>Whether the software produced on top of it is correct, or composable with anything else.</td>
+          </tr>
+          <tr>
+            <td class="nm">Delivery system</td>
+            <td>Factory.ai — <code>Factory 2.0</code>, June 2026</td>
+            <td>The lifecycle loop. Signals in, triage, build, test, review, secure, ship, monitor, signals out.</td>
+            <td>Join geometry. The loop is described as interconnected; what makes two concurrent outputs safe to merge is not the subject.</td>
+          </tr>
+          <tr>
+            <td class="nm">Production architecture</td>
+            <td>This page</td>
+            <td>The <b>join</b>. What an assembly must carry so a merge can be checked rather than hoped for.</td>
+            <td>Everything the other two are good at. This layer needs both of them and replaces neither.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <blockquote class="callout reveal">
+      Everyone is building workers for the factory.
+      <cite>— the differentiation this page argues for: <b>[&amp;] is working on the laws, the assembly interfaces, the provenance and the control system that let the factory operate as one machine.</b> If that sounds narrow, it is. It is also the part that decides whether the other two compound.</cite>
+    </blockquote>
+
+    <h3 class="sub">A note on the sentence we did not use</h3>
+    <p class="sec-lede reveal">
+      An earlier draft of the [&amp;] homepage led with <em>"Build the factory that builds the software."</em>
+      That draft was discarded on discovering that Factory.ai's own Factory 2.0 announcement already states that
+      engineers will be responsible for <span class="op pipe">building the factories that build the software</span>.
+      Leading with a competitor's published sentence is not positioning, it is collision.
+      <strong>The differentiator had to be the layer, not the slogan</strong> — which is how this page ended up
+      being about joins.
+    </p>
+  </div>
+</section>
+
+<!-- ================= 02 ================= -->
+<section id="unboxing">
+  <div class="wrap">
+    <p class="kicker">02 · The move it borrows</p>
+    <h2 class="sec reveal">Unboxing is a real manufacturing change, and it is not free.</h2>
+    <div class="answer reveal">
+      <h3>What is the unboxed process?</h3>
+      <p>Instead of carrying one car body down a single line through every stage in sequence, an
+      <b>unboxed</b> process builds major sections — front, rear, cabin, underbody — <b>in parallel on separate
+      sub-assembly lines</b>, then joins them in a final merge. Tesla presented it at Investor Day on
+      1 March 2023 with stated <b>targets</b> of roughly 50% lower production cost and 40% less factory
+      footprint. Those are targets announced for a future vehicle programme, not audited results, and this
+      page treats them as such.</p>
+    </div>
+
+    <div class="shape reveal">
+      <div class="shapecol a">
+        <h4>BOXED</h4>
+        <p class="sh-sub">one object, every stop, in order</p>
+        <div class="sbox">requirements</div><div class="sarr">↓</div>
+        <div class="sbox">research</div><div class="sarr">↓</div>
+        <div class="sbox">design</div><div class="sarr">↓</div>
+        <div class="sbox">code</div><div class="sarr">↓</div>
+        <div class="sbox">test</div><div class="sarr">↓</div>
+        <div class="sbox">security</div><div class="sarr">↓</div>
+        <div class="sbox">deployment</div>
+        <p class="shapefoot"><b>Total time = the sum.</b> Making any one stage 10× faster moves the total by the width of that stage. This is the shape agents inherited, and mostly did not change.</p>
+      </div>
+      <div class="shapecol b">
+        <h4>UNBOXED</h4>
+        <p class="sh-sub">many sections at once, one merge</p>
+        <div class="sbox">INTENT</div><div class="sarr">↓</div>
+        <div class="srow-p"><div class="sbox">research</div><div class="sbox">architecture</div><div class="sbox">implementation</div></div>
+        <div class="sarr">·</div>
+        <div class="srow-p"><div class="sbox">verification</div><div class="sbox">security</div><div class="sbox">docs</div><div class="sbox">experiments</div></div>
+        <div class="sarr">↓</div>
+        <div class="sbox sjoin">COMPOSE</div><div class="sarr">↓</div>
+        <div class="sbox sjoin">WORLD</div>
+        <p class="shapefoot"><b>Total time = the slowest section, plus the join.</b> The saving is real and so is the bill: the join now has to actually work, because every incompatibility that used to surface gradually now arrives at one instant.</p>
+      </div>
+    </div>
+
+    <p class="sec-lede reveal" style="margin-top:34px">
+      The analogy is worth exactly one thing, and it is not the cost figure. It is this:
+      <strong>Tesla could only unbox because the interfaces between sections were settled before the sections
+      were built.</strong> The bolt pattern, the tolerances, the mating surfaces — fixed in advance, so the
+      merge is mechanical rather than negotiated. Remove that and unboxing produces four sections that do not
+      fit, faster than before.
+    </p>
+  </div>
+</section>
+
+<!-- ================= 03 ================= -->
+<section id="amdahl">
+  <div class="wrap">
+    <p class="kicker">03 · Why parallel agents alone do not compound</p>
+    <h2 class="sec reveal">Concurrency buys wall-clock. It does not buy correctness.</h2>
+    <div class="answer reveal">
+      <h3>Why isn't running more agents in parallel enough?</h3>
+      <p>Two independent reasons. First, <b>Amdahl's law</b>: the speedup from parallelising is bounded by the
+      fraction of work that stays serial, so a pipeline with a serial merge step has a hard ceiling no number
+      of agents can pass. Second, and more damaging: <b>parallelism does not remove defects, it removes the
+      delay before you meet them all at once.</b> Eight concurrent workers produce eight opportunities for
+      incompatibility that arrive simultaneously, at the merge, with no gradient of partial integration to
+      catch them early.</p>
+    </div>
+
+    <h3 class="sub">What the failure data actually says</h3>
+    <p class="sec-lede reveal">
+      The most careful public study of multi-agent failure is <em>Why Do Multi-Agent LLM Systems Fail?</em>
+      (Cemri, Pan, Yang et al.). Built by Grounded Theory over <strong>150 execution traces</strong> with six
+      expert annotators to <strong>κ = 0.88</strong>, then extended to a corpus of <strong>1,600+ annotated
+      traces across 7 MAS frameworks</strong>, 4 models and 3 task types. It identifies
+      <strong>14 unique failure modes clustered into 3 categories</strong>.
+    </p>
+
+    <div class="honest reveal">
+      <b>Numbers deliberately absent from this section.</b> Widely-circulated summaries of this paper quote a
+      <code>36.9%</code> inter-agent-misalignment share and a <code>79%</code> "specification and coordination"
+      figure. <b>Neither appears in the paper's abstract.</b> They were checked against the source for this page
+      and cut, exactly as two other figures were cut from the composition masterclass for the same reason. If
+      you find them in a primary source, send it — we would rather cite the number than the caution.
+    </div>
+
+    <div class="scroll-x reveal" style="margin-top:26px">
+      <table class="tbl">
+        <thead><tr><th>MAST category</th><th>What it covers</th><th>Is this a model problem?</th></tr></thead>
+        <tbody>
+          <tr><td class="nm">System design issues</td><td>The architecture of the multi-agent system itself — roles, decomposition, control flow.</td><td>No. A better model runs the same broken architecture faster.</td></tr>
+          <tr><td class="nm">Inter-agent misalignment</td><td>Agents holding incompatible views of the task, the state, or each other's output.</td><td>No. This is precisely the join problem, observed in the wild.</td></tr>
+          <tr><td class="nm">Task verification</td><td>Failure to check that what was produced is what was required.</td><td>No. This is the absence of a verification station.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="sec-lede reveal" style="margin-top:26px">
+      Three categories, and <strong>none of them is "the model was not capable enough."</strong> That is the
+      strongest available argument for the factory framing, and it does not require a single contested
+      percentage to make: the taxonomy's own top-level structure is entirely architectural.
+    </p>
+  </div>
+</section>
+
+<!-- ================= 04 · THE SIMULATOR ================= -->
+<section id="simulator">
+  <div class="wrap">
+    <p class="kicker">04 · Run it yourself</p>
+    <h2 class="sec reveal">The same work, three factory shapes.</h2>
+    <p class="sec-lede reveal">
+      This is a <strong>model, not a measurement</strong> — it is arithmetic you can check by hand, not
+      telemetry from a running system. It computes three things for <em>n</em> parallel work items at
+      per-item success probability <em>c</em>. Watch what happens to the third metric when you unbox
+      <em>without</em> checking the joins.
+    </p>
+
+    <div class="sim reveal">
+      <div class="simhead">
+        <span>[&amp;] · line model · n items, per-item success c</span>
+        <span class="tagm">a model — the formulas are printed below</span>
+      </div>
+      <div class="simbody">
+        <div class="simctl">
+          <label>parallel work items <b id="lab-n">6</b></label>
+          <input type="range" id="sim-n" min="1" max="10" step="1" value="6" />
+          <label>per-item success <b id="lab-c">0.95</b></label>
+          <input type="range" id="sim-c" min="70" max="100" step="1" value="95" />
+          <label>join cost (time units) <b id="lab-j">0.4</b></label>
+          <input type="range" id="sim-j" min="0" max="20" step="1" value="4" />
+          <label>join detection <b id="lab-d">100%</b></label>
+          <input type="range" id="sim-d" min="0" max="95" step="5" value="80" />
+          <label>contract steepness <b id="lab-k">1.0</b> <span style="opacity:.6;font-weight:400">— what completeness costs</span></label>
+          <input type="range" id="sim-k" min="0" max="30" step="1" value="10" />
+          <label>cost of one escaped defect <b id="lab-e">8</b> <span style="opacity:.6;font-weight:400">— in time units</span></label>
+          <input type="range" id="sim-e" min="0" max="40" step="1" value="8" />
+          <div class="modes">
+            <button id="m-serial" data-m="serial">BOXED<small>one object, n stops in order</small></button>
+            <button id="m-open" data-m="open" class="on">UNBOXED · unchecked<small>parallel cells, merge and hope</small></button>
+            <button id="m-checked" data-m="checked">UNBOXED · checked<small>parallel cells, the join can refuse</small></button>
+          </div>
+        </div>
+        <div class="simout">
+          <div class="simmetrics">
+            <div class="metric neutral"><div class="mk">wall clock</div><div class="mv" id="mv-time">—</div><div class="mn" id="mn-time">time units</div></div>
+            <div class="metric good"><div class="mk">ships correct</div><div class="mv" id="mv-ok">—</div><div class="mn">probability the delivered thing is right</div></div>
+            <div class="metric bad"><div class="mk">ships wrong, silently</div><div class="mv" id="mv-bad">—</div><div class="mn">nothing refused it, nobody was told</div></div>
+          </div>
+          <div class="simbars">
+            <div class="bar"><span class="bk">BOXED</span><span class="btrack"><span class="bfill" id="b-serial" style="background:var(--ext)"></span></span><span class="bv" id="bv-serial">—</span></div>
+            <div class="bar"><span class="bk">UNBOXED open</span><span class="btrack"><span class="bfill" id="b-open" style="background:var(--zero)"></span></span><span class="bv" id="bv-open">—</span></div>
+            <div class="bar"><span class="bk">UNBOXED checked</span><span class="btrack"><span class="bfill" id="b-checked" style="background:var(--live)"></span></span><span class="bv" id="bv-checked">—</span></div>
+            <div class="bar" style="margin-top:6px"><span class="bk" style="color:var(--ink-dim)">silent-wrong rate</span><span class="btrack"><span class="bfill" id="b-bad" style="background:var(--box)"></span></span><span class="bv" id="bv-bad">—</span></div>
+          </div>
+          <div class="simnote" id="sim-note">—</div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub">The formulas, so you can check them</h3>
+    <div class="scroll-x reveal">
+      <table class="tbl">
+        <thead><tr><th>Shape</th><th>Wall clock</th><th>Ships correct</th><th>Ships wrong, silently</th></tr></thead>
+        <tbody>
+          <tr><td class="nm">BOXED</td><td><code>n</code></td><td><code>c^n</code></td><td><code>1 − c^n</code></td></tr>
+          <tr><td class="nm">UNBOXED open</td><td><code>1 + j</code></td><td><code>c^n</code></td><td><code>1 − c^n</code></td></tr>
+          <tr><td class="nm">UNBOXED checked</td><td><code>1 + J(d) + R(d)</code></td><td><code>c^n + (1 − c^n)·d</code></td><td><code>(1 − c^n)·(1 − d)</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="scroll-x reveal" style="margin-top:14px">
+      <table class="tbl">
+        <thead><tr><th>Term</th><th>Definition</th><th>What it says</th></tr></thead>
+        <tbody>
+          <tr><td class="nm"><code>J(d)</code></td><td><code>j · (1 + k·d/(1 − d))</code></td><td>What it costs to <em>achieve</em> detection completeness <code>d</code>: contract expressiveness, specification work, evidence obligations, dependency knowledge. Divergent as <code>d → 1</code>.</td></tr>
+          <tr><td class="nm"><code>R(d)</code></td><td><code>(1 − c^n)·d</code></td><td>Rework on what the join actually caught. Nothing is reworked that was never detected.</td></tr>
+          <tr><td class="nm"><code>total(d)</code></td><td><code>1 + J(d) + R(d) + E·(1 − c^n)·(1 − d)</code></td><td>Wall clock plus what the escapes cost. <b>This is the only one of the four with a minimum</b>, and <code>d*</code> is where it sits.</td></tr>
+          <tr><td class="nm"><code>d*</code></td><td><code>argmin total(d)</code></td><td>The optimal amount of join geometry for this line. Scanned over <code>d ∈ [0, 0.95]</code> in the page, not solved.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="honest reveal" style="margin-top:22px">
+      <b>Second correction to this model, on the same review that produced the first.</b>
+      Making <code>d</code> a control was right and incomplete: dragging it from 10% to 100% was <em>free</em>.
+      Nothing charged for the thing that actually buys detection. With completeness free, the model's advice
+      is "set <code>d</code> to 1", which is not advice — it is the assumption restated.
+      <br><br>
+      <code>J(d)</code> makes completeness cost something, and the shape <code>d/(1 − d)</code> is a claim this
+      page is willing to defend: <b>the last few percent of the failure surface are defects a contract cannot
+      express at all</b>, so buying them is not expensive but impossible. That is why the slider stops at 95%
+      rather than running to a 1 the model would have to pretend is reachable.
+      <br><br>
+      <b>And it changes the question the section asks.</b> Wall clock alone is minimised at <code>d = 0</code>,
+      so "how much join geometry?" is unanswerable until an escaped defect costs something. Give it a price
+      <code>E</code> and there is a computable <code>d*</code> — <b>tighter is not better, it is a trade with an
+      optimum</b>. That is the software analogue of a manufacturing tolerance, and it is the actual research
+      target: <em>how much structure must independently fabricated assemblies expose before the cost of
+      formalising the interface exceeds the integration cost it removes?</em>
+    </div>
+
+    <div class="honest reveal" style="margin-top:24px">
+      <b>Detection is a control, not a constant — and that is the point of the section.</b>
+      <code>d = 1</code> is only defensible <b>for the class of defect the contract can express</b>: a type mismatch,
+      a missing certificate, an unmet floor. Those are decidable, so detection really is total <em>for them</em>.
+      <b>It is emphatically not true for a semantically wrong but type-correct result</b> — a join that type-checks
+      cannot tell you the function computes the wrong thing.
+      <br><br>
+      This slider was pinned at 1 until a reviewer pointed out that pinning it hides the actual lesson.
+      <b>Unboxing is not made safe by the existence of a join; it is made safe in proportion to how much of the
+      real failure surface the join contract can express.</b> Drag <code>d</code> to 0 and UNBOXED-checked becomes
+      UNBOXED-open exactly. Everything between those ends is where the engineering lives — and
+      <a href="#undeclared">§05.1</a> is a live example of the contract expressing <em>less</em> than this page claimed.
+    </div>
+
+    <p class="sec-lede reveal" style="margin-top:28px">
+      The result worth sitting with: <strong>BOXED and UNBOXED-open ship wrong at exactly the same rate.</strong>
+      Unboxing without checked joins does not make the work better. It makes it arrive sooner, in bulk, with the
+      same defect population — which reads as a win on every dashboard that measures throughput and on none that
+      measures correctness. <strong>The checked column trades silent wrongness for rework time.</strong> That
+      trade is the product.
+    </p>
+  </div>
+</section>
+
+<!-- ================= 05 ================= -->
+<section id="join">
+  <div class="wrap">
+    <p class="kicker">05 · The unit that moves down the line</p>
+    <h2 class="sec reveal">An agent's output cannot be "some code."</h2>
+    <div class="answer reveal">
+      <h3>What must an assembly carry for a join to be checkable?</h3>
+      <p>Enough to answer, without running it: what does this require, what does it now guarantee, what state
+      was it built against, who sanctioned it, what does it claim, and what evidence backs the claim. Strip any
+      one and the merge becomes a guess. <b>A diff carries none of them.</b> That is why "many agents opened many
+      pull requests" is not a factory — it is the boxed process with more hands.</p>
+    </div>
+
+    <div class="scroll-x reveal">
+      <table class="tbl">
+        <thead><tr><th>Field</th><th>Why the join needs it</th><th>Status in <code>compose.mjs</code></th></tr></thead>
+        <tbody>
+          <tr><td class="nm">requires / guarantees</td><td>The bolt pattern. A hand-off is feasible iff the producer's <code>feeds_into</code> intersects the consumer's <code>accepts_from</code> — <b>but only when both are declared.</b></td><td><span class="st open">fail-open when undeclared</span> — <code>typeMatch()</code> checks declared pairs correctly; <code>Brick()</code> defaults a <em>missing</em> contract to <code>'*'</code>, so an undeclared interface is waved through. See §05.1.</td></tr>
+          <tr><td class="nm">certificate</td><td>Absent ⇒ <code>0̲</code>. An uncertified part fails closed rather than being trusted by default.</td><td><span class="st running">running</span> — <code>UNCERTIFIED_COST()</code></td></tr>
+          <tr><td class="nm">cost class</td><td>Composite cost decides <code>allow</code> / <code>budget_check</code> / <code>escalate</code>. An uncertified composite can never be <code>poly</code>.</td><td><span class="st running">running</span> — <code>composeCost()</code></td></tr>
+          <tr><td class="nm">confidence / latency</td><td>The CC2 semiring: confidence multiplies, cost sums, latency maxes. Composition can only ever <em>lower</em> confidence.</td><td><span class="st running">running</span> — <code>composeQ()</code></td></tr>
+          <tr><td class="nm">world</td><td>Two assemblies built against different machine states are not obviously combinable.</td><td><span class="st specified">specified, not wired</span> — carried, never gated on</td></tr>
+          <tr><td class="nm">authority</td><td>A capability with no sanction behind it is a suggestion. The field is sanitised by <code>normValue()</code> and read by nothing in the join.</td><td><span class="st specified">specified, not wired</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="sec-lede reveal" style="margin-top:26px">
+      Three of the six are honest gaps. The
+      <a href="/#compose">marriage station on the homepage</a> lets you set a world mismatch and shows you
+      precisely this: the pair composes today, and the mismatch surfaces later in a world that no longer matches
+      its parts. <strong>That is the demo refusing to flatter itself.</strong>
+    </p>
+
+    <h3 class="sub" id="undeclared">05.1 · The row above was worse than it looked — and closing it found something worse still</h3>
+    <div class="honest reveal">
+      <b>For one day the join was fail-open on an undeclared interface, which inverted this page's central claim.</b>
+      Found by an outside reviewer on 2026-08-22, reproduced, ranked <b>above</b> the world join — and closed the same
+      day. <span style="opacity:.8">What follows is left in place rather than deleted; a page that only ever showed its
+      current state would be hiding the one thing here worth reading.</span>
+      <br><br>
+      <code>typeMatch()</code> opened with <code>if (out === '*' || inn === '*' || out == null || inn == null) return true;</code>
+      — so an absent contract was compatible with everything. <code>Brick()</code> then made that the default:
+      <code>accepts_from: o.contract?.accepts_from ?? '*'</code>. An otherwise-certified assembly could omit its
+      interface entirely and receive <b>the most permissive interface in the algebra</b>.
+    </div>
+
+    <div class="scroll-x reveal" style="margin-top:22px">
+      <table class="tbl">
+        <thead><tr><th>hand-off</th><th>before</th><th>now</th></tr></thead>
+        <tbody>
+          <tr><td class="nm">declared <code>foo</code> → declared <code>foo</code></td><td><span class="st running">CHECK</span> ✓ correct</td><td>unchanged</td></tr>
+          <tr><td class="nm">declared <code>foo</code> → declared <code>baz</code></td><td><span class="st running">REFUSE</span> ✓ correct</td><td>unchanged — now names itself <code>contract-mismatch</code></td></tr>
+          <tr><td class="nm">⟨missing⟩ → typed</td><td><span class="st open">ACCEPT</span></td><td><span class="st running">REFUSE</span> <code>0̲ contract-undeclared</code> · <b>CD1</b></td></tr>
+          <tr><td class="nm">typed → ⟨missing⟩</td><td><span class="st open">ACCEPT</span></td><td><span class="st running">REFUSE</span> <code>0̲ contract-undeclared</code> · <b>CD1</b></td></tr>
+          <tr><td class="nm">⟨missing⟩ → ⟨missing⟩</td><td><span class="st open">ACCEPT</span></td><td><span class="st running">REFUSE</span> <code>0̲ contract-undeclared</code> · <b>CD1</b></td></tr>
+          <tr><td class="nm">explicit <code>null</code> field → typed</td><td><span class="st open">ACCEPT</span></td><td><span class="st running">REFUSE</span> — <code>null</code> is an absence, not a declaration · <b>CD5</b></td></tr>
+          <tr><td class="nm">explicit <code>'*'</code> → typed</td><td><span class="st running">ACCEPT</span></td><td>unchanged — an explicit wildcard is a <em>claim</em> · <b>CD2</b></td></tr>
+          <tr><td class="nm">identity brick → anything</td><td><span class="st running">ACCEPT</span></td><td>unchanged — <code>idBrick()</code> <em>declares</em> <code>'*'</code> · <b>CD4</b></td></tr>
+          <tr><td class="nm"><code>(⟨missing⟩ &amp; declared)</code> → typed</td><td><span class="st open">ACCEPT</span></td><td><span class="st running">REFUSE</span> — <code>&amp;</code> no longer launders an absence · <b>CD3</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="sec-lede reveal" style="margin-top:24px">
+      The distinction that fixed it is small and consequential: <strong>an explicit <code>'*'</code> is a declaration
+      of universal compatibility; an absent field is the absence of a declaration.</strong> Collapsing the second into
+      the first is precisely the failure this stack names elsewhere — absence of evidence must stay distinguishable
+      from evidence of absence. It was collapsed, in the runtime, in the operator the whole factory is arranged around.
+    </p>
+    <p class="sec-lede reveal">
+      <strong>Two things about how it was closed are worth more than the fix.</strong> The five laws were written
+      <em>against the unfixed code first</em>, and four came back red — a fix whose test was written afterward proves
+      the fix, not the defect. And one of the five, <b>CD2</b>, was green from the start on purpose: an explicit
+      <code>'*'</code> must keep composing, or "missing ≠ universal" degenerates into "refuse everything" and the
+      distinction has no content. The identity laws survive for the same reason — <code>none()</code> and
+      <code>idBrick()</code> <em>declare</em> <code>'*'</code>, so they make the universal claim rather than being
+      handed it by an absence. <b>CD4</b> states both halves, including the half that narrows the law's domain:
+      <code>id |&gt; a</code> is <code>a</code> for a declared <code>a</code>, and <code>0̲</code> for an undeclared one.
+    </p>
+
+    <div class="honest reveal" style="margin-top:22px">
+      <b>And writing those falsifiers surfaced a second contract defect, which was worse — now closed.</b>
+      It needed nothing to be undeclared, so the fix above did not touch it. It is <code>CD6</code>, and it
+      stayed xfail until the question underneath it was <em>ruled</em> rather than patched.
+      <br><br>
+      <code>&amp;</code> <b>unioned</b> both its operands' contract ends, and <code>|&gt;</code> asked only for a
+      <b>non-empty intersection</b>. So a coalition handed off on behalf of a member that could not have
+      handed off itself:
+      <br><br>
+      <code>A.feeds_into=['nope']</code> &nbsp;<code>C.accepts_from=['session@3']</code> &nbsp;→&nbsp;
+      <code>A |&gt; C</code> is <code>0̲</code> &nbsp;<span style="opacity:.7">— correct</span><br>
+      add any <code>B</code> with <code>feeds_into=['session@3']</code> &nbsp;→&nbsp;
+      <code>(A &amp; B) |&gt; C</code> <b>composes</b>, and A's output reaches C unchecked.
+      <br><br>
+      It fails identically on the input side: <code>X |&gt; A</code> refuses, <code>X |&gt; (A &amp; B)</code> composes,
+      and X's output reaches an A that cannot accept it.
+    </div>
+
+    <p class="sec-lede reveal" style="margin-top:24px">
+      <strong>It is recorded as an xfail law rather than fixed, and that is deliberate.</strong> Closing it requires
+      answering a question nobody has ruled: <em>what does a coalition's contract mean?</em> Three answers are sound.
+      <b>Union + subset</b> — the coalition emits what any part emits, and a hand-off is safe iff the producer's
+      <code>feeds_into</code> is a <em>subset</em> of the consumer's <code>accepts_from</code>; outputs join, inputs
+      meet. <b>Meet</b> — the coalition's contract is the <em>intersection</em> of its parts, which makes
+      <code>&amp;</code> contract-narrowing rather than widening and refuses some legitimate fan-in. <b>Routed
+      hand-off</b> — keep today's permissiveness, but require the certificate to record <em>which member</em> the
+      hand-off routed to. Each changes what <code>&amp;</code> means. The law is stated in the form all three satisfy,
+      so whichever is ruled, it promotes out of the gap list without being rewritten.
+    </p>
+    <p class="sec-lede reveal">
+      <strong>Both defects point at the same missing research layer.</strong> Not more composition algebra — the
+      algebra for <em>declared</em> parts is fine. What is missing is the semantics of <em>partially specified</em>
+      composition: what a join should do when a part has not said what it is (now: refuse), and what it should do
+      when a <em>coalition</em> says more than its members can individually honour (now: the wrong thing).
+    </p>
+
+    <blockquote class="callout reveal">
+      Factories move quickly because their interfaces don't negotiate at assembly time.
+      <cite>— and the corollary that makes it hard: the interface has to be settled <b>before</b> the two halves exist, by something neither of them controls. In software that something is a protocol, which is why <a href="/protocol">[&amp;]</a> is a specification before it is a product.</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ================= 06 ================= -->
+<section id="cells">
+  <div class="wrap">
+    <p class="kicker">06 · The floor</p>
+    <h2 class="sec reveal"><span id="h-cells">Sixteen</span> cells, and <span id="h-unrecorded">six</span> of them have no rung.</h2>
+    <p class="sec-lede reveal">
+      Every cell is a real repository, protocol or product. The rung is the <strong>evidence rung</strong> —
+      <code>spec → in_tree → live_local → live_deployed → external</code> — and it is read from the same stored
+      table the portfolio nav renders. A cell with no recorded rung shows <code>?</code>, never a flattering
+      <code>spec</code>. <strong>An invented status is worse than a missing one, because it stops the question
+      being asked.</strong>
+    </p>
+
+    <div class="cellgrid reveal" id="cellgrid"></div>
+
+    <p class="sec-lede reveal">
+      Read the six <code>?</code> marks as the roadmap. Note especially that <b>WORLD (WRL + TRVM)</b> — the cell
+      the entire Worldware argument rests on — is one of them. That is not an oversight in the diagram; it is the
+      state of the work, and a page that hid it would fail its own falsification table.
+      <a href="/factory">The full floor plan, cell by cell →</a>
+    </p>
+  </div>
+</section>
+
+<!-- ================= 07 ================= -->
+<section id="motors">
+  <div class="wrap">
+    <p class="kicker">07 · Intelligence</p>
+    <h2 class="sec reveal">The model is a motor. Motors are the part you plan to replace.</h2>
+    <div class="answer reveal">
+      <h3>If models keep improving, why build the factory at all?</h3>
+      <p>Because the properties that make output <b>trustworthy</b> are not properties of the generator. The world
+      it was built against, the authority behind it, the evidence, and whether it joins — none of those live inside
+      the weights, and none of them improve when the weights do. A better motor turns the same machine faster.
+      <b>The intelligence commoditises; the arrangement is what compounds.</b></p>
+    </div>
+    <p class="sec-lede reveal">
+      This is the same argument the sibling masterclass makes as <em>"the model is ~10%, the harness is the
+      product"</em> — moved up one level. There, the harness is the product. Here, <strong>the harness is a cell,
+      and the product is the arrangement of cells.</strong> Both statements are about the same observation: the
+      durable engineering is outside the model, and it survives the model being swapped.
+      <a href="/agentic-engineering-masterclass">Read the harness argument →</a>
+    </p>
+  </div>
+</section>
+
+<!-- ================= 08 ================= -->
+<section id="worldware">
+  <div class="wrap">
+    <p class="kicker">08 · The category</p>
+    <h2 class="sec reveal">Worldware: when the unit of composition stops being the application.</h2>
+    <div class="answer reveal">
+      <h3>What is Worldware?</h3>
+      <p>A proposed <b>category</b>, not a product and not a brand: software whose unit of composition is a
+      <b>world</b> rather than an application. Each rung of the ladder below is named for what it <em>operates</em>.
+      The pattern is the useful part — every time the unit got larger, the previous layer stopped being the thing
+      you reasoned about and became the thing you stood on.</p>
+    </div>
+
+    <div class="wl reveal">
+      <div class="wr"><div class="wn">Hardware</div><div class="wo">operates <b>machines</b> — gates, memory, a physical substrate</div></div>
+      <div class="wr"><div class="wn">Software</div><div class="wo">operates <b>computers</b> — instructions the machine executes</div></div>
+      <div class="wr"><div class="wn">Agentic software</div><div class="wo">operates <b>tasks</b> — autonomous actors calling tools toward a goal</div></div>
+      <div class="wr top"><div class="wn">Worldware</div><div class="wo">operates <b>worlds</b> — executable environments carrying state, capabilities, actors, authority, evidence and their own rules of change</div></div>
+    </div>
+
+    <div class="honest reveal">
+      <b>"World" is frozen vocabulary here, and it means one thing.</b> In this stack a <code>world</code> is
+      <b>the persistent, machine-sized environment</b> — 10&nbsp;GB to 10&nbsp;TB of a real machine, its state, its
+      history and its rules. It is <em>not</em> "any bounded system you would like to call a world," and it is not
+      a metaverse. The word was conflated with a much smaller thing exactly once in this project, the error was
+      recorded, and four terms were frozen to stop it recurring:
+      <div class="sizes">
+        <span><b>WORLD</b> — the machine-sized environment · 10 GB – 10 TB</span>
+        <span><b>WORLD VERSION</b> — a content-addressed description of that state at one instant · kilobytes; it is a root</span>
+        <span><b>WRL GRAPH</b> — the semantic and control layer <em>inside</em> a world · 247 KB – 212 MB</span>
+        <span><b>TRVM</b> — verification semantics over transitions and artifacts</span>
+      </div>
+    </div>
+
+    <h3 class="sub">On the name itself</h3>
+    <p class="sec-lede reveal">
+      <strong>Worldware is not claimed as a mark.</strong> The word has a prior meaning: it was coined in the 1990s
+      by Steve Ehrmann of Educom's software task force to describe general-purpose software — word processors, CAD,
+      email — that also gets used for teaching. That sense is dormant and unrelated, and we are not competing with
+      it. Two adjacent candidates were considered and dropped for being actively owned: <b>Terraware</b>
+      (Terraformation's forest-management platform, with a US trademark application) and <b>UltraWare</b> (a Dutch
+      software company, a UK Ltd, and a former Rockwell Automation product). <strong>The category is the useful
+      part; the word is borrowed, and stated as borrowed.</strong>
+    </p>
+
+    <p class="sec-lede reveal">
+      <strong>Worldware is what the factory produces. <a href="https://computedriven.com">ComputeDriven</a> is how
+      you drive it.</strong> The deeper treatment of what changes when the thing you version is a machine rather
+      than a repository is its own masterclass —
+      <a href="/world-economics-masterclass">Worlds That Pay For Themselves →</a>
+    </p>
+  </div>
+</section>
+
+<!-- ================= 09 ================= -->
+<section id="gaps">
+  <div class="wrap">
+    <p class="kicker">09 · The section every page like this should have</p>
+    <h2 class="sec reveal">What this factory does not have.</h2>
+    <p class="sec-lede reveal">
+      A page arguing that unverified claims are the disease cannot ship a list of verified-sounding claims.
+      Here is the honest inventory, in the order that would most damage the argument if you found it yourself.
+    </p>
+
+    <div class="scroll-x reveal">
+      <table class="tbl">
+        <thead><tr><th>Missing</th><th>Status</th><th>Why it matters to the thesis</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="nm">A coalition could hand off on behalf of a member that could not (<code>CD6</code>)</td>
+            <td><span class="st running">closed 2026-08-22</span></td>
+            <td>Found while writing the falsifiers that closed the row below it, and it was worse: it needed nothing to be undeclared. <code>&amp;</code> unioned both contract ends while <code>|&gt;</code> asked only for a non-empty intersection. <b>Closed by ruling rather than patch</b> — Option U: outputs join, inputs meet, hand-off is a subset test. Closing it exposed <code>CD7</code>: one wildcard cannot mean both "may emit anything" and "passes through unchanged", so the identity is now typed <code>α → α</code>. <a href="#undeclared">§05.1</a>.</td>
+          </tr>
+          <tr>
+            <td class="nm">The join was fail-open on an undeclared interface</td>
+            <td><span class="st running">closed 2026-08-22</span></td>
+            <td>Displaced the world join when an outside reviewer found it, and was closed the same day, falsifier-first: five laws written against the unfixed code, four red. A missing contract was defaulted to <code>'*'</code> and composed with anything — the exact inverse of <em>formalize the joins</em>. It now refuses as <code>0̲ contract-undeclared</code>, an explicit <code>'*'</code> still composes, and the identity laws survive because the identity bricks <em>declare</em> the wildcard. Left in the inventory because the closure is the evidence. <a href="#undeclared">§05.1</a>.</td>
+          </tr>
+          <tr>
+            <td class="nm">The world join</td>
+            <td><span class="st specified">specified, not wired</span></td>
+            <td>The Worldware claim says the unit of composition is the world. The compose runtime does not gate on the <code>world</code> field. Until it does, the claim is an architecture, not a running property. <b>Back at the top of the open list now that <code>CD6</code> is closed — it is the largest thing here that is specified and not wired.</b></td>
+          </tr>
+          <tr>
+            <td class="nm">The authority join</td>
+            <td><span class="st specified">specified, not wired</span></td>
+            <td>Sanction is carried through <code>normValue()</code> and read by nothing in the join. A capability with no checked authority is currently joinable.</td>
+          </tr>
+          <tr>
+            <td class="nm">Coalition admissibility in composition</td>
+            <td><span class="st specified">specified, not wired</span></td>
+            <td>The rung primitives exist — <code>canEnsure</code> at <code>strategic.mjs:70</code>, common knowledge at <code>epistemic.mjs:68</code> — and the compose runtime never calls them. The pieces are built; the wiring is not.</td>
+          </tr>
+          <tr>
+            <td class="nm">Semantic defect detection at the join</td>
+            <td><span class="st none">out of scope</span></td>
+            <td>The simulator's <code>d = 1</code> holds only for contract-expressible defects. A type-correct, semantically wrong result passes every gate described on this page.</td>
+          </tr>
+          <tr>
+            <td class="nm">Measured throughput of a running line</td>
+            <td><span class="st none">not measured</span></td>
+            <td>The simulator is arithmetic, not telemetry. <b>No claim on this page is supported by a benchmark of the factory actually running end to end</b>, because that benchmark does not exist yet.</td>
+          </tr>
+          <tr>
+            <td class="nm">A rung for <span id="f-unrecorded">six of 16</span> cells</td>
+            <td><span class="st open">unrecorded</span></td>
+            <td><span id="g-unrecorded-list">RESEARCH, METROLOGY, WORLD, EVIDENCE, DEPLOY, PROOF</span> have no stored evidence rung. Several of the <span id="g-unrecorded-n">six</span> are load-bearing for the Worldware argument specifically.</td>
+          </tr>
+          <tr>
+            <td class="nm">CP5 / CP6 / CP7</td>
+            <td><span class="st open">declared open</span></td>
+            <td>Three composition laws do not hold. They print FALSIFIED in red by design and the build fails if one starts <em>passing</em>. <a href="/capability-composition-masterclass#cp7">CP7 reproduces in your browser</a>.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 10 ================= -->
+<section id="falsify">
+  <div class="wrap">
+    <p class="kicker">10 · The ending this page has to have</p>
+    <h2 class="sec reveal">Here is precisely how to prove us wrong.</h2>
+    <p class="sec-lede reveal">
+      Every row names a claim, its honest status, the command that exercises it, what you should see, and
+      <strong>the specific observation that would falsify it</strong>. Commands carry their directory: run from
+      the repository root and they fail with <code>MODULE_NOT_FOUND</code>, which on a page whose contract is
+      <em>run the command</em> would be the worst available defect.
+    </p>
+    <div class="fals-scroll reveal">
+      <table class="fals">
+        <thead><tr><th>Claim</th><th>Status</th><th>Command</th><th>Expected</th><th>What kills it</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="claim">210 enforced laws stand behind the join, derived not typed</td>
+            <td><span class="st running">running</span></td>
+            <td><code>cd AmpersandBoxDesign/box-and-box && node test/laws.mjs && node test/compose-laws.mjs</code></td>
+            <td>109 kernel + 101 compose, both totals printed by the suites themselves</td>
+            <td class="kill">A total on this page that no suite prints. The published and printed counts drifted apart once before; that is why nothing here is hand-typed.</td>
+          </tr>
+          <tr>
+            <td class="claim">The join refuses on contract mismatch rather than degrading — <b>when both sides declare one</b></td>
+            <td><span class="st running">running</span></td>
+            <td>The <a href="/#compose">marriage station</a> — set A's <code>guarantees</code> to something B does not accept</td>
+            <td><code>0̲</code> — REFUSED, naming the failing gate</td>
+            <td class="kill">A surviving composite with a lowered score instead of a zero. Or a thrown exception rather than a value.</td>
+          </tr>
+          <tr>
+            <td class="claim"><b>An UNDECLARED contract composes with anything</b> — the inverse of what this page argues</td>
+            <td><span class="st open">open defect</span></td>
+            <td><code>cd AmpersandBoxDesign/box-and-box && grep -n "accepts_from: o.contract" compose.mjs</code></td>
+            <td><code>accepts_from: o.contract?.accepts_from ?? '*'</code> — a missing field becomes the most permissive interface in the algebra</td>
+            <td class="kill">Nothing yet — this row is the defect, not a claim. It dies when <code>Brick()</code> stops defaulting a missing contract to <code>'*'</code> and the three <code>⟨missing⟩</code> rows in <a href="#undeclared">§05.1</a> return <code>0̲</code> or hold. <b>Reproduce it in the <a href="/#compose">marriage station</a> by selecting ⟨undeclared⟩.</b></td>
+          </tr>
+          <tr>
+            <td class="claim">At zero detection, a checked join is indistinguishable from an unchecked one</td>
+            <td><span class="st running">running</span></td>
+            <td>§04 — set detection to 0%, compare UNBOXED-checked against UNBOXED-open</td>
+            <td>Identical in <em>both</em> metrics: same silent-wrong rate <b>and</b> same wall clock, because there is no rework when nothing was caught</td>
+            <td class="kill">Any divergence. The rework term is <code>(1 − c^n)·d</code>; if it were independent of <code>d</code> the model would charge time for defects it never detected — which is what it did until this slider exposed it.</td>
+          </tr>
+          <tr>
+            <td class="claim">An uncertified part fails closed</td>
+            <td><span class="st running">running</span></td>
+            <td><code>cd AmpersandBoxDesign/box-and-box && grep -n "fail-closed" compose.mjs</code></td>
+            <td><code>UNCERTIFIED_COST</code> with <code>resourceDecision: 'annihilate'</code></td>
+            <td class="kill">Any path where a missing certificate yields a composable brick. Or a default that supplies one.</td>
+          </tr>
+          <tr>
+            <td class="claim">The <code>world</code> field is NOT gated on by composition</td>
+            <td><span class="st specified">specified, not wired</span></td>
+            <td><code>cd AmpersandBoxDesign/box-and-box && grep -n "world" compose.mjs</code></td>
+            <td><b>No output.</b> The field is carried by the algebra and never read by the join.</td>
+            <td class="kill">Any hit, which would mean this page <em>understates</em> what ships. Equally fatal: us describing the world join as running while this grep stays empty.</td>
+          </tr>
+          <tr>
+            <td class="claim">The unrecorded-cell count is derived, not typed</td>
+            <td><span class="st running">running</span></td>
+            <td>View source, §06 script — every count on this page is computed from the <code>CELLS</code> array at load</td>
+            <td>The hero stat, the §06 heading and the §09 row all move together if a cell's rung changes</td>
+            <td class="kill">Any of those three disagreeing. <b>A first draft of this page hand-typed "six" while the array held seven</b> — ComputeDriven was marked <code>?</code> when it is place 1 and carries no product rung at all. That is the drift this row exists to catch.</td>
+          </tr>
+          <tr>
+            <td class="claim">Cell rungs match the stored property table</td>
+            <td><span class="st running">running</span></td>
+            <td><code>grep -n 'rung:' ampersand-nav/src/amp-nav.js</code> and compare against §06</td>
+            <td>Every rung on this page is the stored value; unrecorded ones render <code>?</code>, never <code>spec</code></td>
+            <td class="kill">Any cell here showing a rung that is not the stored value. If this page and the nav disagree, <b>the nav is right and this page is stale</b>.</td>
+          </tr>
+          <tr>
+            <td class="claim">The simulator is arithmetic you can check by hand</td>
+            <td><span class="st running">running</span></td>
+            <td>Set n=6, c=0.95. Compute <code>0.95⁶</code> by hand.</td>
+            <td>0.7351 — matching "ships correct" for BOXED and UNBOXED-open exactly</td>
+            <td class="kill">Any divergence between the printed metric and the formula table in §04. The formulas are published <em>so</em> this row can exist.</td>
+          </tr>
+          <tr>
+            <td class="claim">MAST's three categories are all architectural</td>
+            <td><span class="st ext">external</span></td>
+            <td>Read the abstract of <a href="https://arxiv.org/abs/2503.13657" target="_blank" rel="noopener">arXiv:2503.13657</a></td>
+            <td>system design · inter-agent misalignment · task verification — and no failure-rate percentage</td>
+            <td class="kill">A percentage in the abstract that we said was not there. Or a fourth category that is about model capability.</td>
+          </tr>
+          <tr>
+            <td class="claim">No benchmark supports the throughput argument</td>
+            <td><span class="st none">not measured</span></td>
+            <td>Ask us for one.</td>
+            <td>We do not have one. §09 says so before you can catch us.</td>
+            <td class="kill">Nothing — this row is the concession. It becomes falsifiable the day we publish a number, and then it moves to <code>running</code>.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <blockquote class="callout reveal">
+      Absence of evidence must remain distinguishable from evidence of absence, and every consequential
+      transformation must expose why it occurred.
+      <cite>— the [&amp;] doctrine. It is why <code>0̲</code> is a value that carries a reason rather than an exception that carries a stack trace, and why §09 exists at all.</cite>
+    </blockquote>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><strong style="color:var(--ink)">[&amp;] The Worldware Factory</strong> — a masterclass in the form of a single page.</div>
+    <a href="#top">Back to top ↑</a>
+    <div class="note">
+      Law counts are printed by the suites in <code>AmpersandBoxDesign/box-and-box</code> and are derived, not
+      hand-typed. Evidence rungs are read from the stored property table in <code>ampersand-nav</code>; where none
+      is stored, this page prints <code>?</code>. The §04 simulator is a model with published formulas, not
+      telemetry. Status vocabulary: <code>running · specified · draft · not measured · declared open · external</code>.
+      This document is commentary and synthesis; it is not affiliated with Tesla, NVIDIA, Factory.ai, Terraformation,
+      or the authors of the works cited below.
+    </div>
+    <div class="srcs">
+      <strong style="color:var(--ink-dim)">Sources.</strong>
+      Cemri, Pan, Yang et al., <a href="https://arxiv.org/abs/2503.13657" target="_blank" rel="noopener">Why Do Multi-Agent LLM Systems Fail?</a> (MAST — 1,600+ traces, 7 frameworks, 14 modes, κ=0.88) ·
+      Factory.ai, <a href="https://factory.ai/news/software-factory" target="_blank" rel="noopener">Factory 2.0: From coding agents to software factories</a> (June 2026) and <a href="https://factory.ai/articles/what-is-a-software-factory" target="_blank" rel="noopener">What is a software factory?</a> ·
+      Tesla Investor Day, 1 March 2023 — the unboxed process, as reported by <a href="https://www.assemblymag.com/articles/97676-tesla-outlines-new-unboxed-assembly-process" target="_blank" rel="noopener">ASSEMBLY</a> ·
+      <a href="https://en.wikipedia.org/wiki/Worldware" target="_blank" rel="noopener">Worldware</a> — Ehrmann's 1990s coinage, the prior sense of the word ·
+      <a href="https://www.businesswire.com/news/home/20240918844939/en/" target="_blank" rel="noopener">Terraformation launches Terraware</a> — one of the two names dropped for being owned ·
+      Sibling masterclasses: <a href="/capability-composition-masterclass">Capability Composition</a> · <a href="/agentic-engineering-masterclass">Agentic Engineering</a> · <a href="/continuous-verification-masterclass">Continuous Verification</a> · <a href="/world-economics-masterclass">Worlds That Pay For Themselves Computing</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---------- progress bar + reveal ---------- */
+(function(){
+  var bar = document.getElementById('progress');
+  function onScroll(){
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+
+  var els = document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)){ els.forEach(function(e){ e.classList.add('in'); }); return; }
+  var io = new IntersectionObserver(function(en){
+    en.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.1, rootMargin:'0px 0px -6% 0px'});
+  els.forEach(function(e){ io.observe(e); });
+})();
+
+/* ---------- §06 the cells. Rungs are the stored values, "?" where none exists. ---------- */
+(function(){
+  var CELLS = [
+    ['SPECIFY','[&] Protocol','in_tree','intent → contract'],
+    ['GOVERN','box-and-box','in_tree','the constitution'],
+    ['COMPOSE','CC2 · compose.mjs','in_tree','the marriage station'],
+    ['FALSIFY','The law suites','in_tree','try to break it'],
+    ['CERTIFY','The bridge','in_tree','a verdict with reasons'],
+    ['MEMORY','Graphonomous','live_deployed','what the line remembers'],
+    ['BUILD','Agentelic','live_deployed','the engineering cell'],
+    ['AUTHORITY','Delegatic','live_deployed','who may ensure what'],
+    ['PACKAGE','FleetPrompt','live_deployed','skills leave the cell'],
+    ['SPEC DISCIPLINE','SpecPrompt','live_deployed','specs that bind'],
+    ['RESEARCH','OpenSentience','?','claims → rulings'],
+    ['METROLOGY','PRISM','?','measuring the loops'],
+    ['WORLD','WRL + TRVM','?','expressing and executing worlds'],
+    ['EVIDENCE','TRAAVIIS','?','what gets admitted'],
+    ['DEPLOY','WebHost.Systems','?','into a world'],
+    ['OBSERVE','A2A Traffic','spec','evidence returns'],
+    // ComputeDriven is place 1 in the placement table — it IS the place, so it carries no PRODUCT
+    // rung. That is categorically different from "a rung nobody recorded" and must not be counted
+    // as one; it got a "?" in a first draft and inflated the unrecorded count from 6 to 7.
+    ['CONTROL ROOM','ComputeDriven','place','where a human drives'],
+    ['PROOF','Workbench','?','practice → signed bundle']
+  ];
+  var LABEL = { '?': '? not recorded', 'place': 'the place itself' };
+  var g = document.getElementById('cellgrid');
+  if(!g) return;
+  g.innerHTML = CELLS.map(function(c){
+    return '<div class="cg"><div class="cgk">'+c[0]+'</div><div class="cgm">'+c[1]+'</div>'
+      + '<span class="rg" data-r="'+c[2]+'">'+(LABEL[c[2]] || c[2])+'</span>'
+      + '<div class="cgd">'+c[3]+'</div></div>';
+  }).join('');
+
+  // Derive every count this page prints from the array itself. The law suites derive their totals
+  // for exactly this reason: a hand-typed count and the data it describes drift apart silently.
+  var total = CELLS.length;
+  var unrecorded = CELLS.filter(function(c){ return c[2] === '?'; }).length;
+  var names = CELLS.filter(function(c){ return c[2] === '?'; }).map(function(c){ return c[0]; });
+  [['s-cells', total], ['s-unrecorded', unrecorded]].forEach(function(p){
+    var el = document.getElementById(p[0]); if(el) el.textContent = p[1];
+  });
+  var W = function(id, txt){ var el = document.getElementById(id); if(el) el.textContent = txt; };
+  var WORDS = ['zero','one','two','three','four','five','six','seven','eight','nine','ten',
+               'eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen'];
+  var cap = function(s){ return s.charAt(0).toUpperCase() + s.slice(1); };
+  var word = WORDS[unrecorded] || String(unrecorded);
+  W('h-cells', WORDS[total] ? cap(WORDS[total]) : String(total));
+  W('h-unrecorded', word);
+  W('g-unrecorded-list', names.join(', '));
+  W('g-unrecorded-n', word);
+  W('f-unrecorded', word + ' of ' + total);
+})();
+
+/* ---------- §04 the line simulator. A MODEL. Formulas are published in the page. ---------- */
+(function(){
+  var $ = function(i){ return document.getElementById(i); };
+  if(!$('sim-n')) return;
+  var mode = 'open';
+
+  // J(d) — what it COSTS to achieve detection completeness d.
+  //
+  // Second correction to this model, 2026-08-22. Making d a control was right and incomplete:
+  // dragging it from 10% to 100% was free. Nothing in the model charged for the thing that
+  // actually buys detection — more expressive contracts, more specification work, more evidence
+  // obligations, more dependency knowledge, and less independence between the cells. With
+  // completeness free, the model's advice is trivially "set d to 1", which is not advice.
+  //
+  // The shape is d/(1-d): cheap at the start, divergent as d approaches 1. That is a claim, and
+  // it is the one this page is willing to defend — the last few percent of the failure surface
+  // are the defects a contract cannot express at all, so buying them is not expensive but
+  // impossible. The slider therefore stops at 95%: a hard ceiling on what a contract can decide,
+  // drawn rather than assumed away. k scales how steep that climb is for a given domain.
+  function joinCost(j, d, k){ return j * (1 + k * (d / (1 - Math.min(d, 0.95)))); }
+
+  function shapes(n, c, j, d, k){
+    var allOK = Math.pow(c, n);          // every item correct
+    // d was a fixed 1 until 2026-08-22. A reviewer pointed out that pinning it hides the
+    // actual lesson: unboxing is not safe because a join exists, it is safe in proportion
+    // to how COMPLETE the join contract is. Made a control so that is discoverable.
+    var J = joinCost(j, d, k);
+    return {
+      serial:  { t: n,      ok: allOK, bad: 1 - allOK, J: 0, R: 0 },
+      open:    { t: 1 + j,  ok: allOK, bad: 1 - allOK, J: j, R: 0 },
+      // Rework is proportional to what the join actually DETECTS. When d was pinned at 1 this
+      // term was (1 - allOK) * 1; making d a control exposed that as wrong — at d = 0 it charged
+      // rework time for defects nobody ever caught, which is not a thing that can happen. With
+      // the * d, d = 0 collapses checked onto open in BOTH metrics, which is the honest identity:
+      // a join that detects nothing is a merge with ceremony, and ceremony is free.
+      checked: { t: 1 + J + (1 - allOK) * d, ok: allOK + (1 - allOK) * d, bad: (1 - allOK) * (1 - d),
+                 J: J, R: (1 - allOK) * d }
+    };
+  }
+
+  // The frontier. Wall clock alone is minimised at d = 0 — every term in T(d) rises with d — so
+  // "how much join geometry is optimal?" is unanswerable until an ESCAPED defect costs something.
+  // With E, the question becomes arithmetic: total = wall clock + E · silent-wrong, and there is a
+  // d* that minimises it. That is the software analogue of a manufacturing tolerance — tighter is
+  // not better, it is a trade with a computable optimum — and it is the actual research target.
+  function frontier(n, c, j, k, E){
+    var allOK = Math.pow(c, n), pts = [], best = null;
+    for(var i = 0; i <= 95; i += 1){
+      var d = i / 100;
+      var T = 1 + joinCost(j, d, k) + (1 - allOK) * d;
+      var total = T + E * (1 - allOK) * (1 - d);
+      pts.push({ d: d, T: T, total: total });
+      if(!best || total < best.total) best = pts[pts.length - 1];
+    }
+    return { pts: pts, best: best };
+  }
+
+  function pct(x){ return (x * 100).toFixed(1) + '%'; }
+
+  function render(){
+    var n = +$('sim-n').value;
+    var c = +$('sim-c').value / 100;
+    var j = +$('sim-j').value / 10;
+    var d = +$('sim-d').value / 100;
+    var k = +$('sim-k').value / 10;
+    var E = +$('sim-e').value;
+    $('lab-n').textContent = n;
+    $('lab-c').textContent = c.toFixed(2);
+    $('lab-j').textContent = j.toFixed(1);
+    $('lab-d').textContent = (d*100).toFixed(0) + '%';
+    $('lab-k').textContent = k.toFixed(1);
+    $('lab-e').textContent = E;
+
+    var s = shapes(n, c, j, d, k);
+    var fr = frontier(n, c, j, k, E);
+    var cur = s[mode];
+    var maxT = Math.max(s.serial.t, s.open.t, s.checked.t, 1);
+
+    $('mv-time').textContent = cur.t.toFixed(2);
+    $('mn-time').textContent = 'time units · BOXED is ' + s.serial.t.toFixed(2);
+    $('mv-ok').textContent   = pct(cur.ok);
+    $('mv-bad').textContent  = pct(cur.bad);
+
+    [['serial',s.serial],['open',s.open],['checked',s.checked]].forEach(function(p){
+      $('b-'+p[0]).style.width = (p[1].t / maxT * 100) + '%';
+      $('bv-'+p[0]).textContent = p[1].t.toFixed(2);
+    });
+    $('b-bad').style.width = (cur.bad * 100) + '%';
+    $('bv-bad').textContent = pct(cur.bad);
+
+    ['serial','open','checked'].forEach(function(m){ $('m-'+(m==='serial'?'serial':m)).classList.toggle('on', m===mode); });
+
+    var note;
+    var speedup = (s.serial.t / s.open.t).toFixed(1);
+    if(mode === 'serial'){
+      note = '<b>BOXED.</b> ' + n + ' items in sequence, so wall clock is ' + n + '. Correctness is <code>' + c.toFixed(2) + '^' + n + ' = ' + s.serial.ok.toFixed(4) + '</code>. '
+           + 'Everything wrong ships silently — there is no station whose job is to refuse.';
+    } else if(mode === 'open'){
+      note = '<b>UNBOXED, unchecked.</b> <span class="warn">' + speedup + '× faster than BOXED, and it ships wrong at exactly the same rate — ' + pct(s.open.bad) + ' either way.</span> '
+           + 'The defects were not removed. They were made to arrive at one instant, in bulk, with no partial-integration gradient to catch them early. '
+           + 'This is the shape that looks best on a throughput dashboard and is indistinguishable from BOXED on a correctness one.';
+    } else {
+      var d100 = (d*100).toFixed(0);
+      var dStar = (fr.best.d * 100).toFixed(0);
+      var here = s.checked.t + E * s.checked.bad;
+      note = '<b>UNBOXED, checked at ' + d100 + '% detection.</b> Silent-wrong is ' + pct(s.checked.bad)
+           + '. Wall clock ' + s.open.t.toFixed(2) + ' → ' + s.checked.t.toFixed(2)
+           + ' — <b>' + s.checked.J.toFixed(2) + '</b> of that is the join itself (base ' + j.toFixed(1)
+           + ' plus what ' + d100 + '% completeness costs) and ' + s.checked.R.toFixed(2) + ' is rework. '
+           // A ratio below 1 is not a speed-up, and "0.6× faster" is not a sentence. Once J(d) was
+           // charged the checked line CAN come out slower than BOXED — at high d it reliably does,
+           // and that is one of the more interesting things the model now says. Print it as what
+           // it is rather than as a speed-up with a fractional multiplier in front of it.
+           + '<span class="warn">' + (s.serial.t >= s.checked.t
+               ? (s.serial.t / s.checked.t).toFixed(1) + '× faster than BOXED.'
+               : (s.checked.t / s.serial.t).toFixed(1) + '× <b>slower</b> than BOXED — the join now costs more than the sequence it replaced.')
+           + '</span><br><br>'
+           + '<b>Total cost including escapes: ' + here.toFixed(2) + '</b> &nbsp;·&nbsp; the minimum is <b>'
+           + fr.best.total.toFixed(2) + ' at d* = ' + dStar + '%</b>'
+           + (Math.abs(fr.best.d - d) < 0.03 ? ' — <span class="warn">you are at it.</span> ' : '. ');
+      if(d >= 0.949){
+        note += '<b>The slider stops at 95%, and that is the claim.</b> Completeness costs <code>j·(1 + k·d/(1−d))</code>, '
+             + 'which diverges as d → 1: the last few percent of the failure surface are defects a contract '
+             + '<em>cannot express</em>, so they are not expensive, they are unavailable. '
+             + (dStar < 90 ? 'Note the optimum is at ' + dStar + '%, not here — <b>maximum join geometry is not the answer either.</b>' : '');
+      } else if(d <= 0.001){
+        note += '<b>At 0% this is identical to UNBOXED-open in every metric</b> — same ' + pct(s.checked.bad)
+             + ' silent-wrong, same ' + s.checked.t.toFixed(2) + ' wall clock, because there is no rework when nothing was caught. '
+             + 'A join that detects nothing is not a join; it is a merge with ceremony.';
+      } else {
+        note += '<b>The join removes ' + d100 + '% of the silent wrongness, and no more.</b> '
+             + 'Unboxing is not safe <em>because a join exists</em> — it is safe in proportion to how <b>complete the join contract is</b>. '
+             + 'That is the whole research agenda, and it is why <a href="#undeclared">an undeclared interface passing as universal</a> is the defect ranked above everything else on this page.';
+      }
+    }
+    $('sim-note').innerHTML = note;
+  }
+
+  ['sim-n','sim-c','sim-j','sim-d','sim-k','sim-e'].forEach(function(id){ $(id).addEventListener('input', render); });
+  [['m-serial','serial'],['m-open','open'],['m-checked','checked']].forEach(function(p){
+    $(p[0]).addEventListener('click', function(){ mode = p[1]; render(); });
+  });
+  render();
+})();
+</script>
+</body>
+</html>

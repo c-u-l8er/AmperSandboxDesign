@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Worlds That Pay For Themselves | [&amp;] Masterclass</title>
+<meta name="description" content="What it costs to run a world, what rides along free, and what you can sell on top of one: where a world beats a repository and a CI pipeline and where it does not, the bounded semantic layer that makes the differentiated part nearly free, a sizing calculator with published formulas, and four line items that are hard to bill for when you ship a repo." />
+<link rel="canonical" href="https://ampersandboxdesign.com/world-economics-masterclass" />
+<meta property="og:title" content="Worlds That Pay For Themselves — a [&amp;] Masterclass on World Economics" />
+<meta property="og:description" content="What it costs to run a world, what rides along free, and what you can sell on top of one: where a world beats a repository and a CI pipeline and where it does not, the bounded semantic layer that makes the differentiated part nearly free, a sizing calculator with published formulas, and four line items that are hard to bill for when you ship a repo." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://ampersandboxdesign.com/world-economics-masterclass" />
+<style>
+  :root {
+    --bg: #07090d;
+    --bg-2: #0b0e14;
+    --panel: #11151e;
+    --panel-2: #161b27;
+    --ink: #e8edf6;
+    --ink-dim: #9aa6bd;
+    --ink-faint: #5f6b82;
+    --line: #1e2533;
+    --line-bright: #2c3548;
+    /* the two operators get their own colours and keep them the whole page */
+    --amp: #b388ff;      /* & — combine  */
+    --pipe: #4fc3ff;     /* |> — pipeline */
+    --zero: #ff5a4d;     /* 0̲ — annihilation */
+    --live: #2ee6a6;     /* a surviving composite */
+    --box: #ffd24d;      /* governance / the floor */
+    --pulse: #ff8a3d;    /* phases */
+    --ext: #8b93a8;      /* external / other people's work */
+    --radius: 14px;
+    --maxw: 1080px;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: radial-gradient(1200px 800px at 78% -12%, #1a1430 0%, var(--bg) 55%) fixed;
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: var(--pipe); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  #progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+    background: linear-gradient(90deg, var(--amp), var(--pipe) 60%, var(--live));
+    z-index: 100; transition: width .1s linear;
+    box-shadow: 0 0 14px rgba(179,136,255,.6);
+  }
+
+  nav.top {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(14px);
+    background: rgba(7,9,13,.72);
+    border-bottom: 1px solid var(--line);
+  }
+  nav.top .wrap { display: flex; align-items: center; gap: 18px; height: 56px; }
+  .brand { font-weight: 800; letter-spacing: .02em; font-size: 15px; display: flex; align-items: center; gap: 9px; }
+  .brand .amp { color: var(--amp); font-family: var(--mono); }
+  nav.top .links { margin-left: auto; display: flex; gap: 18px; font-size: 13px; color: var(--ink-dim); }
+  nav.top .links a { color: var(--ink-dim); }
+  nav.top .links a:hover { color: var(--ink); text-decoration: none; }
+  @media (max-width: 900px) { nav.top .links { display: none; } }
+
+  header.hero { padding: 84px 0 60px; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink-dim); border: 1px solid var(--line-bright); border-radius: 999px;
+    padding: 6px 14px; margin-bottom: 26px; background: var(--panel);
+  }
+  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amp); box-shadow: 0 0 10px var(--amp); animation: pulse 2.4s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+
+  h1.title { font-size: clamp(34px, 6.4vw, 66px); line-height: 1.03; margin: 0 0 22px; font-weight: 850; letter-spacing: -.025em; }
+  h1.title .grad { background: linear-gradient(100deg, var(--amp), var(--pipe) 55%, var(--live)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lede { font-size: clamp(17px, 2.1vw, 21px); color: var(--ink-dim); max-width: 780px; }
+  .lede strong { color: var(--ink); font-weight: 650; }
+
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
+  .btn { font-family: var(--mono); font-size: 13px; letter-spacing: .03em; padding: 12px 20px; border-radius: 10px; border: 1px solid var(--line-bright); background: var(--panel); color: var(--ink); cursor: pointer; transition: .2s; display: inline-block; }
+  .btn:hover { border-color: var(--amp); transform: translateY(-2px); text-decoration: none; }
+  .btn.primary { background: linear-gradient(100deg, #3a2168, #52308f); border-color: #6b45b8; }
+  .btn.danger { border-color: rgba(255,90,77,.5); color: var(--zero); }
+
+  .hero-stats { display: flex; flex-wrap: wrap; gap: 34px; margin-top: 50px; padding-top: 30px; border-top: 1px solid var(--line); }
+  .stat .n { font-size: 30px; font-weight: 800; font-family: var(--mono); letter-spacing: -.01em; }
+  .stat .n.c1 { color: var(--live); } .stat .n.c2 { color: var(--zero); }
+  .stat .n.c3 { color: var(--pipe); } .stat .n.c4 { color: var(--amp); }
+  .stat .l { font-size: 12.5px; color: var(--ink-faint); letter-spacing: .03em; max-width: 210px; }
+
+  section { padding: 74px 0; border-top: 1px solid var(--line); position: relative; }
+  .kicker { font-family: var(--mono); font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-faint); margin: 0 0 14px; }
+  h2.sec { font-size: clamp(26px, 4vw, 40px); margin: 0 0 18px; letter-spacing: -.015em; font-weight: 800; line-height: 1.1; }
+  .sec-lede { font-size: 17.5px; color: var(--ink-dim); max-width: 750px; margin: 0 0 34px; }
+  .sec-lede strong { color: var(--ink); }
+  h3.sub { font-size: 19px; margin: 40px 0 14px; letter-spacing: -.01em; }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* GEO answer block — every section opens with a self-contained definition */
+  .answer { background: var(--panel); border: 1px solid var(--line-bright); border-left: 3px solid var(--amp); border-radius: 0 12px 12px 0; padding: 20px 24px; margin: 0 0 30px; }
+  .answer h3 { margin: 0 0 9px; font-size: 15.5px; color: var(--ink); font-weight: 700; letter-spacing: -.005em; }
+  .answer p { margin: 0; font-size: 15px; color: var(--ink-dim); line-height: 1.7; }
+  .answer p b { color: var(--ink); }
+
+  .op { font-family: var(--mono); font-weight: 700; }
+  .op.amp { color: var(--amp); } .op.pipe { color: var(--pipe); } .op.zero { color: var(--zero); }
+
+  /* hero: list vs composition */
+  .lvc { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 44px; }
+  @media (max-width: 880px) { .lvc { grid-template-columns: 1fr; } }
+  .lvc-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+  .lvc-card.right { border-color: var(--line-bright); }
+  .lvc-h { font-family: var(--mono); font-size: 11px; letter-spacing: .13em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 16px; }
+  .lvc-card.right .lvc-h { color: var(--amp); }
+  .caps { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cap-tok { font-family: var(--mono); font-size: 12.5px; padding: 7px 12px; border-radius: 8px; background: var(--bg-2); border: 1px solid var(--line); color: var(--ink-dim); }
+  .lvc-verdict { margin-top: 18px; padding-top: 16px; border-top: 1px dashed var(--line); font-size: 13.5px; color: var(--ink-faint); line-height: 1.6; }
+  .lvc-expr { font-family: var(--mono); font-size: 14.5px; padding: 13px 15px; background: #0a0d13; border: 1px solid var(--line); border-radius: 10px; overflow-x: auto; white-space: nowrap; color: var(--ink); }
+  .derived { margin-top: 16px; display: grid; gap: 0; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .drow { display: flex; align-items: baseline; gap: 10px; padding: 8px 14px; font-family: var(--mono); font-size: 12px; border-bottom: 1px solid var(--line); background: #0a0d13; }
+  .drow:last-child { border-bottom: 0; }
+  .drow .dk { color: var(--ink-faint); min-width: 104px; }
+  .drow .dv { color: var(--ink-dim); }
+  .drow .dv.ok { color: var(--live); } .drow .dv.bad { color: var(--zero); font-weight: 700; }
+  .drow.final { background: var(--panel-2); }
+  .drow.final .dv { font-weight: 700; font-size: 13px; }
+  .break-row { margin-top: 16px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: var(--mono); font-size: 12px; color: var(--ink-faint); }
+  .toggle { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; padding: 7px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg-2); color: var(--ink-dim); transition: .15s; }
+  .toggle:hover { border-color: var(--line-bright); }
+  .toggle.on { border-color: var(--zero); color: var(--zero); background: rgba(255,90,77,.08); }
+  .toggle input { display: none; }
+
+  /* generic tables */
+  .tbl { width: 100%; border-collapse: collapse; font-size: 14px; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .tbl thead th { text-align: left; padding: 13px 16px; background: var(--panel-2); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); font-weight: 700; border-bottom: 1px solid var(--line-bright); }
+  .tbl tbody td { padding: 14px 16px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--ink-dim); }
+  .tbl tbody tr:last-child td { border-bottom: 0; }
+  .tbl tbody tr:hover { background: rgba(255,255,255,.018); }
+  .tbl .nm { color: var(--ink); font-weight: 650; }
+  .tbl code { font-size: 12px; }
+  .scroll-x { overflow-x: auto; }
+  @media (max-width: 800px) { .scroll-x .tbl { min-width: 680px; } }
+
+  .st { font-family: var(--mono); font-size: 10.5px; padding: 3px 9px; border-radius: 999px; white-space: nowrap; display: inline-block; }
+  .st.running { background: rgba(46,230,166,.14); color: var(--live); }
+  .st.specified { background: rgba(179,136,255,.15); color: var(--amp); }
+  .st.draft { background: rgba(242,181,59,.15); color: var(--box); }
+  .st.none { background: rgba(95,107,130,.2); color: var(--ink-dim); }
+  .st.open { background: rgba(255,90,77,.15); color: var(--zero); }
+  .st.ext { background: rgba(95,107,130,.14); color: var(--ink-faint); }
+
+  /* two operators */
+  .ops { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 820px) { .ops { grid-template-columns: 1fr; } }
+  .opcard { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; position: relative; overflow: hidden; }
+  .opcard::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--clr); }
+  .opcard .glyph { font-family: var(--mono); font-size: 34px; font-weight: 800; color: var(--clr); line-height: 1; }
+  .opcard h3 { margin: 12px 0 4px; font-size: 19px; }
+  .opcard .role { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); }
+  .opcard p { font-size: 14px; color: var(--ink-dim); margin: 12px 0 0; }
+  .opcard ul { margin: 14px 0 0; padding-left: 18px; font-size: 13.5px; color: var(--ink-dim); }
+  .opcard ul li { margin-bottom: 6px; }
+  .opcard .lawline { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 12px; color: var(--ink-faint); line-height: 1.9; }
+  .opcard .lawline b { color: var(--clr); }
+
+  /* laws as engineering questions */
+  .lawq { display: grid; gap: 10px; }
+  .lq { display: grid; grid-template-columns: 168px 1fr; gap: 18px; padding: 15px 18px; background: var(--panel); border: 1px solid var(--line); border-radius: 11px; align-items: start; }
+  @media (max-width: 700px) { .lq { grid-template-columns: 1fr; gap: 6px; } }
+  .lq .law { font-family: var(--mono); font-size: 13px; color: var(--ink); font-weight: 650; }
+  .lq .law small { display: block; color: var(--ink-faint); font-size: 11px; font-weight: 400; margin-top: 3px; }
+  .lq .q { font-size: 14px; color: var(--ink-dim); }
+  .lq .q b { color: var(--ink); }
+
+  /* code / certificate */
+  .cert { background: #0a0d13; border: 1px solid var(--line-bright); border-radius: var(--radius); overflow: hidden; font-family: var(--mono); font-size: 13px; }
+  .cert .bar { display: flex; align-items: center; gap: 8px; padding: 11px 16px; background: var(--panel-2); border-bottom: 1px solid var(--line); }
+  .cert .bar .d { width: 11px; height: 11px; border-radius: 50%; }
+  .cert .bar .t { margin-left: 8px; color: var(--ink-faint); font-size: 12px; }
+  .cert pre { margin: 0; padding: 20px; overflow-x: auto; line-height: 1.7; color: var(--ink-dim); }
+  .cert .k { color: var(--pipe); } .cert .s { color: var(--live); } .cert .n { color: var(--box); } .cert .c { color: var(--ink-faint); }
+  .cert .bad { color: var(--zero); }
+
+  /* slider */
+  .rel-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; }
+  .rel-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
+  @media (max-width: 700px) { .rel-controls { grid-template-columns: 1fr; } }
+  .rel-controls label { display: block; font-family: var(--mono); font-size: 12px; color: var(--ink-faint); margin-bottom: 10px; letter-spacing: .04em; }
+  .rel-controls label b { color: var(--ink); font-size: 14px; }
+  input[type=range] { -webkit-appearance: none; appearance: none; display: block; width: 100%; height: 26px; background: transparent; cursor: pointer; margin: 0; }
+  input[type=range]::-webkit-slider-runnable-track { height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--zero), var(--box) 55%, var(--live)); }
+  input[type=range]::-moz-range-track { height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--zero), var(--box) 55%, var(--live)); }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; margin-top: -7px; border-radius: 50%; background: #fff; border: 3px solid #0b0e14; box-shadow: 0 0 0 2px #fff; }
+  input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 3px solid #0b0e14; box-shadow: 0 0 0 2px #fff; }
+  #chain-canvas { width: 100%; height: 220px; display: block; margin-top: 26px; }
+  .rel-readout { display: flex; flex-wrap: wrap; gap: 26px; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 13px; }
+  .rel-readout .rr .rk { color: var(--ink-faint); font-size: 11px; display: block; letter-spacing: .06em; text-transform: uppercase; }
+  .rel-readout .rr .rv { font-size: 21px; font-weight: 800; }
+
+  /* playground */
+  .pg { background: var(--panel); border: 1px solid var(--line-bright); border-radius: var(--radius); padding: 24px; }
+  .pg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 900px) { .pg-grid { grid-template-columns: 1fr; } }
+  .brick-ed { background: var(--bg-2); border: 1px solid var(--line); border-radius: 11px; padding: 15px 16px; margin-bottom: 10px; }
+  .brick-ed .bh { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; }
+  .brick-ed .bid { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--amp); }
+  .brick-ed .bholder { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); }
+  .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+  @media (max-width: 520px) { .fields { grid-template-columns: 1fr; } }
+  .fld label { display: block; font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 4px; }
+  .fld select, .fld input {
+    width: 100%; font-family: var(--mono); font-size: 12px; padding: 6px 9px; border-radius: 7px;
+    background: #0a0d13; border: 1px solid var(--line); color: var(--ink); outline: none;
+  }
+  .fld select:focus, .fld input:focus { border-color: var(--amp); }
+  .expr-pick { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .ebtn { font-family: var(--mono); font-size: 12px; padding: 7px 12px; border-radius: 8px; cursor: pointer; background: var(--bg-2); border: 1px solid var(--line); color: var(--ink-faint); transition: .15s; }
+  .ebtn:hover { border-color: var(--line-bright); color: var(--ink-dim); }
+  .ebtn.on { background: rgba(179,136,255,.16); border-color: var(--amp); color: var(--amp); }
+  .out-panel { background: #0a0d13; border: 1px solid var(--line); border-radius: 11px; overflow: hidden; }
+  .out-panel .oh { font-family: var(--mono); font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-faint); padding: 9px 14px; border-bottom: 1px solid var(--line); background: var(--panel-2); }
+  .verdict-big { padding: 22px 16px; text-align: center; font-family: var(--mono); font-weight: 800; font-size: 40px; letter-spacing: -.01em; transition: .25s; }
+  .verdict-big.live { color: var(--live); }
+  .verdict-big.zero { color: var(--zero); }
+  .verdict-why { padding: 0 16px 16px; text-align: center; font-family: var(--mono); font-size: 11.5px; color: var(--ink-faint); line-height: 1.6; }
+
+  /* CP7 — the broken law */
+  .broken { border: 1px solid rgba(255,90,77,.4); border-radius: var(--radius); background: linear-gradient(180deg, rgba(255,90,77,.06), transparent 60%); padding: 28px; margin-top: 8px; }
+  .broken .btag { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--zero); }
+  .broken h3 { margin: 10px 0 10px; font-size: 22px; color: var(--ink); }
+  .swap-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center; margin-top: 22px; }
+  @media (max-width: 720px) { .swap-row { grid-template-columns: 1fr; } }
+  .swap-side { background: #0a0d13; border: 1px solid var(--line); border-radius: 11px; padding: 18px; text-align: center; transition: .3s; }
+  .swap-side .sexpr { font-family: var(--mono); font-size: 15px; color: var(--ink); margin-bottom: 12px; }
+  .swap-side .sres { font-family: var(--mono); font-size: 30px; font-weight: 800; }
+  .swap-side .sres.live { color: var(--live); } .swap-side .sres.zero { color: var(--zero); }
+  .swap-side.hot { border-color: var(--zero); box-shadow: 0 0 24px rgba(255,90,77,.18); }
+  .swap-mid { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); text-align: center; }
+  .lawrow { display: flex; align-items: baseline; gap: 12px; padding: 11px 15px; border: 1px solid var(--line); border-radius: 9px; background: #0a0d13; margin-bottom: 8px; font-family: var(--mono); font-size: 12.5px; }
+  .lawrow .lid { font-weight: 800; min-width: 42px; }
+  .lawrow.fail { border-color: rgba(255,90,77,.35); }
+  .lawrow.fail .lid { color: var(--zero); }
+  .lawrow.pass .lid { color: var(--live); }
+  .lawrow .ltext { color: var(--ink-dim); }
+
+  /* landscape */
+  .land { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+  .lcard { border: 1px solid var(--line); border-left: 3px solid var(--clr); border-radius: 11px; padding: 17px 19px; background: var(--panel); }
+  .lcard h4 { margin: 0 0 4px; font-size: 14.5px; color: var(--ink); }
+  .lcard .who { font-family: var(--mono); font-size: 10.5px; color: var(--ink-faint); letter-spacing: .04em; }
+  .lcard p { margin: 11px 0 0; font-size: 13px; color: var(--ink-dim); line-height: 1.62; }
+  .lcard.ours { border-left-color: var(--amp); background: linear-gradient(180deg, rgba(179,136,255,.07), transparent); }
+
+  blockquote.callout {
+    margin: 34px 0 0; padding: 22px 26px; border-left: 3px solid var(--amp);
+    background: linear-gradient(90deg, rgba(179,136,255,.07), transparent);
+    border-radius: 0 12px 12px 0; font-size: 18px; color: var(--ink);
+  }
+  blockquote.callout cite { display: block; margin-top: 10px; font-size: 13px; color: var(--ink-faint); font-style: normal; font-family: var(--mono); }
+
+  .honest { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); margin-top: 18px; padding: 13px 16px; border: 1px dashed var(--line-bright); border-radius: 10px; line-height: 1.75; }
+  .honest b { color: var(--ink-dim); }
+
+  /* falsification */
+  .fals { width: 100%; border-collapse: collapse; font-size: 13px; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin-top: 24px; }
+  .fals th { text-align: left; padding: 12px 15px; background: var(--panel-2); font-size: 10.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-faint); border-bottom: 1px solid var(--line-bright); }
+  .fals td { padding: 13px 15px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--ink-dim); }
+  .fals tr:last-child td { border-bottom: 0; }
+  .fals .claim { color: var(--ink); font-weight: 600; }
+  .fals code { font-size: 11.5px; white-space: nowrap; }
+  .fals .kill { color: var(--zero); font-family: var(--mono); font-size: 11.5px; line-height: 1.6; }
+  @media (max-width: 760px) { .fals-scroll { overflow-x: auto; } .fals { min-width: 760px; } }
+
+  footer { padding: 56px 0 80px; border-top: 1px solid var(--line); color: var(--ink-faint); font-size: 13px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 18px 40px; align-items: baseline; }
+  footer a { color: var(--ink-dim); }
+  footer .note { flex-basis: 100%; margin-top: 18px; font-family: var(--mono); font-size: 12px; line-height: 1.8; color: var(--ink-faint); }
+  .srcs { flex-basis: 100%; margin-top: 16px; font-size: 12px; line-height: 1.9; color: var(--ink-faint); }
+  .srcs a { color: var(--ink-dim); }
+
+  /* ============ AI-FACTORIES MASTERCLASS — page-specific components ============ */
+
+  /* rung chips, same vocabulary the portfolio nav stores */
+  .rg { font-family: var(--mono); font-size: 10px; letter-spacing: .05em; padding: 2px 7px;
+        border-radius: 5px; border: 1px solid var(--line-bright); color: var(--ink-faint);
+        white-space: nowrap; display: inline-block; }
+  .rg[data-r="live_deployed"] { color: var(--live); border-color: rgba(46,230,166,.42); background: rgba(46,230,166,.09); }
+  .rg[data-r="in_tree"]       { color: var(--box);  border-color: rgba(255,210,77,.4);  background: rgba(255,210,77,.08); }
+  .rg[data-r="spec"]          { color: var(--ink-dim); }
+  .rg[data-r="?"]             { color: var(--zero); border-color: rgba(255,90,77,.35); background: rgba(255,90,77,.06); }
+
+  /* boxed vs unboxed diagram */
+  .shape { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin: 30px 0 10px; }
+  @media (max-width: 800px) { .shape { grid-template-columns: 1fr; } }
+  .shapecol { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px 20px; }
+  .shapecol h4 { margin: 0 0 4px; font-size: 15px; font-family: var(--mono); letter-spacing: .04em; }
+  .shapecol .sh-sub { font-size: 12.5px; color: var(--ink-faint); margin: 0 0 18px; font-family: var(--mono); }
+  .shapecol.a h4 { color: var(--ext); } .shapecol.b h4 { color: var(--pipe); }
+  .sbox { font-family: var(--mono); font-size: 12px; border: 1px solid var(--line-bright); border-radius: 8px;
+          padding: 7px 12px; background: var(--bg-2); color: var(--ink-dim); text-align: center; margin: 0 auto; max-width: 210px; }
+  .sarr { text-align: center; color: var(--ink-faint); font-size: 12px; line-height: 1.5; }
+  .srow-p { display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; }
+  .srow-p .sbox { margin: 0; max-width: none; border-color: rgba(79,195,255,.35); color: var(--pipe); background: rgba(79,195,255,.06); }
+  .sjoin { border-color: rgba(46,230,166,.45) !important; color: var(--live) !important; background: rgba(46,230,166,.07) !important; letter-spacing: .1em; }
+  .shapefoot { font-size: 12.5px; color: var(--ink-faint); margin-top: 16px; padding-top: 13px; border-top: 1px dashed var(--line-bright); }
+  .shapefoot b { color: var(--ink-dim); }
+
+  /* the line simulator */
+  .sim { background: var(--panel); border: 1px solid var(--line-bright); border-radius: var(--radius); overflow: hidden; margin: 30px 0; }
+  .sim .simhead { display: flex; align-items: center; gap: 10px; padding: 13px 20px; border-bottom: 1px solid var(--line);
+                  font-family: var(--mono); font-size: 12.5px; color: var(--ink-dim); flex-wrap: wrap; }
+  .sim .simhead .tagm { margin-left: auto; color: var(--box); font-size: 11.5px; }
+  .simbody { display: grid; grid-template-columns: 290px 1fr; }
+  @media (max-width: 860px) { .simbody { grid-template-columns: 1fr; } }
+  .simctl { padding: 22px 20px; border-right: 1px solid var(--line); }
+  @media (max-width: 860px) { .simctl { border-right: none; border-bottom: 1px solid var(--line); } }
+  .simctl label { display: block; font-family: var(--mono); font-size: 11.5px; color: var(--ink-faint);
+                  letter-spacing: .05em; margin: 0 0 6px; }
+  .simctl label b { color: var(--pipe); float: right; }
+  .simctl input[type=range] { width: 100%; -webkit-appearance: none; appearance: none; height: 4px; border-radius: 4px;
+                  background: var(--line-bright); outline: none; margin: 0 0 20px; }
+  .simctl input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+                  background: var(--pipe); cursor: pointer; box-shadow: 0 0 0 4px rgba(79,195,255,.16); }
+  .simctl input[type=range]::-moz-range-thumb { width: 16px; height: 16px; border: none; border-radius: 50%; background: var(--pipe); cursor: pointer; }
+  .modes { display: flex; flex-direction: column; gap: 7px; margin-top: 4px; }
+  .modes button { font-family: var(--mono); font-size: 12px; text-align: left; padding: 10px 13px; border-radius: 8px;
+                  border: 1px solid var(--line-bright); background: var(--bg-2); color: var(--ink-dim); cursor: pointer; transition: .18s; }
+  .modes button:hover { border-color: var(--ink-faint); }
+  .modes button.on { border-color: var(--pipe); background: rgba(79,195,255,.1); color: var(--ink); }
+  .modes button small { display: block; color: var(--ink-faint); font-size: 10.5px; margin-top: 2px; }
+  .simout { padding: 22px 24px; }
+  .simmetrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px; }
+  @media (max-width: 620px) { .simmetrics { grid-template-columns: 1fr; } }
+  .metric { border: 1px solid var(--line); border-radius: 10px; padding: 14px 15px; background: var(--bg-2); }
+  .metric .mk { font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); }
+  .metric .mv { font-family: var(--mono); font-size: 26px; font-weight: 700; margin-top: 6px; letter-spacing: -.01em; }
+  .metric .mn { font-size: 11.5px; color: var(--ink-faint); margin-top: 4px; }
+  .metric.good .mv { color: var(--live); } .metric.bad .mv { color: var(--zero); } .metric.neutral .mv { color: var(--pipe); }
+  .simbars { display: grid; gap: 9px; }
+  .bar { display: grid; grid-template-columns: 128px 1fr 74px; gap: 12px; align-items: center; font-family: var(--mono); font-size: 12px; }
+  @media (max-width: 620px) { .bar { grid-template-columns: 100px 1fr 62px; gap: 8px; font-size: 11px; } }
+  .bar .bk { color: var(--ink-faint); }
+  .bar .btrack { height: 9px; border-radius: 5px; background: var(--line); overflow: hidden; }
+  /* display:block is load-bearing. .btrack is blockified because it is a grid item of .bar,
+     but .bfill is a <span> INSIDE it and stays inline, where width/height are ignored —
+     it rendered 0x0 with width:100% set. Reported as "the bar charts are not working". */
+  .bar .bfill { display: block; height: 100%; border-radius: 5px; transition: width .3s cubic-bezier(.2,.7,.2,1); }
+  .bar .bv { text-align: right; color: var(--ink); }
+  .simnote { margin-top: 20px; padding-top: 16px; border-top: 1px dashed var(--line-bright);
+             font-size: 13.5px; color: var(--ink-dim); line-height: 1.7; }
+  .simnote b { color: var(--ink); }
+  .simnote .warn { color: var(--box); }
+
+  /* cell grid */
+  .cellgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line);
+              border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin: 26px 0; }
+  @media (max-width: 900px) { .cellgrid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .cellgrid { grid-template-columns: 1fr; } }
+  .cellgrid .cg { background: var(--panel); padding: 16px 15px; display: flex; flex-direction: column; gap: 6px; min-height: 112px; }
+  .cellgrid .cg .cgk { font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--pulse); }
+  .cellgrid .cg .cgm { font-size: 15px; font-weight: 650; color: var(--ink); }
+  .cellgrid .cg .cgd { font-size: 12px; color: var(--ink-faint); margin-top: auto; }
+  .cellgrid .cg .rg { align-self: flex-start; }
+
+  /* the worldware ladder */
+  .wl { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin: 26px 0; }
+  .wl .wr { display: grid; grid-template-columns: 190px 1fr; gap: 20px; padding: 16px 22px; border-bottom: 1px solid var(--line);
+            background: var(--panel); align-items: center; }
+  .wl .wr:last-child { border-bottom: none; }
+  .wl .wr .wn { font-size: 19px; font-weight: 700; color: var(--ink-dim); }
+  .wl .wr .wo { font-size: 14px; color: var(--ink-faint); }
+  .wl .wr .wo b { color: var(--ink-dim); }
+  .wl .wr.top { background: rgba(79,195,255,.07); }
+  .wl .wr.top .wn { color: var(--pipe); font-size: 22px; }
+  .wl .wr.top .wo b { color: var(--pipe); }
+  @media (max-width: 640px) { .wl .wr { grid-template-columns: 1fr; gap: 4px; } }
+
+  /* the four frozen sizes */
+  .sizes { display: grid; gap: 8px; font-family: var(--mono); font-size: 12.5px; color: var(--ink-faint);
+           margin-top: 16px; padding-top: 15px; border-top: 1px dashed var(--line-bright); }
+  .sizes b { color: var(--pipe); font-weight: 500; }
+</style>
+</head>
+<body>
+<a id="top"></a>
+<div id="progress"></div>
+
+<script type="module" src="/amp-nav.js"></script>
+<amp-nav
+  property="world_masterclass"
+  style="
+    --amp-nav-bg: rgba(7,9,13,.975);
+    --amp-nav-fg: #e8edf6;
+    --amp-nav-muted: #5f6b82;
+    --amp-nav-accent: #ff8a3d;
+    --amp-nav-border: #1e2533;
+    --amp-nav-hover: rgba(232,237,246,.045);
+    --amp-nav-cta-bg: #ff8a3d;
+    --amp-nav-cta-fg: #07090d;
+  "
+></amp-nav>
+
+<nav class="top">
+  <div class="wrap">
+    <div class="brand"><span class="amp">[&amp;]</span> World economics</div>
+    <div class="links">
+      <a href="#what">What you are buying</a>
+      <a href="#versus">vs. repo + CI</a>
+      <a href="#free">What rides free</a>
+      <a href="#price">Size it</a>
+      <a href="#run">Running it</a>
+      <a href="#sell">What you sell</a>
+      <a href="#falsify" style="color:var(--zero)">Falsify</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span> Masterclass · World Economics</div>
+    <h1 class="title">Worlds That <span class="grad">Pay For Themselves</span>.</h1>
+    <p class="lede">
+      A world is a machine you can version, move and re-run. That is a technical claim and it is made elsewhere.
+      <strong>This page is about the money.</strong> What a world costs to keep, what it costs to move, why the
+      part you actually differentiate on is close to free, and the four things you can charge for once the unit
+      of delivery stops being a repository.
+    </p>
+    <div class="hero-cta">
+      <a class="btn primary" href="#price">Size a world →</a>
+      <a class="btn" href="#versus">Against a repo and a CI pipeline</a>
+      <a class="btn danger" href="#falsify">Prove us wrong</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="n c3">10 GB<span style="font-size:18px;color:var(--ink-faint)"> – </span>10 TB</div><div class="l">the current ComputeDriven world tiers &mdash; an envelope, not a definition</div></div>
+      <div class="stat"><div class="n c1">0.21%</div><div class="l">of a 100&nbsp;GB world is the semantic layer, <em>at its enforced ceiling</em> &mdash; the part you differentiate on</div></div>
+      <div class="stat"><div class="n c4">1</div><div class="l">artifact to ship, restore and bill, instead of a repository plus the machine that runs it</div></div>
+      <div class="stat"><div class="n c2">0</div><div class="l">prices printed on this page &mdash; they live on the pricing page, and this one refuses to keep a second copy</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ 01 ============ -->
+<section id="what">
+  <div class="wrap">
+    <p class="kicker">01 &middot; The unit</p>
+    <h2 class="sec reveal">What a customer is actually buying.</h2>
+    <p class="sec-lede reveal">
+      Software is normally sold as a repository plus instructions for reproducing the machine it runs on.
+      The instructions are the product's weakest part: they drift, they assume a base image, and they are
+      the reason &ldquo;works on my machine&rdquo; survived thirty years of tooling meant to kill it.
+    </p>
+    <p class="sec-lede reveal">
+      <strong>A world is the machine itself, as a versioned artifact.</strong> Not a container image, which is a
+      build output with no history; not a VM snapshot, which has history but no semantics. A world carries its own
+      state, its own lineage, and a small semantic layer describing what is in it &mdash; and it can be restored,
+      forked, moved between a laptop and a datacentre, and billed, as one thing.
+    </p>
+    <div class="honest reveal" style="margin-top:22px">
+      <b>The commercial consequence, stated plainly.</b> When the unit of delivery is a world, the thing you
+      hand a customer is the thing you tested. There is no reconstitution step between your evidence and their
+      environment, so <b>the class of support ticket that begins &ldquo;it worked in staging&rdquo; has nowhere to
+      come from.</b> Every argument on this page is downstream of that one.
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 ============ -->
+<section id="versus">
+  <div class="wrap">
+    <p class="kicker">02 &middot; The comparison that matters</p>
+    <h2 class="sec reveal">When a world beats a repository and a CI pipeline.</h2>
+    <p class="sec-lede reveal">
+      Not always. A world is a worse fit than a repo for a library, a pure function, or anything whose value
+      does not depend on the state around it. The honest version of this argument is a boundary, not a claim
+      of superiority &mdash; so here is the boundary.
+    </p>
+    <div class="scroll-x reveal" style="margin-top:22px">
+      <table class="tbl">
+        <thead><tr><th>What you are shipping</th><th>Repo + CI</th><th>World</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td class="nm">A library, an SDK, a pure function</td><td><span class="st running">better</span></td><td><span class="st open">worse</span></td><td>No environment to carry. A world is overhead you pay for nothing.</td></tr>
+          <tr><td class="nm">A stateless service with a managed datastore</td><td><span class="st running">better</span></td><td><span class="st specified">even</span></td><td>The platform already reconstitutes the machine. You are buying a second copy of a solved problem.</td></tr>
+          <tr><td class="nm">A stateful system a customer must run themselves</td><td><span class="st open">worse</span></td><td><span class="st running">better</span></td><td>The install guide <em>is</em> the product risk. A world deletes the guide.</td></tr>
+          <tr><td class="nm">An agent or model pipeline with tuned local state</td><td><span class="st open">worse</span></td><td><span class="st running">better</span></td><td>The tuning is the value and it lives in the state, which a repo does not carry.</td></tr>
+          <tr><td class="nm">Anything you must reproduce months later for audit</td><td><span class="st open">worse</span></td><td><span class="st running">better</span></td><td>Re-running a pipeline reconstructs an approximation. Restoring a world does not reconstruct anything.</td></tr>
+          <tr><td class="nm">Regulated work needing a defensible chain of custody</td><td><span class="st open">worse</span></td><td><span class="st running">better</span></td><td>Lineage is a property of the artifact, not of a log a reviewer has to trust.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="sec-lede reveal" style="margin-top:22px">
+      Two of those six favour the incumbent, and they are the common cases. <strong>The world argument is not
+      that everything should be a world</strong> &mdash; it is that a specific and well-paid class of software has
+      been paying reconstitution costs it did not have to, because the only unit on offer was a repository.
+    </p>
+  </div>
+</section>
+
+<!-- ============ 03 ============ -->
+<section id="free">
+  <div class="wrap">
+    <p class="kicker">03 &middot; The property that makes the margin</p>
+    <h2 class="sec reveal">The part you differentiate on rides along nearly free.</h2>
+    <p class="sec-lede reveal">
+      A world is mostly operating system, runtime, packages and data &mdash; bulk that is identical across every
+      customer you have. The part that is <em>yours</em> is the semantic layer: what the system knows, how it is
+      wired, the decisions recorded against it. That layer is <strong>bounded by design</strong>, and the bound is
+      enforced rather than hoped for.
+    </p>
+    <div class="honest reveal" style="margin-top:20px">
+      <b>At its enforced ceiling, the semantic layer is 0.21% of a 100&nbsp;GB world.</b>
+      Roughly one part in five hundred. Which means the marginal cost of carrying the thing that makes your
+      product different from the next one is, to a first approximation, <b>zero against the cost of the world
+      that carries it</b> &mdash; and the bulk it rides on is exactly the part that deduplicates across customers.
+    </div>
+    <p class="sec-lede reveal" style="margin-top:22px">
+      That is the whole margin story, and it is worth being precise about what it does and does not say.
+      It does <em>not</em> say worlds are cheap; a 10&nbsp;TB world costs what 10&nbsp;TB costs. It says the
+      <strong>differentiated fraction</strong> of a world is nearly free to version, fork and ship, so the
+      operations that a repository-shaped business treats as expensive &mdash; branch a customer, snapshot before
+      a risky change, keep last quarter restorable &mdash; stop being priced like copies of the whole system.
+    </p>
+  </div>
+</section>
+
+<section id="price">
+  <div class="wrap">
+    <p class="kicker">04 · Run the numbers</p>
+    <h2 class="sec reveal">Size a world, and price it.</h2>
+    <p class="sec-lede reveal">
+      Object storage at <strong>$0.015/GB-month with the first 10 GB free and zero egress</strong>. Margin is
+      <code>(price − COGS) / price</code>. The published tier table is reproduced by this calculator exactly —
+      if a value here disagrees with the table, one of them is wrong and the falsification row below says which.
+    </p>
+
+    <div class="sim reveal">
+      <div class="simhead">
+        <span>world sizing · COGS and the 65%-margin price</span>
+        <span class="tagm">arithmetic · $0.015/GB-mo, 10 GB free</span>
+      </div>
+      <div class="simbody">
+        <div class="simctl">
+          <label>world size <b id="lab-sz">1 TB</b></label>
+          <input type="range" id="w-sz" min="0" max="5" step="1" value="3" />
+          <label>target margin <b id="lab-mg">65%</b></label>
+          <input type="range" id="w-mg" min="30" max="90" step="1" value="65" />
+          <div class="simnote" style="margin-top:4px;padding-top:12px;font-size:12.5px">
+            Sizes step through the published tiers: 10 GB · 100 GB · 500 GB · 1 TB · 2 TB · 10 TB.
+          </div>
+        </div>
+        <div class="simout">
+          <div class="simmetrics">
+            <div class="metric neutral"><div class="mk">storage COGS</div><div class="mv" id="w-cogs">—</div><div class="mn">per month, billable GB only</div></div>
+            <div class="metric good"><div class="mk">price at target margin</div><div class="mv" id="w-price">—</div><div class="mn" id="w-pricen">per month</div></div>
+            <div class="metric bad"><div class="mk">WRL graph share</div><div class="mv" id="w-share">—</div><div class="mn">of the backup, at the 212.70 MB ceiling</div></div>
+          </div>
+          <div class="simnote" id="w-note">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="honest reveal">
+      <b>The correction this calculator encodes.</b> The published table's price column was once computed as
+      <code>COGS ÷ 0.65</code>, which yields a price where COGS is 65% <em>of revenue</em> — a 35% margin, the
+      inverse of what was intended. Every row was wrong. The formula here is
+      <code>price = COGS ÷ (1 − margin)</code>, giving <b>$438.43 at 10 TB for a 65% margin</b>, not the $236
+      that circulated for weeks. Set the slider to 10 TB and check it against the table.
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 ============ -->
+<section id="run">
+  <div class="wrap">
+    <p class="kicker">05 &middot; Running it</p>
+    <h2 class="sec reveal">Where a world actually runs, and who pays for that.</h2>
+    <p class="sec-lede reveal">
+      A world runs on your machine or on ours, and the same artifact does both &mdash; that is the point of the
+      unit. Locally it costs you disk and the machine you already own. Hosted, it costs a monthly figure driven
+      by the arithmetic in &sect;04: billable gigabytes, at a rate, at a margin.
+    </p>
+    <div class="honest reveal" style="margin-top:20px">
+      <b>This page prints no prices, on purpose.</b> [World] Cloud publishes its own tiers, and a
+      masterclass that kept a second copy of them would be a second source of truth &mdash; which is precisely
+      the failure this site has gates against elsewhere. The calculator above is <em>arithmetic you can check</em>;
+      the numbers you would be invoiced are on the pricing page, and if the two ever disagree, the pricing page
+      is right.
+      <div style="margin-top:16px">
+        <a class="btn primary" href="https://cloud.computedriven.com/pricing" style="margin-right:10px">[World] Cloud pricing &rarr;</a>
+        <a class="btn" href="https://cloud.computedriven.com">What the hosted tier is</a>
+      </div>
+    </div>
+    <div class="scroll-x reveal" style="margin-top:24px">
+      <table class="tbl">
+        <thead><tr><th>Where it runs</th><th>What you pay</th><th>What you get</th></tr></thead>
+        <tbody>
+          <tr><td class="nm">Your machine</td><td>Disk you already own</td><td>The whole world, offline. No per-seat anything. This is the default and it is not a trial.</td></tr>
+          <tr><td class="nm">Your infrastructure</td><td>Your existing hosting bill</td><td>Same artifact, your cloud account, your compliance boundary.</td></tr>
+          <tr><td class="nm">[World] Cloud</td><td>Published tiers &mdash; see the pricing page</td><td>Hosted worlds, restore and fork without provisioning, and the control room to drive them.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="sec-lede reveal" style="margin-top:22px">
+      <strong>The local tier being genuinely usable is a commercial position, not an oversight.</strong>
+      A world you cannot run without us is a hostage, and hostages are sold once. The hosted tier has to win on
+      being better than doing it yourself &mdash; restore speed, forking without provisioning, and not having to
+      operate the substrate &mdash; rather than on being the only way to open your own artifact.
+    </p>
+  </div>
+</section>
+
+<!-- ============ 06 ============ -->
+<section id="sell">
+  <div class="wrap">
+    <p class="kicker">06 &middot; The client-side argument</p>
+    <h2 class="sec reveal">Four things you can charge for once the unit is a world.</h2>
+    <p class="sec-lede reveal">
+      This section is for people building <em>on</em> the system rather than buying it. Each of these is a line
+      item that is hard to bill for when you ship a repository, and straightforward when you ship a world.
+    </p>
+    <div class="scroll-x reveal" style="margin-top:20px">
+      <table class="tbl">
+        <thead><tr><th>Line item</th><th>Why a repo makes it hard</th><th>Why a world makes it billable</th></tr></thead>
+        <tbody>
+          <tr><td class="nm">A per-customer environment</td><td>Every one is a bespoke reconstitution and the labour is invisible until it breaks.</td><td>A fork. The bulk deduplicates; you carry the 0.21% that is actually theirs.</td></tr>
+          <tr><td class="nm">Restore-to-a-known-good</td><td>You can restore data or redeploy code, but not the machine as it was &mdash; so you sell &ldquo;best effort&rdquo;.</td><td>The known-good state <em>is</em> a stored artifact, so the promise is checkable and can carry an SLA.</td></tr>
+          <tr><td class="nm">Audit and reproduction</td><td>Reproducing last quarter means rebuilding it and arguing the rebuild is faithful.</td><td>Restore the world version. Nothing is reconstructed, so nothing has to be argued.</td></tr>
+          <tr><td class="nm">Try-before-you-change</td><td>Staging is an approximation of production, which is why it fails to predict production.</td><td>Fork the world, make the change, compare, discard. The fork is production, minus the consequences.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="honest reveal" style="margin-top:24px">
+      <b>What none of this includes: a customer count.</b> No revenue figure, no logo wall, no case study appears
+      on this page, because there is not one yet that could be published honestly. These four are arguments from
+      the properties of the unit, and they should be read as arguments &mdash; the section below is how you would
+      go about breaking them.
+    </div>
+  </div>
+</section>
+
+<!-- ============ 07 ============ -->
+<section id="falsify">
+  <div class="wrap">
+    <p class="kicker">07 &middot; The ending this page has to have</p>
+    <h2 class="sec reveal">Here is precisely how to prove us wrong.</h2>
+    <p class="sec-lede reveal">
+      Every masterclass on this site ends by handing you the thing that would break it. A commercial page has
+      more reason to do this than a technical one, not less.
+    </p>
+    <div class="fals-scroll reveal">
+      <table class="fals">
+        <thead><tr><th>Claim</th><th>Status</th><th>How to check it</th><th>What kills it</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="claim">The calculator reproduces the published tier arithmetic</td>
+            <td><span class="st running">arithmetic</span></td>
+            <td>&sect;04 &mdash; set 10&nbsp;TB / 65% margin</td>
+            <td class="kill">COGS $153.45, price <b>$438.43</b>. $236 is the pre-correction value and implies a 35% margin, not 65%. If the slider disagrees with <code>price = COGS / (1 &minus; margin)</code>, the page is wrong.</td>
+          </tr>
+          <tr>
+            <td class="claim">The semantic layer is 0.21% of a 100&nbsp;GB world <em>at its ceiling</em></td>
+            <td><span class="st running">measured</span></td>
+            <td>The ceiling is enforced, not observed &mdash; the figure is what the bound permits, not an average of real worlds</td>
+            <td class="kill">A real deployed world whose semantic layer exceeds the enforced ceiling, or a demonstration that the ceiling is not actually enforced. Either one collapses the margin argument in &sect;03.</td>
+          </tr>
+          <tr>
+            <td class="claim">Two of six shipping shapes are better served by a repo</td>
+            <td><span class="st specified">judgement</span></td>
+            <td>&sect;02 &mdash; the boundary table</td>
+            <td class="kill">Argue a third row the other way, or argue that one of the four &ldquo;world better&rdquo; rows is a platform problem already solved by managed services. This is the softest table on the page.</td>
+          </tr>
+          <tr>
+            <td class="claim">Four billable line items follow from the unit</td>
+            <td><span class="st open">argued, not evidenced</span></td>
+            <td>&sect;06</td>
+            <td class="kill"><b>No customer is running any of these yet.</b> These are arguments from properties, and a single deployment where forking a world turned out to cost the same as rebuilding an environment would end the section.</td>
+          </tr>
+          <tr>
+            <td class="claim">The hosted tier wins on merit, not lock-in</td>
+            <td><span class="st specified">a position, not a measurement</span></td>
+            <td>&sect;05 &mdash; run a world entirely locally</td>
+            <td class="kill">Find a capability that exists only in the hosted tier and is required to open, restore or fork your own world. If one exists, the local tier is a trial and this page is marketing.</td>
+          </tr>
+          <tr>
+            <td class="claim">No prices appear on this page</td>
+            <td><span class="st running">structural</span></td>
+            <td><code>grep -c '\$' world-economics-masterclass.html</code> &mdash; the only dollar figures are in &sect;04's published arithmetic and the falsification row above</td>
+            <td class="kill">A tier price hard-coded anywhere in this file. It would be a second source of truth against the pricing page, which is the drift class this site builds gates against.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="sec-lede reveal" style="margin-top:24px">
+      <strong>What this page deliberately no longer contains.</strong> It replaces an earlier masterclass which
+      spent two of its seven sections on an internal vocabulary correction and an unresolved architecture
+      question. Both are real and both are still published &mdash; on
+      <a href="/factory" style="color:var(--amber-2)">the factory floor</a>, where a defect register belongs.
+      A curriculum page is not a defect register, and the earlier version confused a reader's first encounter
+      with the idea for a status meeting about it.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><strong style="color:var(--ink)">[&amp;] World Economics</strong> &mdash; a masterclass in the form of a single page.</div>
+    <a href="#top">Back to top &uarr;</a>
+    <div class="note">
+      &sect;04 is arithmetic with published formulas, and is the only section containing figures. Sizes and ratios
+      are measured values carried from the project's own size study, including the corrections that study records
+      against itself. <b>No tier price is stated on this page</b> &mdash; those live at
+      <a href="https://cloud.computedriven.com/pricing">cloud.computedriven.com/pricing</a>, which is
+      authoritative if the two ever disagree. Status vocabulary:
+      <code>measured &middot; arithmetic &middot; judgement &middot; argued &middot; structural</code>.
+    </div>
+    <div class="srcs">
+      <strong style="color:var(--ink-dim)">Related.</strong>
+      <a href="/ai-factories-masterclass">AI Factories</a> &mdash; where Worldware is introduced as a category &middot;
+      <a href="/continuous-verification-masterclass">Continuous Verification</a> &middot;
+      <a href="/capability-composition-masterclass">Capability Composition</a> &middot;
+      <a href="/agentic-engineering-masterclass">Agentic Engineering</a> &middot;
+      <a href="https://cloud.computedriven.com">[World] Cloud</a> &middot;
+      <a href="https://computedriven.com">ComputeDriven</a> &mdash; how you drive a world &middot;
+      <a href="/factory">The factory floor</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var bar = document.getElementById('progress');
+  function onScroll(){ var h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (h>0 ? (window.scrollY/h)*100 : 0) + '%'; }
+  window.addEventListener('scroll', onScroll, {passive:true}); onScroll();
+  var els = document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)){ els.forEach(function(e){e.classList.add('in');}); return; }
+  var io = new IntersectionObserver(function(en){ en.forEach(function(e){
+    if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }); },
+    {threshold:.1, rootMargin:'0px 0px -6% 0px'});
+  els.forEach(function(e){ io.observe(e); });
+})();
+
+/* §04 — world sizing. $0.015/GB-mo, first 10 GB free. price = COGS / (1 - margin). */
+(function(){
+  var $=function(i){return document.getElementById(i)};
+  if(!$('w-sz')) return;
+  var TIERS = [
+    {label:'10 GB',  gb:10},
+    {label:'100 GB', gb:100},
+    {label:'500 GB', gb:500},
+    {label:'1 TB',   gb:1024},
+    {label:'2 TB',   gb:2048},
+    {label:'10 TB',  gb:10240}
+  ];
+  var RATE = 0.015, FREE = 10;
+  var WRL_CEIL_GB = 212.70 / 1024;   // the enforced ceiling of the semantic layer, in GB
+
+  function render(){
+    var t = TIERS[+$('w-sz').value];
+    var m = +$('w-mg').value / 100;
+    var billable = Math.max(0, t.gb - FREE);
+    var cogs = billable * RATE;
+    var price = cogs / (1 - m);
+    var share = WRL_CEIL_GB / t.gb * 100;
+
+    $('lab-sz').textContent = t.label;
+    $('lab-mg').textContent = (m*100).toFixed(0) + '%';
+    $('w-cogs').textContent  = '$' + cogs.toFixed(2);
+    $('w-price').textContent = cogs === 0 ? 'free' : '$' + price.toFixed(2);
+    $('w-pricen').textContent = cogs === 0 ? 'nothing billable below 10 GB' : 'per month, at ' + (m*100).toFixed(0) + '% margin';
+    $('w-share').textContent = share < 0.01 ? '<0.01%' : share.toFixed(2) + '%';
+
+    var note;
+    if(cogs === 0){
+      note = '<b>The free tier is genuinely free.</b> The first ' + FREE + ' GB are not billable, so a 10 GB world '
+           + 'costs nothing to store and a free plan is not a subsidy. <span class="warn">The semantic layer at its '
+           + 'ceiling is ' + share.toFixed(2) + '% of it</span> — and that layer is the differentiated part.';
+    } else {
+      note = '<b>' + t.label + '.</b> ' + billable.toLocaleString('en-US') + ' billable GB × $' + RATE.toFixed(3)
+           + ' = <b>$' + cogs.toFixed(2) + '</b>/month. At ' + (m*100).toFixed(0) + '% margin the price is '
+           + '<b>$' + price.toFixed(2) + '</b>. '
+           + '<span class="warn">The WRL graph at its enforced ceiling is ' + (share < 0.01 ? 'under 0.01%' : share.toFixed(2) + '%') + ' of the stored bytes</span> — '
+           + 'the provenance, the tracks and the causal history ride along inside a price set by the bulk.';
+    }
+    $('w-note').innerHTML = note;
+  }
+  ['w-sz','w-mg'].forEach(function(id){ $(id).addEventListener('input', render); });
+  render();
+})();
+</script>
+</body>
+</html>

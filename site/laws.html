@@ -6,7 +6,7 @@
         <title>The laws — box-and-box conformance spec</title>
         <meta
             name="description"
-            content="The 118 property-tested laws that define box-and-box. Two conformant runtimes in any language must agree on every one. Pass the laws, you're conformant."
+            content="The 210 property-tested laws that define box-and-box. Two conformant runtimes in any language must agree on every one. Pass the laws, you're conformant."
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -360,6 +360,30 @@
             .law[open] .ca {
                 transform: rotate(90deg);
             }
+            .law .lno {
+                color: var(--red);
+                font-family: var(--mono);
+                font-size: 13.5px;
+                text-align: right;
+                white-space: nowrap;
+            }
+            details.law.open-gap > summary {
+                background: rgba(224, 96, 79, 0.06);
+                border-left: 2px solid var(--red);
+            }
+            details.law.open-gap .lid {
+                color: var(--red);
+            }
+            .cex {
+                font-family: var(--mono);
+                font-size: 12.5px;
+                color: var(--red);
+                background: rgba(224, 96, 79, 0.07);
+                border-radius: 6px;
+                padding: 9px 12px;
+                margin-top: 8px;
+                overflow-x: auto;
+            }
             .law .lok {
                 color: var(--teal);
                 font-family: var(--mono);
@@ -536,16 +560,20 @@
         ></amp-nav>
         <nav>
             <div class="wrap">
-                <a class="brand" href="index.html#top"
+                <a class="brand" href="/"
                     >[<b>&amp;</b>] AMPERSAND BOX</a
                 >
+                <!-- Retargeted 2026-08-22. These pointed at index.html#kernel, #bridge, #aios
+                     and #ecosystem, all of which stopped existing when the homepage was
+                     reframed around the factory — four dead anchors on the conformance page.
+                     Also dropped the .html form, which Pages answers with a 308. -->
                 <div class="links">
-                    <a href="index.html#kernel">Kernel</a>
-                    <a href="index.html#bridge">The bridge</a>
-                    <a href="index.html#aios">AIOS</a>
-                    <a href="laws.html" style="color: var(--ink)">Laws</a>
-                    <a href="index.html#ecosystem">Ecosystem</a>
-                    <a class="navcta" href="index.html#install"
+                    <a href="/#constitution">The constitution</a>
+                    <a href="/#compose">The join</a>
+                    <a href="/factory">The floor</a>
+                    <a href="/laws" style="color: var(--ink)">Laws</a>
+                    <a href="/#produced">Portfolio</a>
+                    <a class="navcta" href="/#install"
                         >npm i -g box-and-box</a
                     >
                 </div>
@@ -561,14 +589,14 @@
                 >
                     Conformance · the laws are the spec
                 </p>
-                <h1>118 laws.<br />Every one a property test.</h1>
+                <h1>210 laws.<br />Every one a property test.</h1>
                 <p class="lead">
                     <b>The verdict is the contract.</b> box-and-box isn’t
                     defined by an implementation — it’s defined by these laws:
                     associativity, the annihilation of a veto, the precedence of
                     the bridge, the un-weakenability of the entrenched core.
                     Each is checked against 2000 random cases on every run. Two
-                    hosts, in <em>any</em> language, must agree on all 118. Pass
+                    hosts, in <em>any</em> language, must agree on all 143. Pass
                     them, and you’re conformant — the way an implementation is
                     POSIX because it passes the suite, not because it says so.
                     <b>Click any law</b> to see its formal property and what it
@@ -581,7 +609,7 @@
                         <div class="cap">modal subsystems</div>
                     </div>
                     <div class="stat">
-                        <div class="num">118</div>
+                        <div class="num">210</div>
                         <div class="cap">property-tested laws</div>
                     </div>
                     <div class="stat">
@@ -611,15 +639,15 @@ Priority    (H1–H13): <span class="ok">13/13 pass</span>
 The bridge  (B1–B3):  <span class="ok">3/3 pass</span>
 Permissions (D1–D9):  <span class="ok">9/9 pass</span>   · composition (DB1–DB3): 3/3
 Time        (T1–T8):  <span class="ok">8/8 pass</span>   · composition (TB1–TB3): 3/3
-Economy     (C1–C8):  <span class="ok">8/8 pass</span>   · composition (CB1–CB3): 3/3
+Economy     (C1–C11): <span class="ok">11/11 pass</span> · composition (CB1–CB6): 6/6
 Knowledge   (E1–E8):  <span class="ok">8/8 pass</span>   · composition (EB1–EB3): 3/3
 Coordination(S1–S8):  <span class="ok">8/8 pass</span>   · composition (SB1–SB3): 3/3
 Self-amend  (R1–R8):  <span class="ok">8/8 pass</span>   · composition (RB1–RB3): 3/3
 Evolution   (EV1–EV6):<span class="ok">6/6 pass</span>   · join: reflexive × axiological × resource
 Compose/CC2 (CA·CP·CX):<span class="ok">15/15 pass</span> · &amp; combine · |&gt; pipeline · ⊗ cross · fail-closed
-                      <span class="dim">(14 suite + 1 anchor: a brick of bricks is a brick)</span>
+                      <span class="dim">(100 suite + 1 anchor: a brick of bricks is a brick)</span>
 ──────────────────────────────
-<span class="ok">✓ all 118 enforced laws hold.</span>
+<span class="ok">✓ all 210 enforced laws hold.</span>
 <span class="dim">· 3 declared-open gaps (CP5/CP6/CP7, the Value.pi carrier) print FALSIFIED by design.</span></pre>
                 </div>
             </div>
@@ -1901,7 +1929,7 @@ Compose/CC2 (CA·CP·CX):<span class="ok">15/15 pass</span> · &amp; combine · 
                 <div class="rhead">
                     <div>
                         <div class="rop">Economy</div>
-                        <div class="rmodal">resource · 11 laws</div>
+                        <div class="rmodal">resource · 17 laws</div>
                     </div>
                     <p class="rgloss">
                         a closed, double-entry budget; affine use; and pricing
@@ -2089,7 +2117,99 @@ Compose/CC2 (CA·CP·CX):<span class="ok">15/15 pass</span> · &amp; combine · 
                             </div>
                         </div>
                     </details>
-                    <div class="brtag">composition (CB1–CB3)</div>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">C9</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>irreversible sink is
+                                absorbing — sink monotone, allocation of unspent
+                                budget still feasible</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >kind[res]='irreversible' ⟹ sink(res)
+                                    non-decreasing ∧ transfer(SINK → ·) =
+                                    INFEASIBLE</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Some
+                                resources cannot be refunded. Tokens can;
+                                information leaked about a holdout cannot. This
+                                rung metered both on the same ledger until a
+                                spend was found to be reversible with Σ still
+                                conserved and no balance negative — so no
+                                existing law objected. The narrowing matters:
+                                moving previously-<em>unspent</em> budget out of
+                                the treasury is still permitted, because
+                                allocating the rest of a declared cap is
+                                budgeting, not un-leaking.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">C10</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>a declared cap bounds
+                                cumulative consumption of an irreversible
+                                resource</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>sink(res) ≤ cap[res], always</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The bound
+                                is on what has been spent in total, not on what
+                                any account happens to hold. An account rich
+                                enough to afford the next query is still refused
+                                once the cumulative total would cross the cap —
+                                which is the only reading under which a privacy
+                                or holdout budget means anything.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">C11</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>the authority fields
+                                (kind, cap) are frozen — a declared cap cannot
+                                be rewritten</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >kind and cap are frozen at construction and
+                                    on every clone; writing one throws</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>C10 said
+                                &ldquo;a declared, <em>immutable</em> cap&rdquo;
+                                and the immutability was a comment:
+                                <code>L.cap.hb = 100</code> walked past C10 and
+                                <code>L.kind.hb = 'depletable'</code> walked
+                                past C9. The two fields that decide what the
+                                rules <em>are</em> are now sealed, and the seal
+                                survives cloning. Balances are deliberately
+                                <em>not</em> sealed and that boundary is
+                                declared rather than enforced — a Ledger is a
+                                value, not a capability handle, and making
+                                balances unforgeable needs an opaque
+                                write-mediated object.
+                            </div>
+                        </div>
+                    </details>
+                    <div class="brtag">composition (CB1–CB6)</div>
                     <details class="law br">
                         <summary>
                             <span class="lid">CB1</span
@@ -2155,6 +2275,100 @@ Compose/CC2 (CA·CP·CX):<span class="ok">15/15 pass</span> · &amp; combine · 
                                 only pays to repair when the repair is worth its
                                 price and the budget can cover it — and it
                                 actually deducts the cost.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law br">
+                        <summary>
+                            <span class="lid">CB4</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>irreversible
+                                exhaustion is not recoverable from the sink</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >exhausted ∧ irreversible ⟹ no transfer out
+                                    of SINK re-opens the CB1 gate</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>CB1 closes
+                                the gate at exhaustion; this says the gate stays
+                                closed against the one move that used to re-open
+                                it. It does not say the gate can never re-open —
+                                allocating unspent treasury budget still does,
+                                and should. The distinction is between spending
+                                the rest of your budget and recovering what you
+                                already spent.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law br">
+                        <summary>
+                            <span class="lid">CB5</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>the alethic gate
+                                agrees with the primitive</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >feasible(L, acct, cost) ⟺ charge(L, acct,
+                                    cost) ≠ INFEASIBLE</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>C10 was
+                                added to the spend primitive and not to the
+                                gate, so with a cap of 6, a sink at 5 and an
+                                account holding 10, <code>feasible</code> said
+                                GO on a spend <code>transfer</code> was already
+                                committed to refusing. C1, C2, C9 and C10 all
+                                still held — no law compared them. A decision
+                                layer answering yes over a primitive answering
+                                no is worse than either answer alone, because
+                                the caller has committed by the time it finds
+                                out. Both now consult one admissibility
+                                predicate, and this law is what keeps them
+                                pointed at it.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law br">
+                        <summary>
+                            <span class="lid">CB6</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>a preflighted path
+                                never returns INFEASIBLE dressed as a
+                                ledger</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code
+                                    >use(·).L ≠ INFEASIBLE ∧ repair(·).L ≠
+                                    INFEASIBLE</code
+                                >
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Both
+                                <code>use</code> and <code>repair</code> ran
+                                their own affordability check and then called
+                                <code>spend</code>, so an irreversible resource
+                                at its cap produced
+                                <code>{ok: true, L: INFEASIBLE}</code> — a
+                                Symbol handed to a caller expecting a ledger.
+                                The general form is the lesson: a new invariant
+                                is not finished when the primitive that states
+                                it enforces it. Every other path deciding the
+                                same question has to be found and pointed at the
+                                same predicate.
                             </div>
                         </div>
                     </details>
@@ -3452,6 +3666,1726 @@ Compose/CC2 (CA·CP·CX):<span class="ok">15/15 pass</span> · &amp; combine · 
                             </div>
                         </div>
                     </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CX7</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>a malformed semantic value cannot normalize to LIVE — unknown floors to <span class="zero">0̲</span>, not to V0</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>unreadable(v) ⇒ isZero(Brick(value=v))</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The contract half of this family has a semantic twin, and <code>CX6</code> could not see it.
+                        A malformed value — a string, a number, an array, an error sentinel — floored to
+                        <code>V0()</code>, the <b>benign identity value</b>: feasible, acyclic, no conflict. So
+                        <em>&quot;I cannot interpret this value&quot;</em> became <em>&quot;the harmless
+                        value&quot;</em> and stayed LIVE. <code>CX6</code> asks for
+                        &quot;<span class="zero">0̲</span> or a valid Brick, never an exception&quot;, and
+                        <code>V0()</code> is a valid Brick — so <b>a fuzzer aimed at crashes was fully satisfied
+                        by the laundering</b>. Directive 1 says FAIL-CLOSED and the code had read it as
+                        DO-NOT-THROW; not throwing is necessary and is not sufficient. A <em>partial</em> object
+                        is still fine — its fields are readable and the rest take documented defaults. The line
+                        is between &quot;incomplete&quot; and &quot;not a Value at all&quot;.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">AC-COMM</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>&amp;'s OWN floor is commutative (the anchor: a brick of bricks is a brick)</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>isZero(a&amp;b) === isZero(b&amp;a)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>This is the law CP7 is measured against, and <b>it passes.</b> The combine operator's own floor really is order-independent — which is what makes CP7's failure a defect in the downstream pipeline floor rather than in <code>&amp;</code> itself. Listed here because the page counted the anchor in its total without ever showing it.
+                            </div>
+                        </div>
+                    </details>
+
+                    <div style="margin-top:38px;padding-top:26px;border-top:1px solid var(--line)">
+                        <h3 style="font-size:22px;margin:0">Contract declaration — missing ≠ universal</h3>
+                        <p style="color:var(--muted);font-size:14.5px;max-width:72ch;margin:10px 0 0">
+                            Added 2026-08-22. Until that day <code>Brick()</code> defaulted an <em>absent</em> contract
+                            field to <code>'*'</code> and <code>typeMatch()</code> waved through <code>null</code> on
+                            either side, so an assembly that declared no interface at all received the most permissive
+                            one in the algebra and every hand-off passed a check with nothing left to check —
+                            <b>fail-open, in a runtime whose whole claim is that it refuses.</b> Found by outside review.
+                            <br><br>
+                            These five were written <b>against the unfixed code first</b>, and four came back red. The
+                            fifth, <code>CD2</code>, was green from the start on purpose: an explicit <code>'*'</code>
+                            must keep composing, or "missing ≠ universal" collapses into "refuse everything" and the
+                            distinction carries nothing. The identity laws survive for the same reason —
+                            <code>none()</code> and <code>idBrick()</code> <em>declare</em> the wildcard rather than
+                            being handed it by an absence.
+                        </p>
+                    </div>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CD1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>an UNDECLARED feeds_into is not a wildcard</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>isZero(undeclared |&gt; narrow)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>An interface nobody declared is
+                                <em>unknown</em>, and unknown refuses. The refusal names itself
+                                <code>contract-undeclared</code>, kept distinct from
+                                <code>contract-mismatch</code>: a mismatch is a fact about the parts, an absence
+                                is the lack of one, and an operator needs to be told which it hit.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CD2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>an EXPLICIT '*' IS a wildcard and still composes</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>!isZero(star |&gt; narrow)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The half of the distinction that has to keep
+                                working. An explicit <code>'*'</code> is a <em>claim</em> — made by a holder who can
+                                be held to it. This law is why the fix is "missing ≠ universal" rather than
+                                "refuse more".
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CD3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>&amp; does not launder undeclaredness into a declared interface</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>undeclared(a.feeds_into) ⇒ undeclared((a&amp;b).feeds_into)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Undeclaredness is <b>absorbing</b> under the
+                                contract union. Without this the fix has a hole one operator wide: a coalition
+                                containing an undeclared part would inherit its partner's declared set and make the
+                                hand-off the undeclared part could not.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CD4</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>identity is preserved DELIBERATELY, and its domain is stated</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>declared(a) ⇒ id|&gt;a ≡ a ≡ a|&gt;id &nbsp;∧&nbsp; undeclared(a) ⇒ isZero(id|&gt;a)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Both halves in one law. The fix narrows
+                                <code>CP2</code>'s domain, and a narrowing left implicit is a law nobody can check —
+                                so the narrowing is itself stated. <code>idBrick()</code> declaring <code>'*'</code>
+                                is load-bearing, not incidental.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CD6</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>&amp; does not launder a DECLARED-but-incompatible member</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>isZero(a|&gt;c) ⇒ isZero((a&amp;b)|&gt;c)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><b>Closed by a RULING, not a patch.</b>
+                                <code>&amp;</code> used to union both contract ends while <code>|&gt;</code>
+                                asked only for a non-empty intersection, so a coalition handed off on behalf of
+                                a member that could not have handed off itself — and identically on the input
+                                side. Three semantics were sound; <b>Option U</b> was ruled on outside review:
+                                <b>outputs join, inputs meet, and a hand-off is a SUBSET test</b>
+                                (<code>OUT(a) ⊆ IN(b)</code>), not an intersection. Meet-everywhere was rejected
+                                for hiding real outputs; routed hand-off was rejected as a default until a route
+                                witness exists to earn the permissiveness. This law was xfail for the few hours
+                                between opening it and the ruling landing.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CD7</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>ANY is directional; an UNBOUND var is unknown and refuses; the identity is distinguished, not var-typed</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>isZero(ANY |&gt; narrow) ∧ isZero(VAR α |&gt; narrow) ∧ id.identity = &#39;|&gt;&#39;</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>One wildcard cannot mean two things.
+                                <code>'*'</code> was doing duty as both <em>"any possible output"</em> and
+                                <em>"whatever came in, unchanged"</em>, and under intersection matching nothing
+                                ever forced the difference. The subset rule asks immediately: an <b>ANY output</b>
+                                is not safe into a narrow consumer, while a <b>VAR α passthrough</b> is. The
+                                identity is neither: it is a <b>distinguished element</b> of <code>|&gt;</code>, branded
+                                rather than typed, and short-circuited before the contract check runs.
+                                <b>This law previously required the opposite</b> — it asserted
+                                <code>!isZero(VAR α |&gt; narrow)</code>, that a free variable on an ordinary
+                                brick must compose with a narrow consumer — and went green for as long as it
+                                existed. That is not polymorphism; it is universal compatibility wearing a Greek
+                                letter, and <code>CD8</code> caught it laundering forbidden hand-offs in 11 of 64
+                                endpoint pairs. A law can encode a defect as a requirement. Contract ends are now tagged
+                                <code>undeclared | any | types | var</code>, all four serialisable, so a contract
+                                can appear in a receipt, a hash or a replayed world instead of vanishing at the
+                                JSON boundary as raw <code>undefined</code> did.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CD8</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>inserting the identity cannot change feasibility</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>zero(a|&gt;b) = zero((a|&gt;id)|&gt;b) = zero(a|&gt;(id|&gt;b))</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><b>An identity that changes what a pipeline may do is not an identity.</b> Found on outside
+                        review 2026-08-22. <code>CD4</code> proved <code>id</code> preserved the <em>value</em>
+                        and never asked whether it preserved <em>feasibility</em> — and it did not:
+                        <code>x</code> emitting <code>U</code> into <code>d</code> accepting <code>T</code> is
+                        correctly refused, while <code>x |&gt; id |&gt; d</code> composed. Measured at
+                        <b>11 of 64</b> endpoint pairs where a direct <span class="zero">0̲</span> became LIVE.
+                        The cause was <code>α</code> implemented as an endpoint matcher rather than a binding.
+                        The fix is not a stricter matcher — a var OUTPUT is genuinely unknown until bound, so
+                        making it directional would break the identity law instead of the soundness. Instead
+                        <code>id</code> became a <b>distinguished element</b>: <code>a |&gt; ID = a</code> by
+                        construction, returning the operand itself, so it never reaches the check.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CD9</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>&amp; projects the same contract either way round</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>contract(a &amp; b) = contract(b &amp; a)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><code>&amp;</code> is this algebra&#39;s parallel operator and is proved commutative — but its
+                        projected <em>interface</em> was not. <code>meetIn</code> returned &quot;the other
+                        operand&quot; when it met a variable, so two differently named free variables gave
+                        <code>(a&amp;b)</code> accepting <code>β</code> and <code>(b&amp;a)</code> accepting
+                        <code>α</code>. No verdict differed at the time, because a var matched everything
+                        anyway — <b>a latent bug held harmless by a second bug</b>, which is exactly why
+                        nothing caught it. Both operators now treat an unbound var as absorbing, so the
+                        projection is order-independent by construction rather than by luck.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CD10</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>a malformed contract end normalizes to UNDECLARED, never to a declared one</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>malformed(t) ⇒ kind(norm(t)) = &#39;undeclared&#39;</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><code>norm()</code> used to <em>filter</em>: it took input it could not read, dropped the parts
+                        it did not understand, and returned the residue as a well-formed <b>declaration</b>.
+                        For an output endpoint that residue was usually the empty set — and under a subset rule
+                        <code>∅ ⊆ X</code> holds for every <code>X</code>, so <b>the least readable input in the
+                        algebra produced the most permissive endpoint in it</b>.
+                        <code>{kind:&#39;types&#39;, values:[1,2,3]}</code>, a bare <code>42</code>,
+                        <code>[null]</code> and <code>{}</code> all composed into a narrow consumer. Only an
+                        <em>explicitly supplied</em> empty set still means &quot;emits nothing&quot;, because
+                        that is a claim somebody made.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CD11</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>normalization cannot widen admissibility</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>malformed(t) ⇒ ∀c. isZero(brick(feeds_into=t) |&gt; c)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The behavioural half of <code>CD10</code>, stated separately because <code>CD10</code> could be
+                        satisfied by a normaliser that returned some other declared-but-narrow endpoint. What has
+                        to hold is the <b>admissibility bound</b>: whatever a malformed end becomes, it may not
+                        compose with a consumer a correct reading would have refused. This is the general
+                        principle behind all four of these laws —
+                        <b>unknown or malformed evidence may never be canonicalised into a stronger claim than
+                        the input justified</b> — and it is the same meta-error as the original
+                        <code>missing → *</code> that <code>CD1</code>–<code>CD3</code> closed. The carrier
+                        changed; the mistake moved.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CD12</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>identity privilege is UNFORGEABLE: no ordinary brick acquires it by declaring a field</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>ordinary(x) ⇒ (a |&gt; x) ≠ a ∧ (x |&gt; b) ≠ b</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><b>A defect introduced BY the previous fix, not one that survived it.</b> Making the identity a
+    distinguished element was right; implementing the distinction as an ordinary
+    <code>identity:&#39;|&gt;&#39;</code> field on <code>Brick()</code> was not, because a field is data and
+    data is written by whoever holds the pen. An <em>uncertified</em> brick with a contract matching
+    nothing declared the privilege and both operators short-circuited past every floor they have —
+    and it survived a JSON round-trip, the boundary this carrier exists to cross. The old code
+    compared the NAME <code>&#39;id&#39;</code> and a comment correctly called that forgeable, then replaced
+    a forgeable name with a forgeable FIELD: the same thing wearing a schema.
+    <b>Serialisability and authenticity are different requirements.</b> The identities are now
+    singleton TERMS recognised by reference, serialised as a bare tag
+    (<code>{&quot;kind&quot;:&quot;pipe_identity&quot;}</code>) carrying nothing else, and
+    <code>decodeTerm()</code> is the only door from data back to the privilege — a tag with a payload
+    decodes to an ordinary brick.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">VX1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>a present-but-invalid scalar floors the brick to 0̲; an ABSENT one still defaults</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>invalid(v[k]) ⇒ isZero(Brick(value=v)) &nbsp;·&nbsp; absent(k) ⇒ default</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The answer to a question the previous round asked out loud: <em>is partial-with-defaults itself a
+     laundering route?</em> Absence is fine; <b>present-but-invalid was not</b>.
+     <code>normValue()</code> drew its line at &quot;is this an object at all&quot;, so a brick could
+     carry <code>{beta:&#39;high&#39;}</code> — present, explicitly asserted, not a number — stay LIVE, and
+     hand <code>beta = NaN</code> downstream where the floor never fired because no
+     <code>beta_min</code> had been required. <b>A default is justified by ABSENCE and by nothing
+     else.</b> Spreading <code>...v</code> over defaults did the opposite: the default was there to
+     fill a hole and instead sat quietly beside a wrong answer.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">VX2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>pi is a declared PHASE or null — never an uninterpretable string</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>v.pi ∈ PHASES ∪ {null}</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><code>{pi:&#39;not-a-phase&#39;}</code> stayed LIVE and could leave a composite carrying a phase
+     <code>phaseIdx</code> has no index for — which is the input the <code>|&gt;</code> phase floor
+     reads. A carrier the floor cannot interpret is a floor that cannot fire.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">VX3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>beta is finite and in [0,1]</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>0 ≤ v.beta ≤ 1 ∧ finite(v.beta)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Persistence is a <code>[0,1]</code> quantity under <code>min</code>. <code>NaN</code>,
+     <code>±Infinity</code>, <code>-0.1</code>, <code>1.1</code> and the string <code>&#39;0.5&#39;</code>
+     all passed. <code>Math.min(NaN, x)</code> is <code>NaN</code>, so one bad operand poisons every
+     composite it touches without any of them being refused.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">VX4</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>kappa and denyDefault are real booleans, not truthy stand-ins</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>typeof v.kappa = &#39;boolean&#39; ∧ typeof v.denyDefault = &#39;boolean&#39;</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><code>kappa:&#39;false&#39;</code> is a non-empty string and therefore truthy — it asserts the
+     <em>opposite</em> of what it appears to say, and <code>κ</code> is the cyclicity flag that routes
+     to deliberation. <code>denyDefault</code> is the deny-by-default switch. Neither may be
+     satisfied by coercion.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">VX5</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>normalization never manufactures NaN or Infinity in a LIVE brick</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>live(b) ⇒ finite(b.value.n) ∧ finite(b.value.beta)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The OUTCOME form of VX1/VX3, stated separately because the original defect was not the bad input
+     — it was <code>NaN</code> reaching a floor with no predicate that could test it. Whatever
+     survives normalisation has to be arithmetically usable, and it has to stay so under
+     composition.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CD13</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>the identity does not bypass canonicalization</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>isZero(Brick(x)) ⇒ isZero(x |&gt; ID) ∧ isZero(ID |&gt; x) ∧ isZero(x &amp; &amp;none)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Third round on one boundary, and the previous fix created it. <code>CD12</code> stopped ordinary
+    data from BEING the identity and left open what the real identity does to an operand that was
+    never canonicalised. <code>ensure()</code> accepted anything <em>brick-shaped</em> — a shape test,
+    not a validity test — so a raw object with <code>value.beta = &#39;high&#39;</code> passed through and
+    the identity handed it straight back: <code>Brick(raw)</code> was <span class="zero">0̲</span> and
+    <code>raw |&gt; ID</code> was LIVE. Mutating a legitimate brick after construction did the same.
+    <b>The root cause was an identity law stated too strongly.</b> <code>a |&gt; ID === a</code> —
+    return the very same object — is a JavaScript reference property, not the algebra&#39;s; the law is
+    <code>canon(a |&gt; ID) ≡ canon(a)</code>, and insisting on the reference form is what created a
+    privileged path around the normaliser. Operands are now canonicalised at ingress, and the zero
+    test runs <em>after</em> that rather than before — a mutated brick&#39;s stale
+    <code>annihilated</code> flag used to pass the check that ran first.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CD14</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>identity terms are transitively immutable</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>∀ o reachable from ID or &amp;none · Object.isFrozen(o)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Fourth round on the identity boundary, and this one attacked the exemption the third round created. <code>ensure()</code> returns the units by reference and justified it — <em>&#39;they are provably unchanged&#39;</em> — but nobody had done the proof. <code>Object.freeze</code> is <b>shallow</b>: it blocked replacing <code>id.cost</code> and permitted writing <em>through</em> it, permanently and process-wide. A caller could push onto <code>&amp;none.value.authority</code> and collect the result under the other operator. The deep freeze also caught a bug in itself — the first draft used <code>isFrozen</code> as its visited marker, so it stopped at <code>TYPES()</code>, which is frozen with a live <code>values</code> array.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CD15</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>a unit has algebraic meaning only under its own operator</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>composeAnd(ID, x) = composePipe(&amp;none, x) = 0̲</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The units were half distinguished-term and half privileged brick: recognised under their own operator, silently demoted to an <em>ordinary brick</em> under the other — carrying their Value, their holder and above all their free certificate into a composite. Deep-freezing alone removes today&#39;s payload and leaves the route open; the route is the defect. This is standard rather than a local invention: a <b>duoidal category</b> carries two monoidal structures with <em>distinct</em> units, related only by an explicitly declared structure map. Absent that map there is nothing to assume — <em>missing ≠ universal</em>, at the term level. The type carrier could never have enforced it: the <code>&amp;none</code> output type is the empty set, and the empty set is a subset of everything, so the hand-off check passes vacuously.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CD16</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>no unit contributes value, authority or cost under the other operator</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>cost(x ⊕ foreign-unit).certified ≠ true ∧ authority(x ⊕ foreign-unit) = ∅</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The behavioural half, stated separately because CD15 could be satisfied by a runtime that returns <span class="zero">0̲</span> while still leaking the unit&#39;s privilege into the zero it returns. The units are the only terms in the algebra holding a costless <em>certified</em> certificate they never earned by analysis. That privilege may not reach a composite by the wrong door.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CD17</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>a counterfeit unit refuses and names the transport fault</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>kind(x) ∈ {pipe_identity, and_identity} ∧ x ≠ singleton ⇒ 0̲</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><code>decodeTerm(encodeTerm(t)) === t</code> holds, but nothing stopped a caller writing <code>postMessage(idBrick())</code> instead of <code>postMessage(encodeTerm(idBrick()))</code>. The copy that lands on the far side carries the canonical <em>tag</em> and not the reference. It must not compose as an ordinary brick — it arrives holding a free certificate — and it must not fail silently either: the defect is at the call site and the refusal says so. Measured across a real <code>worker_threads</code> realm boundary, not a same-realm clone.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">QX1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>a malformed or absent q cannot become Q0 on an ordinary brick</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>malformed(q) ∨ absent(q) ⇒ isZero(Brick(…))</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><b>The same meta-error for the third time, on a third carrier.</b> missing contract → <code>ANY</code>
+     (CD1–CD5); malformed Value → <code>V0()</code> (CX7, VX1–VX5); malformed <code>q</code> →
+     <code>Q0()</code>, here. <code>q:&#39;nope&#39;</code>, <code>q:42</code>, <code>q:[]</code> and a wholly
+     absent <code>q</code> all became <code>{confidence:1, cost:0, latency:0}</code> — so unreadable
+     measurement evidence read as <b>perfect confidence, zero cost, zero latency</b>, the most
+     favourable point in the lattice, handed out for saying nothing.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">QX2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>confidence is finite and in [0,1]</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>0 ≤ q.confidence ≤ 1 ∧ finite</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><code>confidence:&#39;high&#39;</code> composed to <code>NaN</code>; <code>confidence:2</code> stayed
+     LIVE. Confidence is the ⊗ component of the CC2 semiring — it multiplies down a pipeline, so one
+     out-of-domain operand contaminates every composite downstream of it.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">QX3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>cost is finite and ≥ 0</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>q.cost ≥ 0 ∧ finite</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The sharpest single symptom in this family: <code>cost:&#39;free&#39;</code> composed to the
+     <em>string</em> <code>&#39;free0&#39;</code>, because <code>+</code> on a string concatenates. The
+     runtime and the public page both describe cost as adding; nothing checked that the operands
+     were numbers.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">QX4</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>latency is finite and ≥ 0</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>q.latency ≥ 0 ∧ finite</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><code>latency:&#39;fast&#39;</code> composed to <code>NaN</code> under <code>max</code>, and
+     <code>latency:-5</code> passed unchallenged. Found again independently by the mutation
+     dimension of the metamorphic gate, which is how the ordering defect behind CD13 surfaced.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">QX5</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>only an identity TERM may carry Q0 without measurement evidence</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>q ≡ Q0 ⇒ term ∈ {id, &amp;none}</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><b>A neutral element of the algebra is not the default interpretation of missing evidence.</b>
+     <code>Q0</code> is the true identity of the CC2 semiring — 1 for a product, 0 for a sum, 0 for a
+     max — and it is the correct <em>measured</em> quantity for <code>id</code> and <code>&amp;none</code>,
+     which cost nothing. It is wrong for an ordinary brick that merely arrived without measurements,
+     because there every component is a maximal CLAIM rather than a neutral value. The identities
+     keep it by supplying it explicitly and passing the same validation as everyone else — they are
+     not exempt, they qualify.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">QX6</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>utility is a finite number</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>finite(utility) ∨ absent(utility)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><code>typeof NaN === &#39;number&#39;</code>, so a NaN utility passed every check and silently poisoned
+     any ranking it entered. An <em>absent</em> utility still defaults to 0 — the additive identity and
+     the least favourable value, so defaulting it claims nothing — while an explicit
+     <code>null</code> is an assertion, and utility is a number.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">AD1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>the carrier is closed</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>admitted(a) ∧ admitted(b) ⇒ isZero(a ⊕ b) ∨ admitted(a ⊕ b)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><code>LIVE</code> was doing duty for two different things — <em>structurally valid</em> (the constructor could read every field) and <em>admitted</em> (the shared floor lets it through). An uncertified brick is structurally perfect and unadmitted. Stated as closure it stops being a matter of taste: the anchor law is <em>a brick of bricks is a brick</em>, and <code>u |&gt; ID</code> took a non-carrier element and returned a non-carrier element out of a composition. The algebra was not closed.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">AD2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>the identity preserves an admitted element</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>admitted(a) ⇒ value(a ⊕ e) = value(a) ∧ contract(a ⊕ e) = contract(a) ∧ cost(a ⊕ e) = cost(a)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The identity law, restricted to the carrier. Identity laws quantify over the carrier — <code>a ⊗ e = a</code> says nothing about objects that are not elements — so restricting them costs no law and buys closure back. CD4b&#39;s genuine improvement survives intact: <em>undeclared</em> is not a floor condition, so an undeclared brick still passes through the identity unchanged and still refuses at its next real hand-off.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">AD3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>the identity does not admit an unadmitted element</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>¬admitted(x) ⇒ isZero(x ⊕ e), agreeing with isZero(x ⊕ anything)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The identity was the one operation in the algebra that applied no floor. <code>u |&gt; f</code> was <span class="zero">0̲</span> and <code>u |&gt; ID</code> returned <code>u</code>, LIVE, because the identity short-circuits before the floor — so the single route applying no floor was the element whose entire job is to change nothing. The property is <em>agreement</em>, not <em>uncertified floors</em>: whatever real composition decides about an operand, every identity route must decide the same.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">AD4</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>a declared floor requirement is enforced, not merely carried</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>requirement ∈ floor(a) ∪ floor(b) ⇒ enforced on a ⊕ b, and inherited by the composite</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><code>floor</code> had been on every brick since the first draft: stored, unioned into every composite, threaded through the whole algebra — and never once <em>read</em>. <code>floored()</code> took a requirements argument that neither operator passed. A requirement propagated but not applied is worse than an absent one: in a receipt it reads exactly like a satisfied one.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">AD5</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>an unrecognised floor token refuses</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>token ∉ recognised ⇒ 0̲</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Fail-closed means the unknown requirement is <em>unmet</em>, not <em>unnoticed</em>. A brick demanding <code>floor: [&#39;signed-by-treasury&#39;]</code> from a runtime that has never heard of it must not have the demand quietly dropped.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>certified:true is not self-authenticating</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>¬wellFormed(cert) ⇒ isZero(Brick(…))</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The cost certificate is the <b>fourth carrier</b>, and the one that never got the treatment the other three did. The constructor stored it with no validation at all, so <em>certificate</em> at this layer meant <code>an object asserting certified:true</code> — <code>{verdict:{certified:true,costClass:&#39;poly&#39;}}</code> composed LIVE, allow, free. No issuer, no subject, no analyzer, no policy.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>an admitted certificate binds its subject and may not out-permit its own verdict</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>wellFormed(c) ⇒ binds(subject, analyzer) ∧ strictness(c.policy) ≥ strictness(decisionOf(c.verdict))</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>A presented certificate must at least <em>bind what it certifies</em>. Coherence is one-directional: a certificate may state a decision <em>stricter</em> than its verdict implies — a producer with its own policy layer may escalate a poly result — and may never state a more permissive one. <code>certified</code> must also be a real boolean: <code>!!</code> made the <em>string</em> <code>&#39;false&#39;</code>, the empty array and the empty object all read as certified.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>composition never upgrades evidence</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>authenticated(a ⊕ b) ⇔ authenticated(a) ∧ authenticated(b)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Folding two facts together cannot make either better attested than it arrived. A composite of one authenticated and one merely presented certificate is <em>presented</em>.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT4</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>authentication is unforgeable by data and does not serialise</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>isAttested is WeakSet membership; ¬isAttested(clone(c)) ∧ &#39;authenticated&#39; ∉ verdict</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The honest boundary this runtime can actually hold. box-and-box has no crypto and no dependency on the producer, so it cannot verify a signature and does not pretend to — it does what it already does for the identity terms, for the same reason: <em>reference identity is the one property a caller cannot forge by writing data</em>. <b>Be precise about what this buys:</b> attestation is unforgeable by <em>data</em>, not by <em>code</em> — anything that can import the module can attest. It is a defence against the boundary that matters for WORLD, receipts and replay: a certificate arriving as JSON, over postMessage, or out of a store can never be attested, because a WeakSet brand does not survive serialisation. The status is deliberately <em>not</em> a field — a privileged status stored as data is one any caller can write.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT5</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>a certified verdict of unknown cost certifies nothing</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>certified ∧ costClass = unknown ⇒ 0̲</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><em>I certify that I do not know what this costs</em> certifies nothing, and must not clear a floor whose whole subject is bounded cost. The floor tested <code>certified === false</code> and nothing tested the class, so the one combination that names its own ignorance was the one that passed. Every real class still composes, <code>tower</code> included — <em>escalate</em> is not <em>annihilate</em>.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT6</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>composition never weakens resource policy</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>decision(a ∘ b) ≥ max(decision a, decision b, decisionOf(result))</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The composite decision was derived from <code>costClass</code> alone, so every stricter policy an operand carried was discarded on the way in: a certificate reading <em>certified, poly, ANNIHILATE</em> composed to <em>certified, poly, ALLOW</em>. That is policy laundering, and it contradicts the one-directional coherence rule the validator already enforces on a single certificate. Enforcing it per-leaf and dropping it per-composition made the rule true of every certificate and false of the algebra it was written to protect. Strictness now only accumulates, on <code>allow &lt; budget_check &lt; escalate &lt; annihilate</code>.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT7</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>an annihilate decision cannot enter the admitted carrier</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>policy.resourceDecision = annihilate ⇒ 0̲</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The floor read the verdict and never the policy, so a certificate whose own instruction was <em>do not admit this</em> was admitted and composed LIVE. <code>escalate</code> and <code>budget_check</code> deliberately do <b>not</b> floor — they are live-with-an-obligation, and the composite carries them up at full strength rather than downgrading them. The brick itself stays structurally valid and unadmitted, the same shape as <em>uncertified</em>: policy is a floor condition, not a canonicalisation one.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT8</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>an attested certificate is transitively immutable at attestation</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>attest(c) ⇒ ∀ o reachable from c · Object.isFrozen(o)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The brand attached to a mutable object reference. Attest a certificate for <code>hash-A</code>, then set <code>subject.hash = 'hash-B'</code>, and <code>isAttested</code> still said true — the certificate changed what it claimed to authenticate and the authentication survived. This is the attestation form of the shallow-frozen identity defect (CD14), one layer up. Freezing happens <em>before</em> branding, so there is no window in which an attested certificate is writable.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT9</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>attestation binds a verifier to an exact subject, and the brick must be that subject</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>verifyAndAttest(c, H) requires c.subject.hash = H;  floor authenticated requires brick.artifact.hash = c.subject.hash</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Without this the runtime established <em>this certificate object was verified</em> and never <em>verified for this thing</em>, so one attested certificate authenticated any number of unrelated bricks with different authority. &#39;Binds a subject&#39; had been a statement made entirely inside the certificate. A brick now declares what it is (<code>artifact</code>), and absence is fail-closed: a brick that claims no identity cannot satisfy an <code>authenticated</code> floor.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT10</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>a composite subject is a canonical composition identity, not a deduplicated leaf set</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>subject(a |&gt; b) = pipe(A,B) ≠ and(A,B) = subject(a &amp; b)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><code>subject(a|&gt;b)</code> and <code>subject(a&amp;b)</code> were both <code>{parts:['A','B']}</code>, and <code>A|&gt;A</code> and <code>A|&gt;A|&gt;A</code> were both <code>{parts:['A']}</code>. A cost certificate whose subject cannot tell those apart is binding a bag of participants, not a composition — and those programs need not cost the same. What the identity may normalise is decided by which equations the suite actually <b>proves</b>: <code>&amp;</code> flattens (CA1 associativity passes) but does not commute (CA2 is lattice-only; CP7 is the open counterexample) and does not dedupe (CA3 is lattice-only; cost and quantities accrue); <code>|&gt;</code> does not flatten at all, because CP5/CP6 are declared-open.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT11</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>a subject may never be empty</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>valid(subject) ⇔ isStr(kind) ∧ isStr(hash)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><code>{kind:'weave-composite', parts:[]}</code> was accepted and produced an admitted, authenticated brick — a certificate over the empty set — while the code four lines away said <em>a certificate that names no subject certifies no subject</em>. Two shapes for one obligation is how the empty one slipped through; there is now one.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT12</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>attestation is a capability, not a free export</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>createAttestationAuthority() succeeds once per module instance; isAttested stays free</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The previous round exported <code>attest(cert)</code> and said honestly that it was unforgeable by data but not by code. Once the same brand carries WORLD revisions and authority delegations, <em>any module with package access may declare a fact authenticated</em> is not a boundary at all. The authority is minted once, at bootstrap, and handed to whichever component actually verifies. <b>The limit is stated rather than implied, and the noun matters:</b> this is <em>module-instance</em>-order security, not realm — measured, two ESM instances in one realm mint two authorities with independent stores. Within one instance, code that runs before your bootstrap takes the authority instead. Reading is never a privilege, so <code>isAttested</code> remains a free export: asking whether a fact is authenticated must not require the power to make it so.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT13</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>the canonical subject encoding is injective, and subject equality is the complete subject</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>leaf [&quot;leaf&quot;,kind,hash] · pipe [&quot;pipe&quot;,L,R] · and [&quot;and&quot;,T…]</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><!-- doc-claim:frozen: this card RECORDS the retired claim and must quote it -->The previous round replaced a deduplicated leaf set with a canonical term <em>string</em> and this page claimed <b>a canonical term cannot collide</b>. It could. Leaf hashes are arbitrary strings, so they shared a namespace with the grammar meant to distinguish them: <code>subject(A |&gt; B)</code> and a leaf whose hash <em>was</em> <code>pipe(A,B)</code> were equal, and <code>unAnd()</code> parsed leaf strings as composite syntax so <code>leaf(&quot;and(A,B)&quot;) &amp; C</code> collided with <code>(A&amp;B)&amp;C</code>. Untrusted input that looks like grammar being read as grammar — the same meta-error removed elsewhere, committed in the fix for the previous one. <b>A canonical form built by concatenating untrusted strings is not canonical, it is a template.</b> The term is now structured and serialised injectively, flattening reads a structured term from a private map rather than parsing a string, and leaf identity includes <code>kind</code> — <code>{weave-ir, H}</code> and <code>{world-revision, H}</code> both entered a term as bare <code>H</code>.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT14</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>attestation alone does not authenticate a brick; attestation plus exact subject binding does</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>authenticatedFor(b) ⇔ isAttested(b.cost) ∧ sameSubject(b.artifact, b.cost.subject)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><code>isAttested(brick.cost)</code> answers <em>was this certificate object verified</em>; it does not answer <em>was it verified for this brick</em>. The runtime asked the first and branded composites on it. Two things were conflated: the authentication <b>property</b> — an objective relation between an artifact and its evidence — and the authenticated <b>floor</b>, a contextual requirement that the relation exist. The floor decides whether authentication is <em>required</em>; it must not decide what authentication <em>means</em>. The property is now computed always, and the floor merely consults it.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT15</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>an authenticated composite requires every operand authenticated for its own artifact</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>authenticated(a ∘ b) ⇔ authenticatedFor(a) ∧ authenticatedFor(b)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The laundering route. Two bricks each carrying an attested certificate bound to something <em>else</em> composed into an authenticated composite, and the operands&#39; own identities disappeared from the result: X claiming X with a certificate for A, Y claiming Y with a certificate for B, produced a LIVE authenticated composite with subject <code>pipe(A,B)</code>. Neither brick had to ask for an authenticated floor, because the branding step never consulted the binding.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT16</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>a composite artifact is derived from operand artifacts, never from the certificate</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>artifact(a ∘ b) = composeIdentity(op, a.artifact, b.artifact)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>It was <code>{...cost.subject}</code> — the evidence manufacturing the identity of the thing it was supposedly evidence <em>for</em>, which makes any misbinding self-ratifying. The principle is the one this whole layer now rests on: <b>evidence may authenticate an independently identified subject; evidence must never define the subject that makes the evidence appear valid.</b> Both identities are computed by the same rule over different inputs, so they coincide exactly when each operand&#39;s certificate was bound to its own artifact, and diverge visibly when one was not. An operand declaring no artifact yields a composite with none, rather than borrowing one.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT17</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>a canonical subject survives canonicalisation, JSON and structured clone</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>composite subject = {kind, hash, term} with hash = canonicalJSON(term), checked</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The structured term first lived in a module-private WeakMap keyed on the subject <em>object</em>, so the meaning of a subject depended on whether that exact JS object had been minted by that module instance — and <code>Brick()</code> erased it when canonicalising an artifact into a fresh <code>{kind, hash}</code>. The certificate kept its term by reference and the artifact did not. <b>A canonical identity is not canonical if reconstructing the same value erases information needed to extend that identity.</b> The term is now durable data on the subject, and a term that disagrees with the hash it ships beside is refused — so a caller may hand one in and have it understood, and cannot lie about it.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT18</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>exact binding is inductive at arbitrary depth, in every association</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>artifact(compose*(A…N)) = subject(compose*(A…N)) for all depths and shapes</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>CERT16 was <em>true for two leaves and false at depth three</em>: <code>A &amp; B</code> bound correctly and <code>(A &amp; B) &amp; C</code> did not, because the two identities stopped being the same derivation once one side lost its structure. The law tested the base case and never the induction step, so it was green over a real closure failure. Depth and shape — left, right, balanced — are now swept rather than exemplified.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT19</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>the authenticated carrier is closed at arbitrary depth</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>authenticatedFor(a) ∧ … ∧ authenticatedFor(n) ⇒ authenticatedFor(compose*(a…n))</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The closure statement for authentication, matching AD1 for admission. One merely-presented leaf anywhere in the tree must break the brand for the whole tree — evidence is only as authenticated as its weakest participant.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT20</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>presented evidence is bound evidence: binding is not part of authentication</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>presentedFor(b) ⇔ artifact ∧ sameSubject(b.artifact, b.cost.subject);  authenticatedFor(b) ⇔ presentedFor(b) ∧ isAttested(b.cost)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Binding and authentication answer different questions — <em>what is this evidence about</em> and <em>who established that it is genuine</em> — and they were entangled, so binding was checked only when a brick asked for an authenticated floor. They are now layered: binding at the baseline, attestation on top. An <b>absent</b> artifact is not a contradiction — the brick has not said what it is, so it stays admitted and is neither presented-for nor authenticated-for; <code>floor: ['bound']</code> turns the baseline rule into a positive requirement.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT21</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>misbound evidence refuses at the baseline floor, attested or not</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>artifact ∧ ¬sameSubject(artifact, cost.subject) ⇒ 0̲</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>A certificate for <code>A</code> attached to an artifact <code>X</code> is not an <em>unauthenticated</em> certificate for X — it is the <b>wrong certificate</b>. It was admitted at the default floor, so the runtime held an object whose evidence explicitly named something else, and two of them composed into one. That is not a downgrade, it is an internally inconsistent admitted object. <b>Evidence presented for a subject must first actually name that subject; authentication decides whether to trust the evidence, not whether it is about the thing carrying it.</b> Misbinding is a floor condition rather than a canonicalisation one, so the brick is structurally valid and unadmitted — the same shape as <em>uncertified</em>.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT22</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>subject equality is substitutive under composition</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>sameSubject(x,y) ⇒ composeIdentity(op,x,z) = composeIdentity(op,y,z), for every op and z</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><code>term</code> was merely <em>optional</em> on every subject and equality compared <code>kind</code>+<code>hash</code>, so <code>{kind,hash,term}</code> and <code>{kind,hash}</code> were the <b>same subject</b> — and composing each with the same operand produced different identities, one LIVE and one <span class="zero">0̲</span>. <b>An equality relation under which x = y but compose(x,z) ≠ compose(y,z) is not the equality of the carrier; it is a coincidence of two selected fields.</b> The repair is to remove the second representation rather than widen the comparison: subjects are a discriminated union on <code>kind</code>, a composite must carry its term, and anything else must not. <b>Two subjects are equal only if replacing one with the other cannot change any future canonical identity.</b>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT23</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>a recursively canonical object enforces its invariants recursively</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>isTerm(['leaf', k, h]) ⇒ k, h non-empty ∧ k ≠ 'weave-composite'</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><em>Every subject binds a hash — leaf or composite, no exceptions</em> was enforced at the <b>root</b> and nowhere else: a leaf inside a term was checked with a bare <code>typeof === 'string'</code>, so <code>['leaf','','']</code> was a well-formed node. A term containing it attested, was admitted, and cleared an <code>authenticated</code> floor while binding neither a namespace nor a digest at that position. <b>An invariant enforced at the root of a tree is enforced on one node.</b>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT24</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>a runtime owns its attestation store</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>isAttested(c, rtA) ⇏ isAttested(c, rtB)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The attestation brand began as one module-level WeakSet, documented for three rounds as
+    <em>module-instance-order security</em> — an honest limitation, and not a scope. Once the same brand carries WORLD
+    revisions, authority delegations, receipt admission and replay validity, it <b>is</b> the security root, and a
+    security root whose extent is &quot;whoever imported this file first&quot; is not one.
+    <code>createComposeRuntime({verify})</code> mints a runtime that owns its store, so two tenants, worlds or verifiers
+    in one process share no authentication state: a certificate attested by one is merely <em>presented</em> to the
+    other. The module-level operators keep a default store, which is exactly the previous behaviour for anything that
+    never asks for isolation. A verifier is mandatory — an authority that checks nothing relabels rather than
+    authenticates.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT25</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>the subject discriminator agrees with the term discriminator</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>kind = 'weave-composite' ⇒ term root ∈ {and, pipe}</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The union was discriminated <em>structurally</em> — a composite must have a term — and not <em>semantically</em>: nothing asked what the term denoted. So a subject could declare <code>kind:'weave-composite'</code> while carrying a <b>leaf</b> term. It was a distinct subject at ingress and then evaporated at the identity layer: <code>F ≠ A</code>, yet <code>F &amp; C === A &amp; C</code>. <b>A discriminator that the two halves of an object can disagree about is not discriminating.</b>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT26</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>every admitted composite subject is in the runtime's algebraic normal form</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>canonicalTerm(t) ⇔ wellFormedTerm(t) ∧ root ≠ leaf ∧ t = normalize(t)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><code>wellFormedTerm</code> proves a <em>grammar</em>. It does not prove the tree is the runtime's representative of its algebraic class — and the runtime itself only ever <em>produces</em> flat <code>and</code>, because CA1 is a passing law. So <code>['and',['and',A,B],C]</code> was admitted beside <code>['and',A,B,C]</code> with a different hash. <b>Validity is not canonicality.</b> Only <em>proved</em> equations are normalised: <code>&amp;</code> flattens (CA1); <code>&amp;</code> order and duplicates are untouched (CA2/CA3 are lattice-only, CP7 open); <code>|&gt;</code> association is preserved exactly, because normalising it would assert an equation CP5/CP6 currently falsify. Noncanonical terms are <b>refused, not repaired</b> — a supplied term is an identity assertion, and a default may not overwrite a claim.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT27</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>algebraically equivalent & assemblies have exactly one admissible representation</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>left-, right- and balanced-associated & trees over the same leaves mint one identity</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The consequence that matters once these become WORLD revision ids, receipt identities and replay keys: two peers describing the same associative assembly must mint the <b>same</b> authoritative identity, or a revision id is a function of how somebody happened to parenthesise it. <b>An identity is canonical only if every admissible representation of the same proved algebraic object produces the same identity.</b> Verified over depths 3–6 in three associations, with <code>|&gt;</code> deliberately staying distinct by association.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT28</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>verification cannot change the claim being authenticated</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>snapshot ▸ validate ▸ freeze ▸ compare ▸ verify(it) ▸ brand(it)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The certificate used to stay <em>mutable</em> while the injected verifier ran: validate, compare the subject to the caller's expectation, call <code>verify</code>, and only then freeze and brand. A verifier that writes to what it is checking moves the claim after the claim has been approved — <code>verify(c){ c.subject.hash='B'; return true }</code> made <em>“verify this exact certificate for A”</em> finish by authenticating <b>B</b>, which then cleared an <code>authenticated</code> floor and admitted. Freezing earlier is not enough on its own, because <code>Object.freeze</code> leaves an accessor an accessor; the certificate is therefore <b>copied into inert data first</b>, and validation, comparison, the verifier, the brand and the return value all see that one frozen snapshot. <b>The structure verified must be the structure branded.</b>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT29</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>subject validation is total under the declared budget</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>∀ admissible term, depth ≤ 4096 · nodes ≤ 100000 ⇒ a verdict, never an exception</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Because <code>|&gt;</code> association is preserved while CP5/CP6 are open, term <em>depth</em> is something a caller controls. Every walk over it recursed — <code>wellFormedTerm</code>, <code>normalizeTerm</code>, <code>deepFreeze</code>, and <code>JSON.stringify</code> in C++ — so past some engine-specific depth a hostile certificate produced a <code>RangeError</code> instead of <code>0̲</code>. <b>A limit the implementation discovers is not a limit the protocol declared.</b> Every walk is now iterative and the ceiling is three stated numbers.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT30</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>an over-budget subject refuses by name, never by exception</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>over-budget ⇒ 0̲ with a named reason, and refusing costs less than accepting</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The other half of CERT29: past the ceiling the answer must still be an <em>answer</em>. Depth and node count are separate exhaustions — a deep chain and a wide fan-out — and both refuse with a reason a caller can act on. A fan-out wider than the whole budget is refused in <code>O(1)</code> from the node itself: <b>counting to a hundred thousand before declining to count to a hundred thousand is still doing the work.</b>
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT31</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>a canonical hash is computed from what the term contains, never from what it volunteers</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>canonTerm walks the structure; only leaf STRINGS reach JSON.stringify</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><code>canonTerm</code> was <code>JSON.stringify</code>, which asks a value how it would like to be serialised — it calls <code>toJSON()</code>. <code>Array.isArray</code> is true of an Array <em>subclass</em>, so a leaf could <em>contain</em> A and <em>hash as</em> X. Since <code>sameSubject</code> is kind+hash, a certificate about A attested against an expectation of X and the brick carrying it admitted. The doctrine the runtime states everywhere else — a supplied term is an identity assertion, checked against its bytes — was being enforced against bytes the asserter chose. Terms are now also <b>copied, not adopted</b>, so what a brick stores cannot tell a later reader a different story.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT32</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>the canonical serialiser is byte-identical to the JSON.stringify that minted every existing hash</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>∀ plain term t · canonTerm(t) === JSON.stringify(t)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>CERT31 replaced the serialiser so it could not be redirected by a hook and could not recurse. <b>A canonical form that changes its bytes changes every hash ever minted</b>, so the rewrite is admissible only if it is byte-for-byte the old one on plain data. Tested through the public surface over strings chosen to exercise JSON escaping — quotes, backslashes, control characters, a lone surrogate, astral pairs, and strings that look like the grammar itself.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">TREE1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>a one-leaf composition tree returns a canonical Brick or 0̲, never the caller's input</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>composeTree(leaf) = ensure(leaf) through the shared floor</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The leaf case was <code>if (!node || node.op == null) return node</code> — the caller's object, unexamined, out of a function that promises a composed brick. <code>composeTree({id:'raw', cost:{nonsense:true}})</code> returned that object with no Value, no contract and no certificate; <code>composeTree(42)</code> returned <code>42</code>. The correct identity operation on a single leaf is the one the algebra already defines, <code>a |&gt; ID</code>, so the leaf takes exactly that path.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">TREE2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>composeTree has no weaker ingress boundary than composeAnd/composePipe</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>isZero(composeTree(x)) = isZero(x &amp; none) = isZero(x |&gt; ID)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The third public composition route canonicalised nothing whenever the tree had nothing to fold. <b>A public route may not have a weaker ingress boundary because “nothing happened.”</b> Nothing happening is not a reason to admit something that was never admissible — this is the identity-route defect the runtime has now closed four times (CD13's raw operand, CD4b's pass-through, <code>ensure</code> itself, and here). Scoped to ordinary operands: the units have their own rule about which operator they mean something under (CD15/CD16).
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CD5</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>an explicit null/undefined field is an ABSENCE, not a declaration</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>isZero({feeds_into: null} |&gt; narrow)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Closes the second door into the same room.
+                                <code>null</code> is how a contract arrives from JSON when the field was never
+                                filled in — reading it as universal would reinstate the defect through the
+                                serialisation boundary.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT33</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>the byte budget is canonical serialised UTF-8 bytes, not source string units</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>canonBytes(s) === TextEncoder().encode(JSON.stringify(s)).length</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The ceiling said 4&nbsp;MiB and counted <code>s.length</code>. Those differ by <b>six</b> for a control character: 750,000 <code>U+0000</code> is 750,000 source units and 4,500,055 canonical bytes, so a subject a third over the ceiling was admitted. <b>A budget must name the quantity it bounds</b>, and the quantity that matters is the one that gets stored, hashed and shipped. The length is computed without building the escaped string, because allocating 4&nbsp;MiB to discover that 4&nbsp;MiB is too much is the mistake the ceiling exists to prevent.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT34</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>the hostile-data boundary is total: <code>ingest</code> yields a named 0̲ or a Brick, never an exception</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>∀ hostile v · ingest(v) is a Brick, and 0̲ ⇒ it says why</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>CERT28 made the <em>certificate</em> route snapshot-first, and the next question was whether that was a property of the route or of public ingress. It was the route: a throwing <code>cost</code> getter, a Proxy that traps <code>getPrototypeOf</code>, a term element with a throwing <code>Symbol.toPrimitive</code> each made an ordinary public call throw. The answer taken is that <b>the boundary is declared and one function owns it</b> — <code>Brick</code>/<code>composeAnd</code>/<code>composePipe</code>/<code>composeTree</code> are trusted construction over values you already own; <code>ingest</code> is the door for anything off a wire, and it snapshots to inert data first. An ingested brick is also deeply frozen, so the evidence a verdict was reached about cannot be rewritten afterwards.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT35</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>refusing is not more expensive than accepting</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>|refusal message| is bounded regardless of the size of what was refused</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Found by <em>measuring</em> the suite rather than reading it. <code>malformedCert</code> built its message with <code>JSON.stringify(c.subject).slice(0, 200)</code> — serialise the whole subject, keep 200 characters. Refusing a 100,100-leaf term therefore cost a full serialisation of the term: <b>the check was O(1) and the sentence about the check was O(n)</b>. That is the same exhaustion the budget exists to refuse, reached through the one path everything hostile is guaranteed to take.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">TREE3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>the fold's work is bounded: a shared child is priced per path, and an exponential DAG refuses by name</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>folds ≤ maxFoldNodes, and composeTree(x &amp; x) === composeAnd(x, x)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><b>A depth ceiling is not a work ceiling.</b> The previous round bounded this fold's depth and the handoff said it took the same ceiling as the term budget; depth is the only thing depth bounds. An AST is a graph, so a child reachable by two paths is folded twice, and 23 objects express 2²² folds — 112 seconds, refused by nothing. Sharing is <em>not</em> deduplicated, deliberately: <code>&amp;</code> is idempotent on the capability lattice and is not idempotent on cost or quantities, so <code>x &amp; x</code> is not <code>x</code> and memoising would change the arithmetic silently. A DAG is a tree that happens to share storage, and the budget prices it as the tree it denotes.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">TREE4</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>the operator is validated before the descent: an invalid root buys no subwork</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>unknown op ⇒ refuses having read zero children</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The operator used to be checked <em>after</em> both children had been folded, so an unknown operator at the root bought arbitrary valid subwork — 14 seconds in the witness — before the runtime discovered that the thing it was working for was never admissible. Witnessed by accessors on the child slots: if either is read, the law fails.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT36</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>an inert snapshot has no semantic prototype: every field is own data</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>getPrototypeOf(snapshot) === null ∧ every semantic field is an own property</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><code>{}</code> inherits <code>Object.prototype</code>, which has an accessor named <code>__proto__</code>. <code>JSON.parse</code> treats that key as <em>ordinary data</em> and produces it as an own property — but copying it out with <code>dst[k] = v</code> runs the inherited setter and re-points the destination's <b>prototype</b>. So a certificate could arrive with no own <code>subject</code> at all, inherit a valid one, validate, attest — and then be rewritten through a prototype <code>deepFreeze</code> never walked, because <code>getOwnPropertyNames</code> does not see inherited properties. <b>That is CERT8/CERT28 a third time, reached through inheritance rather than through mutability.</b> Objects now get a <b>null prototype</b> and every field is installed with <code>defineProperty</code>, which never consults a setter — special-casing the name <code>__proto__</code> would have fixed the witness and left the general defect in place. A field genuinely <em>named</em> <code>__proto__</code> survives as ordinary own data, which is what a JSON document means by it.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT37</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>descriptor-only ingress really is descriptor-only: no caller code runs during a snapshot</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>array indices come from the length descriptor; elements are read only via getOwnPropertyDescriptor</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The per-key read was descriptor-based; <em>index discovery</em> was not. <code>Array.from(src, …)</code> iterates the source, so an accessor installed on an element ran once per snapshot. The outer catch kept the never-throw contract — which is why this was invisible — but <b>a getter that performs a side effect and returns normally defeated the stronger property the boundary exists for.</b> Never-throwing and never-executing are different guarantees, and only the second is what "inert" means.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT38</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>the state WORLD requires is reachable by one call: ingested ∧ authenticated ∧ immutable</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>ingestAndVerify(raw) → a frozen brick whose exact certificate is branded in this runtime</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The runtime ruled that WORLD accepts ingested-and-authenticated bricks only, and that state could not be constructed from outside. The brand is object identity in a WeakSet — deliberately, since that is what makes it unforgeable by data — so <b>any copying boundary drops it</b>, and <code>ingest</code> and <code>verifyAndAttest</code> are both copying boundaries: whichever runs second undoes the other. <b>A rule whose required state has no construction path is not a rule.</b> The sequence now happens inside the runtime, where the brand is applied after the last copy. It is deliberately <em>not</em> a field: an <code>ingested: true</code> boolean would be exactly the caller-asserted authority CERT1 removed, so the property is earned by which function produced the object and read as <code>authenticatedFor(b) ∧ isFrozen(b)</code>.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT39</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>the hostile boundary takes bytes, because reflection over an object is executable</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>ingestJSON(text) executes no caller code; adopt(obj) is named as the weaker route</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>CERT37 promised that nothing caller-supplied runs during a snapshot. <code>Object.getOwnPropertyNames</code> and <code>getOwnPropertyDescriptor</code> are <b>Proxy traps</b>, so a valid brick behind a counting Proxy produced a live, authenticated, frozen result — the strongest state this runtime can hand to WORLD — while executing eight trap invocations of caller JavaScript. <b>There is no portable way to inspect an arbitrary JavaScript object while guaranteeing its traps do not run</b>: an API that has already received an object graph has crossed the line too late. So the guarantee moved rather than being patched. <code>ingestJSON(text)</code> parses bytes with a parser the runtime owns, which makes "no caller code executes" a fact about the input <em>language</em> instead of a hope about the input <em>value</em>; <code>adopt(obj)</code> keeps the object route under a name that no longer borrows the word "ingest". WORLD consumes only the first.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">CERT40</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>an own <code>undefined</code> is not absence: the boundary never erases present evidence</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>own undefined ⇒ 0̲ by name, on every carrier</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The copier skipped <code>undefined</code> because JSON has none and <code>JSON.stringify</code> drops such a key. Wrong in both directions: in an <em>array</em>, <code>JSON.stringify</code> emits <code>null</code> and keeps the slot, so the two carriers disagreed — and far worse, dropping it turned <code>floor: [undefined]</code> (present, invalid, <b>refuses</b>) into <code>floor: []</code> (no requirement, <b>admitted</b>). <b>The hostile boundary made the object less constrained than the input asked for.</b> <code>floor</code> is the worst carrier for that to happen on, because an erased requirement is indistinguishable in a receipt from a satisfied one. Sixth carrier, same rule: absence may take a documented default; present-and-malformed may not be repaired into a stronger claim.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">WIRE0</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>the WORLD door is the same function however the caller got hold of it</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>rt.f(x), const {f} = rt; f(x), and [x].map(rt.f) agree — for every ingress name</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><code>ingestJSONAndVerify</code> was a method calling <code>this.adoptAndVerify</code>. Modules are strict, so a detached reference had <code>this === undefined</code> and <b>threw a TypeError</b>. Three things made that worse than an ordinary binding bug. It threw on the <em>success</em> path only — bad input still refused politely, so the failure appeared only once the caller got everything right. It broke the contract this runtime states most loudly, that the boundary never throws whatever it is handed (CERT34) — and the contract was true of the <em>function</em> while being false of the <em>name</em>. And of the ingress routes it was the only one written as a method, so <b>the single door WORLD is specified to consume was the single door that broke</b> under the idiom every consumer reaches for on a frozen namespace object.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">WIRE1</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>the byte budget bounds bytes, not source units</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>utf8Len(text) &gt; maxBytes ⇒ 0̲, for every UTF-8 width class</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><code>text.length</code> counts UTF-16 code units. Measured: <b>6,000,376 UTF-8 bytes went through a 4,194,304 ceiling</b> live, authenticated and frozen, because U+0800 is one source unit and three bytes. This is CERT33's error — source units are not bytes — reappearing one boundary further out, <em>in the function written to be the boundary</em>. A budget must name the quantity it bounds; naming it is not enough, the check has to read it. The length is now counted without allocating the encoding, because a 4 MiB budget check must not build a 12 MiB buffer to decide it is over budget.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">WIRE2</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>a frame is not bytes until it is copied: no caller code participates in the bound</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>the bound is read through %TypedArray%.prototype getters, never off the argument</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Outside review proposed <code>ingestFrame(bytes: Uint8Array)</code> as the narrower door. Measured <em>before</em> it was written, that reintroduces CERT39 one layer down: a <b>Proxy</b> over a Uint8Array passes <code>instanceof</code> and fires its traps, and a <b>subclass</b> whose <code>byteLength</code> getter lies both runs caller code and gets an oversized frame parsed. <code>bytes.byteLength &gt; MAX</code> is exactly <code>getOwnPropertyDescriptor(o, k)</code> — a property read the caller animates. <b>A typed array is still an object</b>, so "the boundary takes bytes" is only true of an API that never asks the object anything. The bound is read through brand-checked intrinsics captured at module load, which a subclass cannot override and a Proxy has no internal slot to satisfy; a view onto a <code>SharedArrayBuffer</code> is refused because its contents can change between the check and the decode; and the bytes are copied before anything inspects them.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">WIRE3</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>duplicate member names refuse: a peer must be able to agree what was authenticated</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>a repeated object member ⇒ 0̲ by name, on every text route</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>RFC 8259 §4 leaves duplicate names to the implementation — V8 keeps the last, other parsers keep the first, some refuse, some expose all. Measured: a brick declaring <code>artifact</code> twice, hash <code>"B"</code> then hash <code>"A"</code>, came out <b>live and authenticated carrying "A"</b>. Nothing about that is a fact two runtimes share, and <b>a signature over it means nothing</b>. RFC 7493 (I-JSON) forbids it, and RFC 8785 (JCS) builds on I-JSON precisely so that hashing has repeatable bytes — which is what <code>RevisionRef</code> will need. The check is a scan of the <em>text</em>, because by the time <code>JSON.parse</code> has returned the duplicate is gone and the survivor is whichever one the engine felt like keeping.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">WIRE4</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>a retained string is encodable: no lone surrogate reaches an identity</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>surrogates and noncharacters ⇒ 0̲, in values and in member names, on every route</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>JavaScript carries a lone surrogate happily; UTF-8 cannot represent one. <code>TextEncoder</code> silently replaces it with U+FFFD, so <b>a hash this runtime authenticated is one it cannot transmit</b> — the corruption happens on the way out of the process, not at some hypothetical foreign peer. Measured live and authenticated with <code>U+D800</code> in the artifact hash. <b>WIRE1 does not subsume this, and the ordering is the point:</b> a strict UTF-8 decode rejects the <em>raw</em> form (bytes ED A0 80) and accepts <code>"A\ud800"</code>, which is well-formed UTF-8 on the wire and only becomes a lone surrogate after JSON string-escape processing. Frame well-formedness and value well-formedness are two checks.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">WIRE5</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>the frame route yields the admissible state, and nothing weaker does</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>ingestFrameAndVerify ⇒ authenticated ∧ frozen; ingestFrame ⇒ frozen ∧ ¬authenticated</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The composition WORLD consumes. CERT38 established that ingested-and-authenticated has to be reachable by <em>one</em> call, because two copying boundaries in series destroy the brand — whichever runs second undoes the other. WIRE1 moves that call to the frame. This law is the anchor: the door WORLD is pointed at actually produces what WORLD is specified to require, the non-verifying door is visibly weaker (frozen but not authenticated — the distinction WORLD reads), and a host that refuses the certificate refuses the brick by the host's own reason.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">WIRE6</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>owning a frame invokes no caller behaviour — the frame at return is the frame at call</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>the copy performs no SpeciesConstructor, no constructor read, no property access on the source</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span><code>WIRE1</code>/<code>WIRE2</code> fixed the <em>reads</em> and left the <em>copy</em> as <code>ArrayBuffer.prototype.slice</code> — which is not an inert memmove. Its first steps run <code>SpeciesConstructor(O, %ArrayBuffer%)</code>, reading <code>O.constructor</code> and then <code>constructor[@@species]</code> off an ordinary caller-supplied buffer, and the specification notes those steps may have side effects <em>before</em> the source data is copied. The captured pristine intrinsic called the caller's getter faithfully. <b>Measured:</b> a <code>constructor</code> getter that rewrites <code>"hash":"A"</code> to <code>"hash":"B"</code> in place produced <code>artifact.hash B</code>, <code>authenticatedFor true</code> — <b>from a frame that held A when the call began</b>. <code>WIRE2</code> stayed green throughout, because it counted invocations of the getters it had replaced and never asked what the copy did. <b>Capturing a function guarantees nothing if the function's own algorithm is specified to consult its operand.</b> The copy is now <code>%TypedArray%.prototype.set</code> into a runtime-allocated buffer — internal slots and a memmove — and the element type is brand-checked through the intrinsic <code>@@toStringTag</code>, because <code>set</code> converts between element types.
+                            </div>
+                        </div>
+                    </details>
+                    <details class="law">
+                        <summary>
+                            <span class="lid">WIRE7</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>the boundary does not fetch its dependencies from the ambient realm at call time</span
+                            ><span class="lok">✓</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>replacing TextDecoder / Uint8Array / ArrayBuffer / JSON / Reflect.apply after import changes nothing</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>Outside review replaced those globals <em>after</em> importing the module and measured frame ingress calling all of them — <code>Reflect.apply</code> 4×, <code>TextDecoder</code> 2×, <code>Uint8Array</code> 1×. Two threats were being conflated, and <b>only one is WIRE's to answer.</b> <em>Hostile bytes in a trusted realm</em> is WIRE's job: the frame must not be able to execute anything, and everything the boundary depends on is captured at module load. <em>Hostile code sharing the realm</em> is not, and no amount of capturing fixes it — ordinary ECMAScript primordials are mutable and reachable, which is exactly what SES/Hardened JavaScript <code>lockdown()</code> exists for. <b>The declared contract:</b> WIRE protects a trusted runtime against hostile <em>input</em>; it does not contain hostile <em>code</em> already executing in the same unhardened realm. If you need mutually hostile code in one process, give it a hardened realm, a worker, or a process — not a stricter parser. Capturing still earns its place inside that scope: it makes the boundary immune to <em>accidental</em> post-import patching, which is the failure that actually happens.
+                            </div>
+                        </div>
+                    </details>
+
+                    <div style="margin-top:38px;padding-top:26px;border-top:1px solid var(--line)">
+                        <h3 style="color:var(--red);font-size:22px;margin:0">Declared open — 3 laws that do <em>not</em> hold</h3>
+                        <p style="color:var(--muted);font-size:14.5px;max-width:72ch;margin:10px 0 0">
+                            These run on every build, print <b style="color:var(--red)">FALSIFIED</b> in red, and are
+                            expected to. They are not skipped, not pending, not hidden. Three of them
+                            (<code>CP5</code>, <code>CP6</code>, <code>CP7</code>) trace to one root cause — the
+                            <code>Value.pi</code> carrier. <code>CD6</code> is a separate defect in the contract
+                            algebra, added 2026-08-22, and it is the one blocked on a ruling rather than on a fix.
+                            The suite exits
+                            <code>process.exit((total === 0 &amp;&amp; xpass === 0) ? 0 : 1)</code>, so
+                            <b>the build fails if one of them starts <em>passing</em></b> without being promoted into a
+                            real suite. A fixed defect quietly left in the exception list would be worse than the defect.
+                            The counterexamples below come from a live run; the trial index is wherever the generator
+                            happened to find one and differs run to run.
+                        </p>
+                    </div>
+                    <details class="law open-gap">
+                        <summary>
+                            <span class="lid">CP5</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>the |&gt; floor is ASSOCIATION-INVARIANT</span
+                            ><span class="lno">✗ FALSIFIED</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>isZero((a|&gt;b)|&gt;c) === isZero(a|&gt;(b|&gt;c))</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>How you bracket a pipeline must not change whether it survives the floor. It does. Symptom 1 of the carrier defect.
+                            </div><div class="cex">π=[consolidate, learn, consolidate] → (a|&gt;b)|&gt;c = 0̲, a|&gt;(b|&gt;c) = live</div>
+                        </div>
+                    </details>
+                    <details class="law open-gap">
+                        <summary>
+                            <span class="lid">CP6</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>NO backward execution step survives |&gt;, in either association</span
+                            ><span class="lno">✗ FALSIFIED</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>a pipeline containing a backward phase step must floor to 0̲</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>A composition that runs a phase backwards should be refused regardless of bracketing. Same root cause as CP5.
+                            </div><div class="cex">π=[learn, retrieve, learn] has a backward step yet survives: (a|&gt;b)|&gt;c = 0̲, a|&gt;(b|&gt;c) = LIVE</div>
+                        </div>
+                    </details>
+                    <details class="law open-gap">
+                        <summary>
+                            <span class="lid">CP7</span
+                            ><span class="lst"
+                                ><span class="ca">▸</span>&amp;-operand order does not change a downstream |&gt; floor</span
+                            ><span class="lno">✗ FALSIFIED</span>
+                        </summary>
+                        <div class="ldetail">
+                            <div class="lprop">
+                                <span class="plabel">property</span
+                                ><code>isZero((a&amp;b)|&gt;c) === isZero((b&amp;a)|&gt;c)</code>
+                            </div>
+                            <div class="lwhy">
+                                <span class="plabel">guarantees</span>The one you can feel. <code>&amp;</code> is commutative — AC-COMM above proves its own floor is — but the merge sets its phase by first-non-null, so <code>(A&amp;B)</code> and <code>(B&amp;A)</code> exit at different phases and chain differently. <a href="/capability-composition-masterclass#cp7" style="color:var(--amber-2)">Reproduce it in your browser</a>.
+                            </div><div class="cex">π=[route, retrieve, retrieve] → (a&amp;b)|&gt;c = 0̲, (b&amp;a)|&gt;c = LIVE  (&amp; is "commutative")</div>
+                        </div>
+                    </details>
+
+
                 </div>
             </section>
         </main>
@@ -3462,7 +5396,7 @@ Compose/CC2 (CA·CP·CX):<span class="ok">15/15 pass</span> · &amp; combine · 
                     <div>
                         <a
                             class="brand"
-                            href="index.html#top"
+                            href="/"
                             style="font-size: 16px"
                             >[<b style="color: var(--amber)">&amp;</b>]
                             AMPERSAND BOX</a
@@ -3473,16 +5407,16 @@ Compose/CC2 (CA·CP·CX):<span class="ok">15/15 pass</span> · &amp; combine · 
                         </p>
                     </div>
                     <div class="links">
-                        <a href="index.html#kernel">Kernel</a>
-                        <a href="index.html#bridge">The bridge</a>
-                        <a href="index.html#aios">AIOS</a>
-                        <a href="index.html#install">Install</a>
+                        <a href="/#constitution">The constitution</a>
+                        <a href="/#compose">The join</a>
+                        <a href="/factory">The factory floor</a>
+                        <a href="/#install">Install</a>
+                        <a href="/continuous-verification-masterclass">Verification masterclass</a>
                         <a href="https://opensentience.org/box-and-box/">Reference impl</a>
                     </div>
                 </div>
                 <div class="copy">
-                    © Ampersand Box Design · Models generate answers. Kernels
-                    govern them.
+                    © Ampersand Box Design · Models generate. Factories compound.
                 </div>
             </div>
         </footer>

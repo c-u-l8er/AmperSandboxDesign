@@ -7,7 +7,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"/>
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
 <title>[&amp;] Protocol Specification — Composing Governed Agent Intelligence</title>
-<meta name="description" content="The [&] Protocol is a language-agnostic specification for composing agent capabilities — six cognitive primitives, two operators, and the box-and-box governance kernel (8 rungs, 1 bridge, 118 property-tested laws). Compiles to MCP and A2A. Reference implementation in Elixir." />
+<meta name="description" content="The [&] Protocol is a language-agnostic specification for composing agent capabilities — six cognitive primitives, two operators, and the box-and-box governance kernel (8 rungs, 1 bridge, 210 property-tested laws). Compiles to MCP and A2A. Reference implementation in Elixir." />
 <meta name="keywords" content="[&] protocol, ampersand protocol, capability composition, box-and-box, governance kernel, CC2, coalitional composition, MCP, A2A, agent operating system, PULSE, PRISM" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -219,7 +219,7 @@
       what an agent can <em>do</em>. Six cognitive primitives — <span class="amber">&amp;memory</span>, <span class="amber">&amp;reason</span>,
       <span class="amber">&amp;time</span>, <span class="amber">&amp;space</span>, <span class="amber">&amp;body</span>, <span class="amber">&amp;govern</span> —
       combine through two operators (<code>&amp;</code> and <code>|&gt;</code>) whose meaning is fixed by the
-      <strong>box-and-box governance kernel</strong>: eight modal rungs, one bridge, 118 property-tested laws.
+      <strong>box-and-box governance kernel</strong>: eight modal rungs, one bridge, 210 property-tested laws.
       [&amp;] does not replace MCP or A2A — it <strong>compiles into them</strong>, with a certificate for every verdict.
     </p>
 
@@ -231,7 +231,7 @@
         <dt>Authors</dt><dd>Ampersand Box Design</dd>
         <dt>License</dt><dd>Apache 2.0</dd>
         <dt>Schema</dt><dd><a href="https://protocol.ampersandboxdesign.com/schema/">protocol.ampersandboxdesign.com/schema/</a> · JSON Schema 2020-12</dd>
-        <dt>Kernel</dt><dd>box-and-box ≥ 0.8 — <a href="/laws.html">the 118 laws →</a></dd>
+        <dt>Kernel</dt><dd>box-and-box ≥ 0.8 — <a href="/laws.html">the 210 laws →</a></dd>
         <dt>Reference</dt><dd>JavaScript + Elixir host · <a href="https://opensentience.org/box-and-box/">read the source →</a></dd>
         <dt>Bindings</dt><dd>MCP (tool surface) · A2A (agent cards)</dd>
         <dt>Stack</dt><dd>[&amp;] structural · PULSE temporal · PRISM diagnostic</dd>
@@ -503,7 +503,7 @@ Rule           ::= "hard"   Predicate                 <span class="c">; deontic 
     <div class="srow"><div class="rn">6</div><div class="os">knowledge base</div><div class="nm">epistemic <small>do we know enough?</small></div><div class="ds">Possible-worlds knowledge vs. belief. A known-unknown routes to <em class="tk">deliberate</em> instead of a confident guess.</div></div>
     <div class="srow"><div class="rn">7</div><div class="os">IPC · coordination</div><div class="nm">strategic <small>who can ensure it?</small></div><div class="ds">Coalition ability. An obligation no agent can discharge alone escalates — <em class="tk">ought implies can</em>, enforced.</div></div>
     <div class="srow"><div class="rn">8</div><div class="os">ring 0 · protected</div><div class="nm">reflexive <small>may the rules change?</small></div><div class="ds">The policy can amend itself — tighten, add duties — but the entrenched core is un-writable. Self-modification can never relax the floor.</div></div>
-    <div class="subs-foot">eight rungs &nbsp;·&nbsp; one bridge &nbsp;·&nbsp; <a href="/laws.html"><b>118 property-tested laws</b></a> &nbsp;·&nbsp; 2000 trials each</div>
+    <div class="subs-foot">eight rungs &nbsp;·&nbsp; one bridge &nbsp;·&nbsp; <a href="/laws.html"><b>210 property-tested laws</b></a> &nbsp;·&nbsp; 2000 trials each</div>
   </div>
 
   <div class="note">
@@ -570,7 +570,7 @@ Rule           ::= "hard"   Predicate                 <span class="c">; deontic 
 <div class="partbar">
   <p class="pt">Part B</p>
   <h2>Reference implementation</h2>
-  <p>A minimal governed kernel, the DSL that expands to the arithmetic, and the spec → agent pipeline. Elixir / OTP is the reference; any language that passes the 118 laws is conformant.</p>
+  <p>A minimal governed kernel, the DSL that expands to the arithmetic, and the spec → agent pipeline. Elixir / OTP is the reference; any language that passes the 210 laws is conformant.</p>
 </div>
 
 <!-- §11 MINIMAL -->
@@ -618,7 +618,7 @@ Rule           ::= "hard"   Predicate                 <span class="c">; deontic 
 
   <div class="note teal">
     <span class="lbl">Honest note</span>
-    This is the reference <b>host</b>. The conformance-tested verdict engine is <b>box-and-box</b> (the npm / edge package, 118 property-tested laws). This Elixir kernel speaks the same arithmetic, so a verdict here and a verdict there are identical — but the laws, not the host, are the specification.
+    This is the reference <b>host</b>. The conformance-tested verdict engine is <b>box-and-box</b> (the npm / edge package, 210 property-tested laws). This Elixir kernel speaks the same arithmetic, so a verdict here and a verdict there are identical — but the laws, not the host, are the specification.
   </div>
 </section>
 
@@ -725,7 +725,7 @@ ampersand generate a2a infra-operator.ampersand.json   <span class="c"># → A2A
     <a class="ecocard" href="https://ticktickclock.com"><div class="amp">&amp;time · service</div><h4>TickTickClock</h4><p>Temporal intelligence — anomaly detection &amp; prediction. Feeds the watchdog.</p></a>
     <a class="ecocard" href="https://geofleetic.com"><div class="amp">&amp;space · OS-012</div><h4>GeoFleetic</h4><p>Spatial intelligence — geo-routing &amp; delta-CRDT state sync across edge.</p></a>
     <a class="ecocard" href="https://opensentience.org"><div class="amp">&amp;body · OS-011</div><h4>Embodiment</h4><p>The sensorimotor loop — perception, typed action, affordance enumeration.</p></a>
-    <a class="ecocard" href="https://ampersandboxdesign.com"><div class="amp">&amp;govern · ring 0</div><h4>box-and-box</h4><p>The kernel itself — 8 rungs, 1 bridge, 118 laws. The other five run on it.</p></a>
+    <a class="ecocard" href="https://ampersandboxdesign.com"><div class="amp">&amp;govern · ring 0</div><h4>box-and-box</h4><p>The kernel itself — 8 rungs, 1 bridge, 210 laws. The other five run on it.</p></a>
   </div>
 </section>
 
@@ -735,7 +735,8 @@ ampersand generate a2a infra-operator.ampersand.json   <span class="c"># → A2A
   <h2 class="h">What a conformant implementation MUST hold.</h2>
   <p class="body">A host is conformant in <em>any</em> language if it satisfies these. Two conformant hosts must agree on whether a composition is feasible, permitted, and ensurable — the way two calculators agree on 2 + 2.</p>
   <ul class="list">
-    <li><b>Pass the 118 laws</b> — the box-and-box property suite (2000 trials each) <code>MUST</code> pass. See <a href="/laws.html" style="color:var(--amber-2)">/laws.html</a>.</li>
+    <li><b>Pass the 210 laws</b> — the box-and-box property suite (2000 trials each) <code>MUST</code> pass. See <a href="/laws.html" style="color:var(--amber-2)">/laws.html</a>.</li>
+    <li><b>Inherit the 3 declared-open gaps</b> — conformance is against the <em>enforced</em> 125. <code>CP5</code>, <code>CP6</code> and <code>CP7</code> are <em>declared open</em>: on the <code>Value.pi</code> carrier a <code>|&gt;</code> floor still depends on association, and on <code>&amp;</code>-operand order. They print FALSIFIED by design, and a host <code>MUST NOT</code> report them as passing — an <code>xfail</code> that turns green almost always means the property stopped being exercised, not that the defect was fixed, which is why the build alarms on it. This page previously listed the conformance set without saying it had holes; <a href="/laws.html" style="color:var(--amber-2)">/laws.html</a> has always carried them as cards.</li>
     <li><b>Hard rejection</b> — a failed <code>hard</code>, <code>floor</code>, or <code>ensure</code> <code>MUST</code> annihilate the option to <span class="zero">0̲</span>; no utility may resurrect it.</li>
     <li><b>Interpositional govern</b> — <code>&amp;govern</code> <code>MUST</code> sit between proposal and action; no syscall bypasses the bridge.</li>
     <li><b>Preserve entrenchment (R4)</b> — a reflexive amendment <code>MUST NOT</code> weaken an entrenched <code>floor</code> clause.</li>
@@ -744,7 +745,7 @@ ampersand generate a2a infra-operator.ampersand.json   <span class="c"># → A2A
 
   <div class="note">
     <span class="lbl">Run it</span>
-    <code>node test/laws.mjs</code> — watch all 97 pass. A protocol change is not complete until <code>SPEC.md</code>, the JSON Schemas, the examples, the reference impl, the CLI, and the docs all move together. See <code>CONTRIBUTING.md</code>.
+    <code>node test/laws.mjs</code> — watch all 109 kernel laws pass, then <code>node test/compose-laws.mjs</code> for the 99 compose/CC2 laws and the 3 gaps it prints FALSIFIED. A protocol change is not complete until <code>SPEC.md</code>, the JSON Schemas, the examples, the reference impl, the CLI, and the docs all move together. See <code>CONTRIBUTING.md</code>.
   </div>
 </section>
 
@@ -769,7 +770,7 @@ ampersand generate a2a infra-operator.ampersand.json   <span class="c"># → A2A
       </div>
       <div>
         <h5>Implementation</h5>
-        <a href="/laws.html">The 118 laws</a>
+        <a href="/laws.html">The 210 laws</a>
         <a href="https://opensentience.org/box-and-box/">Reference impl (JS + Elixir)</a>
         <a href="/docs/CC2-capability-composition.md">CC2 RFC</a>
         <a href="https://ampersandboxdesign.com">box-and-box kernel</a>

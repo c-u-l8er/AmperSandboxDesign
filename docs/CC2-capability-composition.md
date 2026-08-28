@@ -12,7 +12,7 @@ CC1 formalized composition for a *single* agent: a capability **set** merged by 
 
 CC2 makes two changes. First, it gives every part of composition a **semantics** drawn from the arithmetic ladder, including the previously-lawless `|>`. Second, it lifts composition from one agent to a **coalition**, so the question composition answers is no longer *"do I hold these capabilities?"* but *"can this group, by pooling typed capabilities and coordinating, **ensure** the goal — with each task owned, the shared facts common knowledge, the joint run supervised, and a safety floor none of them can weaken?"* Every clause of that sentence is a rung.
 
-CC2 is normative at the level of *the verdict*: two conformant runtimes, in any language, MUST agree on whether a composition is feasible, permitted, and ensurable, because the verdict is the arithmetic and the arithmetic is fixed by its laws (97 of them, the conformance suite). The runtime, the syntax, and the transport are not normative; an effects-first Elixir runtime — **box-and-box** — is one conformant host, a TypeScript edge runtime another.
+CC2 is normative at the level of *the verdict*: two conformant runtimes, in any language, MUST agree on whether a composition is feasible, permitted, and ensurable, because the verdict is the arithmetic and the arithmetic is fixed by its laws (the conformance suite; run it for the count — `node test/laws.mjs && node test/compose-laws.mjs` derives **210 enforced**, 109 kernel + 101 compose, plus 3 declared-open). The runtime, the syntax, and the transport are not normative; an effects-first Elixir runtime — **box-and-box** — is one conformant host, a TypeScript edge runtime another.
 
 ---
 
@@ -179,7 +179,7 @@ A CC1 `ampersand.json` is a conformant CC2 coalition with `agents: [self]`, an e
 
 A conformant CC2 implementation MUST:
 
-1. compute the `&` and `|>` verdicts via an arithmetic that passes the 103 laws (the suite is the contract; pass it in your language);
+1. compute the `&` and `|>` verdicts via an arithmetic that passes the enforced laws — **210** as the suites derive them today, 109 kernel (`test/laws.mjs`) + 99 compose (`test/compose-laws.mjs`, 100 suite + 1 anchor). The suite is the contract, not this number; pass it in your language. The 3 declared-open laws (CP5/CP6/CP7) are expected to print FALSIFIED and MUST NOT be counted as passing;
 2. treat `hard`, `floor`, and `ensure` failures as hard rejections, not advisories;
 3. run governance **interpositionally** — no consequential effect may execute without first clearing the `govern` verdict;
 4. preserve entrenchment across all self-revision (`R4`);

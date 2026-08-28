@@ -14,6 +14,36 @@ import * as ST from '../strategic.mjs';
 import * as RES from '../resource.mjs';
 import * as EVO from '../evolution.mjs';
 
+// ---------------------------------------------------------------------------
+// SEEDED RANDOMNESS. `Math.random()` was unseeded, so a falsifier printed by this suite could not be
+// replayed — and `verify.sh` ran the suite FOUR times per report (once for pass/fail, once to scrape
+// the total, once for the gap count, once inside law-manifest.mjs), which meant a single verification
+// report was assembled from four DIFFERENT random experiments. For a project whose subject is
+// evidence, that is the wrong shape twice over: it is slow, and the numbers in one report do not all
+// come from the same run.
+//
+//     node test/compose-laws.mjs              # random seed, printed
+//     SEED=123456 node test/compose-laws.mjs  # replay that exact run
+//
+// mulberry32 — small, fast, and deterministic. Math.random is REPLACED rather than shadowed so the
+// helpers already written against it (pick, rnd, randBrick, …) need no change and cannot accidentally
+// keep using the unseeded source.
+// `process` is guarded because this module is ALSO imported by opensentience.org/playground.html,
+// where a bare `process.env` is a ReferenceError at module scope and takes the whole page's law
+// run down with it. The run-block at the bottom is already guarded; this line was not.
+const SEED = (typeof process !== 'undefined' && process.env && process.env.SEED)
+  ? (Number(process.env.SEED) >>> 0) : ((Math.random() * 0x100000000) >>> 0);
+{
+  let a = (SEED + 0x6D2B79F5) >>> 0;
+  Math.random = () => {
+    a = (a + 0x6D2B79F5) >>> 0;
+    let t = a;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
 const rnd = (a, b) => a + Math.random() * (b - a);
 const approx = (a, b, t = 1e-7) => a === b || (isFinite(a) && isFinite(b) && Math.abs(a - b) <= t * (1 + Math.abs(a) + Math.abs(b)));
 const setEq = (a, b) => a.length === b.length && [...a].sort().join() === [...b].sort().join();
@@ -473,7 +503,56 @@ const RESO = [
       if (L === RES.INFEASIBLE) return 'broke'; } return (RES.total(L, 'capacity') === start) ? true : 'capacity-leaked'; })],
   ['C8', 'no free reclaim — forgetting releases the knowledge', (n) => trial(n, () => { let L = randLedger(); const amt = Math.min(RES.balance(L, RES.FREE, 'capacity'), 1 + ri(4));
     L = RES.allocate(L, 'T', amt); L = RES.consolidate(L, 'T'); const before = RES.balance(L, 'mind', 'know:T'); const M = RES.forget(L, 'T');
-    return (before === 1 && RES.balance(M, 'mind', 'know:T') === 0 && RES.balance(M, RES.FREE, 'capacity') >= amt) ? true : 'kept-both'; })]
+    return (before === 1 && RES.balance(M, 'mind', 'know:T') === 0 && RES.balance(M, RES.FREE, 'capacity') >= amt) ? true : 'kept-both'; })],
+  // C9/C10 — the irreversible kind. Added after `holdout-bits` was metered on this ledger and the
+  // spend was found to be REFUNDABLE with C1 and C2 both still holding. See resource.mjs.
+  ['C9', 'irreversible sink is absorbing — sink monotone, allocation of unspent budget still feasible', (n) => trial(n, () => {
+    const L = RES.Ledger({ bal: { cand: { hb: ri(6) }, [RES.TREASURY]: { hb: 20 }, [RES.SINK]: {} }, kind: { hb: 'irreversible' } });
+    let cur = L, sink = 0;
+    for (let i = 0; i < 5; i++) {
+      const pick = ri(3);
+      const m = pick === 0 ? RES.spend(cur, 'cand', 'hb', ri(4))
+        : pick === 1 ? RES.refill(cur, 'cand', 'hb', ri(4))                 // allocation — must remain possible
+          : RES.transfer(cur, 'hb', RES.SINK, 'cand', 1 + ri(3));           // un-leaking — must be refused
+      if (pick === 2 && m !== RES.INFEASIBLE) return 'sink-drained';
+      if (m === RES.INFEASIBLE) continue;
+      const now = RES.balance(m, RES.SINK, 'hb');
+      if (now < sink) return 'sink-decreased';
+      sink = now; cur = m;
+    }
+    // the narrowing that separates an accountant from a straitjacket: unspent budget still moves
+    if (RES.balance(cur, RES.TREASURY, 'hb') >= 1 && RES.refill(cur, 'cand', 'hb', 1) === RES.INFEASIBLE) return 'allocation-blocked';
+    return true; })],
+  ['C10', 'a declared cap bounds CUMULATIVE consumption of an irreversible resource', (n) => trial(n, () => {
+    const cap = 1 + ri(8);
+    const L = RES.Ledger({ bal: { cand: { hb: 50 }, [RES.TREASURY]: { hb: 50 }, [RES.SINK]: {} }, kind: { hb: 'irreversible' }, cap: { hb: cap } });
+    let cur = L;
+    for (let i = 0; i < 6; i++) {
+      const amt = 1 + ri(4), m = RES.spend(cur, 'cand', 'hb', amt);
+      if (m === RES.INFEASIBLE) {
+        if (RES.balance(cur, 'cand', 'hb') >= amt && RES.balance(cur, RES.SINK, 'hb') + amt <= cap) return 'refused-under-cap';
+        continue;
+      }
+      if (RES.balance(m, RES.SINK, 'hb') > cap) return 'cap-exceeded';
+      cur = m;
+    }
+    return true; })],
+  // C11 — added 2026-08-24. C10 said "a declared, IMMUTABLE cap" and immutability was a COMMENT:
+  // `L.cap.hb = 100` walked straight past it, as did `L.kind.hb = 'depletable'` past C9. The two
+  // fields that decide what the rules ARE are now frozen, and survive cloning. Balances are NOT
+  // frozen and that boundary is declared, not enforced — see LED-STATE-CONFINEMENT.
+  ['C11', 'the authority fields (kind, cap) are frozen — a declared cap cannot be rewritten', (n) => trial(n, () => {
+    const cap = 1 + ri(6);
+    let L = RES.Ledger({ bal: { cand: { hb: 20 }, [RES.SINK]: {} }, kind: { hb: 'irreversible' }, cap: { hb: cap } });
+    for (const mutate of [() => { L.cap.hb = 999; }, () => { L.kind.hb = 'depletable'; }, () => { delete L.cap.hb; }]) {
+      try { mutate(); } catch { /* strict-mode TypeError is the enforcement */ }
+    }
+    if (L.cap.hb !== cap || L.kind.hb !== 'irreversible') return 'authority-rewritten';
+    const spent = RES.spend(L, 'cand', 'hb', cap);                        // exhaust exactly
+    if (spent === RES.INFEASIBLE) return 'could-not-reach-cap';
+    if (!Object.isFrozen(spent.cap) || !Object.isFrozen(spent.kind)) return 'clone-lost-the-seal';
+    try { spent.cap.hb = 999; } catch { /* expected */ }
+    return RES.spend(spent, 'cand', 'hb', 1) === RES.INFEASIBLE ? true : 'cap-bypassed-after-clone'; })]
 ];
 const RESB = [
   ['CB1', 'exhaustion ⇒ infeasible (the alethic 0̲ gate)', (n) => trial(n, () => { const L = randLedger(); const a = ['a', 'b', 'c', 'd'][ri(4)]; const c = ri(12);
@@ -485,7 +564,47 @@ const RESB = [
   ['CB3', 'Type-II repair pricing (value ≥ cost ∧ affordable)', (n) => trial(n, () => { const L = randLedger(); const a = ['a', 'b', 'c', 'd'][ri(4)];
     const value = ri(8), cost = ri(8); const r = RES.repair(L, a, { resource: 'tokens', value, cost });
     const exp = !RES.affords(L, a, { tokens: cost }) ? 'cannot-afford' : (value >= cost ? 'invoke' : 'skip');
-    if (r.decision !== exp) return 'wrong-decision'; if (r.decision === 'invoke' && RES.balance(r.L, a, 'tokens') !== RES.balance(L, a, 'tokens') - cost) return 'no-charge'; return true; })]
+    if (r.decision !== exp) return 'wrong-decision'; if (r.decision === 'invoke' && RES.balance(r.L, a, 'tokens') !== RES.balance(L, a, 'tokens') - cost) return 'no-charge'; return true; })],
+  // CB4 — the bridge-level consequence, and the one the holdout-bits witness actually violated:
+  // after exhaustion the alethic gate must not be re-openable BY RECOVERING SPENT VALUE. It may
+  // still be re-opened by allocating unspent budget from the treasury; that is not the same act.
+  ['CB4', 'irreversible exhaustion is not recoverable from the sink (the #27b gate)', (n) => trial(n, () => {
+    const start = 1 + ri(6);
+    const L = RES.Ledger({ bal: { cand: { hb: start }, [RES.TREASURY]: { hb: 10 }, [RES.SINK]: {} }, kind: { hb: 'irreversible' } });
+    const spent = RES.spend(L, 'cand', 'hb', start);
+    if (spent === RES.INFEASIBLE) return 'could-not-spend';
+    if (RES.feasible(spent, 'cand', { hb: 1 })) return 'gate-open-after-exhaustion';
+    for (const amt of [1, start, RES.balance(spent, RES.SINK, 'hb')]) {
+      if (amt > 0 && RES.transfer(spent, 'hb', RES.SINK, 'cand', amt) !== RES.INFEASIBLE) return 'sink-refund-accepted';
+    }
+    return RES.feasible(spent, 'cand', { hb: 1 }) ? 'gate-reopened' : true; })],
+  // CB5/CB6 — added 2026-08-24. `feasible` was `affords`, a pure balance check, while `transfer`
+  // enforced C9 and C10: with cap 6, sink 5 and a balance of 10 the gate said GO and the primitive
+  // said INFEASIBLE. No law objected, because no law compared them. These two do. CB5 is the
+  // equivalence; CB6 is the consequence for every derived path that preflights and then charges.
+  ['CB5', 'the alethic gate agrees with the primitive — feasible ⟺ charge ≠ INFEASIBLE', (n) => trial(n, () => {
+    const cap = ri(8), start = ri(10);
+    const L = RES.Ledger({
+      bal: { cand: { hb: start, tokens: ri(6) }, [RES.TREASURY]: { hb: 20 }, [RES.SINK]: { hb: ri(6) } },
+      kind: { hb: 'irreversible' }, cap: Math.random() < 0.75 ? { hb: cap } : {},
+    });
+    const cost = Math.random() < 0.5 ? { hb: ri(6) } : { hb: ri(6), tokens: ri(4) };
+    const gate = RES.feasible(L, 'cand', cost), charged = RES.charge(L, 'cand', cost) !== RES.INFEASIBLE;
+    return gate === charged ? true : `gate=${gate} charge=${charged} cap=${JSON.stringify(L.cap)} sink=${RES.balance(L, RES.SINK, 'hb')}`; })],
+  ['CB6', 'a preflighted path never returns INFEASIBLE dressed as a ledger (use / repair)', (n) => trial(n, () => {
+    const L = RES.Ledger({
+      bal: { cand: { hb: ri(10), tokens: ri(8), skill: 1 }, [RES.SINK]: { hb: ri(8) } },
+      kind: { hb: 'irreversible', skill: 'reusable' }, cap: { hb: ri(8) },
+    });
+    for (const res of ['hb', 'tokens', 'skill']) {
+      const u = RES.use(L, 'cand', res);
+      if (u.L === RES.INFEASIBLE) return `use(${res}) leaked INFEASIBLE`;
+      if (u.ok && res !== 'skill' && RES.balance(u.L, 'cand', res) !== RES.balance(L, 'cand', res) - 1) return `use(${res}) did not deplete`;
+    }
+    const r = RES.repair(L, 'cand', { resource: 'hb', value: 10, cost: ri(8) });
+    if (r.L === RES.INFEASIBLE) return 'repair leaked INFEASIBLE';
+    if (r.decision === 'invoke' && RES.balance(r.L, RES.SINK, 'hb') > (L.cap.hb ?? Infinity)) return 'repair spent past the cap';
+    return true; })]
 ];
 
 // ---------------- EVOLUTION LAWS (the measured/priced/certified self-revision bridge) ----------------
@@ -577,15 +696,21 @@ export const SUITES = [
   { key: 'EPB',  label: 'Epistemic bridge (EB1–EB3)',        laws: EPB },
   { key: 'STR',  label: 'Strategic (S1–S8)',                 laws: STR },
   { key: 'SB',   label: 'Strategic bridge (SB1–SB3)',        laws: SB },
-  { key: 'RESO', label: 'Resource (C1–C8)',                  laws: RESO },
-  { key: 'RESB', label: 'Resource bridge (CB1–CB3)',         laws: RESB },
+  { key: 'RESO', label: 'Resource (C1–C11)',                 laws: RESO },
+  { key: 'RESB', label: 'Resource bridge (CB1–CB6)',         laws: RESB },
   { key: 'EVO',  label: 'Evolution (EV1–EV6)',               laws: EVO_L }
 ];
 
 // ---------------- run (Node CLI only; skipped when imported into a browser) ----------------
 if (typeof process !== 'undefined' && typeof window === 'undefined') {
-  const N = 2000;
+  // TRIALS ARE OVERRIDABLE, AND THE BANNER PRINTS WHAT ACTUALLY RAN. Outside review reported this
+  // suite exceeding a 120-second window on their machine, and "run fewer trials" is a reasonable
+  // thing for a reviewer to want — as long as nobody can then publish a number earned at 200 trials
+  // as though it were earned at 2000. scripts/law-manifest.mjs REFUSES a reduced run for exactly
+  // that reason, so this is a fast path for iteration and not a fast path to a weaker claim.
+  const N = Number(process.env.BB_TRIALS) > 0 ? Number(process.env.BB_TRIALS) : 2000;
   console.log(`\nbox-and-box law harness · ${N} trials/law\n${'─'.repeat(48)}`);
+  console.log(`seed ${SEED}  ·  replay this exact run with  SEED=${SEED} node test/laws.mjs`);
   let total = 0;
   for (const suite of SUITES) {
     if (suite.semiring) setSemiring(suite.semiring);
